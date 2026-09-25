@@ -108,10 +108,12 @@ def _same_deal_case(conn: sqlite3.Connection, rep: dict, fields: dict) -> sqlite
 
 
 def _open_case_for(conn: sqlite3.Connection, corp_code: str, rcept_dt: str) -> sqlite3.Row | None:
+    """정정공시가 붙을 케이스: 같은 회사, 240일 안에 '먼저' 시작한 진행 중 케이스 중 가장 최근 것.
+    정정이 자기보다 늦게 시작한 케이스에 붙으면 안 된다 (실측 이렘: 3/31 정정이 9/23 에 시작한 케이스에 붙음)."""
     return conn.execute(
-        "SELECT * FROM cases WHERE corp_code=? AND status='open' AND first_rcept_dt>=? "
+        "SELECT * FROM cases WHERE corp_code=? AND status='open' AND first_rcept_dt>=? AND first_rcept_dt<=? "
         "ORDER BY first_rcept_dt DESC LIMIT 1",
-        (corp_code, _shift(rcept_dt, -240)),
+        (corp_code, _shift(rcept_dt, -240), rcept_dt),
     ).fetchone()
 
 

@@ -18,7 +18,9 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 6   # 6: 본문(신주의 종류와 수 표) 앞 구간은 정정·표지로 보고 제외, 할인율 문장 확대
+PARSER_VERSION = 7   # 7: 본문 시작 후보 중 항목을 가장 많이 찾은 것(정정표가 본문 뒤에 붙는 경우 — 경남제약),
+#                        인수권 문장 '추후결정' 뒤 날짜·기준일보다 이른 인수권 날짜 무시
+#                      6: 본문(신주의 종류와 수 표) 앞 구간은 정정·표지로 보고 제외, 할인율 문장 확대
 #                      5: 발행가 라벨 구분(예정/1차/확정). 4: 정정공시 '정정전/정정후' 표 제외, 할인율 추출
 
 _DATE_RE = re.compile(
@@ -77,23 +79,30 @@ def _after_values(cells: list[str]) -> list[str] | None:
     return labels + (values[len(values) // 2:] if len(values) % 2 == 0 else values[-1:])
 
 
-def body_start(doc: str) -> int:
-    """유상증자결정 본문 표('1. 신주의 종류와 수')가 시작하는 위치 — 마지막으로 나오는 것.
-    정정공시는 그 앞에 정정사항 표(옛 값과 새 값이 한 행에)가 붙는다. 머리글 문구가 회사마다 달라
-    (실측 이렘 9/23: '정정전/정정후' 머리글로 안 걸림) 위치로 자른다. 못 찾으면 0."""
-    start = 0
+def body_starts(doc: str) -> list[int]:
+    """본문 시작 후보: 원문 맨 앞(0) + '1. 신주의 종류와 수'가 든 표마다의 시작 위치.
+    정정사항 표는 본문 앞(이렘 9/23)에도, 본문 뒤(경남제약 9/18)에도 붙고 그 안에 '신주의 종류와 수'
+    행이 있을 수 있어, 한 위치로 정하지 않고 후보를 모두 파싱해 본다 (parse_document)."""
+    out = [0]
     for m in _TABLE_RE.finditer(doc):
         if "신주의종류와수" in clean(m.group(0)).replace(" ", ""):
-            start = m.start()
-    return start
+            out.append(m.start())
+    return sorted(set(out))
 
 
-def split_corrections(doc: str) -> tuple[str, list[list[str]]]:
+def body_start(doc: str) -> int:
+    """parse-doc 출력용: 실제로 고른 본문 시작 위치."""
+    return _best_split(doc)[0]
+
+
+def split_corrections(doc: str, start: int | None = None) -> tuple[str, list[list[str]]]:
     """정정 구간을 떼어낸다 → (본문, 정정후 행들).
-    1) 본문 표 앞의 모든 표(정정사항·표지)  2) 본문 안에 남은 '정정전 | 정정후'(또는 변경전/후) 표.
-    실측(이렘 2026-09-23 기재정정): 정정사항이 본문보다 먼저 나와 첫 값(=정정전)이 일정으로 잡혔다."""
+    1) 본문 시작(start) 앞의 모든 표(정정사항·표지)  2) 그 뒤에 남은 '정정전 | 정정후'(또는 변경전/후) 표.
+    본문 앞 구간은 통째로 뺀다 (표지·정정사항 문장 속 옛 날짜가 먼저 잡히지 않게). 정정신고서 제출요구·
+    최대주주·할인율 같은 문장 검색은 parse_document 가 원문 전체로 한다."""
+    if start is None:
+        start = _best_split(doc)[0]
     corrected: list[list[str]] = []
-    start = body_start(doc)
     for cells in table_rows(doc[:start]):
         row = _after_values(cells)
         if row:
@@ -109,9 +118,31 @@ def split_corrections(doc: str) -> tuple[str, list[list[str]]]:
                 corrected.append(row)
         return " "
 
-    # 본문 앞 구간은 통째로 뺀다 (표지·정정사항 문장 속 옛 날짜가 먼저 잡히지 않게). 정정신고서 제출요구·
-    # 최대주주·할인율 같은 문장 검색은 parse_document 가 원문 전체로 한다
     return _TABLE_RE.sub(cut, doc[start:]), corrected
+
+
+def _found(s: "Schedule") -> int:
+    return sum(v is not None for v in s.as_row().values())
+
+
+def _rows_doc(rows: list[list[str]]) -> str:
+    return "<TABLE>" + "".join("<TR>" + "".join(f"<TD>{html.escape(c)}</TD>" for c in cells) + "</TR>"
+                               for cells in rows) + "</TABLE>"
+
+
+def _best_split(doc: str) -> tuple[int, str, list[list[str]], "Schedule"]:
+    """후보마다 '본문 + 떼어낸 정정후 값으로 채울 수 있는 칸'을 세어 가장 많은 것.
+    같으면 뒤쪽(정정사항을 더 많이 떼어낸 쪽) — 앞머리 옛 값이 본문보다 먼저 잡히지 않게."""
+    best, best_n = None, -1
+    for start in body_starts(doc):
+        body, corrected = split_corrections(doc, start)
+        sch = _parse_body(body)
+        fill = _parse_body(_rows_doc(corrected)) if corrected else None
+        n = sum(getattr(sch, k) is not None or (fill is not None and getattr(fill, k) is not None)
+                for k in Schedule.FIELDS)
+        if n >= best_n:
+            best, best_n = (start, body, corrected, sch), n
+    return best
 
 
 # '할인율 25%', '할인율(25%)', '할인율은 35%를', '할인율: 30 %', '35%의 할인율'
@@ -296,12 +327,10 @@ _RIGHTS_TEXT_RE = re.compile(r"신주인수권증서[^.。\n]{0,80}?(?:상장|�
 def parse_document(doc: str) -> Schedule:
     """정정공시면 '정정전/정정후' 표를 빼고 본문(정정 반영된 전체 원문)으로 파싱하고,
     본문에서 못 찾은 필드만 정정후 값으로 채운다. 둘이 다르면 경고."""
-    body, corrected = split_corrections(doc)
-    s = _parse_body(body)
+    _, body, corrected, s = _best_split(doc)
     text = clean(doc)
     if corrected:
-        rows = "".join("<TR>" + "".join(f"<TD>{html.escape(c)}</TD>" for c in cells) + "</TR>" for cells in corrected)
-        c = _parse_body(f"<TABLE>{rows}</TABLE>")
+        c = _parse_body(_rows_doc(corrected))
         filled, differ = [], []
         for k in Schedule.FIELDS:
             new = getattr(c, k)
@@ -405,12 +434,25 @@ def _parse_body(doc: str) -> Schedule:
     if not s.rights_start and not any("추후결정" in w for w in s.warnings):
         text = clean(doc)
         for m in _RIGHTS_TEXT_RE.finditer(text):
-            ds = find_dates(m.group(0))
-            if ds:
-                s.rights_start = ds[0]
-                s.rights_end = ds[1] if len(ds) > 1 else None
-                evidence["rights_start"] = m.group(0)[:120]
+            chunk = m.group(0)
+            ds = find_dates(chunk)
+            if not ds:
+                continue
+            # '상장예정기간 : 추후결정 4) … 전자증권제도 시행일(2019년 9월 16일)' — 추후결정 뒤 날짜는 다른 얘기 (실측 경남제약)
+            head = chunk[:chunk.find(ds[0][:4])]
+            if any(k in head for k in ("추후", "미정")):
+                s.warnings.append("인수권 상장기간 추후결정 (정정 대기)")
                 break
+            s.rights_start = ds[0]
+            s.rights_end = ds[1] if len(ds) > 1 else None
+            evidence["rights_start"] = chunk[:120]
+            break
+
+    # 인수권은 신주배정기준일 이후에 상장된다. 그보다 이른 날짜는 다른 문장의 날짜를 잘못 집은 것
+    if s.rights_start and s.record_date and s.rights_start < s.record_date:
+        s.warnings.append(f"인수권 상장기간 {s.rights_start} 이 기준일({s.record_date}) 전이라 버림")
+        s.rights_start = s.rights_end = None
+        evidence.pop("rights_start", None)
 
     # 인수권 거래는 청약 전에 끝난다. 청약 시작일 이후로 잡힌 기간은 오파싱으로 보고 버린다.
     if s.rights_start and s.subs_start and (s.rights_end or s.rights_start) >= s.subs_start:
