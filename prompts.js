@@ -33,6 +33,7 @@ function caseStage(s, today = new Date()) {
   // 날짜 비교는 하루 단위 (오늘 = 해당일이면 그 구간에 포함)
   const t = k => (s[k] ? new Date(s[k] + 'T23:59:59+09:00') : null);
   const now = today;
+  if (!s.record_date && !s.listing_date) return '인수권 일정 미정 (기준일부터 추후결정 — 정정공시 대기)';
   if (t('ex_rights_date') && now < new Date(s.ex_rights_date + 'T00:00:00+09:00')) return '① 공시 후 ~ 권리락 전 (권리 확보 구간)';
   if (!s.rights_start && s.ex_rights_date && !(s.subs_start && now >= new Date(s.subs_start + 'T00:00:00+09:00')))
     return '인수권 일정 미정 (추후결정 — 정정공시 대기)';

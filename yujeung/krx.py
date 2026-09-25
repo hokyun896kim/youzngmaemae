@@ -16,6 +16,8 @@ from typing import Callable
 
 import requests
 
+from .http import retrying
+
 from . import db
 
 BASE = "https://data-dbg.krx.co.kr/svc/apis"
@@ -41,7 +43,7 @@ class KrxClient:
             raise ValueError("KRX_API_KEY 가 없습니다")
         self.api_key = api_key.strip()
         self.conn = conn
-        self._get = http_get or requests.get
+        self._get = retrying(http_get or requests.get)
         self._min_interval = min_interval
         self._last = 0.0
 

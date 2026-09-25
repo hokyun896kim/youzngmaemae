@@ -10,6 +10,8 @@ from typing import Callable
 
 import requests
 
+from .http import retrying
+
 URL = "https://fchart.stock.naver.com/sise.nhn"
 INDEX_SYMBOL = {"Y": "KOSPI", "K": "KOSDAQ"}
 _ITEM_RE = re.compile(r'data="([^"]+)"')
@@ -37,7 +39,7 @@ def parse_items(text: str) -> list[dict]:
 
 class NaverClient:
     def __init__(self, http_get: Callable[..., requests.Response] | None = None):
-        self._get = http_get or requests.get
+        self._get = retrying(http_get or requests.get)
 
     def daily(self, symbol: str, count: int = 400) -> list[dict]:
         resp = self._get(URL, params={"symbol": symbol, "timeframe": "day", "count": count, "requestType": 0},

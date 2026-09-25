@@ -164,3 +164,22 @@ def test_correction_discards_old_schedule():
     assert s["issue_kind"] == "예정" and s["issue_rcept_dt"] == CORR["rcept_dt"]
     # 정정 이전 공시만 보면 옛 일정
     assert latest_schedule(conn, case_id, exclude=CORR["rcept_no"])["rights_start"] == "2026-09-21"
+
+
+def test_correction_all_tbd_does_not_fall_back_to_old_dates():
+    """정정으로 일정이 전부 '추후결정'이 되면 이전 정정의 날짜로 되돌아가지 않는다 (실측 경남제약 9/18)."""
+    from yujeung.estimate import stage
+    from yujeung.pipeline import latest_schedule
+    conn = db.connect(":memory:")
+    tbd_doc = PIIC_DOC.replace("<TD>6. 신주배정기준일</TD><TD>2026년 09월 02일</TD>",
+                               "<TD>6. 신주배정기준일</TD><TD>정정요구에 따른 정정</TD><TD>2026년 09월 02일</TD><TD>추후결정</TD>")
+    tbd_doc = tbd_doc.replace("<TD>13. 신주의 상장 예정일</TD><TD>2026년 10월 28일</TD>",
+                              "<TD>13. 신주의 상장 예정일</TD><TD>2026년 10월 28일</TD><TD>추후결정</TD>")
+    tbd_doc = tbd_doc.split("<P>신주인수권증서")[0] + "<P>신주인수권증서 상장예정기간 : 추후결정</P></DOCUMENT>"
+    dart = FakeDart([REPORT, CORR], [PIIC_FIELDS], {REPORT["rcept_no"]: PIIC_DOC, CORR["rcept_no"]: tbd_doc})
+    run(conn, date(2026, 8, 20), dart, price_days=1)
+    case_id = conn.execute("SELECT case_id FROM cases").fetchone()[0]
+    s = latest_schedule(conn, case_id)
+    assert s.get("record_date") is None and s.get("listing_date") is None and s.get("rights_start") is None
+    assert "record_date" in s["tbd"] and "listing_date" in s["tbd"]
+    assert stage(s, date(2026, 9, 26)) == "tbd"

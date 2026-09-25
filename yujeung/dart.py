@@ -17,6 +17,8 @@ from typing import Any, Callable
 
 import requests
 
+from .http import retrying
+
 from . import db
 
 BASE = "https://opendart.fss.or.kr/api"
@@ -56,7 +58,7 @@ class DartClient:
             raise ValueError("DART_API_KEY 가 없습니다 (.env 확인)")
         self.api_key = api_key
         self.conn = conn
-        self._get = http_get or requests.get
+        self._get = retrying(http_get or requests.get)
         self._min_interval = min_interval
         self._last = 0.0
 

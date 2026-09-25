@@ -41,3 +41,25 @@ def test_store_and_gap_from_krx_row():
         ("2026-09-23", 636, 2260, "210980", "2026-09-30")
     [g] = gaps_for_day(conn, "20260923")
     assert g.gap_pct == -44.0
+
+
+def test_retrying_on_connect_timeout():
+    import requests
+    from yujeung.http import retrying
+    calls, slept = [], []
+
+    def flaky(*a, **kw):
+        calls.append(1)
+        if len(calls) < 3:
+            raise requests.ConnectTimeout("opendart 연결 시간 초과")
+        return "ok"
+    assert retrying(flaky, sleep=slept.append)("u") == "ok" and slept == [5, 20]
+    calls.clear()
+
+    def dead(*a, **kw):
+        raise requests.ConnectTimeout("x")
+    try:
+        retrying(dead, sleep=lambda s: None)("u")
+        raise AssertionError("재시도 후에도 실패면 예외를 올려야 함")
+    except requests.ConnectTimeout:
+        pass

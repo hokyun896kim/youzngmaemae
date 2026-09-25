@@ -36,6 +36,8 @@ def stage(sch: dict, today: date) -> str:
     t = today.isoformat()
     if sch.get("listing_date") and t >= sch["listing_date"]:
         return "listed"
+    if not sch.get("record_date"):
+        return "tbd"          # 기준일부터 '추후결정'(실측 경남제약 9/18 정정) 또는 못 찾음
     if not sch.get("ex_rights_date") or t < sch["ex_rights_date"]:
         return "1"
     rs, re_ = sch.get("rights_start"), sch.get("rights_end")
