@@ -1,14 +1,2396 @@
 {
- "generated_at": "2026-09-25T13:03:00",
- "last_rights_date": null,
- "first_rights_date": null,
+ "generated_at": "2026-09-25T13:33:17",
+ "last_rights_date": "2026-09-23",
+ "first_rights_date": "2026-09-21",
  "counts": {
-  "cases": 0,
-  "disclosures": 0,
-  "rights_daily": 0,
-  "stock_daily": 0
+  "cases": 40,
+  "disclosures": 50,
+  "rights_daily": 4,
+  "stock_daily": 139
  },
- "rights_today": [],
- "cases": [],
- "notifications": []
+ "rights_today": [
+  {
+   "isu_cd": "2109801G",
+   "name": "SK디앤디 12R",
+   "close": 636,
+   "volume": 400542,
+   "stock_code": "210980",
+   "stock_name": "SK디앤디",
+   "stock": 3335,
+   "issue": 2260,
+   "delist": "2026-09-30",
+   "case_id": null,
+   "fair": 1075,
+   "gap": -40.8,
+   "cost": 2896
+  },
+  {
+   "isu_cd": "2906501G",
+   "name": "엘앤씨바이오 12R",
+   "close": 10430,
+   "volume": 363822,
+   "stock_code": "290650",
+   "stock_name": "엘앤씨바이오",
+   "stock": 47200,
+   "issue": 39100,
+   "delist": "2026-10-02",
+   "case_id": null,
+   "fair": 8100,
+   "gap": 28.8,
+   "cost": 49530
+  }
+ ],
+ "cases": [
+  {
+   "case_id": 30,
+   "corp_name": "이랜드스포츠",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": null,
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000002",
+   "summary": {
+    "total_amount": 0,
+    "purpose_pct": {},
+    "new_shares": 0,
+    "dilution_ratio": null
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260923000002",
+     "report_nm": "유상증자결정",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 31,
+   "corp_name": "에이치앤엘어드밴스드",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": "주주배정증자",
+   "is_rights": true,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000183",
+   "summary": {
+    "total_amount": 1200000000000,
+    "purpose_pct": {
+     "채무상환": 100.0
+    },
+    "new_shares": 24000000,
+    "dilution_ratio": 0.0658
+   },
+   "schedule": {
+    "record_date": "2026-09-22",
+    "ex_rights_date": "2026-09-21",
+    "subs_start": "2026-09-28",
+    "subs_end": "2026-09-28",
+    "payment_date": "2026-09-28",
+    "issue_price": 50000,
+    "alloc_ratio": 0.0657894
+   },
+   "history": [
+    {
+     "rcept_no": "20260923000183",
+     "report_nm": "주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {
+      "record_date": "2026-09-22",
+      "ex_rights_date": "2026-09-21",
+      "subs_start": "2026-09-28",
+      "subs_end": "2026-09-28",
+      "payment_date": "2026-09-28",
+      "issue_price": 50000,
+      "alloc_ratio": 0.0657894
+     },
+     "warnings": [
+      "권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)",
+      "listing_date 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 32,
+   "corp_name": "루멘스바이오스",
+   "stock_code": "038060",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000238",
+   "summary": {
+    "total_amount": 2499999600,
+    "purpose_pct": {
+     "시설": 60.0,
+     "운영": 40.0
+    },
+    "new_shares": 1785714,
+    "dilution_ratio": 0.0742
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260923000238",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 689
+    },
+    {
+     "d": "2026-09-18",
+     "close": 689
+    },
+    {
+     "d": "2026-09-21",
+     "close": 689
+    },
+    {
+     "d": "2026-09-22",
+     "close": 689
+    },
+    {
+     "d": "2026-09-23",
+     "close": 689
+    }
+   ]
+  },
+  {
+   "case_id": 33,
+   "corp_name": "다온아이앤씨",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000269",
+   "summary": {
+    "total_amount": 1999999204,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 442282,
+    "dilution_ratio": 0.0577
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260923000269",
+     "report_nm": "주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 34,
+   "corp_name": "한화로보틱스",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": null,
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000292",
+   "summary": {
+    "total_amount": 0,
+    "purpose_pct": {},
+    "new_shares": 0,
+    "dilution_ratio": null
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260923000292",
+     "report_nm": "[기재정정]유상증자결정",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 35,
+   "corp_name": "GMI벤처",
+   "stock_code": "019570",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000362",
+   "summary": {
+    "total_amount": 490000000,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 196000,
+    "dilution_ratio": 0.0205
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260923000362",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2755
+    },
+    {
+     "d": "2026-09-18",
+     "close": 2745
+    },
+    {
+     "d": "2026-09-21",
+     "close": 2735
+    },
+    {
+     "d": "2026-09-22",
+     "close": 2710
+    },
+    {
+     "d": "2026-09-23",
+     "close": 2740
+    }
+   ]
+  },
+  {
+   "case_id": 36,
+   "corp_name": "에이프로젠바이오로직스",
+   "stock_code": "003060",
+   "market": "코스피",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000418",
+   "summary": {
+    "total_amount": 20000001094,
+    "purpose_pct": {
+     "기타": 100.0
+    },
+    "new_shares": 12706481,
+    "dilution_ratio": 0.7814
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260923000418",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 1636
+    },
+    {
+     "d": "2026-09-18",
+     "close": 1631
+    },
+    {
+     "d": "2026-09-21",
+     "close": 1602
+    },
+    {
+     "d": "2026-09-22",
+     "close": 1601
+    },
+    {
+     "d": "2026-09-23",
+     "close": 1639
+    }
+   ]
+  },
+  {
+   "case_id": 37,
+   "corp_name": "이렘",
+   "stock_code": "009730",
+   "market": "코스닥",
+   "ic_mthn": "주주배정증자",
+   "is_rights": true,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000500",
+   "summary": {
+    "total_amount": 11328000000,
+    "purpose_pct": {
+     "시설": 12.9,
+     "운영": 70.1,
+     "채무상환": 17.0
+    },
+    "new_shares": 4800000,
+    "dilution_ratio": 0.5951
+   },
+   "schedule": {
+    "record_date": "2026-10-01",
+    "ex_rights_date": "2026-09-30",
+    "rights_start": "2026-10-22",
+    "rights_end": "2026-10-28",
+    "price_fix_date": "2026-11-04",
+    "subs_start": "2026-11-09",
+    "subs_end": "2026-11-10",
+    "payment_date": "2026-11-12",
+    "listing_date": "2026-11-25",
+    "issue_price": 2360,
+    "alloc_ratio": 0.5955872198
+   },
+   "history": [
+    {
+     "rcept_no": "20260923000500",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {
+      "record_date": "2026-10-01",
+      "ex_rights_date": "2026-09-30",
+      "rights_start": "2026-10-22",
+      "rights_end": "2026-10-28",
+      "price_fix_date": "2026-11-04",
+      "subs_start": "2026-11-09",
+      "subs_end": "2026-11-10",
+      "payment_date": "2026-11-12",
+      "listing_date": "2026-11-25",
+      "issue_price": 2360,
+      "alloc_ratio": 0.5955872198
+     },
+     "warnings": [
+      "권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2100
+    },
+    {
+     "d": "2026-09-18",
+     "close": 2165
+    },
+    {
+     "d": "2026-09-21",
+     "close": 1998
+    },
+    {
+     "d": "2026-09-22",
+     "close": 1998
+    },
+    {
+     "d": "2026-09-23",
+     "close": 1962
+    }
+   ]
+  },
+  {
+   "case_id": 38,
+   "corp_name": "비케이홀딩스",
+   "stock_code": "050090",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000531",
+   "summary": {
+    "total_amount": 4270000000,
+    "purpose_pct": {
+     "운영": 46.8,
+     "타법인취득": 53.2
+    },
+    "new_shares": 7000000,
+    "dilution_ratio": 0.2974
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260923000531",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    },
+    {
+     "rcept_no": "20260923000543",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 867
+    },
+    {
+     "d": "2026-09-18",
+     "close": 853
+    },
+    {
+     "d": "2026-09-21",
+     "close": 856
+    },
+    {
+     "d": "2026-09-22",
+     "close": 847
+    },
+    {
+     "d": "2026-09-23",
+     "close": 717
+    }
+   ]
+  },
+  {
+   "case_id": 39,
+   "corp_name": "휴림로봇",
+   "stock_code": "090710",
+   "market": "코스닥",
+   "ic_mthn": "일반공모증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000576",
+   "summary": {
+    "total_amount": 2000008360,
+    "purpose_pct": {
+     "타법인취득": 100.0
+    },
+    "new_shares": 386102,
+    "dilution_ratio": 0.0032
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260923000576",
+     "report_nm": "주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 6130
+    },
+    {
+     "d": "2026-09-18",
+     "close": 6450
+    },
+    {
+     "d": "2026-09-21",
+     "close": 6510
+    },
+    {
+     "d": "2026-09-22",
+     "close": 6400
+    },
+    {
+     "d": "2026-09-23",
+     "close": 6330
+    }
+   ]
+  },
+  {
+   "case_id": 40,
+   "corp_name": "케이쓰리아이",
+   "stock_code": "431190",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260923",
+   "first_rcept_no": "20260923000638",
+   "summary": {
+    "total_amount": 2998993060,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 874342,
+    "dilution_ratio": 0.1168
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260923000638",
+     "report_nm": "주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 3395
+    },
+    {
+     "d": "2026-09-18",
+     "close": 3895
+    },
+    {
+     "d": "2026-09-21",
+     "close": 3775
+    },
+    {
+     "d": "2026-09-22",
+     "close": 3850
+    },
+    {
+     "d": "2026-09-23",
+     "close": 4360
+    }
+   ]
+  },
+  {
+   "case_id": 23,
+   "corp_name": "셀리드",
+   "stock_code": "299660",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260922",
+   "first_rcept_no": "20260921000434",
+   "summary": {
+    "total_amount": 2999997000,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 1333332,
+    "dilution_ratio": 0.0452
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260921000434",
+     "report_nm": "주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260922",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    },
+    {
+     "rcept_no": "20260922000158",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260922",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2280
+    },
+    {
+     "d": "2026-09-18",
+     "close": 2310
+    },
+    {
+     "d": "2026-09-21",
+     "close": 2220
+    },
+    {
+     "d": "2026-09-22",
+     "close": 2885
+    },
+    {
+     "d": "2026-09-23",
+     "close": 2620
+    }
+   ]
+  },
+  {
+   "case_id": 24,
+   "corp_name": "엔젠바이오",
+   "stock_code": "354200",
+   "market": "코스닥",
+   "ic_mthn": "주주배정후 실권주 일반공모",
+   "is_rights": true,
+   "status": "open",
+   "first_rcept_dt": "20260922",
+   "first_rcept_no": "20260922000105",
+   "summary": {
+    "total_amount": 7679100000,
+    "purpose_pct": {
+     "운영": 47.9,
+     "채무상환": 52.1
+    },
+    "new_shares": 7150000,
+    "dilution_ratio": 0.8001
+   },
+   "schedule": {
+    "record_date": "2026-07-22",
+    "ex_rights_date": "2026-07-21",
+    "rights_start": "2026-09-09",
+    "rights_end": "2026-09-10",
+    "price_fix_date": "2026-09-04",
+    "subs_start": "2026-09-09",
+    "subs_end": "2026-09-10",
+    "payment_date": "2026-09-17",
+    "listing_date": "2026-10-02",
+    "issue_price": 1074,
+    "alloc_ratio": 0.800804792
+   },
+   "history": [
+    {
+     "rcept_no": "20260922000105",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260922",
+     "kind": "piic",
+     "schedule": {
+      "record_date": "2026-07-22",
+      "ex_rights_date": "2026-07-21",
+      "rights_start": "2026-09-09",
+      "rights_end": "2026-09-10",
+      "price_fix_date": "2026-09-04",
+      "subs_start": "2026-09-09",
+      "subs_end": "2026-09-10",
+      "payment_date": "2026-09-17",
+      "listing_date": "2026-10-02",
+      "issue_price": 1074,
+      "alloc_ratio": 0.800804792
+     },
+     "warnings": [
+      "권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 1457
+    },
+    {
+     "d": "2026-09-18",
+     "close": 1345
+    },
+    {
+     "d": "2026-09-21",
+     "close": 1385
+    },
+    {
+     "d": "2026-09-22",
+     "close": 1309
+    },
+    {
+     "d": "2026-09-23",
+     "close": 1274
+    }
+   ]
+  },
+  {
+   "case_id": 25,
+   "corp_name": "KS인더스트리",
+   "stock_code": "101000",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260922",
+   "first_rcept_no": "20260922000240",
+   "summary": {
+    "total_amount": 5999999404,
+    "purpose_pct": {
+     "운영": 75.0,
+     "채무상환": 25.0
+    },
+    "new_shares": 4885993,
+    "dilution_ratio": 0.4841
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260922000240",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260922",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 1995
+    },
+    {
+     "d": "2026-09-18",
+     "close": 2075
+    },
+    {
+     "d": "2026-09-21",
+     "close": 1970
+    },
+    {
+     "d": "2026-09-22",
+     "close": 1379
+    },
+    {
+     "d": "2026-09-23",
+     "close": 1321
+    }
+   ]
+  },
+  {
+   "case_id": 26,
+   "corp_name": "프리티",
+   "stock_code": "006490",
+   "market": "코스피",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260922",
+   "first_rcept_no": "20260922000386",
+   "summary": {
+    "total_amount": 5000000000,
+    "purpose_pct": {
+     "운영": 56.3,
+     "채무상환": 43.7
+    },
+    "new_shares": 2000000,
+    "dilution_ratio": 0.0676
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260922000386",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260922",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2190
+    },
+    {
+     "d": "2026-09-18",
+     "close": 1535
+    },
+    {
+     "d": "2026-09-21",
+     "close": 1475
+    },
+    {
+     "d": "2026-09-22",
+     "close": 1381
+    },
+    {
+     "d": "2026-09-23",
+     "close": 1355
+    }
+   ]
+  },
+  {
+   "case_id": 27,
+   "corp_name": "캔버스엔",
+   "stock_code": "210120",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260922",
+   "first_rcept_no": "20260922000418",
+   "summary": {
+    "total_amount": 13999999136,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 6585136,
+    "dilution_ratio": 0.6792
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260922000418",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260922",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 1757
+    },
+    {
+     "d": "2026-09-18",
+     "close": 1750
+    },
+    {
+     "d": "2026-09-21",
+     "close": 2275
+    },
+    {
+     "d": "2026-09-22",
+     "close": 1912
+    },
+    {
+     "d": "2026-09-23",
+     "close": 1893
+    }
+   ]
+  },
+  {
+   "case_id": 28,
+   "corp_name": "두산로지스틱스솔루션",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": null,
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260922",
+   "first_rcept_no": "20260922000507",
+   "summary": {
+    "total_amount": 0,
+    "purpose_pct": {},
+    "new_shares": 0,
+    "dilution_ratio": null
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260922000507",
+     "report_nm": "유상증자결정",
+     "rcept_dt": "20260922",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 29,
+   "corp_name": "셀리드",
+   "stock_code": "299660",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260922",
+   "first_rcept_no": "20260922000533",
+   "summary": {
+    "total_amount": 2999997000,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 1333332,
+    "dilution_ratio": 0.0452
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260922000533",
+     "report_nm": "주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260922",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2280
+    },
+    {
+     "d": "2026-09-18",
+     "close": 2310
+    },
+    {
+     "d": "2026-09-21",
+     "close": 2220
+    },
+    {
+     "d": "2026-09-22",
+     "close": 2885
+    },
+    {
+     "d": "2026-09-23",
+     "close": 2620
+    }
+   ]
+  },
+  {
+   "case_id": 14,
+   "corp_name": "삼성FN리츠",
+   "stock_code": "448730",
+   "market": "코스피",
+   "ic_mthn": "주주배정후 실권주 일반공모",
+   "is_rights": true,
+   "status": "open",
+   "first_rcept_dt": "20260921",
+   "first_rcept_no": "20260921000086",
+   "summary": {
+    "total_amount": 97660000000,
+    "purpose_pct": {
+     "운영": 18.1,
+     "채무상환": 81.9
+    },
+    "new_shares": 19000000,
+    "dilution_ratio": 0.2087
+   },
+   "schedule": {
+    "record_date": "2026-09-23",
+    "ex_rights_date": "2026-09-22",
+    "rights_start": "2026-11-03",
+    "rights_end": "2026-11-04",
+    "price_fix_date": "2026-10-29",
+    "subs_start": "2026-11-03",
+    "subs_end": "2026-11-04",
+    "payment_date": "2026-11-11",
+    "listing_date": "2026-11-25",
+    "issue_price": 5110,
+    "alloc_ratio": 0.2086765513
+   },
+   "history": [
+    {
+     "rcept_no": "20260921000086",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260921",
+     "kind": "piic",
+     "schedule": {
+      "record_date": "2026-09-23",
+      "ex_rights_date": "2026-09-22",
+      "rights_start": "2026-11-03",
+      "rights_end": "2026-11-04",
+      "price_fix_date": "2026-10-29",
+      "subs_start": "2026-11-03",
+      "subs_end": "2026-11-04",
+      "payment_date": "2026-11-11",
+      "listing_date": "2026-11-25",
+      "issue_price": 5110,
+      "alloc_ratio": 0.2086765513
+     },
+     "warnings": [
+      "권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 5360
+    },
+    {
+     "d": "2026-09-18",
+     "close": 5340
+    },
+    {
+     "d": "2026-09-21",
+     "close": 5000
+    },
+    {
+     "d": "2026-09-22",
+     "close": 4795
+    },
+    {
+     "d": "2026-09-23",
+     "close": 4855
+    }
+   ]
+  },
+  {
+   "case_id": 15,
+   "corp_name": "모아라이프플러스",
+   "stock_code": "142760",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260921",
+   "first_rcept_no": "20260921000097",
+   "summary": {
+    "total_amount": 2000000000,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 2000000,
+    "dilution_ratio": 0.0949
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260921000097",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260921",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 490
+    },
+    {
+     "d": "2026-09-18",
+     "close": 478
+    },
+    {
+     "d": "2026-09-21",
+     "close": 470
+    },
+    {
+     "d": "2026-09-22",
+     "close": 470
+    },
+    {
+     "d": "2026-09-23",
+     "close": 467
+    }
+   ]
+  },
+  {
+   "case_id": 16,
+   "corp_name": "상지건설",
+   "stock_code": "042940",
+   "market": "코스닥",
+   "ic_mthn": "주주우선공모증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260921",
+   "first_rcept_no": "20260921000184",
+   "summary": {
+    "total_amount": 11000000000,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 2200000,
+    "dilution_ratio": 0.3222
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260921000184",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260921",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 5740
+    },
+    {
+     "d": "2026-09-18",
+     "close": 5780
+    },
+    {
+     "d": "2026-09-21",
+     "close": 5900
+    },
+    {
+     "d": "2026-09-22",
+     "close": 5670
+    },
+    {
+     "d": "2026-09-23",
+     "close": 5600
+    }
+   ]
+  },
+  {
+   "case_id": 17,
+   "corp_name": "아센디오",
+   "stock_code": "012170",
+   "market": "코스피",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260921",
+   "first_rcept_no": "20260921000240",
+   "summary": {
+    "total_amount": 9999998580,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 2890173,
+    "dilution_ratio": 0.3961
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260921000240",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260921",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2940
+    },
+    {
+     "d": "2026-09-18",
+     "close": 3055
+    },
+    {
+     "d": "2026-09-21",
+     "close": 3200
+    },
+    {
+     "d": "2026-09-22",
+     "close": 2820
+    },
+    {
+     "d": "2026-09-23",
+     "close": 2935
+    }
+   ]
+  },
+  {
+   "case_id": 18,
+   "corp_name": "모아데이타",
+   "stock_code": "288980",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260921",
+   "first_rcept_no": "20260921000327",
+   "summary": {
+    "total_amount": 1999999782,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 3795066,
+    "dilution_ratio": 0.1043
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260921000327",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260921",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 270
+    },
+    {
+     "d": "2026-09-18",
+     "close": 270
+    },
+    {
+     "d": "2026-09-21",
+     "close": 263
+    },
+    {
+     "d": "2026-09-22",
+     "close": 252
+    },
+    {
+     "d": "2026-09-23",
+     "close": 246
+    }
+   ]
+  },
+  {
+   "case_id": 19,
+   "corp_name": "아시아에스테이트",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": null,
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260921",
+   "first_rcept_no": "20260921000347",
+   "summary": {
+    "total_amount": 0,
+    "purpose_pct": {},
+    "new_shares": 0,
+    "dilution_ratio": null
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260921000347",
+     "report_nm": "유상증자결정",
+     "rcept_dt": "20260921",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 20,
+   "corp_name": "헝셩그룹",
+   "stock_code": "900270",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260921",
+   "first_rcept_no": "20260921000369",
+   "summary": {
+    "total_amount": 60000000000,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 20000000,
+    "dilution_ratio": 1.6049
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260921000369",
+     "report_nm": "[첨부정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260921",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2880
+    },
+    {
+     "d": "2026-09-18",
+     "close": 3090
+    },
+    {
+     "d": "2026-09-21",
+     "close": 2905
+    },
+    {
+     "d": "2026-09-22",
+     "close": 2770
+    },
+    {
+     "d": "2026-09-23",
+     "close": 2765
+    }
+   ]
+  },
+  {
+   "case_id": 21,
+   "corp_name": "당진탱크터미널",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": null,
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260921",
+   "first_rcept_no": "20260921000395",
+   "summary": {
+    "total_amount": 0,
+    "purpose_pct": {},
+    "new_shares": 0,
+    "dilution_ratio": null
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260921000395",
+     "report_nm": "유상증자결정",
+     "rcept_dt": "20260921",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 22,
+   "corp_name": "씨제이라이브시티",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": null,
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260921",
+   "first_rcept_no": "20260921000415",
+   "summary": {
+    "total_amount": 0,
+    "purpose_pct": {},
+    "new_shares": 0,
+    "dilution_ratio": null
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260921000415",
+     "report_nm": "유상증자결정",
+     "rcept_dt": "20260921",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 1,
+   "corp_name": "삼보산업",
+   "stock_code": "009620",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260917000373",
+   "summary": {
+    "total_amount": 2786407624,
+    "purpose_pct": {
+     "타법인취득": 100.0
+    },
+    "new_shares": 860000,
+    "dilution_ratio": 0.2461
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260917000373",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 4300
+    },
+    {
+     "d": "2026-09-18",
+     "close": 4645
+    },
+    {
+     "d": "2026-09-21",
+     "close": 4790
+    },
+    {
+     "d": "2026-09-22",
+     "close": 5030
+    },
+    {
+     "d": "2026-09-23",
+     "close": 5060
+    }
+   ]
+  },
+  {
+   "case_id": 2,
+   "corp_name": "인산가",
+   "stock_code": "277410",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260917000375",
+   "summary": {
+    "total_amount": 1000004720,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 204919,
+    "dilution_ratio": 0.0533
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260917000375",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 5680
+    },
+    {
+     "d": "2026-09-18",
+     "close": 5700
+    },
+    {
+     "d": "2026-09-21",
+     "close": 5680
+    },
+    {
+     "d": "2026-09-22",
+     "close": 5600
+    },
+    {
+     "d": "2026-09-23",
+     "close": 5610
+    }
+   ]
+  },
+  {
+   "case_id": 3,
+   "corp_name": "엠디엠위탁관리부동산투자회사",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": null,
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000002",
+   "summary": {
+    "total_amount": 0,
+    "purpose_pct": {},
+    "new_shares": 0,
+    "dilution_ratio": null
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260918000002",
+     "report_nm": "유상증자결정",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 4,
+   "corp_name": "지티엑스씨",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": null,
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000014",
+   "summary": {
+    "total_amount": 0,
+    "purpose_pct": {},
+    "new_shares": 0,
+    "dilution_ratio": null
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260918000014",
+     "report_nm": "유상증자결정",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 5,
+   "corp_name": "MSDI",
+   "stock_code": "123010",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000112",
+   "summary": {
+    "total_amount": 19999998495,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 11166945,
+    "dilution_ratio": 0.5524
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260918000112",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2925
+    },
+    {
+     "d": "2026-09-18",
+     "close": 2830
+    },
+    {
+     "d": "2026-09-21",
+     "close": 3020
+    },
+    {
+     "d": "2026-09-22",
+     "close": 3340
+    },
+    {
+     "d": "2026-09-23",
+     "close": 3360
+    }
+   ]
+  },
+  {
+   "case_id": 6,
+   "corp_name": "사토시홀딩스",
+   "stock_code": "223310",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000210",
+   "summary": {
+    "total_amount": 14699999660,
+    "purpose_pct": {
+     "운영": 20.4,
+     "채무상환": 79.6
+    },
+    "new_shares": 5509745,
+    "dilution_ratio": 1.0586
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260918000210",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 3085
+    },
+    {
+     "d": "2026-09-18",
+     "close": 3080
+    },
+    {
+     "d": "2026-09-21",
+     "close": 3030
+    },
+    {
+     "d": "2026-09-22",
+     "close": 3105
+    },
+    {
+     "d": "2026-09-23",
+     "close": 3000
+    }
+   ]
+  },
+  {
+   "case_id": 7,
+   "corp_name": "인천에이치투",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": null,
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000228",
+   "summary": {
+    "total_amount": 0,
+    "purpose_pct": {},
+    "new_shares": 0,
+    "dilution_ratio": null
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260918000228",
+     "report_nm": "유상증자결정",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 8,
+   "corp_name": "케스피온",
+   "stock_code": "079190",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000257",
+   "summary": {
+    "total_amount": 12999999792,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 10752688,
+    "dilution_ratio": 1.1214
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260918000257",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 1365
+    },
+    {
+     "d": "2026-09-18",
+     "close": 1281
+    },
+    {
+     "d": "2026-09-21",
+     "close": 1409
+    },
+    {
+     "d": "2026-09-22",
+     "close": 1382
+    },
+    {
+     "d": "2026-09-23",
+     "close": 1329
+    }
+   ]
+  },
+  {
+   "case_id": 9,
+   "corp_name": "앤씨앤",
+   "stock_code": "092600",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000282",
+   "summary": {
+    "total_amount": 10000000000,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 4000000,
+    "dilution_ratio": 0.7973
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260918000282",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2825
+    },
+    {
+     "d": "2026-09-18",
+     "close": 3670
+    },
+    {
+     "d": "2026-09-21",
+     "close": 3200
+    },
+    {
+     "d": "2026-09-22",
+     "close": 2800
+    },
+    {
+     "d": "2026-09-23",
+     "close": 2945
+    }
+   ]
+  },
+  {
+   "case_id": 10,
+   "corp_name": "경남제약",
+   "stock_code": "053950",
+   "market": "코스닥",
+   "ic_mthn": "주주배정증자",
+   "is_rights": true,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000349",
+   "summary": {
+    "total_amount": 19487000000,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 13000000,
+    "dilution_ratio": 0.6626
+   },
+   "schedule": {
+    "record_date": "2026-09-22",
+    "ex_rights_date": "2026-09-21",
+    "rights_start": "2026-10-15",
+    "rights_end": "2026-10-21",
+    "price_fix_date": "2026-10-28",
+    "subs_start": "2026-11-02",
+    "subs_end": "2026-11-03",
+    "payment_date": "2026-11-05",
+    "listing_date": "2026-11-17",
+    "issue_price": 1499,
+    "alloc_ratio": 0.6628181743
+   },
+   "history": [
+    {
+     "rcept_no": "20260918000349",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {
+      "record_date": "2026-09-22",
+      "ex_rights_date": "2026-09-21",
+      "rights_start": "2026-10-15",
+      "rights_end": "2026-10-21",
+      "price_fix_date": "2026-10-28",
+      "subs_start": "2026-11-02",
+      "subs_end": "2026-11-03",
+      "payment_date": "2026-11-05",
+      "listing_date": "2026-11-17",
+      "issue_price": 1499,
+      "alloc_ratio": 0.6628181743
+     },
+     "warnings": [
+      "권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2280
+    },
+    {
+     "d": "2026-09-18",
+     "close": 2180
+    },
+    {
+     "d": "2026-09-21",
+     "close": 2110
+    },
+    {
+     "d": "2026-09-22",
+     "close": 2030
+    },
+    {
+     "d": "2026-09-23",
+     "close": 1971
+    }
+   ]
+  },
+  {
+   "case_id": 11,
+   "corp_name": "우성머티리얼스",
+   "stock_code": "011300",
+   "market": "코스피",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000391",
+   "summary": {
+    "total_amount": 1999998380,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 970873,
+    "dilution_ratio": 0.0563
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260918000391",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    },
+    {
+     "rcept_no": "20260918000407",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    },
+    {
+     "rcept_no": "20260918000457",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    },
+    {
+     "rcept_no": "20260921000303",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260921",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    },
+    {
+     "rcept_no": "20260922000245",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260922",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 2310
+    },
+    {
+     "d": "2026-09-18",
+     "close": 2295
+    },
+    {
+     "d": "2026-09-21",
+     "close": 2295
+    },
+    {
+     "d": "2026-09-22",
+     "close": 2720
+    },
+    {
+     "d": "2026-09-23",
+     "close": 2860
+    }
+   ]
+  },
+  {
+   "case_id": 12,
+   "corp_name": "아리바이오",
+   "stock_code": null,
+   "market": "E",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000422",
+   "summary": {
+    "total_amount": 11475000000,
+    "purpose_pct": {
+     "운영": 20.0,
+     "기타": 80.0
+    },
+    "new_shares": 425000,
+    "dilution_ratio": 0.0149
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260918000422",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": []
+  },
+  {
+   "case_id": 13,
+   "corp_name": "더코디",
+   "stock_code": "224060",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260918",
+   "first_rcept_no": "20260918000453",
+   "summary": {
+    "total_amount": 499996926,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 105954,
+    "dilution_ratio": 0.0205
+   },
+   "schedule": {},
+   "history": [
+    {
+     "rcept_no": "20260918000453",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    },
+    {
+     "rcept_no": "20260918000455",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260918",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    },
+    {
+     "rcept_no": "20260922000378",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260922",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    },
+    {
+     "rcept_no": "20260923000390",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    },
+    {
+     "rcept_no": "20260923000410",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260923",
+     "kind": "piic",
+     "schedule": {},
+     "warnings": []
+    }
+   ],
+   "rights_series": [],
+   "stock_series": [
+    {
+     "d": "2026-09-17",
+     "close": 7830
+    },
+    {
+     "d": "2026-09-18",
+     "close": 5490
+    },
+    {
+     "d": "2026-09-21",
+     "close": 5230
+    },
+    {
+     "d": "2026-09-22",
+     "close": 4180
+    },
+    {
+     "d": "2026-09-23",
+     "close": 4395
+    }
+   ]
+  }
+ ],
+ "notifications": [
+  {
+   "seq": 42,
+   "topic": "인수권 괴리 엘앤씨바이오 12R",
+   "text": "[유증수집 #42] 인수권 괴리 엘앤씨바이오 12R\n2026-09-23 종가 기준\n인수권 10,430 / 이론가 8,100 (본주 47,200 − 발행가 39,100)\n괴리율 +28.8% · 인수권 고평가 → 인수권 매도 검토\n인수권+청약 신주원가 49,530",
+   "sent_at": "2026-09-25T13:33:17",
+   "delivered": 0
+  },
+  {
+   "seq": 41,
+   "topic": "인수권 괴리 SK디앤디 12R",
+   "text": "[유증수집 #41] 인수권 괴리 SK디앤디 12R\n2026-09-23 종가 기준\n인수권 636 / 이론가 1,075 (본주 3,335 − 발행가 2,260)\n괴리율 -40.8% · 인수권 저평가 → 인수권 매수+청약 검토\n인수권+청약 신주원가 2,896",
+   "sent_at": "2026-09-25T13:33:17",
+   "delivered": 0
+  },
+  {
+   "seq": 40,
+   "topic": "신규 유증 케이쓰리아이",
+   "text": "[유증수집 #40] 신규 유증 케이쓰리아이\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 30억 / 신주÷기존주 12%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000638",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 39,
+   "topic": "신규 유증 휴림로봇",
+   "text": "[유증수집 #39] 신규 유증 휴림로봇\n주주배정 아님 (관찰만)\n증자방식: 일반공모증자\n규모: 20억 / 신주÷기존주 0%\n자금목적: 타법인취득 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000576",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 38,
+   "topic": "신규 유증 비케이홀딩스",
+   "text": "[유증수집 #38] 신규 유증 비케이홀딩스\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 43억 / 신주÷기존주 30%\n자금목적: 운영 46.8%, 타법인취득 53.2%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000531",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 37,
+   "topic": "신규 유증 이렘",
+   "text": "[유증수집 #37] 신규 유증 이렘\n주주배정 ✅ 인수권 발생\n증자방식: 주주배정증자\n규모: 113억 / 신주÷기존주 60%\n자금목적: 시설 12.9%, 운영 70.1%, 채무상환 17.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000500",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 36,
+   "topic": "신규 유증 에이프로젠바이오로직스",
+   "text": "[유증수집 #36] 신규 유증 에이프로젠바이오로직스\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 200억 / 신주÷기존주 78%\n자금목적: 기타 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000418",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 35,
+   "topic": "신규 유증 GMI벤처",
+   "text": "[유증수집 #35] 신규 유증 GMI벤처\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 5억 / 신주÷기존주 2%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000362",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 34,
+   "topic": "신규 유증 한화로보틱스",
+   "text": "[유증수집 #34] 신규 유증 한화로보틱스\n주주배정 아님 (관찰만)\n증자방식: -\n규모: - / 신주÷기존주 -\n자금목적: -\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000292",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 33,
+   "topic": "신규 유증 다온아이앤씨",
+   "text": "[유증수집 #33] 신규 유증 다온아이앤씨\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 20억 / 신주÷기존주 6%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000269",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 32,
+   "topic": "신규 유증 루멘스바이오스",
+   "text": "[유증수집 #32] 신규 유증 루멘스바이오스\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 25억 / 신주÷기존주 7%\n자금목적: 시설 60.0%, 운영 40.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000238",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 31,
+   "topic": "신규 유증 에이치앤엘어드밴스드",
+   "text": "[유증수집 #31] 신규 유증 에이치앤엘어드밴스드\n주주배정 ✅ 인수권 발생\n증자방식: 주주배정증자\n규모: 12,000억 / 신주÷기존주 7%\n자금목적: 채무상환 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000183",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 30,
+   "topic": "신규 유증 이랜드스포츠",
+   "text": "[유증수집 #30] 신규 유증 이랜드스포츠\n주주배정 아님 (관찰만)\n증자방식: -\n규모: - / 신주÷기존주 -\n자금목적: -\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000002",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 29,
+   "topic": "신규 유증 셀리드",
+   "text": "[유증수집 #29] 신규 유증 셀리드\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 30억 / 신주÷기존주 5%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000533",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 28,
+   "topic": "신규 유증 두산로지스틱스솔루션",
+   "text": "[유증수집 #28] 신규 유증 두산로지스틱스솔루션\n주주배정 아님 (관찰만)\n증자방식: -\n규모: - / 신주÷기존주 -\n자금목적: -\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000507",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 27,
+   "topic": "신규 유증 캔버스엔",
+   "text": "[유증수집 #27] 신규 유증 캔버스엔\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 140억 / 신주÷기존주 68%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000418",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 26,
+   "topic": "신규 유증 프리티",
+   "text": "[유증수집 #26] 신규 유증 프리티\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 50억 / 신주÷기존주 7%\n자금목적: 운영 56.3%, 채무상환 43.7%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000386",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 25,
+   "topic": "신규 유증 KS인더스트리",
+   "text": "[유증수집 #25] 신규 유증 KS인더스트리\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 60억 / 신주÷기존주 48%\n자금목적: 운영 75.0%, 채무상환 25.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000240",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 24,
+   "topic": "신규 유증 엔젠바이오",
+   "text": "[유증수집 #24] 신규 유증 엔젠바이오\n주주배정 ✅ 인수권 발생\n증자방식: 주주배정후 실권주 일반공모\n규모: 77억 / 신주÷기존주 80%\n자금목적: 운영 47.9%, 채무상환 52.1%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000105",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 23,
+   "topic": "신규 유증 셀리드",
+   "text": "[유증수집 #23] 신규 유증 셀리드\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 30억 / 신주÷기존주 5%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000434",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 22,
+   "topic": "신규 유증 씨제이라이브시티",
+   "text": "[유증수집 #22] 신규 유증 씨제이라이브시티\n주주배정 아님 (관찰만)\n증자방식: -\n규모: - / 신주÷기존주 -\n자금목적: -\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000415",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 21,
+   "topic": "신규 유증 당진탱크터미널",
+   "text": "[유증수집 #21] 신규 유증 당진탱크터미널\n주주배정 아님 (관찰만)\n증자방식: -\n규모: - / 신주÷기존주 -\n자금목적: -\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000395",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 20,
+   "topic": "신규 유증 헝셩그룹",
+   "text": "[유증수집 #20] 신규 유증 헝셩그룹\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 600억 / 신주÷기존주 160%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000369",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 19,
+   "topic": "신규 유증 아시아에스테이트",
+   "text": "[유증수집 #19] 신규 유증 아시아에스테이트\n주주배정 아님 (관찰만)\n증자방식: -\n규모: - / 신주÷기존주 -\n자금목적: -\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000347",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 18,
+   "topic": "신규 유증 모아데이타",
+   "text": "[유증수집 #18] 신규 유증 모아데이타\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 20억 / 신주÷기존주 10%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000327",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 17,
+   "topic": "신규 유증 아센디오",
+   "text": "[유증수집 #17] 신규 유증 아센디오\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 100억 / 신주÷기존주 40%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000240",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 16,
+   "topic": "신규 유증 상지건설",
+   "text": "[유증수집 #16] 신규 유증 상지건설\n주주배정 아님 (관찰만)\n증자방식: 주주우선공모증자\n규모: 110억 / 신주÷기존주 32%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000184",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 15,
+   "topic": "신규 유증 모아라이프플러스",
+   "text": "[유증수집 #15] 신규 유증 모아라이프플러스\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 20억 / 신주÷기존주 9%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000097",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 14,
+   "topic": "신규 유증 삼성FN리츠",
+   "text": "[유증수집 #14] 신규 유증 삼성FN리츠\n주주배정 ✅ 인수권 발생\n증자방식: 주주배정후 실권주 일반공모\n규모: 977억 / 신주÷기존주 21%\n자금목적: 운영 18.1%, 채무상환 81.9%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000086",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 13,
+   "topic": "신규 유증 더코디",
+   "text": "[유증수집 #13] 신규 유증 더코디\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 5억 / 신주÷기존주 2%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000453",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 12,
+   "topic": "신규 유증 아리바이오",
+   "text": "[유증수집 #12] 신규 유증 아리바이오\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 115억 / 신주÷기존주 1%\n자금목적: 운영 20.0%, 기타 80.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000422",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 11,
+   "topic": "신규 유증 우성머티리얼스",
+   "text": "[유증수집 #11] 신규 유증 우성머티리얼스\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 20억 / 신주÷기존주 6%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000391",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 10,
+   "topic": "신규 유증 경남제약",
+   "text": "[유증수집 #10] 신규 유증 경남제약\n주주배정 ✅ 인수권 발생\n증자방식: 주주배정증자\n규모: 195억 / 신주÷기존주 66%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000349",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 9,
+   "topic": "신규 유증 앤씨앤",
+   "text": "[유증수집 #9] 신규 유증 앤씨앤\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 100억 / 신주÷기존주 80%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000282",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 8,
+   "topic": "신규 유증 케스피온",
+   "text": "[유증수집 #8] 신규 유증 케스피온\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 130억 / 신주÷기존주 112%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000257",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 7,
+   "topic": "신규 유증 인천에이치투",
+   "text": "[유증수집 #7] 신규 유증 인천에이치투\n주주배정 아님 (관찰만)\n증자방식: -\n규모: - / 신주÷기존주 -\n자금목적: -\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000228",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 6,
+   "topic": "신규 유증 사토시홀딩스",
+   "text": "[유증수집 #6] 신규 유증 사토시홀딩스\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 147억 / 신주÷기존주 106%\n자금목적: 운영 20.4%, 채무상환 79.6%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000210",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 5,
+   "topic": "신규 유증 MSDI",
+   "text": "[유증수집 #5] 신규 유증 MSDI\n주주배정 아님 (관찰만)\n증자방식: 제3자배정증자\n규모: 200억 / 신주÷기존주 55%\n자금목적: 운영 100.0%\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000112",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 4,
+   "topic": "신규 유증 지티엑스씨",
+   "text": "[유증수집 #4] 신규 유증 지티엑스씨\n주주배정 아님 (관찰만)\n증자방식: -\n규모: - / 신주÷기존주 -\n자금목적: -\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000014",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  },
+  {
+   "seq": 3,
+   "topic": "신규 유증 엠디엠위탁관리부동산투자회사",
+   "text": "[유증수집 #3] 신규 유증 엠디엠위탁관리부동산투자회사\n주주배정 아님 (관찰만)\n증자방식: -\n규모: - / 신주÷기존주 -\n자금목적: -\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000002",
+   "sent_at": "2026-09-25T13:32:54",
+   "delivered": 0
+  }
+ ]
 }
