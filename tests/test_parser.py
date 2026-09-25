@@ -144,15 +144,24 @@ def test_tbd_after_correction_rows_kyungnam_real_shape():
 <TR><TD>1. 신주의 종류와 수</TD><TD>보통주식 (주)</TD><TD>6,000,000</TD></TR>
 <TR><TD>6. 신주 발행가액</TD><TD>예정발행가</TD><TD>보통주식 (원)</TD><TD>1,499</TD><TD>확정 예정일</TD><TD>2026년 10월 28일</TD></TR>
 <TR><TD>8. 신주배정기준일</TD><TD>{why}</TD><TD>2026년 09월 22일</TD><TD>추후결정</TD></TR>
-<TR><TD>11. 청약예정일</TD><TD>{why}</TD><TD>구주주</TD><TD>시작일</TD><TD>2026년 11월 02일</TD><TD>추후결정</TD></TR>
-<TR><TD>종료일</TD><TD>2026년 11월 03일</TD><TD>추후결정</TD></TR>
+<TR><TD>11. 청약예정일</TD><TD>{why}</TD><TD>구주주</TD><TD>시작일</TD><TD>2026년 11월 02일</TD></TR>
+<TR><TD>종료일</TD><TD>2026년 11월 03일</TD></TR>
+<TR><TD>시작일</TD><TD>추후결정</TD></TR>
 <TR><TD>12. 납입일</TD><TD>{why}</TD><TD>2026년 11월 05일</TD><TD>추후결정</TD></TR>
 <TR><TD>16. 신주의 상장예정일</TD><TD>{why}</TD><TD>2026년 11월 17일</TD><TD>추후결정</TD></TR>
 </TBODY></TABLE>
 <P>3) 신주인수권증서 상장예정기간 : 추후결정4) 금번 유상증자시 신주인수권증서는 전자증권제도 시행일(2019년 9월 16일) 이후</P>
 </DOCUMENT>"""
     s = parse_document(doc)
-    assert (s.record_date, s.ex_rights_date, s.subs_start, s.payment_date, s.listing_date) == (None,) * 5
+    # 청약은 '시작일 | 11/02' 행이 먼저, '추후결정' 행이 뒤에 온다 (실측) → 먼저 잡힌 날짜도 지움
+    assert (s.record_date, s.ex_rights_date, s.subs_start, s.subs_end, s.payment_date, s.listing_date) == (None,) * 6
     assert s.rights_start is None and s.issue_price == 1499
     assert set(s.extras["tbd"]) >= {"record_date", "subs_start", "payment_date", "listing_date"}
     assert any("신주배정기준일 추후결정" in w for w in s.warnings)
+
+
+def test_rights_start_equal_to_record_date_dropped():
+    """실측 클로봇: 인수권 시작일이 기준일(7/07)과 같은 날로 잡힘 — 인수권은 기준일 뒤에 상장된다."""
+    doc = PIIC_DOC.replace("2026년 09월 21일부터 2026년 09월 29일까지", "2026년 09월 02일")
+    s = parse_document(doc)
+    assert s.record_date == "2026-09-02" and s.rights_start is None

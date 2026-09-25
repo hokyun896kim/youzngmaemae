@@ -18,7 +18,8 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 8   # 8: 행에 '추후결정/미정'이 있으면 그 항목은 미정(같은 행의 날짜 = 정정전) — 실측 경남제약 9/18,
+PARSER_VERSION = 9   # 9: 미정 항목은 앞 행 날짜도 지움(경남제약 청약일), 인수권 시작 ≤ 기준일 버림(클로봇)
+#                      8: 행에 '추후결정/미정'이 있으면 그 항목은 미정(같은 행의 날짜 = 정정전) — 실측 경남제약 9/18,
 #                        본문 후보 점수 = 항목 행을 찾은 칸(미정 포함)
 #                      7: 본문 시작 후보 중 항목을 가장 많이 찾은 것(정정표가 본문 뒤에 붙는 경우 — 경남제약),
 #                        인수권 문장 '추후결정' 뒤 날짜·기준일보다 이른 인수권 날짜 무시
@@ -461,6 +462,14 @@ def _parse_body(doc: str) -> Schedule:
             s.listing_date, evidence["listing_date"] = date, label
 
     issue_label_kind = None
+    # 어느 행에서든 '추후결정'이 나온 항목은 미정 — 앞 행에서 먼저 잡힌 날짜(정정전)도 지운다
+    # (실측 경남제약 9/18: 청약 '시작일 | 11/02' 다음 행에 '추후결정')
+    for fld in tbd:
+        for k in {"subs_start": ("subs_start", "subs_end"), "rights_start": ("rights_start", "rights_end")}.get(fld, (fld,)):
+            if k != "price_fix_date":
+                setattr(s, k, None)
+                evidence.pop(k, None)
+
     if price_candidates:
         prio, value, label = min(price_candidates)
         s.issue_price, evidence["issue_price"] = value, label
@@ -494,7 +503,7 @@ def _parse_body(doc: str) -> Schedule:
             break
 
     # 인수권은 신주배정기준일 이후에 상장된다. 그보다 이른 날짜는 다른 문장의 날짜를 잘못 집은 것
-    if s.rights_start and s.record_date and s.rights_start < s.record_date:
+    if s.rights_start and s.record_date and s.rights_start <= s.record_date:   # 실측 클로봇: 기준일과 같은 날
         s.warnings.append(f"인수권 상장기간 {s.rights_start} 이 기준일({s.record_date}) 전이라 버림")
         s.rights_start = s.rights_end = None
         evidence.pop("rights_start", None)
