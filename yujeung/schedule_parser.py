@@ -18,7 +18,9 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 7   # 7: 본문 시작 후보 중 항목을 가장 많이 찾은 것(정정표가 본문 뒤에 붙는 경우 — 경남제약),
+PARSER_VERSION = 8   # 8: 행에 '추후결정/미정'이 있으면 그 항목은 미정(같은 행의 날짜 = 정정전) — 실측 경남제약 9/18,
+#                        본문 후보 점수 = 항목 행을 찾은 칸(미정 포함)
+#                      7: 본문 시작 후보 중 항목을 가장 많이 찾은 것(정정표가 본문 뒤에 붙는 경우 — 경남제약),
 #                        인수권 문장 '추후결정' 뒤 날짜·기준일보다 이른 인수권 날짜 무시
 #                      6: 본문(신주의 종류와 수 표) 앞 구간은 정정·표지로 보고 제외, 할인율 문장 확대
 #                      5: 발행가 라벨 구분(예정/1차/확정). 4: 정정공시 '정정전/정정후' 표 제외, 할인율 추출
@@ -138,8 +140,10 @@ def _best_split(doc: str) -> tuple[int, str, list[list[str]], "Schedule"]:
         body, corrected = split_corrections(doc, start)
         sch = _parse_body(body)
         fill = _parse_body(_rows_doc(corrected)) if corrected else None
-        n = sum(getattr(sch, k) is not None or (fill is not None and getattr(fill, k) is not None)
-                for k in Schedule.FIELDS)
+        # 항목 행을 찾은 칸(값 또는 '추후결정') + 정정후로 채울 수 있는 칸. 미정도 '찾은 것'으로 센다 —
+        # 안 그러면 정정전 옛 날짜가 남은 후보가 이긴다 (실측 경남제약 9/18)
+        n = len(set(sch.extras.get("seen", [])) | {k for k in Schedule.FIELDS if getattr(sch, k) is not None}
+                | ({k for k in Schedule.FIELDS if getattr(fill, k) is not None} if fill is not None else set()))
         if n >= best_n:
             best, best_n = (start, body, corrected, sch), n
     return best
@@ -332,9 +336,12 @@ def parse_document(doc: str) -> Schedule:
     if corrected:
         c = _parse_body(_rows_doc(corrected))
         filled, differ = [], []
+        tbd_body = set(s.extras.get("tbd", []))
         for k in Schedule.FIELDS:
             new = getattr(c, k)
-            if new is None:
+            if new is None or k in tbd_body or (k in ("subs_end", "rights_end", "ex_rights_date")
+                                                and {"subs_end": "subs_start", "rights_end": "rights_start",
+                                                     "ex_rights_date": "record_date"}[k] in tbd_body):
                 continue
             if getattr(s, k) is None:
                 setattr(s, k, new)
@@ -357,8 +364,32 @@ def parse_document(doc: str) -> Schedule:
     return s
 
 
+TBD_WORDS = ("추후", "미정")
+FIELD_KO = {"record_date": "신주배정기준일", "subs_start": "청약일", "payment_date": "납입일",
+            "listing_date": "신주 상장일", "rights_start": "인수권 상장기간", "price_fix_date": "확정발행가 산정일"}
+
+
+def _date_field(label: str) -> str | None:
+    """행 라벨 → 일정 항목 (값이 없더라도 '이 항목 행을 봤다'를 세기 위해)."""
+    if "발행가" in label:
+        return "price_fix_date" if "확정" in label and "확정발행가" not in label.replace("확정예정일", "") else None
+    if "신주배정기준일" in label:
+        return "record_date"
+    if "신주인수권증서" in label and "보유자" not in label and any(k in label for k in ("상장", "매매", "거래")):
+        return "rights_start"
+    if "청약" in label and "우리사주" not in label and not any(k in label for k in ("공고", "대상자", "결과", "보유자")):
+        return "subs_start"
+    if "납입일" in label:
+        return "payment_date"
+    if "상장예정일" in label and "인수권" not in label:
+        return "listing_date"
+    return None
+
+
 def _parse_body(doc: str) -> Schedule:
     s = Schedule()
+    seen: set[str] = set()
+    tbd: set[str] = set()
     raw_rows = table_rows(doc)
     rows = labeled_rows(raw_rows)
     evidence: dict[str, str] = {}
@@ -366,6 +397,20 @@ def _parse_body(doc: str) -> Schedule:
     fix_candidates: list[tuple[str, str]] = []           # (확정발행가 산정/확정 예정일, 라벨)
 
     for label, values in rows:
+        fld = _date_field(label)
+        if fld:
+            seen.add(fld)
+            if any(k in label for k in TBD_WORDS):
+                # '8. 신주배정기준일 | 정정사유 | 2026-09-22 | 추후결정' — 같은 행의 날짜는 정정전 값 (실측 경남제약 9/18)
+                if fld not in tbd:
+                    tbd.add(fld)
+                    s.warnings.append(f"{FIELD_KO[fld]} 추후결정 (정정 대기)" if fld != "rights_start"
+                                      else "인수권 상장기간 추후결정 (정정 대기)")
+                if fld != "price_fix_date":
+                    continue
+                values = [v for v in values if not find_dates(v)]
+        if fld in tbd and fld != "price_fix_date":
+            continue
         if not values:
             continue
         date = _first_date(values)
@@ -431,7 +476,7 @@ def _parse_body(doc: str) -> Schedule:
             s.warnings.append("확정발행가 날짜가 청약일 이후 — 원문 확인 필요")
 
     # 표에 없으면 본문(기타 투자판단 사항)에서 "신주인수권증서 상장/매매 … 날짜 ~ 날짜"
-    if not s.rights_start and not any("추후결정" in w for w in s.warnings):
+    if not s.rights_start and "rights_start" not in tbd and not any("추후결정" in w and "인수권" in w for w in s.warnings):
         text = clean(doc)
         for m in _RIGHTS_TEXT_RE.finditer(text):
             chunk = m.group(0)
@@ -469,7 +514,8 @@ def _parse_body(doc: str) -> Schedule:
         if getattr(s, name) is None:
             s.warnings.append(f"{name} 못 찾음")
     s.warnings.append("미검증 파서: 실제 공시 원문으로 정확도 확인 전")
-    s.extras = {"evidence": evidence, "parser": PARSER_VERSION, "issue_label_kind": issue_label_kind}
+    s.extras = {"evidence": evidence, "parser": PARSER_VERSION, "issue_label_kind": issue_label_kind,
+                "seen": sorted(seen), "tbd": sorted(tbd)}
     return s
 
 

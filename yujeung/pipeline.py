@@ -49,7 +49,10 @@ def latest_schedule(conn: sqlite3.Connection, case_id: int, exclude: str | None 
         "SELECT s.*, IFNULL(d.kind, 'piic') AS kind FROM schedule_versions s "
         "LEFT JOIN disclosures d USING (rcept_no) WHERE s.case_id=? AND s.rcept_no != ? ORDER BY s.rcept_no",
         (case_id, exclude or "")).fetchall()
-    piic = [r for r in rows if r["kind"] == "piic" and any(r[k] for k in _DATE_FIELDS)]
+    # 기준 공시: 날짜가 하나라도 잡혔거나, 일정이 '추후결정'으로 바뀐 공시 (실측 경남제약 9/18 — 전부 미정이면
+    # 이전 정정의 날짜로 되돌아가면 안 된다)
+    piic = [r for r in rows if r["kind"] == "piic" and (
+        any(r[k] for k in _DATE_FIELDS) or json.loads(r["extras_json"] or "{}").get("tbd"))]
     base = piic[-1] if piic else next((r for r in reversed(rows) if r["kind"] == "piic"), None)
     merged: dict = {k: base[k] for k in SCHEDULE_LABELS if base[k] is not None} if base else {}
     price_row = base if base is not None and base["issue_price"] is not None else None
@@ -64,6 +67,10 @@ def latest_schedule(conn: sqlite3.Connection, case_id: int, exclude: str | None 
     if merged.get("record_date"):
         from .calendar_kr import ex_rights_date
         merged["ex_rights_date"] = ex_rights_date(merged["record_date"])
+    if base is not None:
+        tbd = json.loads(base["extras_json"] or "{}").get("tbd") or []
+        if tbd:
+            merged["tbd"] = tbd
     if price_row is not None:
         # 발행가 구분: 라벨(확정발행가/1차/예정발행가) 우선, 없으면 그 값을 낸 공시의 날짜로
         label_kind = json.loads(price_row["extras_json"] or "{}").get("issue_label_kind")

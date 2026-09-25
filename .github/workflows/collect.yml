@@ -69,7 +69,7 @@ jobs:
             # 실제 원문 점검: 이렘 9/23 기재정정(정정표가 본문 앞), 경남제약 9/18 기재정정(정정표가 본문 뒤·인수권 추후결정)
             python -m yujeung parse-doc 20260923000500 || true
             python -m yujeung parse-doc 20260918000349 || true
-            python -m yujeung backfill-cases --months 1 --dry-run --report 009730 053950 255220 210980
+            python -m yujeung backfill-cases --months 1 --dry-run --report all   # 진행 중 주주배정 전부 재파싱 결과
             exit 0
           fi
           case "$CMD" in

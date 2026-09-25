@@ -66,7 +66,11 @@ def cmd_backfill_cases(args, cfg: Config) -> int:
     if not args.dry_run:
         save(conn, cfg)
     print(json.dumps(report, ensure_ascii=False, indent=1))
-    for code in args.report or []:
+    codes = args.report or []
+    if codes == ["all"]:   # 진행 중 주주배정 케이스 전부 (파서 회귀 점검용)
+        codes = [r[0] for r in conn.execute("SELECT DISTINCT stock_code FROM cases WHERE status='open' AND is_rights=1 "
+                                            "AND stock_code IS NOT NULL ORDER BY stock_code")]
+    for code in codes:
         print_case(conn, cfg, code, today)
     return 0
 
