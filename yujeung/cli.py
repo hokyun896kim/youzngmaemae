@@ -73,6 +73,12 @@ def print_case(conn, cfg: Config, code: str, today) -> None:
     from .export import _case_json
     rows = conn.execute("SELECT * FROM cases WHERE stock_code=? ORDER BY first_rcept_dt DESC", (code,)).fetchall()
     print(f"\n===== {code} : 케이스 {len(rows)}건 =====")
+    for e in conn.execute("SELECT rcept_no, corp_name, reason FROM excluded_disclosures WHERE stock_code=?", (code,)):
+        print(f"  제외된 공시: {e['rcept_no']} {e['corp_name']} — {e['reason']}")
+    rr = conn.execute("SELECT MIN(bas_dd), MAX(bas_dd), COUNT(*), MAX(isu_nm), MAX(case_id) FROM rights_daily "
+                      "WHERE substr(isu_cd,1,6)=?", (code,)).fetchone()
+    if rr[2]:
+        print(f"  인수권 시세: {rr[3]} {rr[0]}~{rr[1]} {rr[2]}일, 연결 case_id={rr[4]}")
     for c in rows:
         j = _case_json(conn, c, cfg, today)
         print(f"[case {j['case_id']}] {j['corp_name']} {j['ic_mthn']} 최초공시 {j['first_rcept_dt']} 상태 {j['status']}")

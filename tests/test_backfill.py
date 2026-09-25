@@ -136,7 +136,7 @@ def test_backfill_end_to_end_and_idempotent():
     reasons = {r[0]: r[1] for r in conn.execute("SELECT rcept_no, reason FROM excluded_disclosures")}
     assert reasons[EMPTY["rcept_no"]] == "증자방식·금액 없음"
     for rep in (CEL1, CEL2, INTERNAL, OLD):
-        assert reasons[rep["rcept_no"]] == "백필 제외(비주주배정)"
+        assert reasons[rep["rcept_no"]].startswith("백필 제외(비주주배정")
 
     # [2] 인수권 isu_cd 앞 6자리로 케이스 연결 + 인수권 기간 과거 시세 보충
     sk_id, sk_first = conn.execute("SELECT case_id, first_rcept_no FROM cases WHERE stock_code='210980'").fetchone()

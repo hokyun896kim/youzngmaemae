@@ -233,7 +233,7 @@ def step_prices(krx: KrxClient, conn, today: date, days: int) -> list[dict]:
     return results
 
 
-def step_rights_history(krx: KrxClient, conn, today: date, max_days: int = 80) -> int:
+def step_rights_history(krx: KrxClient, conn, today: date, max_days: int = 250) -> int:
     """주주배정 케이스의 인수권 거래기간 중 아직 없는 날을 KRX 에서 채운다 (백필된 과거 케이스용)."""
     last = prev_business_day(today) if today.weekday() < 5 else today
     need: set[date] = set()
@@ -284,9 +284,10 @@ def step_market(naver: NaverClient, conn, today: date) -> dict:
             if r["date"] < keep_from:
                 continue
             conn.execute(
+                # KRX 정규장 종가가 이미 있으면 덮지 않는다. 실측: SK디앤디 9/23 KRX 3,335 vs 네이버 3,395
+                # (네이버는 NXT 포함 통합시세로 추정). 인수권은 KRX 에서만 거래 → 괴리율은 KRX 종가 기준.
                 "INSERT INTO stock_daily (bas_dd, code, close, open, high, low, volume) VALUES (?,?,?,?,?,?,?) "
-                "ON CONFLICT(bas_dd, code) DO UPDATE SET open=excluded.open, high=excluded.high, "
-                "low=excluded.low, close=excluded.close, volume=excluded.volume",
+                "ON CONFLICT(bas_dd, code) DO NOTHING",
                 (r["date"], c["stock_code"], int(r["close"]), int(r["open"]), int(r["high"]), int(r["low"]), r["volume"]))
         # 52주 위치: 공시일 직전 250거래일 고저 중 공시 전일 종가의 위치
         window = [r for r in rows if r["date"] < disc][-250:]

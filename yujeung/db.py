@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS excluded_disclosures (
     rcept_no   TEXT PRIMARY KEY,
     corp_code  TEXT,
     corp_name  TEXT,
+    stock_code TEXT,
     reason     TEXT NOT NULL,     -- 증자방식·금액 없음 / 청약일=납입일 / 상장+30일 경과 ...
     created_at TEXT NOT NULL
 );

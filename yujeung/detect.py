@@ -68,10 +68,10 @@ def _find_piic_fields(client: DartClient, corp_code: str, rcept_no: str, rcept_d
 
 
 def exclude(conn: sqlite3.Connection, rcept_no: str, corp_code: str | None, corp_name: str | None,
-            reason: str) -> None:
+            reason: str, stock_code: str | None = None) -> None:
     conn.execute(
-        "INSERT OR IGNORE INTO excluded_disclosures (rcept_no, corp_code, corp_name, reason, created_at)"
-        " VALUES (?,?,?,?,?)", (rcept_no, corp_code, corp_name, reason, db.now()))
+        "INSERT OR IGNORE INTO excluded_disclosures (rcept_no, corp_code, corp_name, stock_code, reason, created_at)"
+        " VALUES (?,?,?,?,?,?)", (rcept_no, corp_code, corp_name, stock_code, reason, db.now()))
 
 
 def is_known(conn: sqlite3.Connection, rcept_no: str) -> bool:
@@ -129,12 +129,13 @@ def upsert_disclosure(conn, rep: dict, fields: dict, rights_only: bool = False) 
     if case is None:
         # 새 케이스인데 증자방식·금액이 비어 있으면 판단 재료가 없다 → 제외
         if not ic_mthn or not summarize_fields(fields)["total_amount"]:
-            exclude(conn, rcept_no, rep["corp_code"], rep["corp_name"], "증자방식·금액 없음")
+            exclude(conn, rcept_no, rep["corp_code"], rep["corp_name"], "증자방식·금액 없음", rep.get("stock_code"))
             conn.commit()
             return None
         # 백필: 관찰용(비주주배정)은 과거분을 들이지 않는다 — 일일 수집분만 관찰 탭에
         if rights_only and not is_rights_offering(ic_mthn):
-            exclude(conn, rcept_no, rep["corp_code"], rep["corp_name"], "백필 제외(비주주배정)")
+            exclude(conn, rcept_no, rep["corp_code"], rep["corp_name"], f"백필 제외(비주주배정: {ic_mthn})",
+                    rep.get("stock_code"))
             conn.commit()
             return None
         cur = conn.execute(
@@ -190,7 +191,7 @@ def drop_case(conn: sqlite3.Connection, case_id: int, reason: str) -> None:
     if not case:
         return
     for (rn,) in conn.execute("SELECT rcept_no FROM disclosures WHERE case_id=?", (case_id,)).fetchall():
-        exclude(conn, rn, case["corp_code"], case["corp_name"], reason)
+        exclude(conn, rn, case["corp_code"], case["corp_name"], reason, case["stock_code"])
         conn.execute("DELETE FROM notifications WHERE dedup_key IN (?, ?)", (f"new:{rn}", f"chg:{rn}"))
     for t in ("schedule_versions", "disclosures", "case_facts", "paper_trades"):
         conn.execute(f"DELETE FROM {t} WHERE case_id=?", (case_id,))
