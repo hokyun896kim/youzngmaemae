@@ -68,3 +68,44 @@ def test_rights_after_subscription_rejected():
     s = parse_document(doc)
     assert s.rights_start is None
     assert any("인수권 상장기간" in w for w in s.warnings)
+
+
+# 실측 이렘(9/23 기재정정) 재발: 정정사항 표가 '정정전/정정후' 머리글이 아니어서 안 걸렸다 (옛 값과 새 값이 한 행)
+CORR_ALT = """<TABLE><TBODY>
+<TR><TD>정정항목</TD><TD>정정사유</TD><TD>당초</TD><TD>변경</TD></TR>
+<TR><TD>8. 신주배정기준일</TD><TD>일정변경에 따른 정정</TD><TD>2026년 10월 01일</TD><TD>2026년 10월 13일</TD></TR>
+<TR><TD>라. 신주인수권에 관한 사항 - 2) 신주인수권증서 상장예정기간</TD><TD>일정변경</TD>
+<TD>2026년 10월 22일</TD><TD>2026년 10월 28일</TD><TD>2026년 11월 10일</TD><TD>2026년 11월 16일</TD></TR>
+<TR><TD>6. 신주 발행가액</TD><TD>일정변경에 따른 정정</TD><TD>확정예정일</TD><TD>2026년 11월 04일</TD><TD>2026년 11월 20일</TD></TR>
+<TR><TD>11. 청약예정일</TD><TD>구주주</TD><TD>시작일</TD><TD>2026년 11월 09일</TD><TD>2026년 11월 25일</TD></TR>
+<TR><TD>16. 신주의 상장 예정일</TD><TD>일정변경</TD><TD>2026년 11월 25일</TD><TD>2026년 12월 11일</TD></TR>
+</TBODY></TABLE>
+<P>정정 전 신주인수권증서 상장예정기간은 2026년 10월 22일부터 2026년 10월 28일까지였습니다.</P>"""
+BODY_ALT = """<TABLE><TBODY>
+<TR><TD>1. 신주의 종류와 수</TD><TD>보통주식 (주)</TD><TD>4,800,000</TD></TR>
+<TR><TD>6. 신주 발행가액</TD><TD>예정발행가</TD><TD>보통주식 (원)</TD><TD>2,360</TD><TD>확정 예정일</TD><TD>2026년 11월 20일</TD></TR>
+<TR><TD>8. 신주배정기준일</TD><TD>2026년 10월 13일</TD></TR>
+<TR><TD>11. 청약예정일</TD><TD>구주주</TD><TD>시작일</TD><TD>2026년 11월 25일</TD></TR>
+<TR><TD>종료일</TD><TD>2026년 11월 26일</TD></TR>
+<TR><TD>12. 납입일</TD><TD>2026년 12월 01일</TD></TR>
+<TR><TD>16. 신주의 상장 예정일</TD><TD>2026년 12월 11일</TD></TR>
+</TBODY></TABLE>
+<P>구주주 1주당 배정비율 산정 시 할인율은 35%를 적용하며, 신주인수권증서의 상장예정기간은 2026년 11월 10일부터 2026년 11월 16일까지입니다.</P>"""
+
+
+def test_correction_preamble_without_before_after_header():
+    s = parse_document("<DOCUMENT>" + CORR_ALT + BODY_ALT + "</DOCUMENT>")
+    assert s.record_date == "2026-10-13"
+    assert (s.rights_start, s.rights_end) == ("2026-11-10", "2026-11-16")   # 앞머리 문장의 옛 기간이 아니라 본문
+    assert s.price_fix_date == "2026-11-20"
+    assert (s.subs_start, s.subs_end) == ("2026-11-25", "2026-11-26")
+    assert s.listing_date == "2026-12-11"
+    assert s.extras["facts"]["discount"] == 0.35                            # '할인율은 35%를'
+    assert s.extras["issue_label_kind"] == "예정"
+
+
+def test_correction_preamble_fills_missing_with_after_half():
+    body = BODY_ALT.split("<P>")[0]   # 본문에 인수권 기간 문장이 없으면 → 정정 행의 뒤쪽 절반(11/10~16)
+    s = parse_document("<DOCUMENT>" + CORR_ALT + body + "</DOCUMENT>")
+    assert (s.rights_start, s.rights_end) == ("2026-11-10", "2026-11-16")
+    assert s.record_date == "2026-10-13"

@@ -160,5 +160,7 @@ def test_correction_discards_old_schedule():
     s = latest_schedule(conn, case_id)
     assert s["record_date"] == "2026-09-09" and s["ex_rights_date"] == "2026-09-08"
     assert s.get("rights_start") is None and s.get("rights_end") is None
+    # 발행가 구분: 라벨 없음 + 1차 산정일(기준일 9/09 전 3거래일 = 9/04) 전 공시 → 예정
+    assert s["issue_kind"] == "예정" and s["issue_rcept_dt"] == CORR["rcept_dt"]
     # 정정 이전 공시만 보면 옛 일정
     assert latest_schedule(conn, case_id, exclude=CORR["rcept_no"])["rights_start"] == "2026-09-21"

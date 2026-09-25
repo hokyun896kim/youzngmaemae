@@ -7,6 +7,7 @@ from datetime import date, datetime
 from pathlib import Path
 
 from . import db, estimate, paper
+from .backtest import load_card_scenarios
 from .calendar_kr import KRX_HOLIDAYS
 from .config import Config
 from .pipeline import SCHEDULE_LABELS, checked_schedule, latest_facts, live_verdict
@@ -69,16 +70,13 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
     daily = conn.execute("SELECT bas_dd, close, volume FROM stock_daily WHERE code=? AND close IS NOT NULL "
                          "AND bas_dd <= ? ORDER BY bas_dd DESC LIMIT 300",
                          (c["stock_code"], today.isoformat())).fetchall()[::-1]
-    # 확정발행가: 산정일 이후 접수된 공시에 발행가가 있으면 확정으로 본다
-    confirmed = bool(sch.get("price_fix_date") and conn.execute(
-        "SELECT 1 FROM schedule_versions WHERE case_id=? AND issue_price IS NOT NULL AND substr(rcept_no,1,8) >= ?",
-        (c["case_id"], sch["price_fix_date"].replace("-", ""))).fetchone())
+    confirmed = sch.get("issue_kind") == "확정"   # 확정발행가 라벨 또는 확정 산정일 이후 공시
     quick = estimate.quick(
         v, live["gate1"], live["gap"], sch, latest_facts(conn, c["case_id"]),
         [(r["bas_dd"], r["close"]) for r in daily], [r["volume"] for r in daily],
         next((x["rights"] for x in reversed(series) if x["d"] <= today.isoformat()), None), live["summary"].get("new_shares"),
         live["summary"].get("dilution_ratio"), f["op_period"] if f else None, today, confirmed,
-        -cfg.gap_alert_pct, cfg.gap_alert_pct)
+        -cfg.gap_alert_pct, cfg.gap_alert_pct, load_card_scenarios())
     base.update({
         "summary": live["summary"], "gate1": live["gate1"], "rights_series": series, "stock_series": stock_series,
         "facts": {"op_income": f["op_income"] if f else None, "op_period": f["op_period"] if f else None,

@@ -17,8 +17,11 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'daily / verify / backfill-cases / backfill-rights'
+        description: 'daily / verify / backfill-cases / backfill-rights / backtest'
         default: daily
+      year:
+        description: 'backtest 연도 (2020~2026, 2026은 6월까지). 비우면 합산만'
+        default: ''
       months:
         description: 'backfill-cases 개월 수'
         default: '5'
@@ -39,7 +42,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 240   # backtest 한 해 = 공시 감지 + 원문 + KRX 수백 회
     env:
       PYTHONUNBUFFERED: '1'
       DART_API_KEY: ${{ secrets.DART_API_KEY }}
@@ -63,7 +66,10 @@ jobs:
           if [ "${{ github.event_name }}" = "push" ]; then
             # PR 브랜치: 실제 API 점검 + 백필 시험 실행(저장 안 함) 결과를 로그로
             python -m yujeung verify || echo "::warning::verify 일부 실패"
-            python -m yujeung backfill-cases --months 6 --dry-run --report 210980 290650 009730
+            python -m yujeung parse-doc 20260923000500 || true   # 이렘 9/23 기재정정 원문 점검
+            python -m yujeung backfill-cases --months 1 --dry-run --report 210980 290650 009730 255220 053950
+            # 백테스트 축소판(2025년 1~2월 원공시)으로 실제 API 흐름 점검 — 결과는 커밋 안 함
+            python -m yujeung backtest --year 2025 --months 2 --no-export
             exit 0
           fi
           case "$CMD" in
@@ -71,6 +77,9 @@ jobs:
             verify) python -m yujeung verify ;;
             backfill-cases) python -m yujeung backfill-cases --months "${{ github.event.inputs.months || 5 }}" --report 210980 290650 009730 ;;
             backfill-rights) python -m yujeung backfill-rights --start "${{ github.event.inputs.start }}" --end "${{ github.event.inputs.end }}" ;;
+            backtest)
+              if [ -n "${{ github.event.inputs.year }}" ]; then python -m yujeung backtest --year "${{ github.event.inputs.year }}"
+              else python -m yujeung backtest --aggregate-only; fi ;;
             *) echo "unknown command $CMD"; exit 1 ;;
           esac
 
@@ -80,9 +89,12 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/site.json data/yujeung.sql
+          [ -e data/backtest.json ] && git add data/backtest.json data/backtest
           if git diff --staged --quiet; then
             echo "변경 없음 — 커밋 생략"
           else
             git commit -m "chore: 유증 데이터 자동 갱신 ($(TZ=Asia/Seoul date +%Y-%m-%d\ %H:%M) KST)"
+            # 긴 백테스트 도중 main 이 앞서 나갔으면 받아서 올린다 (데이터 파일은 봇만 쓴다)
+            git pull --rebase origin "${GITHUB_REF_NAME}" || { git rebase --abort; exit 1; }
             git push
           fi

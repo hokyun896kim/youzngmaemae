@@ -25,7 +25,9 @@ AVG_VOLUME_DAYS = 20
 STAGES = {
     "1": "① 권리락 전", "2": "② 권리락 후 · 인수권 상장 전", "3": "③ 인수권 거래 중",
     "4": "④ 인수권 종료 · 청약 전", "5": "⑤ 청약 후 · 상장 대기", "listed": "신주 상장 후",
+    "tbd": "인수권 일정 미정",
 }
+TRACKING = "진입 구간 종료 — 성과 추적 중"
 CONCLUSION = {"green": "매수 검토", "yellow": "상장일 대기", "blue": "인수권 매도", "white": "패스"}
 NEXT_QUARTER = {"1분기": "2Q", "반기": "3Q", "3분기": "4Q", "4분기": "1Q"}
 
@@ -37,6 +39,8 @@ def stage(sch: dict, today: date) -> str:
     if not sch.get("ex_rights_date") or t < sch["ex_rights_date"]:
         return "1"
     rs, re_ = sch.get("rights_start"), sch.get("rights_end")
+    if not rs and not (sch.get("subs_start") and t >= sch["subs_start"]):
+        return "tbd"          # 권리락은 지났는데 인수권 상장기간이 '추후결정'(실측 경남제약)
     if rs and t < rs:
         return "2"
     if rs and re_ and rs <= t <= re_:
@@ -47,38 +51,54 @@ def stage(sch: dict, today: date) -> str:
 
 
 def issue_estimate(sch: dict, d: float | None, r: float | None, closes: list[tuple[str, int]],
-                   today: date, confirmed: bool) -> dict:
-    """closes: [(YYYY-MM-DD, 종가)] 오름차순. 반환 value = 이번 계산에 쓸 발행가."""
+                   today: date, confirmed: bool = False) -> dict:
+    """closes: [(YYYY-MM-DD, 종가)] 오름차순. 반환 value = 이번 계산에 쓸 발행가.
+    공시 발행가는 구분(sch.issue_kind)에 따라 다르게 쓴다:
+      확정 → 그대로 / 1차('1차' 라벨 또는 1차 산정일 이후 공시) → I1 로 사용 /
+      예정(예정발행가 = 이사회 당시 가격) → I1 로 쓰지 않고 권리락 직전 종가(권리락 전이면 현재가)로 계산"""
     disclosed = sch.get("issue_price")
-    if confirmed and disclosed:
-        return {"value": disclosed, "kind": "확정", "text": f"확정발행가 {disclosed:,}원"}
+    kind = "확정" if confirmed else (sch.get("issue_kind") or "예정")
+    if kind == "확정" and disclosed:
+        return {"value": disclosed, "kind": "확정", "issue_kind": kind, "text": f"확정발행가 {disclosed:,}원"}
+    if disclosed and sch.get("subs_start") and today.isoformat() >= sch["subs_start"]:
+        # 청약이 시작됐으면 발행가는 이미 정해졌다 → 재추정 금지 (실측 SG: 청약 후 '최종 추정 726' 오류)
+        return {"value": disclosed, "kind": "확정", "issue_kind": kind,
+                "text": f"확정발행가 {disclosed:,}원 (청약 시작 후 — 재추정 안 함, 공시 구분 '{kind}')"}
     if not d or not r or not closes:
         why = "할인율 미확인" if not d else "배정비율 미확인" if not r else "주가 없음"
-        return {"value": disclosed, "kind": "공시", "d": d, "r": r,
-                "text": f"공시 발행가 {disclosed:,}원 ({why} — 추정 불가)" if disclosed else f"발행가 미확인 ({why})"}
+        return {"value": disclosed, "kind": "공시", "issue_kind": kind, "d": d, "r": r,
+                "text": f"공시 {kind}발행가 {disclosed:,}원 ({why} — 추정 불가)" if disclosed else f"발행가 미확인 ({why})"}
     ex = sch.get("ex_rights_date")
     p_now = closes[-1][1]
-    out = {"d": d, "r": r, "disclosed": disclosed}
+    out = {"d": d, "r": r, "disclosed": disclosed, "issue_kind": kind}
+    use_disclosed = kind == "1차" and bool(disclosed)
+    formula = f"× (1−{d:.0%}) ÷ (1 + {r:g}×{d:.0%})"
     if not ex or today.isoformat() < ex:
-        i1 = p_now * (1 - d) / (1 + r * d)
-        out.update(value=round(i1), kind="1차 추정", i1=round(i1), px=round(p_now / (1 + r * d)),
-                   text=f"1차 추정 {round(i1):,}원 = 현재가 {p_now:,} × (1−{d:.0%}) ÷ (1 + {r:g}×{d:.0%})")
+        px = round(p_now / (1 + r * d))
+        if use_disclosed:
+            out.update(value=disclosed, kind="1차 공시", i1=disclosed, px=px, text=f"1차 발행가(공시) {disclosed:,}원")
+        else:
+            i1 = round(p_now * (1 - d) / (1 + r * d))
+            out.update(value=i1, kind="1차 추정", i1=i1, px=px,
+                       text=f"1차 추정 {i1:,}원 = 현재가 {p_now:,} {formula}"
+                            + (f" (공시 {disclosed:,}원은 예정발행가라 안 씀)" if disclosed else ""))
         return out
     pre = [c for dd, c in closes if dd < ex]
     post = [c for dd, c in closes if dd >= ex]
-    # 권리락 후엔 1차 발행가가 이미 공시돼 있다(기준일 전 산정) → 공시값이 계산값보다 정확. 없을 때만 계산
-    i1 = disclosed or (pre[-1] * (1 - d) / (1 + r * d) if pre else None)
-    i1_src = "공시" if disclosed else "추정"
+    if use_disclosed:
+        i1, i1_txt = disclosed, f"1차(공시) {disclosed:,}"
+    elif pre:
+        i1 = round(pre[-1] * (1 - d) / (1 + r * d))
+        i1_txt = f"1차(권리락 직전 종가 {pre[-1]:,} {formula}) {i1:,}"
+    else:
+        i1, i1_txt = None, "1차 미확인"
     if not post:
-        out.update(value=round(i1) if i1 else None, kind="1차 추정", i1=round(i1) if i1 else None,
-                   text="권리락 후 주가 없음 — 1차 추정만")
+        out.update(value=i1, kind="1차 추정", i1=i1, text=f"{i1_txt} — 권리락 후 주가 없음")
         return out
-    i2 = post[-1] * (1 - d)
+    i2 = round(post[-1] * (1 - d))
     est = min(v for v in (i1, i2) if v)
-    out.update(value=round(est), kind="최종 추정", i1=round(i1) if i1 else None, i2=round(i2),
-               text=f"최종 추정 {round(est):,}원 = min(1차({i1_src}) {round(i1):,}, 2차 {round(i2):,})"
-                    f" · 2차 = 권리락 후 주가 {post[-1]:,} × (1−{d:.0%})" if i1 else
-                    f"2차 추정 {round(i2):,}원 (1차 미확인)")
+    out.update(value=est, kind="최종 추정", i1=i1, i2=i2,
+               text=f"최종 추정 {est:,}원 = min({i1_txt}, 2차 {i2:,}) · 2차 = 권리락 후 주가 {post[-1]:,} × (1−{d:.0%})")
     return out
 
 
@@ -100,10 +120,21 @@ def breakeven(stg: str, sch: dict, issue: dict, closes: list[tuple[str, int]], r
     return {"stage": stg, "how": "본주 매수 (상장 대기)", "value": p_now, "text": f"현재가 {p_now:,}"}
 
 
-def pnl_table(be: dict | None) -> list[dict]:
+def scenarios_for(verdict: str, card: dict | None) -> tuple[list[tuple[str, float]], str]:
+    """판정별 기출(백테스트) 분포가 표본 MIN 이상이면 그걸로, 아니면 기본값. (시나리오, 표 아래 문구)"""
+    c = (card or {}).get(verdict) or {}
+    if c.get("use"):
+        rows = [("좋음(상위 25%)", c["p75"]), ("보통(중앙값)", c["p50"]), ("나쁨(하위 25%)", c["p25"]), ("최악", c["min"])]
+        return ([(n, v / 100) for n, v in rows],
+                f"기출 {c['n']}건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 "
+                f"75/50/25 퍼센타일·최저 (data/backtest.json)")
+    return SCENARIOS, SCENARIO_NOTE
+
+
+def pnl_table(be: dict | None, scenarios: list[tuple[str, float]] = SCENARIOS) -> list[dict]:
     if not be:
         return []
-    return [{"name": n, "pct": round(s * 100), "price": round(be["value"] * (1 + s))} for n, s in SCENARIOS]
+    return [{"name": n, "pct": round(s * 100, 1), "price": round(be["value"] * (1 + s))} for n, s in scenarios]
 
 
 def overhang(new_shares: int | None, volumes: list[int]) -> dict | None:
@@ -150,7 +181,7 @@ def recheck(verdict: str, g1: dict, gap: float | None, op_period: str | None, ch
     return " · ".join(conds) or "상장일까지 관찰 (가설 검증 샘플)"
 
 
-def conclusion(verdict: str, g1: dict, gap: float | None) -> dict:
+def conclusion(verdict: str, g1: dict, gap: float | None, stg: str | None = None) -> dict:
     if not g1["passed"]:
         fails = [c["text"].replace(" (100% 이상 즉시 탈락)", "") for c in g1["criteria"] if c["status"] == "fail"]
         reason = "관문1 탈락: " + " · ".join(fails[:3])
@@ -160,20 +191,27 @@ def conclusion(verdict: str, g1: dict, gap: float | None) -> dict:
             reason += f" (관문1 미확인 {g1['n_unknown']}개 — GPT 확인)"
     if verdict == "blue" and not g1["passed"]:
         reason = f"인수권 고평가 괴리율 {gap:+.1f}% · " + reason
-    return {"word": CONCLUSION[verdict], "reason": reason}
+    word = CONCLUSION[verdict]
+    if verdict in ("green", "blue") and stg in ("4", "5", "listed"):
+        word = TRACKING       # 인수권 거래가 끝나 이제 들어갈 수 없다 — 판정은 가상 성과로 추적
+    return {"word": word, "reason": reason}
 
 
 def quick(verdict: str, g1: dict, gap: float | None, sch: dict, facts: dict, closes: list[tuple[str, int]],
           volumes: list[int], rights_close: int | None, new_shares: int | None, dilution: float | None,
-          op_period: str | None, today: date, confirmed: bool, cheap: float = -20, rich: float = 20) -> dict:
+          op_period: str | None, today: date, confirmed: bool, cheap: float = -20, rich: float = 20,
+          card: dict | None = None) -> dict:
     stg = stage(sch, today)
     r = sch.get("alloc_ratio") or dilution
     issue = issue_estimate(sch, facts.get("discount"), r, closes, today, confirmed)
     be = breakeven(stg, sch, issue, closes, rights_close)
+    scen, note = scenarios_for(verdict, card)
+    tracking = verdict in ("green", "blue") and stg in ("4", "5", "listed")
     return {
-        **conclusion(verdict, g1, gap),
-        "recheck": recheck(verdict, g1, gap, op_period, cheap, rich),
+        **conclusion(verdict, g1, gap, stg),
+        "recheck": ("신주 상장일 시가 · +5 · +20거래일 가상 성과로 판정 검증" if tracking
+                    else recheck(verdict, g1, gap, op_period, cheap, rich)),
         "stage": stg, "stage_name": STAGES[stg],
-        "issue": issue, "breakeven": be, "table": pnl_table(be), "table_note": SCENARIO_NOTE,
+        "issue": issue, "breakeven": be, "table": pnl_table(be, scen), "table_note": note,
         "overhang": overhang(new_shares, volumes),
     }

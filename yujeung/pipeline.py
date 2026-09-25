@@ -15,8 +15,8 @@ from .detect import (DetectEvent, detect, drop_case, merge_duplicate_cases, purg
 from .krx import KrxClient, KrxError
 from .naver import INDEX_SYMBOL, NaverClient, NaverError
 from .prices import collect_day, compute_gap, gaps_for_day, relink_rights
-from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount, find_dates, parse_documents,
-                              validate_schedule)
+from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount, find_dates, issue_kind,
+                              parse_documents, validate_schedule)
 from .verdict import decide, gate1, reason_line
 
 SCHEDULE_LABELS = {
@@ -52,15 +52,23 @@ def latest_schedule(conn: sqlite3.Connection, case_id: int, exclude: str | None 
     piic = [r for r in rows if r["kind"] == "piic" and any(r[k] for k in _DATE_FIELDS)]
     base = piic[-1] if piic else next((r for r in reversed(rows) if r["kind"] == "piic"), None)
     merged: dict = {k: base[k] for k in SCHEDULE_LABELS if base[k] is not None} if base else {}
+    price_row = base if base is not None and base["issue_price"] is not None else None
     for r in rows:
         if r["kind"] == "piic" or (base is not None and r["rcept_no"] < base["rcept_no"]):
             continue
         for k in SCHEDULE_LABELS:
             if r[k] is not None:
                 merged[k] = r[k]
+        if r["issue_price"] is not None:
+            price_row = r
     if merged.get("record_date"):
         from .calendar_kr import ex_rights_date
         merged["ex_rights_date"] = ex_rights_date(merged["record_date"])
+    if price_row is not None:
+        # 발행가 구분: 라벨(확정발행가/1차/예정발행가) 우선, 없으면 그 값을 낸 공시의 날짜로
+        label_kind = json.loads(price_row["extras_json"] or "{}").get("issue_label_kind")
+        merged["issue_kind"] = issue_kind(label_kind, price_row["rcept_no"][:8], merged)
+        merged["issue_rcept_dt"] = price_row["rcept_no"][:8]
     return merged
 
 
@@ -173,12 +181,18 @@ def step_schedules(dart: DartClient, conn, alerts: bool = True) -> None:
             notify.record(conn, f"일정 변경 {r['corp_name']}", "\n".join(changes), dedup_key=f"chg:{r['rcept_no']}")
 
 
-def step_estk(dart: DartClient, conn, today: date, alerts: bool = True) -> None:
-    """진행 중 주주배정 케이스의 증권신고서(지분증권) 요약 → 일정·인수방식 보강."""
+def step_estk(dart: DartClient, conn, today: date, alerts: bool = True, discount: bool = True,
+              window_days: int | None = None) -> None:
+    """진행 중 주주배정 케이스의 증권신고서(지분증권) 요약 → 일정·인수방식 보강.
+    window_days: 조회 끝을 '최초 공시 + N일'로 자른다 (백테스트 — 같은 회사의 몇 년 뒤 다른 유증이 섞이지 않게)."""
     cases = conn.execute("SELECT * FROM cases WHERE status='open' AND is_rights=1").fetchall()
     for c in cases:
+        end = today
+        if window_days:
+            first = date(int(c["first_rcept_dt"][:4]), int(c["first_rcept_dt"][4:6]), int(c["first_rcept_dt"][6:]))
+            end = min(today, first + timedelta(days=window_days))
         try:
-            groups = dart.equity_registrations(c["corp_code"], c["first_rcept_dt"], today.strftime("%Y%m%d"))
+            groups = dart.equity_registrations(c["corp_code"], c["first_rcept_dt"], end.strftime("%Y%m%d"))
         except DartError:
             continue
         types = groups.get("증권의종류", [])
@@ -198,16 +212,40 @@ def step_estk(dart: DartClient, conn, today: date, alerts: bool = True) -> None:
             # 발행가 산식의 할인율은 증권신고서 본문에 있다 (어림 손익표의 발행가 추정용)
             try:
                 d = next((v for v in (extract_discount(clean(b)) for b in dart.document(rcept_no).values()) if v),
-                         None)
+                         None) if discount else None
             except DartError:
                 d = None
             if d:
                 sch.extras["facts"]["discount"] = d
+            sch.extras["discount_checked"] = discount
             save_schedule(conn, rcept_no, c["case_id"], sch)
             changes = schedule_diff(before, latest_schedule(conn, c["case_id"]))
             if alerts and before and changes:
                 notify.record(conn, f"일정 변경 {c['corp_name']}", "증권신고서 기준\n" + "\n".join(changes),
                               dedup_key=f"chg:{rcept_no}")
+    if discount:
+        recheck_estk_discount(dart, conn)
+
+
+def recheck_estk_discount(dart: DartClient, conn) -> int:
+    """할인율을 읽기 전에 들어온 증권신고서(진행 중 주주배정)는 한 번 원문을 받아 할인율을 채운다."""
+    n = 0
+    for r in conn.execute(
+            "SELECT s.rcept_no, s.extras_json FROM schedule_versions s JOIN disclosures d USING (rcept_no) "
+            "JOIN cases c ON c.case_id=d.case_id WHERE d.kind='estk' AND c.status='open' AND c.is_rights=1").fetchall():
+        ex = json.loads(r["extras_json"] or "{}")
+        if ex.get("discount_checked") or (ex.get("facts") or {}).get("discount"):
+            continue
+        try:
+            d = next((v for v in (extract_discount(clean(b)) for b in dart.document(r["rcept_no"]).values()) if v), None)
+        except DartError:
+            continue
+        ex.setdefault("facts", {})["discount"] = d
+        ex["discount_checked"] = True
+        conn.execute("UPDATE schedule_versions SET extras_json=? WHERE rcept_no=?", (db.dumps(ex), r["rcept_no"]))
+        n += 1
+    conn.commit()
+    return n
 
 
 RETENTION_DAYS = 30   # 신주 상장일 + 30일이 지나면 추적 종료
@@ -291,6 +329,22 @@ def step_rights_history(krx: KrxClient, conn, today: date, max_days: int = 150) 
     return done
 
 
+def save_pos52(conn, case_id: int, rows: list[dict], disc: str) -> bool:
+    """52주 위치: 공시일 직전 250거래일 고저 중 공시 전일 종가의 위치 (공시일 이후 가격은 안 씀)."""
+    window = [r for r in rows if r["date"] < disc][-250:]
+    if len(window) < 120:
+        return False
+    hi, lo = max(r["high"] for r in window), min(r["low"] for r in window)
+    px = window[-1]["close"]
+    pos = (px - lo) / (hi - lo) if hi > lo else None
+    conn.execute(
+        "INSERT INTO case_facts (case_id, pos52, pos52_basis, updated_at) VALUES (?,?,?,?) "
+        "ON CONFLICT(case_id) DO UPDATE SET pos52=excluded.pos52, pos52_basis=excluded.pos52_basis, "
+        "updated_at=excluded.updated_at",
+        (case_id, pos, f"{window[-1]['date']} 종가 {px:,.0f} / 52주 저 {lo:,.0f} 고 {hi:,.0f}", db.now()))
+    return True
+
+
 def step_market(naver: NaverClient, conn, today: date) -> dict:
     """주주배정 케이스 본주·지수 일봉 (네이버) → stock_daily / index_daily, 공시일 기준 52주 위치."""
     out = {"stocks": 0, "errors": []}
@@ -321,17 +375,7 @@ def step_market(naver: NaverClient, conn, today: date) -> dict:
                 "INSERT INTO stock_daily (bas_dd, code, close, open, high, low, volume) VALUES (?,?,?,?,?,?,?) "
                 "ON CONFLICT(bas_dd, code) DO NOTHING",
                 (r["date"], c["stock_code"], int(r["close"]), int(r["open"]), int(r["high"]), int(r["low"]), r["volume"]))
-        # 52주 위치: 공시일 직전 250거래일 고저 중 공시 전일 종가의 위치
-        window = [r for r in rows if r["date"] < disc][-250:]
-        if len(window) >= 120:
-            hi, lo = max(r["high"] for r in window), min(r["low"] for r in window)
-            px = window[-1]["close"]
-            pos = (px - lo) / (hi - lo) if hi > lo else None
-            conn.execute(
-                "INSERT INTO case_facts (case_id, pos52, pos52_basis, updated_at) VALUES (?,?,?,?) "
-                "ON CONFLICT(case_id) DO UPDATE SET pos52=excluded.pos52, pos52_basis=excluded.pos52_basis, "
-                "updated_at=excluded.updated_at",
-                (c["case_id"], pos, f"{window[-1]['date']} 종가 {px:,.0f} / 52주 저 {lo:,.0f} 고 {hi:,.0f}", db.now()))
+        save_pos52(conn, c["case_id"], rows, disc)
         out["stocks"] += 1
     conn.commit()
     return out

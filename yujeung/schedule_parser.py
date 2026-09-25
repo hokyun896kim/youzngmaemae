@@ -18,7 +18,8 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 4   # 4: 정정공시의 '정정전/정정후' 표는 본문 파싱에서 빼고 정정후 값만 보조로 사용, 할인율 추출
+PARSER_VERSION = 6   # 6: 본문(신주의 종류와 수 표) 앞 구간은 정정·표지로 보고 제외, 할인율 문장 확대
+#                      5: 발행가 라벨 구분(예정/1차/확정). 4: 정정공시 '정정전/정정후' 표 제외, 할인율 추출
 
 _DATE_RE = re.compile(
     r"(20\d{2})\s*(?:년|[.\-/])\s*(\d{1,2})\s*(?:월|[.\-/])\s*(\d{1,2})\s*일?"
@@ -66,34 +67,94 @@ def table_rows(doc: str) -> list[list[str]]:
     return rows
 
 
+def _after_values(cells: list[str]) -> list[str] | None:
+    """정정 행 → 라벨 + 정정후 값. 값이 짝수(2·4…)면 뒤쪽 절반(= 정정후: '전 | 후' 순서), 홀수면 마지막 하나.
+    값이 하나뿐이면 정정전인지 후인지 알 수 없어 버린다."""
+    values = [c for c in cells if _is_value(c)]
+    labels = [c for c in cells if not _is_value(c)]
+    if len(values) < 2 or not labels:
+        return None
+    return labels + (values[len(values) // 2:] if len(values) % 2 == 0 else values[-1:])
+
+
+def body_start(doc: str) -> int:
+    """유상증자결정 본문 표('1. 신주의 종류와 수')가 시작하는 위치 — 마지막으로 나오는 것.
+    정정공시는 그 앞에 정정사항 표(옛 값과 새 값이 한 행에)가 붙는다. 머리글 문구가 회사마다 달라
+    (실측 이렘 9/23: '정정전/정정후' 머리글로 안 걸림) 위치로 자른다. 못 찾으면 0."""
+    start = 0
+    for m in _TABLE_RE.finditer(doc):
+        if "신주의종류와수" in clean(m.group(0)).replace(" ", ""):
+            start = m.start()
+    return start
+
+
 def split_corrections(doc: str) -> tuple[str, list[list[str]]]:
-    """정정공시 앞머리의 '정정전 | 정정후' 표를 떼어낸다 → (본문, 정정후 행들).
-    실측(이렘 2026-09-23 기재정정): 이 표가 본문보다 먼저 나와 첫 값(=정정전)이 일정으로 잡혔다.
-    정정후 행 = 라벨 셀 + 마지막 값 셀 (값이 2개 이상인 행만 — 하나뿐이면 정정전인지 알 수 없다)."""
+    """정정 구간을 떼어낸다 → (본문, 정정후 행들).
+    1) 본문 표 앞의 모든 표(정정사항·표지)  2) 본문 안에 남은 '정정전 | 정정후'(또는 변경전/후) 표.
+    실측(이렘 2026-09-23 기재정정): 정정사항이 본문보다 먼저 나와 첫 값(=정정전)이 일정으로 잡혔다."""
     corrected: list[list[str]] = []
+    start = body_start(doc)
+    for cells in table_rows(doc[:start]):
+        row = _after_values(cells)
+        if row:
+            corrected.append(row)
 
     def cut(m: re.Match) -> str:
         text = clean(m.group(0)).replace(" ", "")
-        if "정정전" not in text or "정정후" not in text:
+        if not any(a in text and b in text for a, b in (("정정전", "정정후"), ("변경전", "변경후"), ("수정전", "수정후"))):
             return m.group(0)
         for cells in table_rows(m.group(0)):
-            values = [c for c in cells if _is_value(c)]
-            labels = [c for c in cells if not _is_value(c)]
-            if len(values) >= 2 and labels:
-                corrected.append(labels + [values[-1]])
+            row = _after_values(cells)
+            if row:
+                corrected.append(row)
         return " "
 
-    return _TABLE_RE.sub(cut, doc), corrected
+    # 본문 앞 구간은 통째로 뺀다 (표지·정정사항 문장 속 옛 날짜가 먼저 잡히지 않게). 정정신고서 제출요구·
+    # 최대주주·할인율 같은 문장 검색은 parse_document 가 원문 전체로 한다
+    return _TABLE_RE.sub(cut, doc[start:]), corrected
 
 
-_DISCOUNT_RE = re.compile(r"할인율\s*[(:：]?\s*(\d{1,2}(?:\.\d+)?)\s*%")
+# '할인율 25%', '할인율(25%)', '할인율은 35%를', '할인율: 30 %', '35%의 할인율'
+_DISCOUNT_RE = re.compile(r"할인율[^0-9%\n]{0,12}?(\d{1,2}(?:\.\d+)?)\s*%|(\d{1,2}(?:\.\d+)?)\s*%\s*(?:의|를|을)?\s*할인율")
+
+
+def price_label_kind(label: str) -> str | None:
+    """발행가 라벨 → '확정' / '1차' / '예정' (라벨로 알 수 없으면 None — 공시일로 판단)."""
+    lb = label.replace(" ", "")
+    if "확정발행가" in lb:
+        return "확정"
+    if "1차" in lb:
+        return "1차"
+    if "예정발행가" in lb:
+        return "예정"
+    return None
+
+
+def issue_kind(label_kind: str | None, rcept_dt: str | None, sch: dict) -> str:
+    """발행가 구분. 확정 = 확정발행가 라벨 또는 확정 산정일 이후 공시 /
+    1차 = '1차' 라벨 또는 1차 발행가 산정일(신주배정기준일 전 3거래일) 이후 공시 / 그 외 예정."""
+    d = f"{rcept_dt[:4]}-{rcept_dt[4:6]}-{rcept_dt[6:8]}" if rcept_dt and len(rcept_dt) >= 8 else None
+    fix = sch.get("price_fix_date")
+    if not fix and sch.get("subs_start"):
+        # 확정 산정일이 안 잡혔으면 청약 전 3거래일(2차 발행가 기준일)로 본다 — 실측 SG: 9/01 공시 911원이 '1차'로 분류됨
+        fix = shift_business_days(date.fromisoformat(sch["subs_start"]), -3).isoformat()
+    if label_kind == "확정" or (d and fix and d >= fix):
+        return "확정"
+    if label_kind == "1차" or (d and sch.get("record_date") and d >= first_price_date(sch["record_date"])):
+        return "1차"
+    return "예정"
+
+
+def first_price_date(record_date: str) -> str:
+    """1차 발행가 산정일 = 신주배정기준일 전 3거래일 (증권의 발행 및 공시 등에 관한 규정 — 회사별 원문 확인)."""
+    return shift_business_days(date.fromisoformat(record_date), -3).isoformat()
 
 
 def extract_discount(text: str) -> float | None:
     """1차·2차 발행가 산식의 할인율(예: '할인율 25%', '할인율(35%)'). 가장 많이 나온 값, 5~60% 만."""
     counts: dict[float, int] = {}
     for m in _DISCOUNT_RE.finditer(text):
-        v = float(m.group(1))
+        v = float(m.group(1) or m.group(2))
         if 5 <= v <= 60:
             counts[v] = counts.get(v, 0) + 1
     return max(counts, key=lambda v: (counts[v], v)) / 100 if counts else None
@@ -257,6 +318,8 @@ def parse_document(doc: str) -> Schedule:
         if differ:
             s.warnings.append("정정표와 본문 불일치 — 원문 확인: " + "; ".join(differ))
         s.extras["corrections"] = {"rows": len(corrected), "filled": filled}
+        if "issue_price" in filled:
+            s.extras["issue_label_kind"] = c.extras.get("issue_label_kind")
     if "정정신고서제출요구" in text.replace(" ", "") and not any("정정신고서" in w for w in s.warnings):
         s.warnings.append("⚠ 금감원 정정신고서 제출요구 이력")
     s.extras["facts"] = {"major_holder": extract_major_holder(text),
@@ -282,7 +345,7 @@ def _parse_body(doc: str) -> Schedule:
             if "기타주식" not in label and "종류주식" not in label:
                 n = _first_number(values, min_value=1)
                 if n is not None:
-                    prio = 0 if "확정발행가" in label else 1 if "예정발행가" in label else 2
+                    prio = 0 if "확정발행가" in label else 1 if ("예정발행가" in label or "1차" in label) else 2
                     price_candidates.append((prio, int(n), label))
             if "확정" in label and date:
                 fix_candidates.append((date, label))
@@ -323,9 +386,11 @@ def _parse_body(doc: str) -> Schedule:
         elif "상장예정일" in label and "인수권" not in label and date and not s.listing_date:
             s.listing_date, evidence["listing_date"] = date, label
 
+    issue_label_kind = None
     if price_candidates:
         prio, value, label = min(price_candidates)
         s.issue_price, evidence["issue_price"] = value, label
+        issue_label_kind = price_label_kind(label)
 
     # 확정발행가 날짜는 청약 전이어야 한다. 정정 공시 본문에 남은 옛 날짜(청약 이후)는 버린다.
     if fix_candidates:
@@ -362,7 +427,7 @@ def _parse_body(doc: str) -> Schedule:
         if getattr(s, name) is None:
             s.warnings.append(f"{name} 못 찾음")
     s.warnings.append("미검증 파서: 실제 공시 원문으로 정확도 확인 전")
-    s.extras = {"evidence": evidence, "parser": PARSER_VERSION}
+    s.extras = {"evidence": evidence, "parser": PARSER_VERSION, "issue_label_kind": issue_label_kind}
     return s
 
 

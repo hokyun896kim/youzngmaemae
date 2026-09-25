@@ -44,3 +44,20 @@ def shift_business_days(d: date, n: int) -> date:
         if is_business_day(d):
             left -= 1
     return d
+
+
+def register_trading_days(trading_days: list[str]) -> int:
+    """실제 거래일 목록(예: 지수 일봉 날짜)으로 그 구간의 휴장일을 채운다 — 2026 이전 백테스트용.
+    목록의 처음~끝 사이 평일 중 거래가 없던 날 = 휴장일. 이미 휴장일 목록이 있는 해(2026)는 건드리지 않는다.
+    추가한 개수를 돌려준다."""
+    if not trading_days:
+        return 0
+    have = set(trading_days)
+    listed_years = {h[:4] for h in KRX_HOLIDAYS}
+    d, end, n = date.fromisoformat(min(have)), date.fromisoformat(max(have)), 0
+    while d <= end:
+        if d.weekday() < 5 and d.isoformat() not in have and d.isoformat()[:4] not in listed_years:
+            KRX_HOLIDAYS.add(d.isoformat())
+            n += 1
+        d += timedelta(days=1)
+    return n
