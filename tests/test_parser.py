@@ -31,3 +31,19 @@ def test_parse_real_shape_price_row_with_date():
     assert s.issue_price == 2360                 # 확정발행가 '-' → 예정발행가 사용
     assert s.price_fix_date == "2026-11-04"      # 11/20 은 청약(11/09) 이후라 배제
     assert (s.subs_start, s.subs_end) == ("2026-11-09", "2026-11-10")
+
+
+def test_rights_traps_holder_row_and_tbd():
+    from tests.fixtures_dart import PIIC_DOC_TRAPS
+    s = parse_document(PIIC_DOC_TRAPS)
+    assert s.rights_start is None and s.rights_end is None   # '보유자' 청약행·'추후결정' 무시
+    assert any("추후결정" in w for w in s.warnings)
+    assert any("정정신고서 제출요구" in w for w in s.warnings)
+    assert (s.subs_start, s.subs_end) == ("2026-11-02", "2026-11-03")
+
+
+def test_rights_after_subscription_rejected():
+    doc = PIIC_DOC.replace("2026년 09월 21일부터 2026년 09월 29일까지", "2026년 10월 12일부터 2026년 10월 13일까지")
+    s = parse_document(doc)
+    assert s.rights_start is None
+    assert any("인수권 상장기간" in w for w in s.warnings)

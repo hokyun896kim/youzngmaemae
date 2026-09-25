@@ -101,3 +101,41 @@ def test_dump_restore_roundtrip(tmp_path):
     conn2 = db.restore_sql(tmp_path / "d.sql", tmp_path / "b.db")
     assert build_site(conn2)["cases"] == build_site(conn)["cases"]
     assert conn2.execute("SELECT COUNT(*) FROM raw_responses").fetchone()[0] == 0
+
+
+def test_only_listed_and_rights_alerts():
+    conn = db.connect(":memory:")
+    # 이전 버전이 남긴 비상장 케이스 + 알림
+    conn.execute("INSERT INTO cases (corp_code, corp_name, stock_code, corp_cls, first_rcept_no, first_rcept_dt,"
+                 " ic_mthn, is_rights, created_at) VALUES ('X','비상장','', 'E','20260901000001','20260901',NULL,0,'t')")
+    conn.execute("INSERT INTO disclosures VALUES ('20260901000001',1,'piic','r','20260901',0,'{}')")
+    conn.execute("INSERT INTO notifications (topic, dedup_key, text, sent_at, delivered) "
+                 "VALUES ('신규 유증 비상장','new:20260901000001','x','t',0)")
+    conn.commit()
+
+    unlisted = dict(REPORT, rcept_no="20260920000001", corp_code="11111111", corp_name="기타법인",
+                    stock_code="", corp_cls="E", rcept_dt="20260920")
+    third = dict(REPORT, rcept_no="20260921000001", corp_code="22222222", corp_name="제삼자",
+                 stock_code="123456", corp_cls="K", rcept_dt="20260921")
+    fields3 = dict(PIIC_FIELDS, rcept_no=third["rcept_no"], corp_code="22222222", ic_mthn="제3자배정증자")
+    dart = FakeDart([REPORT, unlisted, third], [PIIC_FIELDS, fields3], {REPORT["rcept_no"]: PIIC_DOC})
+    run_daily(cfg(), conn, date(2026, 9, 24), lookback_days=90, price_days=1, dart=dart, krx=FakeKrx())
+
+    names = {r[0] for r in conn.execute("SELECT corp_name FROM cases")}
+    assert names == {"테스트디앤디", "제삼자"}               # 비상장 제외 + 기존 비상장 정리
+    topics = [r[0] for r in conn.execute("SELECT topic FROM notifications")]
+    assert "신규 유증 테스트디앤디" in topics
+    assert not any("제삼자" in t or "비상장" in t for t in topics)   # 제3자배정은 알림 없음
+
+
+def test_reparse_on_parser_version_bump():
+    conn = db.connect(":memory:")
+    dart = FakeDart([REPORT], [PIIC_FIELDS], {REPORT["rcept_no"]: PIIC_DOC})
+    run_daily(cfg(), conn, date(2026, 9, 24), lookback_days=90, price_days=1, dart=dart, krx=FakeKrx())
+    # 옛 파서가 남긴 틀린 값 흉내
+    conn.execute("UPDATE schedule_versions SET rights_start='2026-10-12', extras_json='{}'")
+    conn.commit()
+    n = conn.execute("SELECT COUNT(*) FROM notifications").fetchone()[0]
+    run_daily(cfg(), conn, date(2026, 9, 24), lookback_days=90, price_days=1, dart=dart, krx=FakeKrx())
+    assert conn.execute("SELECT rights_start FROM schedule_versions").fetchone()[0] == "2026-09-21"
+    assert conn.execute("SELECT COUNT(*) FROM notifications").fetchone()[0] == n   # 재파싱은 알림 없음

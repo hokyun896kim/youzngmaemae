@@ -8,10 +8,10 @@ from . import db, notify
 from .calendar_kr import is_business_day
 from .config import Config
 from .dart import DartClient, DartError, to_int
-from .detect import DetectEvent, detect, summarize_fields
+from .detect import DetectEvent, detect, purge_unlisted, summarize_fields
 from .krx import KrxClient, KrxError
 from .prices import collect_day, gaps_for_day
-from .schedule_parser import Schedule, find_dates, parse_documents
+from .schedule_parser import PARSER_VERSION, Schedule, find_dates, parse_documents
 
 SCHEDULE_LABELS = {
     "record_date": "신주배정기준일", "ex_rights_date": "권리락일(추정)", "rights_start": "인수권 상장 시작",
@@ -73,16 +73,25 @@ def estk_schedule(general: dict, types: list[dict]) -> Schedule:
 
 # ---- 단계들 ----
 def step_detect(dart: DartClient, conn, cfg: Config, today: date, lookback_days: int) -> list[DetectEvent]:
+    purge_unlisted(conn)
+    # 초기 버전이 보낸 비주주배정 '신규 유증' 알림 정리 (알림은 주주배정 건만)
+    conn.execute(
+        "DELETE FROM notifications WHERE dedup_key IN (SELECT 'new:' || d.rcept_no FROM disclosures d "
+        "JOIN cases c USING (case_id) WHERE c.is_rights=0)")
+    conn.commit()
     bgn = (today - timedelta(days=lookback_days)).strftime("%Y%m%d")
     events = detect(dart, conn, bgn, today.strftime("%Y%m%d"))
     for ev in events:
-        if ev.kind != "new_case":
+        # 브리프 파이프라인 1단계: 주주배정 계열만 알림. 나머지는 사이트 '관찰' 탭에만 기록
+        if ev.kind != "new_case" or not ev.is_rights:
             continue
         sm = summarize_fields(ev.fields)
         purpose = ", ".join(f"{k} {v}%" for k, v in sm["purpose_pct"].items()) or "-"
         amount = f"{sm['total_amount'] / 1e8:,.0f}억" if sm["total_amount"] else "-"
         dilution = f"{sm['dilution_ratio'] * 100:.0f}%" if sm["dilution_ratio"] else "-"
-        tag = "주주배정 ✅ 인수권 발생" if ev.is_rights else "주주배정 아님 (관찰만)"
+        tag = "주주배정 ✅ 인수권 발생"
+        if ev.report_nm.strip().startswith("["):
+            tag += " (정정 공시로 처음 감지 — 원공시는 수집 이전)"
         notify.send(conn, cfg, f"신규 유증 {ev.corp_name}",
                     f"{tag}\n증자방식: {ev.fields.get('ic_mthn', '-')}\n규모: {amount} / 신주÷기존주 {dilution}\n"
                     f"자금목적: {purpose}\nhttps://dart.fss.or.kr/dsaf001/main.do?rcpNo={ev.rcept_no}",
@@ -91,19 +100,26 @@ def step_detect(dart: DartClient, conn, cfg: Config, today: date, lookback_days:
 
 
 def step_schedules(dart: DartClient, conn, cfg: Config) -> None:
-    """일정 파싱 안 된 주주배정 공시 → 원문 파싱. 정정으로 일정이 바뀌면 알림."""
+    """일정 파싱 안 된 주주배정 공시 → 원문 파싱. 정정으로 일정이 바뀌면 알림.
+    파서 버전이 올라가면 기존 공시도 재파싱한다 (재파싱은 알림 없음)."""
     pending = conn.execute(
-        "SELECT d.rcept_no, d.case_id, c.corp_name FROM disclosures d JOIN cases c USING (case_id) "
+        "SELECT d.rcept_no, d.case_id, c.corp_name, s.rcept_no IS NOT NULL AS reparse "
+        "FROM disclosures d JOIN cases c USING (case_id) "
         "LEFT JOIN schedule_versions s ON s.rcept_no=d.rcept_no "
-        "WHERE s.rcept_no IS NULL AND c.is_rights=1 AND d.kind='piic' ORDER BY d.rcept_no"
+        "WHERE c.is_rights=1 AND d.kind='piic' AND (s.rcept_no IS NULL "
+        "OR IFNULL(json_extract(s.extras_json, '$.parser'), 1) < ?) ORDER BY d.rcept_no",
+        (PARSER_VERSION,),
     ).fetchall()
     for r in pending:
         try:
             sch = parse_documents(dart.document(r["rcept_no"]))
         except DartError as e:
             sch = Schedule(warnings=[f"원문 조회 실패: {e}"])
+            sch.extras = {"parser": PARSER_VERSION}
         before = latest_schedule(conn, r["case_id"], exclude=r["rcept_no"])
         save_schedule(conn, r["rcept_no"], r["case_id"], sch)
+        if r["reparse"]:
+            continue
         changes = schedule_diff(before, latest_schedule(conn, r["case_id"]))
         if before and changes:
             notify.send(conn, cfg, f"일정 변경 {r['corp_name']}", "\n".join(changes), dedup_key=f"chg:{r['rcept_no']}")
