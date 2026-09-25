@@ -13,6 +13,7 @@
 - `yujeung/krx.py`, `yujeung/prices.py` — KRX Open API 인수권(sr_bydd_trd)·본주 시세, 괴리율
 - `yujeung/notify.py` — 텔레그램 (헤더 자동, 순번 = notifications.seq)
 - `yujeung/pipeline.py` — daily 흐름, `yujeung/export.py` — data/site.json, `index.html` — 화면
+- `prompts.js` — GPT 분석지침(전체 브리핑) + 개별기업 분석 프롬프트. brief 확정 결론을 "전제"로, 수집기 맹점을 "검증 지침"으로 포함 — brief 와 어긋나게 고치지 말 것
 - DB: 실행 시 `data/yujeung.sql`(커밋되는 텍스트 덤프) → SQLite 복원 → 갱신 → 다시 덤프. 바이너리는 커밋 금지
 - 검증 상태는 docs/verification.md, 실측은 `python -m yujeung verify`
 - 테스트: `python -m pytest -q` (네트워크 불필요). 테스트 픽스처는 합성 데이터

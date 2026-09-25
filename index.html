@@ -66,6 +66,33 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .tabs{display:flex;gap:6px;margin-bottom:10px}
 .tab{background:var(--panel);border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit}
 .tab.on{color:#1a1405;background:var(--gold);border-color:var(--gold);font-weight:700}
+.topbar{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 6px}
+.btn{background:var(--panel);border:1px solid var(--line);color:var(--txt);font-family:inherit;font-size:12px;font-weight:700;padding:8px 12px;border-radius:10px;cursor:pointer}
+.btn:hover{border-color:var(--gold)}
+.btn.gold{background:var(--gold);color:#0a0e17;border-color:var(--gold)}
+.btn.gold:hover{background:var(--gold2)}
+.btn.done{background:var(--grn);border-color:var(--grn);color:#fff}
+.stage{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;color:var(--gold2);background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.35);border-radius:8px;padding:4px 9px}
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:10px}
+.lnk{display:flex;gap:8px;align-items:center;background:#0b1322;border:1px solid var(--line);border-radius:10px;padding:8px 10px;text-decoration:none;color:var(--txt);font-size:12px}
+.lnk:hover{border-color:var(--gold)}
+.lnk small{display:block;color:var(--mut);font-size:11px}
+.t1,.t2{font-size:9px;font-weight:800;border-radius:4px;padding:1px 4px;margin-left:4px}
+.t1{background:rgba(74,157,127,.2);color:var(--grn)}.t2{background:rgba(212,175,55,.15);color:var(--gold2)}
+.ai{margin-top:12px;border-top:1px dashed var(--line);padding-top:12px}
+.ai .nsub{color:var(--mut);font-size:12px;line-height:1.6;margin-bottom:8px}
+.ai .btn{width:100%}
+.preview{display:none;margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:11px;font-size:11px;line-height:1.6;color:#9aa7bd;white-space:pre-wrap;max-height:220px;overflow-y:auto;font-family:ui-monospace,monospace}
+.preview.show{display:block}
+.modal{display:none;position:fixed;inset:0;background:rgba(3,6,12,.78);z-index:50;overflow-y:auto;padding:clamp(10px,4vw,40px)}
+.modal.show{display:block}
+.mbox{max-width:780px;margin:0 auto;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:20px;line-height:1.7;font-size:13px}
+.mbox h3{font-size:15px;margin:18px 0 8px;color:var(--gold2)}
+.mbox h3:first-of-type{margin-top:4px}
+.mbox .x{float:right}
+.uc{background:#0b1322;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0}
+.uc b.t{display:block;color:var(--txt);margin-bottom:2px}
+.mbox code{background:#0b1322;border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:12px}
 footer{color:var(--mut);font-size:11px;margin:34px 0 10px;line-height:1.7}
 a{color:var(--gold2)}
 </style></head><body><div class="wrap">
@@ -75,6 +102,11 @@ a{color:var(--gold2)}
 <b>KRX 신주인수권증서</b> 일별 시세로 <b>인수권 괴리율</b>(인수권 ÷ (본주 − 발행가) − 1)을 매일 기록합니다.
 괴리율이 <b class="neg">음수</b>면 인수권이 싸고, <b class="pos">양수</b>면 비쌉니다.</p>
 <div class="chips" id="chips"></div>
+<div class="topbar">
+ <button class="btn" onclick="openGuide()">📘 분석 가이드</button>
+ <button class="btn gold" id="briefBtn" onclick="copyBriefing(this)">🤖 전체 브리핑 프롬프트 복사</button>
+</div>
+<div id="briefPreview" class="preview"></div>
 
 <h2>오늘의 인수권 <small id="rdate"></small></h2>
 <div id="rights"></div>
@@ -86,10 +118,29 @@ a{color:var(--gold2)}
 <h2>알림 로그 <small>텔레그램으로 나간 메시지</small></h2>
 <div class="notes" id="notes"></div>
 
+<div class="modal" id="guide" onclick="if(event.target===this)closeGuide()"><div class="mbox">
+<button class="btn x" onclick="closeGuide()">닫기 ✕</button>
+<h3>📘 이 사이트를 읽는 법</h3>
+<p>유증 레이더는 <b>"어느 유증 케이스를 깊게 팔지"</b> 골라주는 발견 도구입니다. 매수·매도 신호를 주지 않습니다.</p>
+<div class="uc"><b class="t">1단계 · 증자방식부터 거른다</b>주주배정 계열(주주배정증자, 주주배정후 실권주 일반공모)만 신주인수권증서가 나옵니다. 나머지(제3자배정·일반공모)는 <b>관찰</b> 탭으로 빠집니다.</div>
+<div class="uc"><b class="t">2단계 · 회사부터 본다 (B = 본업)</b>자금 목적 막대가 <b style="color:var(--red)">채무상환</b> 위주거나, 신주÷기존주가 100%를 넘는 <b>초대형 희석</b>이면 빨간 배지가 붙습니다. 필터 5개(업계 1~3위 / 안 망할 회사 / 대체 불가 / 영업흑자 / 52주 중간 이하)를 통과해야 B 후보입니다.</div>
+<div class="uc"><b class="t">3단계 · 사이클 위치를 본다</b>카드의 금색 라벨이 지금 구간입니다: ① 권리 확보 → ② 권리락 후 → ③ <b>인수권 거래 중</b> → ④ 청약 → ⑤ 상장 대기 → ⑥ 상장 후 매물 소화. 타임라인의 빨간 선이 오늘입니다.</div>
+<div class="uc"><b class="t">4단계 · 인수권 괴리를 본다 (A = 보너스)</b>괴리율 = 인수권 ÷ (본주 − 발행가) − 1.<br><b class="neg">음수(초록)</b> = 인수권이 싸다 → "인수권 매수 + 청약"으로 본주보다 싸게 신주 확보 검토.<br><b class="pos">양수(빨강)</b> = 인수권이 비싸다 → 보유 인수권 매도 검토.<br>예) SK디앤디 12R: 인수권 636 / 이론가 1,135(3,395 − 2,260) → <b class="neg">−44%</b>, 인수권+청약 원가 2,896원.</div>
+<h3>⚖️ 이미 결론 난 것 (재논의 금지)</h3>
+<p>할인율은 수익이 아닙니다. 권리락 이론가 <code>P_x = (P + r·I) / (1 + r)</code>로 이론상 제로섬이고, 인수권 매도 대금은 깎인 보유주 가치의 보상입니다. 초과청약은 배정주식의 20% 한도이고 실권주가 있어야만 배정됩니다. 진짜 엣지는 <b>회복(B)·수급 타이밍·인수권 괴리(A)·레버리지</b>입니다.</p>
+<h3>🤖 GPT 분석지침 — 프롬프트 두 종류</h3>
+<div class="uc"><b class="t">전체 브리핑 프롬프트 (상단 금색 버튼)</b>진행 중인 모든 케이스와 오늘의 인수권 전체를 한 번에 넘깁니다. GPT가 우선순위 분류(B/A/관찰/제외), 괴리 랭킹 TOP3, 5거래일 캘린더, 가설(H1~H3) 샘플, 위험 신호를 정리합니다. <b>매일 아침 한 번</b> 쓰는 용도입니다.</div>
+<div class="uc"><b class="t">개별기업 분석 프롬프트 (각 카드 하단)</b>한 케이스의 공시·일정·정정 이력·괴리율 추이와 1차 자료 링크를 채워 넘깁니다. 자금 목적의 실체 → 필터 5개 판정 → 발행가 산식·보험 구간 → 최대주주 청약 → A 판정 → 수급 사이클 → 베어 케이스 → 반증 조건 → 결론 순서로 깊게 분석합니다.</div>
+<p>두 프롬프트 모두 위 결론을 <b>전제</b>로, 이 수집기의 맹점(파서 미검증·권리락일 추정·발행가 산식 미확인)을 <b>검증 지침</b>으로 담고 있습니다. <b>1차 자료(DART 원문·증권신고서)를 같이 읽힐수록</b> 품질이 올라갑니다.</p>
+<h3>⛔ 이 도구가 하지 않는 것</h3>
+<p>매수·매도 신호, 목표가는 주지 않습니다. MACD·볼린저는 쓰지 않습니다(타이밍은 일목·RSI 50 게이트·ATR로만). 최종 판단은 1차 자료와 미래에셋 화면으로 직접 확인한 뒤 형님이 내립니다.</p>
+</div></div>
+
 <footer>데이터: OpenDART(유상증자결정·증권신고서·원문), KRX Open API(sr_bydd_trd·stk/ksq_bydd_trd).
 권리락일은 기준일 전 1영업일 추정치. 일정 파서는 실제 공시로 검증 전이므로 원문 링크로 반드시 교차확인.
 매매 판단은 미래에셋 화면으로 눈검증.</footer>
 </div>
+<script src="./prompts.js"></script>
 <script>
 const $=s=>document.querySelector(s);
 const fmt=n=>n==null?'—':Number(n).toLocaleString('ko-KR');
@@ -170,13 +221,18 @@ function caseCard(c){
     h.warnings.filter(w=>!w.includes('미검증')&&!w.includes('추정')).length?`<div class="warn">⚠ ${h.warnings.filter(w=>!w.includes('미검증')&&!w.includes('추정')).map(esc).join(', ')}</div>`:''}</div>`).join('');
   return `<div class="card ${c.is_rights?'rights':''}">
   <div class="ch"><div><div class="cn"><a href="${dartUrl(c.first_rcept_no)}" target="_blank" rel="noopener">${esc(c.corp_name)}</a> <span class="mut" style="font-size:13px">${esc(c.stock_code||'')} · ${esc(c.market||'')}</span></div>
-  <div class="meta">최초 공시 ${c.first_rcept_dt} · ${esc(c.ic_mthn||'증자방식 미상')}</div></div>
+  <div class="meta">최초 공시 ${c.first_rcept_dt} · ${esc(c.ic_mthn||'증자방식 미상')}</div>
+  ${c.is_rights&&c.status==='open'?`<span class="stage">${esc(caseStage(s))}</span>`:''}</div>
   <div>${c.is_rights?'<span class="badge gold">주주배정 · 인수권</span>':'<span class="badge">관찰</span>'} ${debt?'<span class="badge red">채무상환형</span>':''} ${big?'<span class="badge red">초대형 희석</span>':''}</div></div>
   <div class="grid">${kv('발행가',fmt(s.issue_price)+'원')}${kv('배정비율',s.alloc_ratio??'—')}${kv('신주÷기존주',sm.dilution_ratio!=null?(sm.dilution_ratio*100).toFixed(0)+'%':'—')}${kv('모집 규모',sm.total_amount?Math.round(sm.total_amount/1e8).toLocaleString()+'억':'—')}</div>
   ${purp?`<div class="meta">자금 목적</div><div class="purp">${purp}</div><div class="legend">${leg}</div>`:''}
   ${c.is_rights?timeline(s):''}
   ${spark(c.rights_series)}
   <details><summary>공시·정정 이력 ${c.history.length}건</summary><div class="hist">${hist}</div></details>
+  <details><summary>1차·2차 자료 링크</summary><div class="links">${caseLinks(c).map(([i,n,t,u,d])=>`<a class="lnk" href="${u}" target="_blank" rel="noopener"><span>${i}</span><span>${n}<span class="${t==='1차'?'t1':'t2'}">${t}</span><small>${d}</small></span></a>`).join('')}</div></details>
+  <div class="ai"><div class="nsub">🤖 <b>개별기업 분석 프롬프트</b> — 이 케이스의 공시·일정·괴리율 + DART 1차 자료 링크 + 확정 결론(전제) + 검증 지침이 채워진 질문을 복사합니다. GPT·Claude에 붙여넣으세요.</div>
+  <button class="btn gold" data-label="📋 이 기업 분석 프롬프트 복사" onclick="copyCase(${c.case_id},this)">📋 이 기업 분석 프롬프트 복사</button>
+  <div class="preview" id="pv${c.case_id}"></div></div>
   </div>`;
 }
 
@@ -198,6 +254,11 @@ function renderNotes(){
   $('#notes').innerHTML=n.length?n.map(x=>{const [h,...b]=x.text.split('\n');return `<div class="note"><span class="h">${esc(h)}</span>\n${esc(b.join('\n'))}<div class="mut" style="margin-top:4px">${x.sent_at}${x.delivered?'':' · 미발송'}</div></div>`}).join(''):'<div class="empty">아직 알림이 없습니다.</div>';
 }
 
+function openGuide(){$('#guide').classList.add('show');}
+function closeGuide(){$('#guide').classList.remove('show');}
+addEventListener('keydown',e=>{if(e.key==='Escape')closeGuide();});
+function copyCase(id,btn){const c=DATA.cases.find(x=>x.case_id===id);copyText(buildCasePrompt(c,DATA),btn,$('#pv'+id),btn.dataset.label);}
+function copyBriefing(btn){if(!DATA)return;copyText(buildBriefingPrompt(DATA),btn,$('#briefPreview'),'🤖 전체 브리핑 프롬프트 복사');}
 fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
   DATA=d;
   const c=d.counts;
