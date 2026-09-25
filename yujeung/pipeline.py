@@ -15,8 +15,8 @@ from .detect import (DetectEvent, detect, drop_case, merge_duplicate_cases, purg
 from .krx import KrxClient, KrxError
 from .naver import INDEX_SYMBOL, NaverClient, NaverError
 from .prices import collect_day, compute_gap, gaps_for_day, relink_rights
-from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount, find_dates, parse_documents,
-                              validate_schedule)
+from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount, find_dates, issue_kind,
+                              parse_documents, validate_schedule)
 from .verdict import decide, gate1, reason_line
 
 SCHEDULE_LABELS = {
@@ -52,15 +52,23 @@ def latest_schedule(conn: sqlite3.Connection, case_id: int, exclude: str | None 
     piic = [r for r in rows if r["kind"] == "piic" and any(r[k] for k in _DATE_FIELDS)]
     base = piic[-1] if piic else next((r for r in reversed(rows) if r["kind"] == "piic"), None)
     merged: dict = {k: base[k] for k in SCHEDULE_LABELS if base[k] is not None} if base else {}
+    price_row = base if base is not None and base["issue_price"] is not None else None
     for r in rows:
         if r["kind"] == "piic" or (base is not None and r["rcept_no"] < base["rcept_no"]):
             continue
         for k in SCHEDULE_LABELS:
             if r[k] is not None:
                 merged[k] = r[k]
+        if r["issue_price"] is not None:
+            price_row = r
     if merged.get("record_date"):
         from .calendar_kr import ex_rights_date
         merged["ex_rights_date"] = ex_rights_date(merged["record_date"])
+    if price_row is not None:
+        # 발행가 구분: 라벨(확정발행가/1차/예정발행가) 우선, 없으면 그 값을 낸 공시의 날짜로
+        label_kind = json.loads(price_row["extras_json"] or "{}").get("issue_label_kind")
+        merged["issue_kind"] = issue_kind(label_kind, price_row["rcept_no"][:8], merged)
+        merged["issue_rcept_dt"] = price_row["rcept_no"][:8]
     return merged
 
 

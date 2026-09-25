@@ -70,10 +70,7 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
     daily = conn.execute("SELECT bas_dd, close, volume FROM stock_daily WHERE code=? AND close IS NOT NULL "
                          "AND bas_dd <= ? ORDER BY bas_dd DESC LIMIT 300",
                          (c["stock_code"], today.isoformat())).fetchall()[::-1]
-    # 확정발행가: 산정일 이후 접수된 공시에 발행가가 있으면 확정으로 본다
-    confirmed = bool(sch.get("price_fix_date") and conn.execute(
-        "SELECT 1 FROM schedule_versions WHERE case_id=? AND issue_price IS NOT NULL AND substr(rcept_no,1,8) >= ?",
-        (c["case_id"], sch["price_fix_date"].replace("-", ""))).fetchone())
+    confirmed = sch.get("issue_kind") == "확정"   # 확정발행가 라벨 또는 확정 산정일 이후 공시
     quick = estimate.quick(
         v, live["gate1"], live["gap"], sch, latest_facts(conn, c["case_id"]),
         [(r["bas_dd"], r["close"]) for r in daily], [r["volume"] for r in daily],

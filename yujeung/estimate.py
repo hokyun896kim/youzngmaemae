@@ -47,38 +47,50 @@ def stage(sch: dict, today: date) -> str:
 
 
 def issue_estimate(sch: dict, d: float | None, r: float | None, closes: list[tuple[str, int]],
-                   today: date, confirmed: bool) -> dict:
-    """closes: [(YYYY-MM-DD, 종가)] 오름차순. 반환 value = 이번 계산에 쓸 발행가."""
+                   today: date, confirmed: bool = False) -> dict:
+    """closes: [(YYYY-MM-DD, 종가)] 오름차순. 반환 value = 이번 계산에 쓸 발행가.
+    공시 발행가는 구분(sch.issue_kind)에 따라 다르게 쓴다:
+      확정 → 그대로 / 1차('1차' 라벨 또는 1차 산정일 이후 공시) → I1 로 사용 /
+      예정(예정발행가 = 이사회 당시 가격) → I1 로 쓰지 않고 권리락 직전 종가(권리락 전이면 현재가)로 계산"""
     disclosed = sch.get("issue_price")
-    if confirmed and disclosed:
-        return {"value": disclosed, "kind": "확정", "text": f"확정발행가 {disclosed:,}원"}
+    kind = "확정" if confirmed else (sch.get("issue_kind") or "예정")
+    if kind == "확정" and disclosed:
+        return {"value": disclosed, "kind": "확정", "issue_kind": kind, "text": f"확정발행가 {disclosed:,}원"}
     if not d or not r or not closes:
         why = "할인율 미확인" if not d else "배정비율 미확인" if not r else "주가 없음"
-        return {"value": disclosed, "kind": "공시", "d": d, "r": r,
-                "text": f"공시 발행가 {disclosed:,}원 ({why} — 추정 불가)" if disclosed else f"발행가 미확인 ({why})"}
+        return {"value": disclosed, "kind": "공시", "issue_kind": kind, "d": d, "r": r,
+                "text": f"공시 {kind}발행가 {disclosed:,}원 ({why} — 추정 불가)" if disclosed else f"발행가 미확인 ({why})"}
     ex = sch.get("ex_rights_date")
     p_now = closes[-1][1]
-    out = {"d": d, "r": r, "disclosed": disclosed}
+    out = {"d": d, "r": r, "disclosed": disclosed, "issue_kind": kind}
+    use_disclosed = kind == "1차" and bool(disclosed)
+    formula = f"× (1−{d:.0%}) ÷ (1 + {r:g}×{d:.0%})"
     if not ex or today.isoformat() < ex:
-        i1 = p_now * (1 - d) / (1 + r * d)
-        out.update(value=round(i1), kind="1차 추정", i1=round(i1), px=round(p_now / (1 + r * d)),
-                   text=f"1차 추정 {round(i1):,}원 = 현재가 {p_now:,} × (1−{d:.0%}) ÷ (1 + {r:g}×{d:.0%})")
+        px = round(p_now / (1 + r * d))
+        if use_disclosed:
+            out.update(value=disclosed, kind="1차 공시", i1=disclosed, px=px, text=f"1차 발행가(공시) {disclosed:,}원")
+        else:
+            i1 = round(p_now * (1 - d) / (1 + r * d))
+            out.update(value=i1, kind="1차 추정", i1=i1, px=px,
+                       text=f"1차 추정 {i1:,}원 = 현재가 {p_now:,} {formula}"
+                            + (f" (공시 {disclosed:,}원은 예정발행가라 안 씀)" if disclosed else ""))
         return out
     pre = [c for dd, c in closes if dd < ex]
     post = [c for dd, c in closes if dd >= ex]
-    # 권리락 후엔 1차 발행가가 이미 공시돼 있다(기준일 전 산정) → 공시값이 계산값보다 정확. 없을 때만 계산
-    i1 = disclosed or (pre[-1] * (1 - d) / (1 + r * d) if pre else None)
-    i1_src = "공시" if disclosed else "추정"
+    if use_disclosed:
+        i1, i1_txt = disclosed, f"1차(공시) {disclosed:,}"
+    elif pre:
+        i1 = round(pre[-1] * (1 - d) / (1 + r * d))
+        i1_txt = f"1차(권리락 직전 종가 {pre[-1]:,} {formula}) {i1:,}"
+    else:
+        i1, i1_txt = None, "1차 미확인"
     if not post:
-        out.update(value=round(i1) if i1 else None, kind="1차 추정", i1=round(i1) if i1 else None,
-                   text="권리락 후 주가 없음 — 1차 추정만")
+        out.update(value=i1, kind="1차 추정", i1=i1, text=f"{i1_txt} — 권리락 후 주가 없음")
         return out
-    i2 = post[-1] * (1 - d)
+    i2 = round(post[-1] * (1 - d))
     est = min(v for v in (i1, i2) if v)
-    out.update(value=round(est), kind="최종 추정", i1=round(i1) if i1 else None, i2=round(i2),
-               text=f"최종 추정 {round(est):,}원 = min(1차({i1_src}) {round(i1):,}, 2차 {round(i2):,})"
-                    f" · 2차 = 권리락 후 주가 {post[-1]:,} × (1−{d:.0%})" if i1 else
-                    f"2차 추정 {round(i2):,}원 (1차 미확인)")
+    out.update(value=est, kind="최종 추정", i1=i1, i2=i2,
+               text=f"최종 추정 {est:,}원 = min({i1_txt}, 2차 {i2:,}) · 2차 = 권리락 후 주가 {post[-1]:,} × (1−{d:.0%})")
     return out
 
 
