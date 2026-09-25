@@ -18,7 +18,7 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 3   # 3: 최대주주 청약·인수방식 추출, 3자배정 공시(한 줄 청약일)도 파싱
+PARSER_VERSION = 4   # 4: 정정공시의 '정정전/정정후' 표는 본문 파싱에서 빼고 정정후 값만 보조로 사용, 할인율 추출
 
 _DATE_RE = re.compile(
     r"(20\d{2})\s*(?:년|[.\-/])\s*(\d{1,2})\s*(?:월|[.\-/])\s*(\d{1,2})\s*일?"
@@ -26,6 +26,7 @@ _DATE_RE = re.compile(
 )
 _NUM_RE = re.compile(r"(?<![\d.])\d{1,3}(?:,\d{3})+(?:\.\d+)?(?![\d.])|(?<![\d.,])\d+(?:\.\d+)?(?![\d.,])")
 _ROW_RE = re.compile(r"<TR\b[^>]*>(.*?)</TR>", re.S | re.I)
+_TABLE_RE = re.compile(r"<TABLE\b[^>]*>.*?</TABLE>", re.S | re.I)
 _CELL_RE = re.compile(r"<(TD|TH|TE|TU)\b[^>]*>(.*?)</\1>", re.S | re.I)
 _TAG_RE = re.compile(r"<[^>]+>")
 
@@ -63,6 +64,39 @@ def table_rows(doc: str) -> list[list[str]]:
         if cells:
             rows.append(cells)
     return rows
+
+
+def split_corrections(doc: str) -> tuple[str, list[list[str]]]:
+    """정정공시 앞머리의 '정정전 | 정정후' 표를 떼어낸다 → (본문, 정정후 행들).
+    실측(이렘 2026-09-23 기재정정): 이 표가 본문보다 먼저 나와 첫 값(=정정전)이 일정으로 잡혔다.
+    정정후 행 = 라벨 셀 + 마지막 값 셀 (값이 2개 이상인 행만 — 하나뿐이면 정정전인지 알 수 없다)."""
+    corrected: list[list[str]] = []
+
+    def cut(m: re.Match) -> str:
+        text = clean(m.group(0)).replace(" ", "")
+        if "정정전" not in text or "정정후" not in text:
+            return m.group(0)
+        for cells in table_rows(m.group(0)):
+            values = [c for c in cells if _is_value(c)]
+            labels = [c for c in cells if not _is_value(c)]
+            if len(values) >= 2 and labels:
+                corrected.append(labels + [values[-1]])
+        return " "
+
+    return _TABLE_RE.sub(cut, doc), corrected
+
+
+_DISCOUNT_RE = re.compile(r"할인율\s*[(:：]?\s*(\d{1,2}(?:\.\d+)?)\s*%")
+
+
+def extract_discount(text: str) -> float | None:
+    """1차·2차 발행가 산식의 할인율(예: '할인율 25%', '할인율(35%)'). 가장 많이 나온 값, 5~60% 만."""
+    counts: dict[float, int] = {}
+    for m in _DISCOUNT_RE.finditer(text):
+        v = float(m.group(1))
+        if 5 <= v <= 60:
+            counts[v] = counts.get(v, 0) + 1
+    return max(counts, key=lambda v: (counts[v], v)) / 100 if counts else None
 
 
 def _is_value(cell: str) -> bool:
@@ -199,6 +233,39 @@ _RIGHTS_TEXT_RE = re.compile(r"신주인수권증서[^.。\n]{0,80}?(?:상장|�
 
 
 def parse_document(doc: str) -> Schedule:
+    """정정공시면 '정정전/정정후' 표를 빼고 본문(정정 반영된 전체 원문)으로 파싱하고,
+    본문에서 못 찾은 필드만 정정후 값으로 채운다. 둘이 다르면 경고."""
+    body, corrected = split_corrections(doc)
+    s = _parse_body(body)
+    text = clean(doc)
+    if corrected:
+        rows = "".join("<TR>" + "".join(f"<TD>{html.escape(c)}</TD>" for c in cells) + "</TR>" for cells in corrected)
+        c = _parse_body(f"<TABLE>{rows}</TABLE>")
+        filled, differ = [], []
+        for k in Schedule.FIELDS:
+            new = getattr(c, k)
+            if new is None:
+                continue
+            if getattr(s, k) is None:
+                setattr(s, k, new)
+                filled.append(k)
+            elif getattr(s, k) != new:
+                differ.append(f"{k} 본문 {getattr(s, k)} / 정정후 {new}")
+        if filled and s.record_date and "ex_rights_date" not in filled:
+            s.ex_rights_date = ex_rights_date(s.record_date)
+        s.warnings = [w for w in s.warnings if not any(w == f"{k} 못 찾음" for k in filled)]
+        if differ:
+            s.warnings.append("정정표와 본문 불일치 — 원문 확인: " + "; ".join(differ))
+        s.extras["corrections"] = {"rows": len(corrected), "filled": filled}
+    if "정정신고서제출요구" in text.replace(" ", "") and not any("정정신고서" in w for w in s.warnings):
+        s.warnings.append("⚠ 금감원 정정신고서 제출요구 이력")
+    s.extras["facts"] = {"major_holder": extract_major_holder(text),
+                         "underwriting": extract_underwriting([], table_rows(doc), text),
+                         "discount": extract_discount(text)}
+    return s
+
+
+def _parse_body(doc: str) -> Schedule:
     s = Schedule()
     raw_rows = table_rows(doc)
     rows = labeled_rows(raw_rows)
@@ -287,9 +354,6 @@ def parse_document(doc: str) -> Schedule:
         evidence.pop("rights_start", None)
         evidence.pop("rights_end", None)
 
-    if "정정신고서제출요구" in clean(doc).replace(" ", ""):
-        s.warnings.append("⚠ 금감원 정정신고서 제출요구 이력")
-
     if s.record_date:
         s.ex_rights_date = ex_rights_date(s.record_date)
         s.warnings.append("권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)")
@@ -298,10 +362,7 @@ def parse_document(doc: str) -> Schedule:
         if getattr(s, name) is None:
             s.warnings.append(f"{name} 못 찾음")
     s.warnings.append("미검증 파서: 실제 공시 원문으로 정확도 확인 전")
-    text = clean(doc)
-    s.extras = {"evidence": evidence, "parser": PARSER_VERSION,
-                "facts": {"major_holder": extract_major_holder(text),
-                          "underwriting": extract_underwriting(rows, raw_rows, text)}}
+    s.extras = {"evidence": evidence, "parser": PARSER_VERSION}
     return s
 
 

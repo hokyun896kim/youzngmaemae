@@ -115,6 +115,14 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .result table{min-width:0}
 .result td,.result th{padding:5px 8px;font-size:12px}
 .warnbox{margin:8px 0;font-size:12px;color:#e8c46a}
+.quick{margin:0 0 12px;border:1px solid rgba(212,175,55,.45);border-radius:12px;padding:10px 12px;background:rgba(212,175,55,.06)}
+.quick .qw{font-size:17px;font-weight:800;color:var(--gold2)}
+.quick .ql{font-size:12.5px;margin-top:4px;line-height:1.55}
+.quick .ql span{color:var(--mut);display:inline-block;min-width:64px}
+.quick table{min-width:0;margin-top:8px}
+.quick td,.quick th{padding:4px 8px;font-size:12px}
+.quick .fn{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5}
+.quick .red{color:#f0a8a2;font-weight:700}
 footer{color:var(--mut);font-size:11px;margin:34px 0 10px;line-height:1.7}
 a{color:var(--gold2)}
 </style></head><body><div class="wrap">
@@ -249,9 +257,10 @@ function caseCard(c){
   const vbar=v?`<div class="vbar"><span class="vbadge ${v.code}">${v.emoji} ${esc(v.name)}${v.provisional?' · 잠정':''}</span><div class="vreason">${esc(v.reason)}<small>${v.provisional?'인수권 마지막 날 괴리로 확정됩니다':'확정 '+v.decided_on+(v.live_reason!==v.reason?' · 현재: '+esc(v.live_reason):'')}${g&&g.reit_note?' · '+esc(g.reit_note):''}</small></div></div>`:'';
   const ico={pass:'✅',fail:'❌',unknown:'❔',manual:'🤖'};
   const crit=g?`<div class="crit">${g.criteria.map(x=>`<span class="cr ${x.status}" title="${esc(x.label)}">${ico[x.status]} ${esc(x.text==='GPT 확인 필요'?x.label+' · GPT 확인 필요':x.text)}</span>`).join('')}</div>`:'';
+  const quick=quickBox(c);
   const swarn=(c.schedule_warnings||[]).length?`<div class="warnbox">⚠ ${(c.schedule_warnings).map(esc).join(' · ')}</div>`:'';
   return `<div class="card ${c.is_rights?'rights':''}" id="case${c.case_id}">
-  ${vbar}${crit}
+  ${vbar}${quick}${crit}
   <div class="ch"><div><div class="cn"><a href="${dartUrl(c.first_rcept_no)}" target="_blank" rel="noopener">${esc(c.corp_name)}</a> <span class="mut" style="font-size:13px">${esc(c.stock_code||'')} · ${esc(c.market||'')}</span></div>
   <div class="meta">최초 공시 ${c.first_rcept_dt} · ${esc(c.ic_mthn||'증자방식 미상')}</div>
   ${c.is_rights&&c.status==='open'?`<span class="stage">${esc(caseStage(s))}</span>`:''}</div>
@@ -320,6 +329,19 @@ function renderScore(){
   }</tbody></table></div><div class="meta" style="margin-top:6px">표본 수: 기록 ${rows.reduce((a,r)=>a+r.n,0)}건 / 완료 ${rows.reduce((a,r)=>a+r.done,0)}건. 🟢⚪ 인수권 마지막 날 종가+발행가로 청약 · 🟡 신주 상장일 종가 매수 · 🔵 (상장 후 가격−발행가)÷인수권 매도가−1.</div>`;
 }
 
+function quickBox(c){
+  const q=c.quick; if(!q) return '';
+  const v=c.verdict||{}, be=q.breakeven, is=q.issue||{}, o=q.overhang;
+  const rows=(q.table||[]).map(t=>`<tr><td>${t.name} ${(t.pct>0?'+':'')+t.pct}%</td><td>상장일 주가 <b>${fmt(t.price)}</b>원</td><td>→ 수익률 <b class="${t.pct>=0?'pos':'neg'}">${(t.pct>0?'+':'')+t.pct}%</b></td></tr>`).join('');
+  return `<div class="quick"><div class="qw">${v.emoji||''} ${esc(q.word)} <span class="mut" style="font-size:12px;font-weight:600">· 30초 결론 · ${esc(q.stage_name)}</span></div>
+  <div class="ql"><span>이유</span>${esc(q.reason)}</div>
+  <div class="ql"><span>다시 볼 조건</span>${esc(q.recheck)}</div>
+  <div class="ql"><span>발행가</span>${esc(is.text||'—')}</div>
+  ${be?`<div class="ql"><span>본전선</span><b>${fmt(be.value)}원</b> — ${esc(be.how)} (${esc(be.text)})</div>`:`<div class="ql"><span>본전선</span><span class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</span></div>`}
+  ${o?`<div class="ql"><span>매물 소화</span><b class="${o.red?'red':''}">평소 거래량 ${o.days.toLocaleString()}일치</b> <span class="mut" style="min-width:0">(신주 ${fmt(o.new_shares)}주 ÷ 최근 ${o.n}일 평균 ${fmt(o.avg_volume)}주)</span></div>`:''}
+  ${rows?`<table><thead><tr><th>시나리오(본전선 대비)</th><th>상장일 주가</th><th>수익률</th></tr></thead><tbody>${rows}</tbody></table><div class="fn">${esc(q.table_note)}<br>2차 발행가는 반드시 권리락 <b>후</b> 주가로 계산합니다.</div>`:''}
+  </div>`;
+}
 function resultBlock(c){
   const p=c.paper; if(!p) return c.is_rights?`<div class="result"><h4>들어갔다면?</h4><div class="meta">인수권 마지막 거래일 종가가 들어오면 판정을 확정하고 가상 진입을 기록합니다.</div></div>`:'';
   const e=p.eval, V=(DATA.verdicts||{})[p.verdict]||{emoji:'',name:p.verdict};

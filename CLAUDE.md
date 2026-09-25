@@ -9,10 +9,11 @@
 ## 코드 구조 (Phase 0)
 - `yujeung/dart.py` — OpenDART (list / piicDecsn / estkRs / document). piicDecsn 은 corp_code 필수 → list.json 으로 먼저 감지
 - `yujeung/detect.py` — 유상증자결정 감지 + 주주배정 필터 + 정정 공시를 케이스로 묶기
-- `yujeung/schedule_parser.py` — 공시 원문에서 일정·발행가 추출 (정정마다 schedule_versions 에 버전 저장)
+- `yujeung/schedule_parser.py` — 공시 원문에서 일정·발행가·할인율 추출 (정정마다 schedule_versions 에 버전 저장). 정정공시의 '정정전/정정후' 표는 본문 파싱에서 제외. 케이스 일정 = 최신 유상증자결정 원문 기준(`pipeline.latest_schedule`)
 - `yujeung/krx.py`, `yujeung/prices.py` — KRX Open API 인수권(sr_bydd_trd)·본주 시세, 괴리율
 - `yujeung/notify.py` — 알림 문구 생성·기록만 (발송 없음, 헤더 자동, 순번 = notifications.seq). 알림 역할은 사이트 '오늘 볼 것'
 - `yujeung/verdict.py` — 관문1(채무상환·희석·최대주주·영업흑자·52주·총액인수)+관문2(괴리) → 🟢🟡🔵⚪
+- `yujeung/estimate.py` — 카드 '30초 결론' + 발행가 추정(할인율 d) + 단계별 본전선 + 어림 손익표 + 매물 소화일수
 - `yujeung/paper.py` — 가상 성과: 인수권 마지막 날 판정 스냅샷(불변) + 상장 후 수익률·지수 초과
 - `yujeung/naver.py` — 네이버 일봉(본주·지수), `dart.latest_op_income` — 직전 분기 영업이익
 - `yujeung/pipeline.py` — daily 흐름, `yujeung/export.py` — data/site.json, `index.html` — 화면

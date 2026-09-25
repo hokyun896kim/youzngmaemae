@@ -164,6 +164,10 @@ def test_backfill_end_to_end_and_idempotent():
     white = next(r for r in site["scorecard"] if r["verdict"] == "white")
     assert white["n"] == 1 and white["done"] == 1 and white["win_rate"] == 100
     assert sk["verdict"]["provisional"] is False
+    # [8] 30초 결론: 관문1 탈락 → 패스, 희석 100% 이상이라 재검토 조건 없음. 상장 후라 손익표 없음
+    q = sk["quick"]
+    assert q["word"] == "패스" and "재검토 없음" in q["recheck"]
+    assert q["stage"] == "listed" and q["table"] == []
 
     # 재실행해도 결과 동일 + 제외된 공시의 원문은 다시 받지 않음
     before = {t: conn.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]

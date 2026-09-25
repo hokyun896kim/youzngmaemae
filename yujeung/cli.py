@@ -92,6 +92,17 @@ def print_case(conn, cfg: Config, code: str, today) -> None:
               "(잠정)" if j["verdict"]["provisional"] else f"(확정 {j['verdict']['decided_on']})")
         print("  관문1:", "; ".join(f"{x['label']}={x['status']}({x['text']})" for x in j["gate1"]["criteria"]))
         print("  재무/52주:", json.dumps(j["facts"], ensure_ascii=False))
+        q = j.get("quick") or {}
+        if q:
+            be = q.get("breakeven")
+            print(f"  30초 결론: {q['word']} | {q['reason']} | 다시 볼 조건: {q['recheck']} | {q['stage_name']}")
+            print(f"  발행가: {q['issue'].get('text')} | 본전선: "
+                  f"{(str(be['value']) + '원 ' + be['how']) if be else '없음'} | 매물 소화: "
+                  f"{(str(q['overhang']['days']) + '일치') if q.get('overhang') else '없음'}")
+        for h in j["history"]:
+            w = [x for x in h["warnings"] if "정정" in x]
+            if w:
+                print(f"  정정 경고 {h['rcept_no']}:", w)
         print("  인수권 괴리율 추이:")
         for p in j["rights_series"]:
             print(f"    {p['d']} {p['name']} 인수권 {p['rights']} 본주 {p['stock']} 발행가 {p['issue']} "

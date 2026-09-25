@@ -147,3 +147,18 @@ def test_reparse_on_parser_version_bump():
     run(conn, date(2026, 9, 24), dart, price_days=1)
     assert conn.execute("SELECT rights_start FROM schedule_versions").fetchone()[0] == "2026-09-21"
     assert conn.execute("SELECT COUNT(*) FROM notifications").fetchone()[0] == n   # 재파싱은 알림 없음
+
+
+def test_correction_discards_old_schedule():
+    """정정공시가 뜨면 옛 일정은 버리고 최신 원문 기준 — 정정본에 없는 값(인수권 기간)이 옛 값으로 메워지지 않는다."""
+    from yujeung.pipeline import latest_schedule
+    conn = db.connect(":memory:")
+    corr_doc = PIIC_DOC.replace("2026년 09월 02일", "2026년 09월 09일").split("<P>신주인수권증서")[0] + "</DOCUMENT>"
+    dart = FakeDart([REPORT, CORR], [PIIC_FIELDS], {REPORT["rcept_no"]: PIIC_DOC, CORR["rcept_no"]: corr_doc})
+    run(conn, date(2026, 9, 24), dart, price_days=1)
+    case_id = conn.execute("SELECT case_id FROM cases").fetchone()[0]
+    s = latest_schedule(conn, case_id)
+    assert s["record_date"] == "2026-09-09" and s["ex_rights_date"] == "2026-09-08"
+    assert s.get("rights_start") is None and s.get("rights_end") is None
+    # 정정 이전 공시만 보면 옛 일정
+    assert latest_schedule(conn, case_id, exclude=CORR["rcept_no"])["rights_start"] == "2026-09-21"
