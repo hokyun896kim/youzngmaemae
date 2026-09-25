@@ -166,9 +166,10 @@ def cmd_verify(args, cfg: Config) -> int:
             sk = next((r for r in krx.rights("20260923") if "디앤디" in (r.get("ISU_NM") or "")), None)
             close = next((r.get("TDD_CLSPRC") for r in krx.stocks("20260923", "Y") if r.get("ISU_CD") == "210980"), None)
             tar = sk.get("TARSTK_ISU_PRSNT_PRC") if sk else None
-            check("대상 본주 가격 = 본주 종가?", tar == close,
-                  f"TARSTK_ISU_PRSNT_PRC={tar} / stk_bydd_trd 종가={close} "
-                  "(다르면 괴리율은 반드시 stk/ksq 종가로 계산 — 현재 코드가 그렇게 함)")
+            # 정보용: 달라도 실패가 아님 (괴리율은 이미 stk/ksq 종가 우선으로 계산)
+            print(f"{'✅' if tar == close else 'ℹ️'} 대상 본주 가격 vs 본주 종가: "
+                  f"TARSTK_ISU_PRSNT_PRC={tar} / stk_bydd_trd 종가={close}"
+                  + ("" if tar == close else " → 다름: 괴리율은 stk/ksq 종가로 계산"))
 
         def stk():
             rows = krx.stocks(d, "Y")
