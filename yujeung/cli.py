@@ -130,7 +130,12 @@ def cmd_verify(args, cfg: Config) -> int:
             # 원문 파서는 주주배정 건으로 최대 3건 실측
             if is_rights_offering(row.get("ic_mthn")) and parsed < 3:
                 parsed += 1
-                sch = parse_documents(dart.document(p["rcept_no"]))
+                files = dart.document(p["rcept_no"])
+                sch = parse_documents(files)
+                from .schedule_parser import labeled_rows, table_rows
+                price_rows = [(lb, v) for body in files.values() for lb, v in labeled_rows(table_rows(body))
+                              if "발행가" in lb][:8]
+                print("   발행가 관련 행:", json.dumps(price_rows, ensure_ascii=False))
                 print(f"   [{p['report_nm']} {p['rcept_no']}] 원문 파싱:", json.dumps(sch.as_row(), ensure_ascii=False))
                 print("   근거:", json.dumps(sch.extras.get("evidence"), ensure_ascii=False))
                 print("   경고:", sch.warnings)
@@ -138,22 +143,36 @@ def cmd_verify(args, cfg: Config) -> int:
             print("   (최근 80일 안에 주주배정 건이 없어 원문 파서 실측 못 함)")
 
     def krx_checks():
+        # API 마다 따로 점검: 전부 401 이면 키 문제, 일부만 401 이면 해당 서비스 이용신청 미승인
         krx = KrxClient(cfg.krx_api_key)
         d = prev_business_day(today_kst()).strftime("%Y%m%d")
-        rows = krx.rights(d)
-        need = {"BAS_DD", "ISU_CD", "ISU_NM", "TDD_CLSPRC", "ISU_PRC", "TARSTK_ISU_SRT_CD", "TARSTK_ISU_PRSNT_PRC"}
-        check("KRX sr_bydd_trd", need <= set(rows[0]) if rows else True,
-              f"{d} {len(rows)}종목 " + (json.dumps(rows[0], ensure_ascii=False) if rows else "(그날 상장 인수권 없음)"))
-        old = krx.rights("20200414")
-        check("KRX 과거분(2020-04-14)", True, f"{len(old)}종목")
-        sk = [r for r in krx.rights("20260923") if "디앤디" in (r.get("ISU_NM") or "")]
-        check("SK디앤디 12R (2026-09-23, 브리프: 636원)", bool(sk),
-              json.dumps(sk[0], ensure_ascii=False) if sk else "못 찾음")
-        stk = krx.stocks(d, "Y")
-        check("KRX stk_bydd_trd", bool(stk) and "TDD_CLSPRC" in stk[0],
-              f"{len(stk)}종목 " + (json.dumps(stk[0], ensure_ascii=False) if stk else ""))
-        ksq = krx.stocks(d, "K")
-        check("KRX ksq_bydd_trd", bool(ksq), f"{len(ksq)}종목")
+
+        def rights_today():
+            rows = krx.rights(d)
+            need = {"BAS_DD", "ISU_CD", "ISU_NM", "TDD_CLSPRC", "ISU_PRC", "TARSTK_ISU_SRT_CD", "TARSTK_ISU_PRSNT_PRC"}
+            check("KRX sr_bydd_trd (신주인수권증서 일별)", need <= set(rows[0]) if rows else True,
+                  f"{d} {len(rows)}종목 " + (json.dumps(rows[0], ensure_ascii=False) if rows else "(그날 상장 인수권 없음)"))
+
+        def rights_old():
+            check("KRX sr_bydd_trd 과거분(2020-04-14)", True, f"{len(krx.rights('20200414'))}종목")
+
+        def rights_sk():
+            sk = [r for r in krx.rights("20260923") if "디앤디" in (r.get("ISU_NM") or "")]
+            check("SK디앤디 12R (2026-09-23, 브리프: 636원)", bool(sk),
+                  json.dumps(sk[0], ensure_ascii=False) if sk else "못 찾음")
+
+        def stk():
+            rows = krx.stocks(d, "Y")
+            check("KRX stk_bydd_trd (유가증권 일별)", bool(rows) and "TDD_CLSPRC" in rows[0],
+                  f"{len(rows)}종목 " + (json.dumps(rows[0], ensure_ascii=False) if rows else ""))
+
+        def ksq():
+            check("KRX ksq_bydd_trd (코스닥 일별)", True, f"{len(krx.stocks(d, 'K'))}종목")
+
+        for name, fn in [("KRX sr_bydd_trd (신주인수권증서 일별)", rights_today), ("KRX sr_bydd_trd 과거분", rights_old),
+                         ("SK디앤디 12R", rights_sk), ("KRX stk_bydd_trd (유가증권 일별)", stk),
+                         ("KRX ksq_bydd_trd (코스닥 일별)", ksq)]:
+            guarded(name, fn)
 
     if cfg.dart_api_key:
         guarded("DART", dart_checks)
