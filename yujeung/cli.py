@@ -253,9 +253,9 @@ def cmd_verify(args, cfg: Config) -> int:
     if cfg.dart_api_key:
         guarded("DART", dart_checks)
         guarded("DART 재무", fin_checks)
-    guarded("네이버 일봉", naver_checks)
     else:
         check("DART_API_KEY", False, "없음")
+    guarded("네이버 일봉", naver_checks)
     if cfg.krx_api_key:
         guarded("KRX", krx_checks)
     else:

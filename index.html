@@ -313,6 +313,7 @@ function jumpTo(id){const c=DATA.cases.find(x=>x.case_id===id);TAB=c.status==='o
 
 function renderScore(){
   const V=DATA.verdicts, rows=DATA.scorecard||[];
+  if(!V){$('#score').innerHTML='<div class="empty">다음 수집부터 성적표가 표시됩니다.</div>';return;}
   const f=v=>v==null?'—':(v>0?'+':'')+v.toFixed(1)+'%';
   $('#score').innerHTML=`<div class="tblw"><table><thead><tr><th>판정</th><th>기록</th><th>완료(+20일)</th><th>승률</th><th>평균 수익률</th><th>최대 손실</th><th>평균 초과(지수 대비)</th></tr></thead><tbody>${
     rows.map(r=>`<tr><td>${V[r.verdict].emoji} ${V[r.verdict].name}</td><td>${r.n}건</td><td>${r.done}건</td><td>${r.win_rate==null?'—':r.win_rate+'%'}</td><td>${f(r.avg)}</td><td>${f(r.worst)}</td><td>${r.avg_excess==null?'—':(r.avg_excess>0?'+':'')+r.avg_excess.toFixed(1)+'%p'}</td></tr>`).join('')
@@ -321,7 +322,7 @@ function renderScore(){
 
 function resultBlock(c){
   const p=c.paper; if(!p) return c.is_rights?`<div class="result"><h4>들어갔다면?</h4><div class="meta">인수권 마지막 거래일 종가가 들어오면 판정을 확정하고 가상 진입을 기록합니다.</div></div>`:'';
-  const e=p.eval, V=DATA.verdicts[p.verdict];
+  const e=p.eval, V=(DATA.verdicts||{})[p.verdict]||{emoji:'',name:p.verdict};
   const rows=(e.points||[]).map(pt=>`<tr><td>${pt.label}</td><td>${pt.date||'—'}</td><td>${fmt(pt.price)}</td><td>${pt.ret!=null?`<b class="${pt.ret>=0?'pos':'neg'}">${(pt.ret>0?'+':'')+pt.ret.toFixed(1)}%</b>`:`<span class="mut">${esc(pt.pending||'—')}</span>`}</td><td>${pt.excess!=null?(pt.excess>0?'+':'')+pt.excess.toFixed(1)+'%p':'—'}</td></tr>`).join('');
   const snap=p.snapshot;
   return `<div class="result"><h4>들어갔다면? — ${V.emoji} ${V.name} (판정일 ${p.decided_on}${snap.backfilled?', 백필':''})</h4>
@@ -340,7 +341,7 @@ fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
   const c=d.counts;
   const age=(Date.now()-new Date(d.generated_at).getTime())/3600e3, stale=!(age<24);
   const rc=d.cases.filter(x=>x.is_rights&&x.status==='open').length;
-  $('#chips').innerHTML=[['갱신',d.generated_at.replace('T',' ').slice(0,16)+(stale?` · ${Math.floor(age)}시간 전`:''),stale],['인수권 시세',d.last_rights_date||'—'],['주주배정 진행',rc+'건'],['가상 기록',c.paper_trades+'건'],['제외 공시',c.excluded_disclosures+'건']].map(([l,v,st])=>`<div class="chip${st?' stale':''}">${l}<b>${v}</b></div>`).join('');
+  $('#chips').innerHTML=[['갱신',d.generated_at.replace('T',' ').slice(0,16)+(stale?` · ${Math.floor(age)}시간 전`:''),stale],['인수권 시세',d.last_rights_date||'—'],['주주배정 진행',rc+'건'],['가상 기록',(c.paper_trades??0)+'건'],['제외 공시',(c.excluded_disclosures??0)+'건']].map(([l,v,st])=>`<div class="chip${st?' stale':''}">${l}<b>${v}</b></div>`).join('');
   renderToday();renderRights();renderCases();renderScore();
 }).catch(e=>{$('#chips').innerHTML=`<div class="empty">data/site.json 을 읽지 못했습니다 (${esc(e.message)}). 로컬에선 python -m http.server 로 여세요.</div>`});
 </script></body></html>
