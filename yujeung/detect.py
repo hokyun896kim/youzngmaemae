@@ -21,6 +21,13 @@ def is_correction(report_nm: str) -> bool:
     return report_nm.strip().startswith("[")
 
 
+LISTED = ("Y", "K", "N")   # 유가 / 코스닥 / 코넥스. 기타법인(E)은 인수권 시장이 없어 제외
+
+
+def is_listed(rep: dict) -> bool:
+    return rep.get("corp_cls") in LISTED and bool((rep.get("stock_code") or "").strip())
+
+
 def is_rights_offering(ic_mthn: str | None) -> bool:
     """신주인수권증서가 나오는 방식 = 주주배정 계열(주주배정증자, 주주배정후 실권주 일반공모)."""
     return bool(ic_mthn) and "주주배정" in ic_mthn.replace(" ", "")
@@ -95,7 +102,8 @@ def upsert_disclosure(conn, rep: dict, fields: dict) -> DetectEvent | None:
 
 
 def detect(client: DartClient, conn: sqlite3.Connection, bgn_de: str, end_de: str) -> list[DetectEvent]:
-    reports = [r for r in client.search(bgn_de, end_de, pblntf_ty="B") if is_piic_report(r.get("report_nm", ""))]
+    reports = [r for r in client.search(bgn_de, end_de, pblntf_ty="B")
+               if is_piic_report(r.get("report_nm", "")) and is_listed(r)]
     reports.sort(key=lambda r: r["rcept_no"])   # 원공시 → 정정 순서 보장
     events = []
     for rep in reports:
@@ -106,6 +114,21 @@ def detect(client: DartClient, conn: sqlite3.Connection, bgn_de: str, end_de: st
         if ev:
             events.append(ev)
     return events
+
+
+def purge_unlisted(conn: sqlite3.Connection) -> int:
+    """초기 버전이 적재한 비상장(기타법인) 케이스와 그 알림을 지운다. 멱등."""
+    ids = [r[0] for r in conn.execute("SELECT case_id FROM cases WHERE stock_code IS NULL OR stock_code=''")]
+    for cid in ids:
+        rcepts = [r[0] for r in conn.execute("SELECT rcept_no FROM disclosures WHERE case_id=?", (cid,))]
+        for rn in rcepts:
+            conn.execute("DELETE FROM notifications WHERE dedup_key IN (?, ?)", (f"new:{rn}", f"chg:{rn}"))
+        conn.execute("DELETE FROM schedule_versions WHERE case_id=?", (cid,))
+        conn.execute("DELETE FROM disclosures WHERE case_id=?", (cid,))
+        conn.execute("UPDATE rights_daily SET case_id=NULL WHERE case_id=?", (cid,))
+        conn.execute("DELETE FROM cases WHERE case_id=?", (cid,))
+    conn.commit()
+    return len(ids)
 
 
 def summarize_fields(fields: dict) -> dict:

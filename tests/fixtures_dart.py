@@ -45,3 +45,12 @@ PIIC_DOC_REAL_SHAPE = """<DOCUMENT><TABLE><TBODY>
 <TR><TD>종료일</TD><TD>2026년 11월 10일</TD></TR>
 <TR><TD>12. 납입일</TD><TD>2026년 11월 12일</TD></TR>
 </TBODY></TABLE></DOCUMENT>"""
+
+# 실측(삼성FN리츠·엔젠바이오·경남제약 2026-09)에서 오파싱된 행 구조
+PIIC_DOC_TRAPS = """<DOCUMENT><TABLE><TBODY>
+<TR><TD>8. 신주배정기준일</TD><TD>2026년 09월 22일</TD></TR>
+<TR><TD>11. 청약예정일</TD><TD>구주주</TD><TD>시작일</TD><TD>2026년 11월 02일</TD></TR>
+<TR><TD>종료일</TD><TD>2026년 11월 03일</TD></TR>
+<TR><TD>청약대상자</TD><TD>구주주(신주인수권증서 보유자)</TD><TD>2026년 11월 02일</TD><TD>2026년 11월 03일</TD></TR>
+<TR><TD>라. 신주인수권에 관한 사항</TD><TD>관계기관의 '증권신고서에 대한 정정신고서 제출요구'에 따른 정정</TD><TD>2026년 10월 15일</TD><TD>2026년 10월 21일</TD><TD>3) 신주인수권증서 상장예정기간 : 추후결정</TD></TR>
+</TBODY></TABLE></DOCUMENT>"""

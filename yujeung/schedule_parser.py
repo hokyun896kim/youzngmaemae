@@ -15,6 +15,9 @@ from dataclasses import dataclass, field
 
 from .calendar_kr import ex_rights_date
 
+# 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
+PARSER_VERSION = 2
+
 _DATE_RE = re.compile(
     r"(20\d{2})\s*(?:년|[.\-/])\s*(\d{1,2})\s*(?:월|[.\-/])\s*(\d{1,2})\s*일?"
     r"|(?<!\d)(20\d{2})(\d{2})(\d{2})(?!\d)"
@@ -161,7 +164,11 @@ def parse_document(doc: str) -> Schedule:
             n = _first_number(values)
             if n is not None:
                 s.alloc_ratio, evidence["alloc_ratio"] = n, label
-        elif "신주인수권증서" in label and date:
+        elif ("신주인수권증서" in label and date and "보유자" not in label
+              and any(k in label for k in ("상장", "매매", "거래"))):
+            if any(k in label for k in ("추후", "미정")):
+                s.warnings.append("인수권 상장기간 추후결정 (정정 대기)")
+                continue
             if "종료" in label and not s.rights_end:
                 s.rights_end, evidence["rights_end"] = date, label
             elif "시작" in label and not s.rights_start:
@@ -195,7 +202,7 @@ def parse_document(doc: str) -> Schedule:
             s.warnings.append("확정발행가 날짜가 청약일 이후 — 원문 확인 필요")
 
     # 표에 없으면 본문(기타 투자판단 사항)에서 "신주인수권증서 상장/매매 … 날짜 ~ 날짜"
-    if not s.rights_start:
+    if not s.rights_start and not any("추후결정" in w for w in s.warnings):
         text = clean(doc)
         for m in _RIGHTS_TEXT_RE.finditer(text):
             ds = find_dates(m.group(0))
@@ -205,6 +212,16 @@ def parse_document(doc: str) -> Schedule:
                 evidence["rights_start"] = m.group(0)[:120]
                 break
 
+    # 인수권 거래는 청약 전에 끝난다. 청약 시작일 이후로 잡힌 기간은 오파싱으로 보고 버린다.
+    if s.rights_start and s.subs_start and (s.rights_end or s.rights_start) >= s.subs_start:
+        s.warnings.append(f"인수권 상장기간 {s.rights_start}~{s.rights_end} 이 청약({s.subs_start}) 이후라 버림")
+        s.rights_start = s.rights_end = None
+        evidence.pop("rights_start", None)
+        evidence.pop("rights_end", None)
+
+    if "정정신고서제출요구" in clean(doc).replace(" ", ""):
+        s.warnings.append("⚠ 금감원 정정신고서 제출요구 이력")
+
     if s.record_date:
         s.ex_rights_date = ex_rights_date(s.record_date)
         s.warnings.append("권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)")
@@ -213,7 +230,7 @@ def parse_document(doc: str) -> Schedule:
         if getattr(s, name) is None:
             s.warnings.append(f"{name} 못 찾음")
     s.warnings.append("미검증 파서: 실제 공시 원문으로 정확도 확인 전")
-    s.extras = {"evidence": evidence}
+    s.extras = {"evidence": evidence, "parser": PARSER_VERSION}
     return s
 
 

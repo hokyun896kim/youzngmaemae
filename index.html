@@ -215,6 +215,7 @@ function caseCard(c){
   const purp=Object.entries(pp).map(([k,v])=>`<i style="width:${v}%;background:${PURP_COL[k]||'#555'}" title="${k} ${v}%"></i>`).join('');
   const leg=Object.entries(pp).map(([k,v])=>`<span><i style="background:${PURP_COL[k]}"></i>${k} ${v}%</span>`).join('');
   const debt=(pp['채무상환']||0)>=50, big=(sm.dilution_ratio||0)>=1;
+  const fssReq=c.history.some(h=>h.warnings.some(w=>w.includes('정정신고서 제출요구')));
   const kv=(l,v)=>`<div class="kv"><span>${l}</span><b>${v}</b></div>`;
   const hist=c.history.map(h=>`<div><a href="${dartUrl(h.rcept_no)}" target="_blank" rel="noopener">${esc(h.report_nm)}</a> <span class="mut">${h.rcept_dt}</span><br>${
     Object.entries(h.schedule).map(([k,v])=>`${k}=${esc(v)}`).join(' · ')||'<span class="mut">일정 없음</span>'}${
@@ -223,8 +224,8 @@ function caseCard(c){
   <div class="ch"><div><div class="cn"><a href="${dartUrl(c.first_rcept_no)}" target="_blank" rel="noopener">${esc(c.corp_name)}</a> <span class="mut" style="font-size:13px">${esc(c.stock_code||'')} · ${esc(c.market||'')}</span></div>
   <div class="meta">최초 공시 ${c.first_rcept_dt} · ${esc(c.ic_mthn||'증자방식 미상')}</div>
   ${c.is_rights&&c.status==='open'?`<span class="stage">${esc(caseStage(s))}</span>`:''}</div>
-  <div>${c.is_rights?'<span class="badge gold">주주배정 · 인수권</span>':'<span class="badge">관찰</span>'} ${debt?'<span class="badge red">채무상환형</span>':''} ${big?'<span class="badge red">초대형 희석</span>':''}</div></div>
-  <div class="grid">${kv('발행가',fmt(s.issue_price)+'원')}${kv('배정비율',s.alloc_ratio??'—')}${kv('신주÷기존주',sm.dilution_ratio!=null?(sm.dilution_ratio*100).toFixed(0)+'%':'—')}${kv('모집 규모',sm.total_amount?Math.round(sm.total_amount/1e8).toLocaleString()+'억':'—')}</div>
+  <div>${c.is_rights?'<span class="badge gold">주주배정 · 인수권</span>':'<span class="badge">관찰</span>'} ${debt?'<span class="badge red">채무상환형</span>':''} ${big?'<span class="badge red">초대형 희석</span>':''} ${fssReq?'<span class="badge red">금감원 정정요구</span>':''}</div></div>
+  <div class="grid">${kv('발행가',fmt(s.issue_price)+'원')}${kv('배정비율',s.alloc_ratio!=null?Number(s.alloc_ratio).toFixed(4):'—')}${kv('신주÷기존주',sm.dilution_ratio!=null?(sm.dilution_ratio*100).toFixed(0)+'%':'—')}${kv('모집 규모',sm.total_amount?Math.round(sm.total_amount/1e8).toLocaleString()+'억':'—')}</div>
   ${purp?`<div class="meta">자금 목적</div><div class="purp">${purp}</div><div class="legend">${leg}</div>`:''}
   ${c.is_rights?timeline(s):''}
   ${spark(c.rights_series)}
