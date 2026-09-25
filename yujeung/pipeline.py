@@ -15,7 +15,8 @@ from .detect import (DetectEvent, detect, drop_case, merge_duplicate_cases, purg
 from .krx import KrxClient, KrxError
 from .naver import INDEX_SYMBOL, NaverClient, NaverError
 from .prices import collect_day, compute_gap, gaps_for_day, relink_rights
-from .schedule_parser import PARSER_VERSION, Schedule, find_dates, parse_documents, validate_schedule
+from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount, find_dates, parse_documents,
+                              validate_schedule)
 from .verdict import decide, gate1, reason_line
 
 SCHEDULE_LABELS = {
@@ -37,16 +38,29 @@ def save_schedule(conn: sqlite3.Connection, rcept_no: str, case_id: int, s: Sche
     conn.commit()
 
 
+_DATE_FIELDS = ("record_date", "rights_start", "subs_start", "payment_date", "listing_date")
+
+
 def latest_schedule(conn: sqlite3.Connection, case_id: int, exclude: str | None = None) -> dict:
-    """케이스의 최신 일정 = 공시 순서대로 값이 있는 필드를 덮어쓴 결과."""
-    merged: dict = {}
-    for r in conn.execute(
-        "SELECT * FROM schedule_versions WHERE case_id=? AND rcept_no != ? ORDER BY rcept_no",
-        (case_id, exclude or ""),
-    ):
+    """케이스의 최신 일정.
+    정정공시가 뜨면 옛 일정은 통째로 버린다: 가장 최근 유상증자결정 원문(날짜가 하나라도 잡힌 것) 하나가 기준이고,
+    그보다 뒤에 나온 증권신고서 값만 위에 덮는다. (옛 공시 값이 빈칸을 메우지 않게)"""
+    rows = conn.execute(
+        "SELECT s.*, IFNULL(d.kind, 'piic') AS kind FROM schedule_versions s "
+        "LEFT JOIN disclosures d USING (rcept_no) WHERE s.case_id=? AND s.rcept_no != ? ORDER BY s.rcept_no",
+        (case_id, exclude or "")).fetchall()
+    piic = [r for r in rows if r["kind"] == "piic" and any(r[k] for k in _DATE_FIELDS)]
+    base = piic[-1] if piic else next((r for r in reversed(rows) if r["kind"] == "piic"), None)
+    merged: dict = {k: base[k] for k in SCHEDULE_LABELS if base[k] is not None} if base else {}
+    for r in rows:
+        if r["kind"] == "piic" or (base is not None and r["rcept_no"] < base["rcept_no"]):
+            continue
         for k in SCHEDULE_LABELS:
             if r[k] is not None:
                 merged[k] = r[k]
+    if merged.get("record_date"):
+        from .calendar_kr import ex_rights_date
+        merged["ex_rights_date"] = ex_rights_date(merged["record_date"])
     return merged
 
 
@@ -179,9 +193,17 @@ def step_estk(dart: DartClient, conn, today: date, alerts: bool = True) -> None:
                 (rcept_no, c["case_id"], "estk", "증권신고서(지분증권)", rcept_no[:8], 0, db.dumps(g)),
             )
             before = latest_schedule(conn, c["case_id"])
-            save_schedule(conn, rcept_no, c["case_id"],
-                          estk_schedule(g, [t for t in types if t.get("rcept_no") == rcept_no],
-                                        [u for u in uws if u.get("rcept_no") == rcept_no]))
+            sch = estk_schedule(g, [t for t in types if t.get("rcept_no") == rcept_no],
+                                [u for u in uws if u.get("rcept_no") == rcept_no])
+            # 발행가 산식의 할인율은 증권신고서 본문에 있다 (어림 손익표의 발행가 추정용)
+            try:
+                d = next((v for v in (extract_discount(clean(b)) for b in dart.document(rcept_no).values()) if v),
+                         None)
+            except DartError:
+                d = None
+            if d:
+                sch.extras["facts"]["discount"] = d
+            save_schedule(conn, rcept_no, c["case_id"], sch)
             changes = schedule_diff(before, latest_schedule(conn, c["case_id"]))
             if alerts and before and changes:
                 notify.record(conn, f"일정 변경 {c['corp_name']}", "증권신고서 기준\n" + "\n".join(changes),

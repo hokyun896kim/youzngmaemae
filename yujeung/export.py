@@ -6,10 +6,10 @@ import sqlite3
 from datetime import date, datetime
 from pathlib import Path
 
-from . import db, paper
+from . import db, estimate, paper
 from .calendar_kr import KRX_HOLIDAYS
 from .config import Config
-from .pipeline import SCHEDULE_LABELS, checked_schedule, live_verdict
+from .pipeline import SCHEDULE_LABELS, checked_schedule, latest_facts, live_verdict
 from .prices import compute_gap
 from .verdict import VERDICTS
 
@@ -66,6 +66,19 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
                       "eval": paper.evaluate(conn, c, trade, sch, today)}
     v = trade["verdict"] if trade else live["verdict"]
     emoji, name = VERDICTS[v]
+    daily = conn.execute("SELECT bas_dd, close, volume FROM stock_daily WHERE code=? AND close IS NOT NULL "
+                         "AND bas_dd <= ? ORDER BY bas_dd DESC LIMIT 300",
+                         (c["stock_code"], today.isoformat())).fetchall()[::-1]
+    # 확정발행가: 산정일 이후 접수된 공시에 발행가가 있으면 확정으로 본다
+    confirmed = bool(sch.get("price_fix_date") and conn.execute(
+        "SELECT 1 FROM schedule_versions WHERE case_id=? AND issue_price IS NOT NULL AND substr(rcept_no,1,8) >= ?",
+        (c["case_id"], sch["price_fix_date"].replace("-", ""))).fetchone())
+    quick = estimate.quick(
+        v, live["gate1"], live["gap"], sch, latest_facts(conn, c["case_id"]),
+        [(r["bas_dd"], r["close"]) for r in daily], [r["volume"] for r in daily],
+        next((x["rights"] for x in reversed(series) if x["d"] <= today.isoformat()), None), live["summary"].get("new_shares"),
+        live["summary"].get("dilution_ratio"), f["op_period"] if f else None, today, confirmed,
+        -cfg.gap_alert_pct, cfg.gap_alert_pct)
     base.update({
         "summary": live["summary"], "gate1": live["gate1"], "rights_series": series, "stock_series": stock_series,
         "facts": {"op_income": f["op_income"] if f else None, "op_period": f["op_period"] if f else None,
@@ -74,7 +87,7 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
                     "reason": json.loads(trade["snapshot_json"])["reason"] if trade else live["reason"],
                     "provisional": not trade, "decided_on": trade["decided_on"] if trade else None,
                     "live_reason": live["reason"]},
-        "paper": paper_json,
+        "paper": paper_json, "quick": quick,
     })
     return base
 

@@ -25,12 +25,33 @@ def test_ex_rights_skips_weekend_and_holiday():
     assert ex_rights_date("2026-09-28") == "2026-09-23"   # 월요일 기준일 → 추석 연휴·주말 건너뜀
 
 
-def test_parse_real_shape_price_row_with_date():
+def test_parse_correction_ignores_before_values():
+    """이렘 기재정정: 앞머리 정정표의 '정정전' 값(10/01·11/09 등)이 아니라 정정 반영 본문을 쓴다."""
     from tests.fixtures_dart import PIIC_DOC_REAL_SHAPE
     s = parse_document(PIIC_DOC_REAL_SHAPE)
     assert s.issue_price == 2360                 # 확정발행가 '-' → 예정발행가 사용
-    assert s.price_fix_date == "2026-11-04"      # 11/20 은 청약(11/09) 이후라 배제
-    assert (s.subs_start, s.subs_end) == ("2026-11-09", "2026-11-10")
+    assert s.record_date == "2026-10-13"
+    assert (s.rights_start, s.rights_end) == ("2026-11-10", "2026-11-16")
+    assert s.price_fix_date == "2026-11-20"
+    assert (s.subs_start, s.subs_end) == ("2026-11-25", "2026-11-26")
+    assert s.listing_date == "2026-12-11"
+    assert s.extras["facts"]["discount"] == 0.35
+    assert not any("불일치" in w for w in s.warnings)
+
+
+def test_parse_correction_table_only_uses_after_values():
+    from tests.fixtures_dart import PIIC_DOC_CORR_ONLY
+    s = parse_document(PIIC_DOC_CORR_ONLY)
+    assert s.record_date == "2026-10-13" and s.ex_rights_date == "2026-10-12"
+    assert (s.subs_start, s.subs_end) == ("2026-11-25", "2026-11-26")
+    assert s.price_fix_date == "2026-11-20" and s.listing_date == "2026-12-11"
+    assert "record_date 못 찾음" not in s.warnings
+
+
+def test_extract_discount():
+    from yujeung.schedule_parser import extract_discount
+    assert extract_discount("할인율 25% ... 할인율(25%) ... 할인율: 20%") == 0.25
+    assert extract_discount("할인율 없음") is None
 
 
 def test_rights_traps_holder_row_and_tbd():
