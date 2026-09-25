@@ -11,10 +11,16 @@ RIGHTS_ROW = {
 
 
 def test_gap_matches_brief_sk_dnd():
+    # 브리프 §3 산식 재현 (브리프의 본주 3,395 는 오기 — KRX 실측 종가는 3,335, docs/decisions.md)
     g = compute_gap(636, 3395, 2260)
     assert g.fair == 1135
     assert g.gap_pct == -44.0
     assert g.effective_cost == 2896
+
+
+def test_gap_sk_dnd_krx_actual():
+    g = compute_gap(636, 3335, 2260)          # KRX 실측 9/23
+    assert (g.fair, g.gap_pct, g.effective_cost) == (1075, -40.8, 2896)
 
 
 def test_gap_none_when_out_of_money():
