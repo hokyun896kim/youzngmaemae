@@ -117,36 +117,49 @@ class DartClient:
                                                       "reprt_code": reprt_code, "fs_div": fs_div})
         return data.get("list", [])
 
+    def _op_income(self, corp_code: str, year: int, reprt: str, label: str) -> tuple[int, str] | None:
+        """한 보고서의 영업이익(3개월). 사업보고서면 4분기 = 연간 − 3분기 누적."""
+        for fs in ("CFS", "OFS"):
+            try:
+                rows = self.statement(corp_code, year, reprt, fs)
+            except DartError:
+                rows = []
+            if not rows:
+                continue
+            if reprt == "11011":
+                annual = pick_account(rows, OP_IDS, OP_NM, ["thstrm_amount"])
+                q3 = None
+                try:
+                    q3_rows = self.statement(corp_code, year, "11014", fs)
+                    q3 = pick_account(q3_rows, OP_IDS, OP_NM, ["thstrm_add_amount"])
+                except DartError:
+                    pass
+                if annual is not None:
+                    if q3 is not None:
+                        return int(annual - q3), f"{year} 4분기(연간−3분기누적, {fs})"
+                    return int(annual), f"{year} 연간({fs})"
+            else:
+                v = pick_account(rows, OP_IDS, OP_NM, ["thstrm_amount"])
+                if v is not None:
+                    return int(v), f"{year} {label}(3개월, {fs})"
+        return None
+
     def latest_op_income(self, corp_code: str, today) -> tuple[int, str] | None:
         """가장 최근에 공시된 분기의 영업이익(3개월)과 그 기간 라벨.
         분기·반기보고서 손익계산서의 thstrm_amount 는 해당 3개월 금액, 사업보고서는 연간 금액(→ 4분기 = 연간 − 3분기 누적)."""
         tries = [(today.year, "11014", "3분기"), (today.year, "11012", "반기"), (today.year, "11013", "1분기"),
                  (today.year - 1, "11011", "4분기"), (today.year - 1, "11014", "3분기")]
         for year, reprt, label in tries:
-            for fs in ("CFS", "OFS"):
-                try:
-                    rows = self.statement(corp_code, year, reprt, fs)
-                except DartError:
-                    rows = []
-                if not rows:
-                    continue
-                if reprt == "11011":
-                    annual = pick_account(rows, OP_IDS, OP_NM, ["thstrm_amount"])
-                    q3 = None
-                    try:
-                        q3_rows = self.statement(corp_code, year, "11014", fs)
-                        q3 = pick_account(q3_rows, OP_IDS, OP_NM, ["thstrm_add_amount"])
-                    except DartError:
-                        pass
-                    if annual is not None:
-                        if q3 is not None:
-                            return int(annual - q3), f"{year} 4분기(연간−3분기누적, {fs})"
-                        return int(annual), f"{year} 연간({fs})"
-                else:
-                    v = pick_account(rows, OP_IDS, OP_NM, ["thstrm_amount"])
-                    if v is not None:
-                        return int(v), f"{year} {label}(3개월, {fs})"
+            res = self._op_income(corp_code, year, reprt, label)
+            if res:
+                return res
         return None
+
+    def op_income_asof(self, corp_code: str, asof, max_tries: int = 3) -> tuple[int, str] | None:
+        """백테스트용: asof 날짜에 '이미 공시돼 있던' 마지막 보고서의 영업이익 (미래 정보 금지).
+        실제 제출일 대신 법정 제출기한(분기말+45일, 사업보고서 다음 해 3/31)으로 판단 — 보수적."""
+        return next((r for r in (self._op_income(corp_code, y, reprt, label)
+                                 for _, y, reprt, label in reports_available(asof)[:max_tries]) if r), None)
 
     # ---- 원문 ----
     def document(self, rcept_no: str) -> dict[str, str]:
@@ -159,6 +172,23 @@ class DartClient:
             # 오류면 zip 대신 XML/JSON 메시지가 온다
             raise DartError("doc", content[:200].decode("utf-8", "replace"))
         return unzip_document(content)
+
+
+# 분기·반기보고서 법정 제출기한 (분기 말 + 45일). 사업보고서는 다음 해 3/31 (결산 후 90일)
+REPORT_DEADLINES = (("11013", "1분기", 5, 15), ("11012", "반기", 8, 14), ("11014", "3분기", 11, 14))
+
+
+def reports_available(asof) -> list[tuple]:
+    """asof 날짜까지 제출기한이 지난 보고서들 [(기한, 사업연도, reprt_code, 라벨)] — 최근 것부터."""
+    from datetime import date
+    out = []
+    for y in (asof.year, asof.year - 1, asof.year - 2):
+        for reprt, label, m, d in REPORT_DEADLINES:
+            if date(y, m, d) <= asof:
+                out.append((date(y, m, d), y, reprt, label))
+        if date(y + 1, 3, 31) <= asof:
+            out.append((date(y + 1, 3, 31), y, "11011", "4분기"))
+    return sorted(out, reverse=True)
 
 
 # 영업이익 계정 식별 (KR-hegemony dart.py 와 동일)

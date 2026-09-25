@@ -150,6 +150,8 @@ a{color:var(--gold2)}
 
 <h2>판정별 성적표 <small>가상 진입 기준 · 신주 상장 +20거래일</small></h2>
 <div id="score"></div>
+<h2>기출문제 성적표 <small>2020~2026.06 과거 주주배정 유증 백테스트 · 판정 로직 그대로 · 미래 정보 금지</small></h2>
+<div id="exam"><div class="empty">백테스트 결과가 아직 없습니다 (Actions → backtest 실행).</div></div>
 
 <div class="modal" id="guide" onclick="if(event.target===this)closeGuide()"><div class="mbox">
 <button class="btn x" onclick="closeGuide()">닫기 ✕</button>
@@ -329,6 +331,23 @@ function renderScore(){
   }</tbody></table></div><div class="meta" style="margin-top:6px">표본 수: 기록 ${rows.reduce((a,r)=>a+r.n,0)}건 / 완료 ${rows.reduce((a,r)=>a+r.done,0)}건. 🟢⚪ 인수권 마지막 날 종가+발행가로 청약 · 🟡 신주 상장일 종가 매수 · 🔵 (상장 후 가격−발행가)÷인수권 매도가−1.</div>`;
 }
 
+function renderExam(B){
+  if(!B||!B.years||!B.years.length) return;
+  const f=v=>v==null?'—':(v>0?'+':'')+Number(v).toFixed(1)+'%';
+  const e=v=>v==null?'—':(v>0?'+':'')+Number(v).toFixed(1)+'%p';
+  const head='<tr><th>구분</th><th>측정</th><th>건수</th><th>승률</th><th>평균</th><th>중앙값</th><th>25%</th><th>75%</th><th>최악</th><th>지수 대비(평균)</th></tr>';
+  const line=(name,p,first)=>`<tr><td>${first?name:''}</td><td>${esc(p.label)}</td><td>${p.n||0}</td><td>${p.win_rate==null?'—':p.win_rate+'%'}</td><td>${f(p.mean)}</td><td>${f(p.median)}</td><td>${f(p.p25)}</td><td>${f(p.p75)}</td><td class="${p.worst<0?'neg':''}">${f(p.worst)}</td><td>${e(p.excess_mean)}</td></tr>`;
+  const yrs=B.years.map(y=>`<tr><td>${y.year}${y.months&&y.months<12?` (1~${y.months}월)`:''}</td><td>${y.cases}</td><td>${y.parse_ok}</td><td><b>${y.parse_rate==null?'—':y.parse_rate+'%'}</b></td><td>${y.scored}</td><td>${y.no_rights_price}</td><td>${y.naver_missing}</td><td>${y.financials_missing}</td></tr>`).join('');
+  const verd=B.by_verdict.map(v=>v.points.map((p,i)=>line(`${v.emoji} ${esc(v.name)}`,p,i===0)).join('')).join('');
+  const filt=B.filters.map(fl=>`<h4 style="margin:14px 0 6px;font-size:13px;color:var(--gold2)">${esc(fl.title)}</h4><div class="tblw"><table><thead>${head}</thead><tbody>${fl.rows.map(r=>r.points.map((p,i)=>line(esc(r.bucket),p,i===0)).join('')).join('')}</tbody></table></div>`).join('');
+  $('#exam').innerHTML=`<div class="meta">채점 ${B.n_scored}건 · 판정 로직 v${B.logic_version} · 생성 ${esc((B.generated_at||'').slice(0,16).replace('T',' '))}</div>
+  <h4 style="margin:12px 0 6px;font-size:13px;color:var(--gold2)">연도별 파싱 성공률</h4>
+  <div class="tblw"><table><thead><tr><th>연도</th><th>주주배정</th><th>파싱 성공</th><th>성공률</th><th>채점</th><th>인수권 시세 없음</th><th>52주 미확인</th><th>재무 미확인</th></tr></thead><tbody>${yrs}</tbody></table></div>
+  <h4 style="margin:14px 0 6px;font-size:13px;color:var(--gold2)">판정별 (진입·측정은 가상 성과와 동일)</h4>
+  <div class="tblw"><table><thead>${head}</thead><tbody>${verd}</tbody></table></div>
+  <h4 style="margin:14px 0 0;font-size:13px;color:var(--gold2)">필터 하나씩 떼어 보기</h4><div class="meta">${esc(B.base_note||'')}</div>${filt}
+  <div class="meta" style="margin-top:8px">표본 수는 정보로만 표시합니다. 파싱 실패·인수권 시세 없음은 채점에서 빠집니다 — 한계는 docs/backtest.md.</div>`;
+}
 function quickBox(c){
   const q=c.quick; if(!q) return '';
   const v=c.verdict||{}, be=q.breakeven, is=q.issue||{}, o=q.overhang;
@@ -365,5 +384,6 @@ fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
   const rc=d.cases.filter(x=>x.is_rights&&x.status==='open').length;
   $('#chips').innerHTML=[['갱신',d.generated_at.replace('T',' ').slice(0,16)+(stale?` · ${Math.floor(age)}시간 전`:''),stale],['인수권 시세',d.last_rights_date||'—'],['주주배정 진행',rc+'건'],['가상 기록',(c.paper_trades??0)+'건'],['제외 공시',(c.excluded_disclosures??0)+'건']].map(([l,v,st])=>`<div class="chip${st?' stale':''}">${l}<b>${v}</b></div>`).join('');
   renderToday();renderRights();renderCases();renderScore();
+  fetch('./data/backtest.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(renderExam).catch(()=>{});
 }).catch(e=>{$('#chips').innerHTML=`<div class="empty">data/site.json 을 읽지 못했습니다 (${esc(e.message)}). 로컬에선 python -m http.server 로 여세요.</div>`});
 </script></body></html>

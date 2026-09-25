@@ -173,12 +173,18 @@ def step_schedules(dart: DartClient, conn, alerts: bool = True) -> None:
             notify.record(conn, f"일정 변경 {r['corp_name']}", "\n".join(changes), dedup_key=f"chg:{r['rcept_no']}")
 
 
-def step_estk(dart: DartClient, conn, today: date, alerts: bool = True) -> None:
-    """진행 중 주주배정 케이스의 증권신고서(지분증권) 요약 → 일정·인수방식 보강."""
+def step_estk(dart: DartClient, conn, today: date, alerts: bool = True, discount: bool = True,
+              window_days: int | None = None) -> None:
+    """진행 중 주주배정 케이스의 증권신고서(지분증권) 요약 → 일정·인수방식 보강.
+    window_days: 조회 끝을 '최초 공시 + N일'로 자른다 (백테스트 — 같은 회사의 몇 년 뒤 다른 유증이 섞이지 않게)."""
     cases = conn.execute("SELECT * FROM cases WHERE status='open' AND is_rights=1").fetchall()
     for c in cases:
+        end = today
+        if window_days:
+            first = date(int(c["first_rcept_dt"][:4]), int(c["first_rcept_dt"][4:6]), int(c["first_rcept_dt"][6:]))
+            end = min(today, first + timedelta(days=window_days))
         try:
-            groups = dart.equity_registrations(c["corp_code"], c["first_rcept_dt"], today.strftime("%Y%m%d"))
+            groups = dart.equity_registrations(c["corp_code"], c["first_rcept_dt"], end.strftime("%Y%m%d"))
         except DartError:
             continue
         types = groups.get("증권의종류", [])
@@ -198,7 +204,7 @@ def step_estk(dart: DartClient, conn, today: date, alerts: bool = True) -> None:
             # 발행가 산식의 할인율은 증권신고서 본문에 있다 (어림 손익표의 발행가 추정용)
             try:
                 d = next((v for v in (extract_discount(clean(b)) for b in dart.document(rcept_no).values()) if v),
-                         None)
+                         None) if discount else None
             except DartError:
                 d = None
             if d:
@@ -291,6 +297,22 @@ def step_rights_history(krx: KrxClient, conn, today: date, max_days: int = 150) 
     return done
 
 
+def save_pos52(conn, case_id: int, rows: list[dict], disc: str) -> bool:
+    """52주 위치: 공시일 직전 250거래일 고저 중 공시 전일 종가의 위치 (공시일 이후 가격은 안 씀)."""
+    window = [r for r in rows if r["date"] < disc][-250:]
+    if len(window) < 120:
+        return False
+    hi, lo = max(r["high"] for r in window), min(r["low"] for r in window)
+    px = window[-1]["close"]
+    pos = (px - lo) / (hi - lo) if hi > lo else None
+    conn.execute(
+        "INSERT INTO case_facts (case_id, pos52, pos52_basis, updated_at) VALUES (?,?,?,?) "
+        "ON CONFLICT(case_id) DO UPDATE SET pos52=excluded.pos52, pos52_basis=excluded.pos52_basis, "
+        "updated_at=excluded.updated_at",
+        (case_id, pos, f"{window[-1]['date']} 종가 {px:,.0f} / 52주 저 {lo:,.0f} 고 {hi:,.0f}", db.now()))
+    return True
+
+
 def step_market(naver: NaverClient, conn, today: date) -> dict:
     """주주배정 케이스 본주·지수 일봉 (네이버) → stock_daily / index_daily, 공시일 기준 52주 위치."""
     out = {"stocks": 0, "errors": []}
@@ -321,17 +343,7 @@ def step_market(naver: NaverClient, conn, today: date) -> dict:
                 "INSERT INTO stock_daily (bas_dd, code, close, open, high, low, volume) VALUES (?,?,?,?,?,?,?) "
                 "ON CONFLICT(bas_dd, code) DO NOTHING",
                 (r["date"], c["stock_code"], int(r["close"]), int(r["open"]), int(r["high"]), int(r["low"]), r["volume"]))
-        # 52주 위치: 공시일 직전 250거래일 고저 중 공시 전일 종가의 위치
-        window = [r for r in rows if r["date"] < disc][-250:]
-        if len(window) >= 120:
-            hi, lo = max(r["high"] for r in window), min(r["low"] for r in window)
-            px = window[-1]["close"]
-            pos = (px - lo) / (hi - lo) if hi > lo else None
-            conn.execute(
-                "INSERT INTO case_facts (case_id, pos52, pos52_basis, updated_at) VALUES (?,?,?,?) "
-                "ON CONFLICT(case_id) DO UPDATE SET pos52=excluded.pos52, pos52_basis=excluded.pos52_basis, "
-                "updated_at=excluded.updated_at",
-                (c["case_id"], pos, f"{window[-1]['date']} 종가 {px:,.0f} / 52주 저 {lo:,.0f} 고 {hi:,.0f}", db.now()))
+        save_pos52(conn, c["case_id"], rows, disc)
         out["stocks"] += 1
     conn.commit()
     return out

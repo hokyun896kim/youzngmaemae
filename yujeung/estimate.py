@@ -100,10 +100,21 @@ def breakeven(stg: str, sch: dict, issue: dict, closes: list[tuple[str, int]], r
     return {"stage": stg, "how": "본주 매수 (상장 대기)", "value": p_now, "text": f"현재가 {p_now:,}"}
 
 
-def pnl_table(be: dict | None) -> list[dict]:
+def scenarios_for(verdict: str, card: dict | None) -> tuple[list[tuple[str, float]], str]:
+    """판정별 기출(백테스트) 분포가 표본 MIN 이상이면 그걸로, 아니면 기본값. (시나리오, 표 아래 문구)"""
+    c = (card or {}).get(verdict) or {}
+    if c.get("use"):
+        rows = [("좋음(상위 25%)", c["p75"]), ("보통(중앙값)", c["p50"]), ("나쁨(하위 25%)", c["p25"]), ("최악", c["min"])]
+        return ([(n, v / 100) for n, v in rows],
+                f"기출 {c['n']}건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 "
+                f"75/50/25 퍼센타일·최저 (data/backtest.json)")
+    return SCENARIOS, SCENARIO_NOTE
+
+
+def pnl_table(be: dict | None, scenarios: list[tuple[str, float]] = SCENARIOS) -> list[dict]:
     if not be:
         return []
-    return [{"name": n, "pct": round(s * 100), "price": round(be["value"] * (1 + s))} for n, s in SCENARIOS]
+    return [{"name": n, "pct": round(s * 100, 1), "price": round(be["value"] * (1 + s))} for n, s in scenarios]
 
 
 def overhang(new_shares: int | None, volumes: list[int]) -> dict | None:
@@ -165,15 +176,17 @@ def conclusion(verdict: str, g1: dict, gap: float | None) -> dict:
 
 def quick(verdict: str, g1: dict, gap: float | None, sch: dict, facts: dict, closes: list[tuple[str, int]],
           volumes: list[int], rights_close: int | None, new_shares: int | None, dilution: float | None,
-          op_period: str | None, today: date, confirmed: bool, cheap: float = -20, rich: float = 20) -> dict:
+          op_period: str | None, today: date, confirmed: bool, cheap: float = -20, rich: float = 20,
+          card: dict | None = None) -> dict:
     stg = stage(sch, today)
     r = sch.get("alloc_ratio") or dilution
     issue = issue_estimate(sch, facts.get("discount"), r, closes, today, confirmed)
     be = breakeven(stg, sch, issue, closes, rights_close)
+    scen, note = scenarios_for(verdict, card)
     return {
         **conclusion(verdict, g1, gap),
         "recheck": recheck(verdict, g1, gap, op_period, cheap, rich),
         "stage": stg, "stage_name": STAGES[stg],
-        "issue": issue, "breakeven": be, "table": pnl_table(be), "table_note": SCENARIO_NOTE,
+        "issue": issue, "breakeven": be, "table": pnl_table(be, scen), "table_note": note,
         "overhang": overhang(new_shares, volumes),
     }

@@ -26,8 +26,8 @@ LISTED = ("Y", "K")   # 코스피 / 코스닥만. 코넥스(N)·기타법인(E)�
 SAME_DEAL_DAYS = 60   # 정정 표시 없이 다시 낸 원공시를 같은 건으로 보는 기간
 
 
-def is_listed(rep: dict) -> bool:
-    return rep.get("corp_cls") in LISTED and bool((rep.get("stock_code") or "").strip())
+def is_listed(rep: dict, listed: tuple = LISTED) -> bool:
+    return rep.get("corp_cls") in listed and bool((rep.get("stock_code") or "").strip())
 
 
 def is_rights_offering(ic_mthn: str | None) -> bool:
@@ -163,12 +163,14 @@ def upsert_disclosure(conn, rep: dict, fields: dict, rights_only: bool = False) 
 
 
 def detect(client: DartClient, conn: sqlite3.Connection, bgn_de: str, end_de: str,
-           windows: list[tuple[str, str]] | None = None, rights_only: bool = False) -> list[DetectEvent]:
-    """windows 가 있으면 여러 구간(월 단위)을 모두 모은 뒤 처리 — 구간 순서와 무관하게 원공시 → 정정 순."""
+           windows: list[tuple[str, str]] | None = None, rights_only: bool = False,
+           listed: tuple = LISTED) -> list[DetectEvent]:
+    """windows 가 있으면 여러 구간(월 단위)을 모두 모은 뒤 처리 — 구간 순서와 무관하게 원공시 → 정정 순.
+    listed: 받을 법인구분. 백테스트는 상장폐지 회사(현재 'E')도 넣어 생존편향을 줄인다."""
     seen, reports = set(), []
     for bgn, end in windows or [(bgn_de, end_de)]:
         for r in client.search(bgn, end, pblntf_ty="B"):
-            if r["rcept_no"] not in seen and is_piic_report(r.get("report_nm", "")) and is_listed(r):
+            if r["rcept_no"] not in seen and is_piic_report(r.get("report_nm", "")) and is_listed(r, listed):
                 seen.add(r["rcept_no"])
                 reports.append(r)
     reports.sort(key=lambda r: r["rcept_no"])   # 원공시 → 정정 순서 보장

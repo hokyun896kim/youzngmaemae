@@ -15,6 +15,7 @@
 - `yujeung/verdict.py` — 관문1(채무상환·희석·최대주주·영업흑자·52주·총액인수)+관문2(괴리) → 🟢🟡🔵⚪
 - `yujeung/estimate.py` — 카드 '30초 결론' + 발행가 추정(할인율 d) + 단계별 본전선 + 어림 손익표 + 매물 소화일수
 - `yujeung/paper.py` — 가상 성과: 인수권 마지막 날 판정 스냅샷(불변) + 상장 후 수익률·지수 초과
+- `yujeung/backtest.py` — 과거 유증 백테스트(기출문제). 연도별 임시 DB, 미래 정보 금지(`dart.op_income_asof`), 결과 data/backtest/*.json + data/backtest.json. 설명·한계는 docs/backtest.md
 - `yujeung/naver.py` — 네이버 일봉(본주·지수), `dart.latest_op_income` — 직전 분기 영업이익
 - `yujeung/pipeline.py` — daily 흐름, `yujeung/export.py` — data/site.json, `index.html` — 화면
 - `prompts.js` — GPT 분석지침(전체 브리핑) + 개별기업 분석 프롬프트. brief 확정 결론을 "전제"로, 수집기 맹점을 "검증 지침"으로 포함 — brief 와 어긋나게 고치지 말 것

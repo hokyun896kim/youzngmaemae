@@ -7,6 +7,7 @@ from datetime import date, datetime
 from pathlib import Path
 
 from . import db, estimate, paper
+from .backtest import load_card_scenarios
 from .calendar_kr import KRX_HOLIDAYS
 from .config import Config
 from .pipeline import SCHEDULE_LABELS, checked_schedule, latest_facts, live_verdict
@@ -78,7 +79,7 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         [(r["bas_dd"], r["close"]) for r in daily], [r["volume"] for r in daily],
         next((x["rights"] for x in reversed(series) if x["d"] <= today.isoformat()), None), live["summary"].get("new_shares"),
         live["summary"].get("dilution_ratio"), f["op_period"] if f else None, today, confirmed,
-        -cfg.gap_alert_pct, cfg.gap_alert_pct)
+        -cfg.gap_alert_pct, cfg.gap_alert_pct, load_card_scenarios())
     base.update({
         "summary": live["summary"], "gate1": live["gate1"], "rights_series": series, "stock_series": stock_series,
         "facts": {"op_income": f["op_income"] if f else None, "op_period": f["op_period"] if f else None,
