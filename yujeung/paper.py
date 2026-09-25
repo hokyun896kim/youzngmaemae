@@ -72,6 +72,18 @@ def record_if_due(conn: sqlite3.Connection, case: sqlite3.Row, schedule: dict, l
     return True
 
 
+def final_issue_price(snap_issue: int | None, schedule: dict, today: date) -> tuple[int | None, str | None]:
+    """청약 원가에 쓸 발행가. 청약에서 실제로 내는 돈은 확정발행가 →
+    확정 공시가 있거나 청약이 시작됐으면 최신 공시 발행가를 쓴다(높든 낮든). 그 전엔 판정 당시 값."""
+    latest = schedule.get("issue_price")
+    started = bool(schedule.get("subs_start")) and today.isoformat() >= schedule["subs_start"]
+    if latest and (schedule.get("issue_kind") == "확정" or started):
+        note = None if latest == snap_issue else f"확정발행가 {latest:,} 반영 (판정 당시 {snap_issue:,})" \
+            if snap_issue else f"확정발행가 {latest:,}"
+        return latest, note
+    return snap_issue or latest, None
+
+
 def _series(conn, table: str, key_col: str, key: str) -> list[sqlite3.Row]:
     return conn.execute(f"SELECT * FROM {table} WHERE {key_col}=? ORDER BY bas_dd", (key,)).fetchall()
 
@@ -85,13 +97,7 @@ def evaluate(conn: sqlite3.Connection, case: sqlite3.Row, trade: sqlite3.Row, sc
     idx_by_day = {r["bas_dd"]: r for r in index}
     kind = "yellow" if verdict == "yellow" else "rights"
 
-    issue = snap.get("issue_price")
-    # 확정발행가가 1차보다 낮게 정해지면 실제 청약 원가도 낮아진다 → 최신 발행가가 더 낮으면 반영
-    if schedule.get("issue_price") and issue and schedule["issue_price"] < issue:
-        issue_note = f"확정발행가 {schedule['issue_price']:,} 반영 (판정 당시 {issue:,})"
-        issue = schedule["issue_price"]
-    else:
-        issue_note = None
+    issue, issue_note = final_issue_price(snap.get("issue_price"), schedule, today)
 
     out = {"entry": None, "entry_date": None, "points": [], "issue_note": issue_note}
     listing_idx = next((i for i, r in enumerate(stock) if listing and r["bas_dd"] >= listing), None)

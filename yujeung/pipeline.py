@@ -217,11 +217,35 @@ def step_estk(dart: DartClient, conn, today: date, alerts: bool = True, discount
                 d = None
             if d:
                 sch.extras["facts"]["discount"] = d
+            sch.extras["discount_checked"] = discount
             save_schedule(conn, rcept_no, c["case_id"], sch)
             changes = schedule_diff(before, latest_schedule(conn, c["case_id"]))
             if alerts and before and changes:
                 notify.record(conn, f"일정 변경 {c['corp_name']}", "증권신고서 기준\n" + "\n".join(changes),
                               dedup_key=f"chg:{rcept_no}")
+    if discount:
+        recheck_estk_discount(dart, conn)
+
+
+def recheck_estk_discount(dart: DartClient, conn) -> int:
+    """할인율을 읽기 전에 들어온 증권신고서(진행 중 주주배정)는 한 번 원문을 받아 할인율을 채운다."""
+    n = 0
+    for r in conn.execute(
+            "SELECT s.rcept_no, s.extras_json FROM schedule_versions s JOIN disclosures d USING (rcept_no) "
+            "JOIN cases c ON c.case_id=d.case_id WHERE d.kind='estk' AND c.status='open' AND c.is_rights=1").fetchall():
+        ex = json.loads(r["extras_json"] or "{}")
+        if ex.get("discount_checked") or (ex.get("facts") or {}).get("discount"):
+            continue
+        try:
+            d = next((v for v in (extract_discount(clean(b)) for b in dart.document(r["rcept_no"]).values()) if v), None)
+        except DartError:
+            continue
+        ex.setdefault("facts", {})["discount"] = d
+        ex["discount_checked"] = True
+        conn.execute("UPDATE schedule_versions SET extras_json=? WHERE rcept_no=?", (db.dumps(ex), r["rcept_no"]))
+        n += 1
+    conn.commit()
+    return n
 
 
 RETENTION_DAYS = 30   # 신주 상장일 + 30일이 지나면 추적 종료

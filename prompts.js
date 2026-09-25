@@ -34,6 +34,8 @@ function caseStage(s, today = new Date()) {
   const t = k => (s[k] ? new Date(s[k] + 'T23:59:59+09:00') : null);
   const now = today;
   if (t('ex_rights_date') && now < new Date(s.ex_rights_date + 'T00:00:00+09:00')) return '① 공시 후 ~ 권리락 전 (권리 확보 구간)';
+  if (!s.rights_start && s.ex_rights_date && !(s.subs_start && now >= new Date(s.subs_start + 'T00:00:00+09:00')))
+    return '인수권 일정 미정 (추후결정 — 정정공시 대기)';
   if (t('rights_start') && now < new Date(s.rights_start + 'T00:00:00+09:00')) return '② 권리락 후 ~ 인수권 상장 전';
   if (t('rights_end') && now <= t('rights_end')) return '③ 인수권 거래 중 (A 괴리 체크 구간)';
   if (t('subs_end') && now <= t('subs_end')) return '④ 인수권 종료 ~ 청약';

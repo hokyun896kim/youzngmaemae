@@ -91,3 +91,33 @@ def test_issue_kind_label_and_date():
     assert issue_kind(None, "20260909", sch) == "1차"                 # 증권신고서(라벨 없음)
     assert issue_kind("1차", "20260801", sch) == "1차"
     assert issue_kind(None, "20261006", sch) == "확정"
+
+
+def test_review_11_fixes():
+    """[11] 검수: SG 청약 후 재추정 금지 · 🟢 인수권 종료 후 문구 · 경남제약 인수권 일정 미정 · 원가 확정가."""
+    from yujeung import paper
+    from yujeung.schedule_parser import issue_kind
+    sg = {"record_date": "2026-07-22", "ex_rights_date": "2026-07-21", "rights_start": "2026-08-19",
+          "rights_end": "2026-08-25", "subs_start": "2026-09-03", "subs_end": "2026-09-04",
+          "listing_date": "2026-09-29", "issue_price": 911, "alloc_ratio": 0.41, "issue_kind": "1차"}
+    closes = [("2026-07-20", 1500), ("2026-09-25", 1210)]
+    e = estimate.issue_estimate(sg, 0.4, 0.41, closes, date(2026, 9, 26))
+    assert e["value"] == 911 and e["kind"] == "확정" and "재추정 안 함" in e["text"]   # 726 아님
+    # 확정 산정일이 없으면 청약 전 3거래일(8/31) 이후 공시 = 확정 → SG 9/01 911원
+    assert issue_kind(None, "20260901", sg) == "확정" and issue_kind(None, "20260828", sg) == "1차"
+    ok = {"purpose_pct": {"운영": 100.0}, "dilution_ratio": 0.37}
+    g = gate1(ok, {"major_holder": {"level": "full"}, "underwriting": "총액인수"}, 10, "", 0.3, "SG")
+    q = estimate.quick("green", g, -38.8, sg, {"discount": 0.4}, closes, [1] * 20, None, 1, 0.37, None,
+                       date(2026, 9, 26), False)
+    assert q["word"] == "진입 구간 종료 — 성과 추적 중" and q["stage"] == "5" and "가상 성과" in q["recheck"]
+    q3 = estimate.quick("green", g, -38.8, sg, {"discount": 0.4}, closes, [1] * 20, 500, 1, 0.37, None,
+                        date(2026, 8, 20), False)
+    assert q3["word"] == "매수 검토"                                               # 인수권 거래 중엔 그대로
+    kn = {"record_date": "2026-09-22", "ex_rights_date": "2026-09-21", "subs_start": "2026-11-02",
+          "subs_end": "2026-11-03", "listing_date": "2026-11-17", "issue_price": 1499}
+    assert estimate.stage(kn, date(2026, 9, 26)) == "tbd"
+    assert estimate.STAGES["tbd"] == "인수권 일정 미정"
+    # 가상 성과 원가: 청약이 시작됐으면 최신(확정) 발행가 — 판정 당시 1,064 → 911
+    assert paper.final_issue_price(1064, sg, date(2026, 9, 26)) == (911, "확정발행가 911 반영 (판정 당시 1,064)")
+    assert paper.final_issue_price(1064, sg, date(2026, 8, 25)) == (1064, None)          # 청약 전·1차면 판정 당시
+    assert paper.final_issue_price(900, dict(sg, issue_kind="확정"), date(2026, 8, 30))[0] == 911

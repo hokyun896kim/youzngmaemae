@@ -66,7 +66,8 @@ jobs:
           if [ "${{ github.event_name }}" = "push" ]; then
             # PR 브랜치: 실제 API 점검 + 백필 시험 실행(저장 안 함) 결과를 로그로
             python -m yujeung verify || echo "::warning::verify 일부 실패"
-            python -m yujeung backfill-cases --months 1 --dry-run --report 210980 290650 009730
+            python -m yujeung parse-doc 20260923000500 || true   # 이렘 9/23 기재정정 원문 점검
+            python -m yujeung backfill-cases --months 1 --dry-run --report 210980 290650 009730 255220 053950
             # 백테스트 축소판(2025년 1~2월 원공시)으로 실제 API 흐름 점검 — 결과는 커밋 안 함
             python -m yujeung backtest --year 2025 --months 2 --no-export
             exit 0

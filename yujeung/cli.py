@@ -6,6 +6,7 @@
   backfill-rights  KRX 인수권 일별 시세 과거분 적재 (2010-02-12~)
   import-rights    HTS 에서 옮긴 인수권 종가 CSV 적재
   backtest         과거 유증 백테스트(기출문제) 한 해 → data/backtest/<연도>.json + data/backtest.json
+  parse-doc        공시 원문 하나를 받아 파싱 결과·본문 앞(정정) 구간을 출력 (파서 점검용)
   export           site.json 만 다시 생성
   verify           실제 API 를 한 번씩 불러 필드명/응답 형태 확인 (검증 필요 항목 점검)
 """
@@ -167,6 +168,28 @@ def cmd_backtest(args, cfg: Config) -> int:
     return 0
 
 
+def cmd_parse_doc(args, cfg: Config) -> int:
+    from .dart import DartClient
+    from .schedule_parser import body_start, clean, parse_document, split_corrections, table_rows
+    files = DartClient(cfg.dart_api_key).document(args.rcept_no)
+    for name, doc in files.items():
+        start = body_start(doc)
+        _, corrected = split_corrections(doc)
+        s = parse_document(doc)
+        print(f"===== {args.rcept_no} / {name}: {len(doc):,}자, 본문 시작 {start:,}")
+        print("  본문 앞 표 행(최대 25):")
+        for cells in table_rows(doc[:start])[:25]:
+            print("   |", " | ".join(c[:40] for c in cells))
+        print("  정정후로 쓴 행:", json.dumps(corrected[:15], ensure_ascii=False))
+        print("  일정:", json.dumps(s.as_row(), ensure_ascii=False))
+        print("  facts:", json.dumps(s.extras.get("facts"), ensure_ascii=False), "| 발행가 라벨:", s.extras.get("issue_label_kind"))
+        print("  근거:", json.dumps(s.extras.get("evidence"), ensure_ascii=False))
+        print("  경고:", s.warnings)
+        i = clean(doc).find("할인율")
+        print("  '할인율' 첫 문맥:", clean(doc)[max(0, i - 40): i + 80] if i >= 0 else "없음")
+    return 0
+
+
 def cmd_export(args, cfg: Config) -> int:
     save(open_db(cfg))
     return 0
@@ -320,6 +343,8 @@ def main(argv=None) -> int:
     p.add_argument("--end", required=True)
     p = sub.add_parser("import-rights")
     p.add_argument("csv")
+    p = sub.add_parser("parse-doc")
+    p.add_argument("rcept_no")
     p = sub.add_parser("backtest")
     p.add_argument("--year", type=int, default=0)
     p.add_argument("--aggregate-only", action="store_true", help="연도별 결과만 다시 합산")
@@ -331,4 +356,4 @@ def main(argv=None) -> int:
     cfg = Config.load()
     return {"daily": cmd_daily, "backfill-cases": cmd_backfill_cases, "report-case": cmd_report_case,
             "backfill-rights": cmd_backfill, "import-rights": cmd_import,
-            "backtest": cmd_backtest, "export": cmd_export, "verify": cmd_verify}[args.cmd](args, cfg)
+            "backtest": cmd_backtest, "parse-doc": cmd_parse_doc, "export": cmd_export, "verify": cmd_verify}[args.cmd](args, cfg)

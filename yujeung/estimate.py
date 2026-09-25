@@ -25,7 +25,9 @@ AVG_VOLUME_DAYS = 20
 STAGES = {
     "1": "① 권리락 전", "2": "② 권리락 후 · 인수권 상장 전", "3": "③ 인수권 거래 중",
     "4": "④ 인수권 종료 · 청약 전", "5": "⑤ 청약 후 · 상장 대기", "listed": "신주 상장 후",
+    "tbd": "인수권 일정 미정",
 }
+TRACKING = "진입 구간 종료 — 성과 추적 중"
 CONCLUSION = {"green": "매수 검토", "yellow": "상장일 대기", "blue": "인수권 매도", "white": "패스"}
 NEXT_QUARTER = {"1분기": "2Q", "반기": "3Q", "3분기": "4Q", "4분기": "1Q"}
 
@@ -37,6 +39,8 @@ def stage(sch: dict, today: date) -> str:
     if not sch.get("ex_rights_date") or t < sch["ex_rights_date"]:
         return "1"
     rs, re_ = sch.get("rights_start"), sch.get("rights_end")
+    if not rs and not (sch.get("subs_start") and t >= sch["subs_start"]):
+        return "tbd"          # 권리락은 지났는데 인수권 상장기간이 '추후결정'(실측 경남제약)
     if rs and t < rs:
         return "2"
     if rs and re_ and rs <= t <= re_:
@@ -56,6 +60,10 @@ def issue_estimate(sch: dict, d: float | None, r: float | None, closes: list[tup
     kind = "확정" if confirmed else (sch.get("issue_kind") or "예정")
     if kind == "확정" and disclosed:
         return {"value": disclosed, "kind": "확정", "issue_kind": kind, "text": f"확정발행가 {disclosed:,}원"}
+    if disclosed and sch.get("subs_start") and today.isoformat() >= sch["subs_start"]:
+        # 청약이 시작됐으면 발행가는 이미 정해졌다 → 재추정 금지 (실측 SG: 청약 후 '최종 추정 726' 오류)
+        return {"value": disclosed, "kind": "확정", "issue_kind": kind,
+                "text": f"확정발행가 {disclosed:,}원 (청약 시작 후 — 재추정 안 함, 공시 구분 '{kind}')"}
     if not d or not r or not closes:
         why = "할인율 미확인" if not d else "배정비율 미확인" if not r else "주가 없음"
         return {"value": disclosed, "kind": "공시", "issue_kind": kind, "d": d, "r": r,
@@ -173,7 +181,7 @@ def recheck(verdict: str, g1: dict, gap: float | None, op_period: str | None, ch
     return " · ".join(conds) or "상장일까지 관찰 (가설 검증 샘플)"
 
 
-def conclusion(verdict: str, g1: dict, gap: float | None) -> dict:
+def conclusion(verdict: str, g1: dict, gap: float | None, stg: str | None = None) -> dict:
     if not g1["passed"]:
         fails = [c["text"].replace(" (100% 이상 즉시 탈락)", "") for c in g1["criteria"] if c["status"] == "fail"]
         reason = "관문1 탈락: " + " · ".join(fails[:3])
@@ -183,7 +191,10 @@ def conclusion(verdict: str, g1: dict, gap: float | None) -> dict:
             reason += f" (관문1 미확인 {g1['n_unknown']}개 — GPT 확인)"
     if verdict == "blue" and not g1["passed"]:
         reason = f"인수권 고평가 괴리율 {gap:+.1f}% · " + reason
-    return {"word": CONCLUSION[verdict], "reason": reason}
+    word = CONCLUSION[verdict]
+    if verdict in ("green", "blue") and stg in ("4", "5", "listed"):
+        word = TRACKING       # 인수권 거래가 끝나 이제 들어갈 수 없다 — 판정은 가상 성과로 추적
+    return {"word": word, "reason": reason}
 
 
 def quick(verdict: str, g1: dict, gap: float | None, sch: dict, facts: dict, closes: list[tuple[str, int]],
@@ -195,9 +206,11 @@ def quick(verdict: str, g1: dict, gap: float | None, sch: dict, facts: dict, clo
     issue = issue_estimate(sch, facts.get("discount"), r, closes, today, confirmed)
     be = breakeven(stg, sch, issue, closes, rights_close)
     scen, note = scenarios_for(verdict, card)
+    tracking = verdict in ("green", "blue") and stg in ("4", "5", "listed")
     return {
-        **conclusion(verdict, g1, gap),
-        "recheck": recheck(verdict, g1, gap, op_period, cheap, rich),
+        **conclusion(verdict, g1, gap, stg),
+        "recheck": ("신주 상장일 시가 · +5 · +20거래일 가상 성과로 판정 검증" if tracking
+                    else recheck(verdict, g1, gap, op_period, cheap, rich)),
         "stage": stg, "stage_name": STAGES[stg],
         "issue": issue, "breakeven": be, "table": pnl_table(be, scen), "table_note": note,
         "overhang": overhang(new_shares, volumes),
