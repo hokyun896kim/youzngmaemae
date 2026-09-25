@@ -14,38 +14,26 @@ CREATE TABLE cases (
 );
 INSERT INTO "cases" VALUES(1,'00125822','삼보산업','009620','K','20260917000373','20260918','제3자배정증자',0,'open','2026-09-25T13:32:24');
 INSERT INTO "cases" VALUES(2,'01243161','인산가','277410','K','20260917000375','20260918','제3자배정증자',0,'open','2026-09-25T13:32:24');
-INSERT INTO "cases" VALUES(3,'01871140','엠디엠위탁관리부동산투자회사',NULL,'E','20260918000002','20260918',NULL,0,'open','2026-09-25T13:32:25');
-INSERT INTO "cases" VALUES(4,'01790359','지티엑스씨',NULL,'E','20260918000014','20260918',NULL,0,'open','2026-09-25T13:32:26');
 INSERT INTO "cases" VALUES(5,'00615723','MSDI','123010','K','20260918000112','20260918','제3자배정증자',0,'open','2026-09-25T13:32:26');
 INSERT INTO "cases" VALUES(6,'01075126','사토시홀딩스','223310','K','20260918000210','20260918','제3자배정증자',0,'open','2026-09-25T13:32:27');
-INSERT INTO "cases" VALUES(7,'01799396','인천에이치투',NULL,'E','20260918000228','20260918',NULL,0,'open','2026-09-25T13:32:28');
 INSERT INTO "cases" VALUES(8,'00479705','케스피온','079190','K','20260918000257','20260918','제3자배정증자',0,'open','2026-09-25T13:32:28');
 INSERT INTO "cases" VALUES(9,'00537337','앤씨앤','092600','K','20260918000282','20260918','제3자배정증자',0,'open','2026-09-25T13:32:29');
 INSERT INTO "cases" VALUES(10,'00307028','경남제약','053950','K','20260918000349','20260918','주주배정증자',1,'open','2026-09-25T13:32:30');
 INSERT INTO "cases" VALUES(11,'00132868','우성머티리얼스','011300','Y','20260918000391','20260918','제3자배정증자',0,'open','2026-09-25T13:32:30');
-INSERT INTO "cases" VALUES(12,'01028322','아리바이오',NULL,'E','20260918000422','20260918','제3자배정증자',0,'open','2026-09-25T13:32:31');
 INSERT INTO "cases" VALUES(13,'00530413','더코디','224060','K','20260918000453','20260918','제3자배정증자',0,'open','2026-09-25T13:32:32');
 INSERT INTO "cases" VALUES(14,'01688896','삼성FN리츠','448730','Y','20260921000086','20260921','주주배정후 실권주 일반공모',1,'open','2026-09-25T13:32:34');
 INSERT INTO "cases" VALUES(15,'00587925','모아라이프플러스','142760','K','20260921000097','20260921','제3자배정증자',0,'open','2026-09-25T13:32:34');
 INSERT INTO "cases" VALUES(16,'00232007','상지건설','042940','K','20260921000184','20260921','주주우선공모증자',0,'open','2026-09-25T13:32:35');
 INSERT INTO "cases" VALUES(17,'00145437','아센디오','012170','Y','20260921000240','20260921','제3자배정증자',0,'open','2026-09-25T13:32:35');
 INSERT INTO "cases" VALUES(18,'01423837','모아데이타','288980','K','20260921000327','20260921','제3자배정증자',0,'open','2026-09-25T13:32:37');
-INSERT INTO "cases" VALUES(19,'01468919','아시아에스테이트',NULL,'E','20260921000347','20260921',NULL,0,'open','2026-09-25T13:32:37');
 INSERT INTO "cases" VALUES(20,'01160512','헝셩그룹','900270','K','20260921000369','20260921','제3자배정증자',0,'open','2026-09-25T13:32:38');
-INSERT INTO "cases" VALUES(21,'00768900','당진탱크터미널',NULL,'E','20260921000395','20260921',NULL,0,'open','2026-09-25T13:32:38');
-INSERT INTO "cases" VALUES(22,'01128631','씨제이라이브시티',NULL,'E','20260921000415','20260921',NULL,0,'open','2026-09-25T13:32:39');
 INSERT INTO "cases" VALUES(23,'01235296','셀리드','299660','K','20260921000434','20260922','제3자배정증자',0,'open','2026-09-25T13:32:40');
 INSERT INTO "cases" VALUES(24,'01397903','엔젠바이오','354200','K','20260922000105','20260922','주주배정후 실권주 일반공모',1,'open','2026-09-25T13:32:41');
 INSERT INTO "cases" VALUES(25,'00618410','KS인더스트리','101000','K','20260922000240','20260922','제3자배정증자',0,'open','2026-09-25T13:32:42');
 INSERT INTO "cases" VALUES(26,'00122825','프리티','006490','Y','20260922000386','20260922','제3자배정증자',0,'open','2026-09-25T13:32:44');
 INSERT INTO "cases" VALUES(27,'00550082','캔버스엔','210120','K','20260922000418','20260922','제3자배정증자',0,'open','2026-09-25T13:32:44');
-INSERT INTO "cases" VALUES(28,'01397347','두산로지스틱스솔루션',NULL,'E','20260922000507','20260922',NULL,0,'open','2026-09-25T13:32:45');
 INSERT INTO "cases" VALUES(29,'01235296','셀리드','299660','K','20260922000533','20260922','제3자배정증자',0,'open','2026-09-25T13:32:45');
-INSERT INTO "cases" VALUES(30,'01050862','이랜드스포츠',NULL,'E','20260923000002','20260923',NULL,0,'open','2026-09-25T13:32:46');
-INSERT INTO "cases" VALUES(31,'01032422','에이치앤엘어드밴스드',NULL,'E','20260923000183','20260923','주주배정증자',1,'open','2026-09-25T13:32:47');
 INSERT INTO "cases" VALUES(32,'00406329','루멘스바이오스','038060','K','20260923000238','20260923','제3자배정증자',0,'open','2026-09-25T13:32:47');
-INSERT INTO "cases" VALUES(33,'02040446','다온아이앤씨',NULL,'E','20260923000269','20260923','제3자배정증자',0,'open','2026-09-25T13:32:48');
-INSERT INTO "cases" VALUES(34,'01791738','한화로보틱스',NULL,'E','20260923000292','20260923',NULL,0,'open','2026-09-25T13:32:48');
 INSERT INTO "cases" VALUES(35,'00110750','GMI벤처','019570','K','20260923000362','20260923','제3자배정증자',0,'open','2026-09-25T13:32:49');
 INSERT INTO "cases" VALUES(36,'00101044','에이프로젠바이오로직스','003060','Y','20260923000418','20260923','제3자배정증자',0,'open','2026-09-25T13:32:51');
 INSERT INTO "cases" VALUES(37,'00116426','이렘','009730','K','20260923000500','20260923','주주배정증자',1,'open','2026-09-25T13:32:51');
@@ -63,17 +51,13 @@ CREATE TABLE disclosures (
 );
 INSERT INTO "disclosures" VALUES('20260917000373',1,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260917000373", "corp_cls": "K", "corp_code": "00125822", "corp_name": "삼보산업", "nstk_ostk_cnt": "860,000", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "3,494,609", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "-", "fdpp_dtrp": "-", "fdpp_ocsa": "2,786,407,624", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260917000375',2,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260917000375", "corp_cls": "K", "corp_code": "01243161", "corp_name": "인산가", "nstk_ostk_cnt": "204,919", "nstk_estk_cnt": "-", "fv_ps": "1,000", "bfic_tisstk_ostk": "3,841,150", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "1,000,004,720", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
-INSERT INTO "disclosures" VALUES('20260918000002',3,'piic','유상증자결정','20260918',0,'{}');
-INSERT INTO "disclosures" VALUES('20260918000014',4,'piic','유상증자결정','20260918',0,'{}');
 INSERT INTO "disclosures" VALUES('20260918000112',5,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260918000112", "corp_cls": "K", "corp_code": "00615723", "corp_name": "MSDI", "nstk_ostk_cnt": "11,166,945", "nstk_estk_cnt": "-", "fv_ps": "1,000", "bfic_tisstk_ostk": "20,215,767", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "19,999,998,495", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260918000210',6,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260918000210", "corp_cls": "K", "corp_code": "01075126", "corp_name": "사토시홀딩스", "nstk_ostk_cnt": "5,509,745", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "5,204,642", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "2,999,999,660", "fdpp_dtrp": "11,700,000,000", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
-INSERT INTO "disclosures" VALUES('20260918000228',7,'piic','유상증자결정','20260918',0,'{}');
 INSERT INTO "disclosures" VALUES('20260918000257',8,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260918000257", "corp_cls": "K", "corp_code": "00479705", "corp_name": "케스피온", "nstk_ostk_cnt": "10,752,688", "nstk_estk_cnt": "-", "fv_ps": "1,000", "bfic_tisstk_ostk": "9,588,878", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "12,999,999,792", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260918000282',9,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260918000282", "corp_cls": "K", "corp_code": "00537337", "corp_name": "앤씨앤", "nstk_ostk_cnt": "4,000,000", "nstk_estk_cnt": "-", "fv_ps": "2,500", "bfic_tisstk_ostk": "5,016,703", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "10,000,000,000", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260918000349',10,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260918000349", "corp_cls": "K", "corp_code": "00307028", "corp_name": "경남제약", "nstk_ostk_cnt": "13,000,000", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "19,619,649", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "19,487,000,000", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "주주배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260918000391',11,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260922000245", "corp_cls": "Y", "corp_code": "00132868", "corp_name": "우성머티리얼스", "nstk_ostk_cnt": "970,873", "nstk_estk_cnt": "-", "fv_ps": "1,000", "bfic_tisstk_ostk": "17,238,905", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "1,999,998,380", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260918000407',11,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260922000245", "corp_cls": "Y", "corp_code": "00132868", "corp_name": "우성머티리얼스", "nstk_ostk_cnt": "970,873", "nstk_estk_cnt": "-", "fv_ps": "1,000", "bfic_tisstk_ostk": "17,238,905", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "1,999,998,380", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
-INSERT INTO "disclosures" VALUES('20260918000422',12,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260918000422", "corp_cls": "E", "corp_code": "01028322", "corp_name": "아리바이오", "nstk_ostk_cnt": "-", "nstk_estk_cnt": "425,000", "fv_ps": "500", "bfic_tisstk_ostk": "28,429,512", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "2,295,000,000", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "9,180,000,000", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260918000453',13,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260923000410", "corp_cls": "K", "corp_code": "00530413", "corp_name": "더코디", "nstk_ostk_cnt": "105,954", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "5,160,722", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "499,996,926", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260918000455',13,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260923000410", "corp_cls": "K", "corp_code": "00530413", "corp_name": "더코디", "nstk_ostk_cnt": "105,954", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "5,160,722", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "499,996,926", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260918000457',11,'piic','[기재정정]주요사항보고서(유상증자결정)','20260918',1,'{"rcept_no": "20260922000245", "corp_cls": "Y", "corp_code": "00132868", "corp_name": "우성머티리얼스", "nstk_ostk_cnt": "970,873", "nstk_estk_cnt": "-", "fv_ps": "1,000", "bfic_tisstk_ostk": "17,238,905", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "1,999,998,380", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
@@ -83,10 +67,7 @@ INSERT INTO "disclosures" VALUES('20260921000184',16,'piic','[기재정정]주�
 INSERT INTO "disclosures" VALUES('20260921000240',17,'piic','[기재정정]주요사항보고서(유상증자결정)','20260921',1,'{"rcept_no": "20260921000240", "corp_cls": "Y", "corp_code": "00145437", "corp_name": "아센디오", "nstk_ostk_cnt": "2,890,173", "nstk_estk_cnt": "-", "fv_ps": "2,500", "bfic_tisstk_ostk": "7,296,721", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "9,999,998,580", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260921000303',11,'piic','[기재정정]주요사항보고서(유상증자결정)','20260921',1,'{"rcept_no": "20260922000245", "corp_cls": "Y", "corp_code": "00132868", "corp_name": "우성머티리얼스", "nstk_ostk_cnt": "970,873", "nstk_estk_cnt": "-", "fv_ps": "1,000", "bfic_tisstk_ostk": "17,238,905", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "1,999,998,380", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260921000327',18,'piic','[기재정정]주요사항보고서(유상증자결정)','20260921',1,'{"rcept_no": "20260921000327", "corp_cls": "K", "corp_code": "01423837", "corp_name": "모아데이타", "nstk_ostk_cnt": "3,795,066", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "36,381,379", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "1,999,999,782", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
-INSERT INTO "disclosures" VALUES('20260921000347',19,'piic','유상증자결정','20260921',0,'{}');
 INSERT INTO "disclosures" VALUES('20260921000369',20,'piic','[첨부정정]주요사항보고서(유상증자결정)','20260921',1,'{"rcept_no": "20260910000423", "corp_cls": "K", "corp_code": "01160512", "corp_name": "헝셩그룹", "nstk_ostk_cnt": "20,000,000", "nstk_estk_cnt": "-", "fv_ps": "-", "bfic_tisstk_ostk": "12,461,641", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "60,000,000,000", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
-INSERT INTO "disclosures" VALUES('20260921000395',21,'piic','유상증자결정','20260921',0,'{}');
-INSERT INTO "disclosures" VALUES('20260921000415',22,'piic','유상증자결정','20260921',0,'{}');
 INSERT INTO "disclosures" VALUES('20260921000434',23,'piic','주요사항보고서(유상증자결정)','20260922',0,'{"rcept_no": "20260922000533", "corp_cls": "K", "corp_code": "01235296", "corp_name": "셀리드", "nstk_ostk_cnt": "1,333,332", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "29,502,977", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "2,999,997,000", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260922000105',24,'piic','[기재정정]주요사항보고서(유상증자결정)','20260922',1,'{"rcept_no": "20260922000105", "corp_cls": "K", "corp_code": "01397903", "corp_name": "엔젠바이오", "nstk_ostk_cnt": "7,150,000", "nstk_estk_cnt": "-", "fv_ps": "1,000", "bfic_tisstk_ostk": "8,936,583", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "3,679,100,000", "fdpp_dtrp": "4,000,000,000", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "주주배정후 실권주 일반공모", "ssl_at": "Y", "ssl_bgd": "20260428", "ssl_edd": "20260904"}');
 INSERT INTO "disclosures" VALUES('20260922000158',23,'piic','[기재정정]주요사항보고서(유상증자결정)','20260922',1,'{"rcept_no": "20260922000158", "corp_cls": "K", "corp_code": "01235296", "corp_name": "셀리드", "nstk_ostk_cnt": "4,796,163", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "29,502,977", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "9,999,999,855", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
@@ -95,13 +76,8 @@ INSERT INTO "disclosures" VALUES('20260922000245',11,'piic','[기재정정]주�
 INSERT INTO "disclosures" VALUES('20260922000378',13,'piic','[기재정정]주요사항보고서(유상증자결정)','20260922',1,'{"rcept_no": "20260922000378", "corp_cls": "K", "corp_code": "00530413", "corp_name": "더코디", "nstk_ostk_cnt": "2,219,403", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "5,160,722", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "6,999,997,062", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260922000386',26,'piic','[기재정정]주요사항보고서(유상증자결정)','20260922',1,'{"rcept_no": "20260922000386", "corp_cls": "Y", "corp_code": "00122825", "corp_name": "프리티", "nstk_ostk_cnt": "2,000,000", "nstk_estk_cnt": "-", "fv_ps": "2,500", "bfic_tisstk_ostk": "29,577,223", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "2,813,000,000", "fdpp_dtrp": "2,187,000,000", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260922000418',27,'piic','[기재정정]주요사항보고서(유상증자결정)','20260922',1,'{"rcept_no": "20260922000418", "corp_cls": "K", "corp_code": "00550082", "corp_name": "캔버스엔", "nstk_ostk_cnt": "6,585,136", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "9,694,991", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "13,999,999,136", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
-INSERT INTO "disclosures" VALUES('20260922000507',28,'piic','유상증자결정','20260922',0,'{}');
 INSERT INTO "disclosures" VALUES('20260922000533',29,'piic','주요사항보고서(유상증자결정)','20260922',0,'{"rcept_no": "20260922000533", "corp_cls": "K", "corp_code": "01235296", "corp_name": "셀리드", "nstk_ostk_cnt": "1,333,332", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "29,502,977", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "2,999,997,000", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
-INSERT INTO "disclosures" VALUES('20260923000002',30,'piic','유상증자결정','20260923',0,'{}');
-INSERT INTO "disclosures" VALUES('20260923000183',31,'piic','주요사항보고서(유상증자결정)','20260923',0,'{"rcept_no": "20260923000183", "corp_cls": "E", "corp_code": "01032422", "corp_name": "에이치앤엘어드밴스드", "nstk_ostk_cnt": "24,000,000", "nstk_estk_cnt": "-", "fv_ps": "5,000", "bfic_tisstk_ostk": "364,800,000", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "-", "fdpp_dtrp": "1,200,000,000,000", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "주주배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260923000238',32,'piic','[기재정정]주요사항보고서(유상증자결정)','20260923',1,'{"rcept_no": "20260923000238", "corp_cls": "K", "corp_code": "00406329", "corp_name": "루멘스바이오스", "nstk_ostk_cnt": "1,785,714", "nstk_estk_cnt": "-", "fv_ps": "1,000", "bfic_tisstk_ostk": "24,051,534", "bfic_tisstk_estk": "-", "fdpp_fclt": "1,499,999,600", "fdpp_bsninh": "-", "fdpp_op": "1,000,000,000", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
-INSERT INTO "disclosures" VALUES('20260923000269',33,'piic','주요사항보고서(유상증자결정)','20260923',0,'{"rcept_no": "20260923000269", "corp_cls": "E", "corp_code": "02040446", "corp_name": "다온아이앤씨", "nstk_ostk_cnt": "-", "nstk_estk_cnt": "442,282", "fv_ps": "100", "bfic_tisstk_ostk": "7,200,000", "bfic_tisstk_estk": "468,750", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "1,999,999,204", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
-INSERT INTO "disclosures" VALUES('20260923000292',34,'piic','[기재정정]유상증자결정','20260923',1,'{}');
 INSERT INTO "disclosures" VALUES('20260923000362',35,'piic','[기재정정]주요사항보고서(유상증자결정)','20260923',1,'{"rcept_no": "20260923000362", "corp_cls": "K", "corp_code": "00110750", "corp_name": "GMI벤처", "nstk_ostk_cnt": "196,000", "nstk_estk_cnt": "0", "fv_ps": "2,500", "bfic_tisstk_ostk": "9,545,004", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "490,000,000", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260923000390',13,'piic','[기재정정]주요사항보고서(유상증자결정)','20260923',1,'{"rcept_no": "20260923000390", "corp_cls": "K", "corp_code": "00530413", "corp_name": "더코디", "nstk_ostk_cnt": "317,863", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "5,160,722", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "1,499,995,497", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20260923000410',13,'piic','[기재정정]주요사항보고서(유상증자결정)','20260923',1,'{"rcept_no": "20260923000410", "corp_cls": "K", "corp_code": "00530413", "corp_name": "더코디", "nstk_ostk_cnt": "105,954", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "5,160,722", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "499,996,926", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
@@ -119,246 +95,30 @@ CREATE TABLE notifications (
     sent_at  TEXT NOT NULL,
     delivered INTEGER NOT NULL
 );
-INSERT INTO "notifications" VALUES(1,'신규 유증 삼보산업','new:20260917000373','[유증수집 #1] 신규 유증 삼보산업
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 28억 / 신주÷기존주 25%
-자금목적: 타법인취득 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260917000373','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(2,'신규 유증 인산가','new:20260917000375','[유증수집 #2] 신규 유증 인산가
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 10억 / 신주÷기존주 5%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260917000375','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(3,'신규 유증 엠디엠위탁관리부동산투자회사','new:20260918000002','[유증수집 #3] 신규 유증 엠디엠위탁관리부동산투자회사
-주주배정 아님 (관찰만)
-증자방식: -
-규모: - / 신주÷기존주 -
-자금목적: -
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000002','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(4,'신규 유증 지티엑스씨','new:20260918000014','[유증수집 #4] 신규 유증 지티엑스씨
-주주배정 아님 (관찰만)
-증자방식: -
-규모: - / 신주÷기존주 -
-자금목적: -
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000014','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(5,'신규 유증 MSDI','new:20260918000112','[유증수집 #5] 신규 유증 MSDI
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 200억 / 신주÷기존주 55%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000112','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(6,'신규 유증 사토시홀딩스','new:20260918000210','[유증수집 #6] 신규 유증 사토시홀딩스
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 147억 / 신주÷기존주 106%
-자금목적: 운영 20.4%, 채무상환 79.6%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000210','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(7,'신규 유증 인천에이치투','new:20260918000228','[유증수집 #7] 신규 유증 인천에이치투
-주주배정 아님 (관찰만)
-증자방식: -
-규모: - / 신주÷기존주 -
-자금목적: -
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000228','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(8,'신규 유증 케스피온','new:20260918000257','[유증수집 #8] 신규 유증 케스피온
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 130억 / 신주÷기존주 112%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000257','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(9,'신규 유증 앤씨앤','new:20260918000282','[유증수집 #9] 신규 유증 앤씨앤
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 100억 / 신주÷기존주 80%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000282','2026-09-25T13:32:54',0);
 INSERT INTO "notifications" VALUES(10,'신규 유증 경남제약','new:20260918000349','[유증수집 #10] 신규 유증 경남제약
 주주배정 ✅ 인수권 발생
 증자방식: 주주배정증자
 규모: 195억 / 신주÷기존주 66%
 자금목적: 운영 100.0%
 https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000349','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(11,'신규 유증 우성머티리얼스','new:20260918000391','[유증수집 #11] 신규 유증 우성머티리얼스
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 20억 / 신주÷기존주 6%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000391','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(12,'신규 유증 아리바이오','new:20260918000422','[유증수집 #12] 신규 유증 아리바이오
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 115억 / 신주÷기존주 1%
-자금목적: 운영 20.0%, 기타 80.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000422','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(13,'신규 유증 더코디','new:20260918000453','[유증수집 #13] 신규 유증 더코디
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 5억 / 신주÷기존주 2%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260918000453','2026-09-25T13:32:54',0);
 INSERT INTO "notifications" VALUES(14,'신규 유증 삼성FN리츠','new:20260921000086','[유증수집 #14] 신규 유증 삼성FN리츠
 주주배정 ✅ 인수권 발생
 증자방식: 주주배정후 실권주 일반공모
 규모: 977억 / 신주÷기존주 21%
 자금목적: 운영 18.1%, 채무상환 81.9%
 https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000086','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(15,'신규 유증 모아라이프플러스','new:20260921000097','[유증수집 #15] 신규 유증 모아라이프플러스
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 20억 / 신주÷기존주 9%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000097','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(16,'신규 유증 상지건설','new:20260921000184','[유증수집 #16] 신규 유증 상지건설
-주주배정 아님 (관찰만)
-증자방식: 주주우선공모증자
-규모: 110억 / 신주÷기존주 32%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000184','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(17,'신규 유증 아센디오','new:20260921000240','[유증수집 #17] 신규 유증 아센디오
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 100억 / 신주÷기존주 40%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000240','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(18,'신규 유증 모아데이타','new:20260921000327','[유증수집 #18] 신규 유증 모아데이타
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 20억 / 신주÷기존주 10%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000327','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(19,'신규 유증 아시아에스테이트','new:20260921000347','[유증수집 #19] 신규 유증 아시아에스테이트
-주주배정 아님 (관찰만)
-증자방식: -
-규모: - / 신주÷기존주 -
-자금목적: -
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000347','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(20,'신규 유증 헝셩그룹','new:20260921000369','[유증수집 #20] 신규 유증 헝셩그룹
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 600억 / 신주÷기존주 160%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000369','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(21,'신규 유증 당진탱크터미널','new:20260921000395','[유증수집 #21] 신규 유증 당진탱크터미널
-주주배정 아님 (관찰만)
-증자방식: -
-규모: - / 신주÷기존주 -
-자금목적: -
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000395','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(22,'신규 유증 씨제이라이브시티','new:20260921000415','[유증수집 #22] 신규 유증 씨제이라이브시티
-주주배정 아님 (관찰만)
-증자방식: -
-규모: - / 신주÷기존주 -
-자금목적: -
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000415','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(23,'신규 유증 셀리드','new:20260921000434','[유증수집 #23] 신규 유증 셀리드
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 30억 / 신주÷기존주 5%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260921000434','2026-09-25T13:32:54',0);
 INSERT INTO "notifications" VALUES(24,'신규 유증 엔젠바이오','new:20260922000105','[유증수집 #24] 신규 유증 엔젠바이오
 주주배정 ✅ 인수권 발생
 증자방식: 주주배정후 실권주 일반공모
 규모: 77억 / 신주÷기존주 80%
 자금목적: 운영 47.9%, 채무상환 52.1%
 https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000105','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(25,'신규 유증 KS인더스트리','new:20260922000240','[유증수집 #25] 신규 유증 KS인더스트리
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 60억 / 신주÷기존주 48%
-자금목적: 운영 75.0%, 채무상환 25.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000240','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(26,'신규 유증 프리티','new:20260922000386','[유증수집 #26] 신규 유증 프리티
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 50억 / 신주÷기존주 7%
-자금목적: 운영 56.3%, 채무상환 43.7%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000386','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(27,'신규 유증 캔버스엔','new:20260922000418','[유증수집 #27] 신규 유증 캔버스엔
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 140억 / 신주÷기존주 68%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000418','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(28,'신규 유증 두산로지스틱스솔루션','new:20260922000507','[유증수집 #28] 신규 유증 두산로지스틱스솔루션
-주주배정 아님 (관찰만)
-증자방식: -
-규모: - / 신주÷기존주 -
-자금목적: -
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000507','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(29,'신규 유증 셀리드','new:20260922000533','[유증수집 #29] 신규 유증 셀리드
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 30억 / 신주÷기존주 5%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260922000533','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(30,'신규 유증 이랜드스포츠','new:20260923000002','[유증수집 #30] 신규 유증 이랜드스포츠
-주주배정 아님 (관찰만)
-증자방식: -
-규모: - / 신주÷기존주 -
-자금목적: -
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000002','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(31,'신규 유증 에이치앤엘어드밴스드','new:20260923000183','[유증수집 #31] 신규 유증 에이치앤엘어드밴스드
-주주배정 ✅ 인수권 발생
-증자방식: 주주배정증자
-규모: 12,000억 / 신주÷기존주 7%
-자금목적: 채무상환 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000183','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(32,'신규 유증 루멘스바이오스','new:20260923000238','[유증수집 #32] 신규 유증 루멘스바이오스
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 25억 / 신주÷기존주 7%
-자금목적: 시설 60.0%, 운영 40.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000238','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(33,'신규 유증 다온아이앤씨','new:20260923000269','[유증수집 #33] 신규 유증 다온아이앤씨
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 20억 / 신주÷기존주 6%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000269','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(34,'신규 유증 한화로보틱스','new:20260923000292','[유증수집 #34] 신규 유증 한화로보틱스
-주주배정 아님 (관찰만)
-증자방식: -
-규모: - / 신주÷기존주 -
-자금목적: -
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000292','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(35,'신규 유증 GMI벤처','new:20260923000362','[유증수집 #35] 신규 유증 GMI벤처
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 5억 / 신주÷기존주 2%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000362','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(36,'신규 유증 에이프로젠바이오로직스','new:20260923000418','[유증수집 #36] 신규 유증 에이프로젠바이오로직스
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 200억 / 신주÷기존주 78%
-자금목적: 기타 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000418','2026-09-25T13:32:54',0);
 INSERT INTO "notifications" VALUES(37,'신규 유증 이렘','new:20260923000500','[유증수집 #37] 신규 유증 이렘
 주주배정 ✅ 인수권 발생
 증자방식: 주주배정증자
 규모: 113억 / 신주÷기존주 60%
 자금목적: 시설 12.9%, 운영 70.1%, 채무상환 17.0%
 https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000500','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(38,'신규 유증 비케이홀딩스','new:20260923000531','[유증수집 #38] 신규 유증 비케이홀딩스
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 43억 / 신주÷기존주 30%
-자금목적: 운영 46.8%, 타법인취득 53.2%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000531','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(39,'신규 유증 휴림로봇','new:20260923000576','[유증수집 #39] 신규 유증 휴림로봇
-주주배정 아님 (관찰만)
-증자방식: 일반공모증자
-규모: 20억 / 신주÷기존주 0%
-자금목적: 타법인취득 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000576','2026-09-25T13:32:54',0);
-INSERT INTO "notifications" VALUES(40,'신규 유증 케이쓰리아이','new:20260923000638','[유증수집 #40] 신규 유증 케이쓰리아이
-주주배정 아님 (관찰만)
-증자방식: 제3자배정증자
-규모: 30억 / 신주÷기존주 12%
-자금목적: 운영 100.0%
-https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260923000638','2026-09-25T13:32:54',0);
 INSERT INTO "notifications" VALUES(41,'인수권 괴리 SK디앤디 12R','gap:SK디앤디 12R:2026-09-23','[유증수집 #41] 인수권 괴리 SK디앤디 12R
 2026-09-23 종가 기준
 인수권 636 / 이론가 1,075 (본주 3,335 − 발행가 2,260)
@@ -408,11 +168,10 @@ CREATE TABLE schedule_versions (
     extras_json   TEXT,   -- 파싱에 쓴 원문 행/근거
     warnings_json TEXT    -- 못 찾은 필드 등
 );
-INSERT INTO "schedule_versions" VALUES('20260918000349',10,'2026-09-25T13:32:55','2026-09-22','2026-09-21','2026-10-15','2026-10-21','2026-10-28','2026-11-02','2026-11-03','2026-11-05','2026-11-17',1499,0.6628181743,'{"evidence": {"record_date": "8.신주배정기준일관계기관의''증권신고서에대한정정신고서제출요구''에따른정정추후결정", "subs_start": "11.청약예정일관계기관의''증권신고서에대한정정신고서제출요구''에따른정정구주주시작일", "subs_end": "11.청약예정일구주주종료일", "payment_date": "12.납입일관계기관의''증권신고서에대한정정신고서제출요구''에따른정정추후결정", "listing_date": "16.신주의상장예정일관계기관의''증권신고서에대한정정신고서제출요구''에따른정정추후결정", "rights_start": "라.신주인수권에관한사항관계기관의''증권신고서에대한정정신고서제출요구''에따른정정3)신주인수권증서상장예정기간:추후결정", "alloc_ratio": "9.1주당신주배정주식수(주)", "issue_price": "6.신주발행가액예정발행가보통주식(원)확정예정일", "price_fix_date": "6.신주발행가액관계기관의''증권신고서에대한정정신고서제출요구''에따른정정확정예정일"}, "file": "20260918000349.xml"}','["권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
-INSERT INTO "schedule_versions" VALUES('20260921000086',14,'2026-09-25T13:32:55','2026-09-23','2026-09-22','2026-11-03','2026-11-04','2026-10-29','2026-11-03','2026-11-04','2026-11-11','2026-11-25',5110,0.2086765513,'{"evidence": {"record_date": "8.신주배정기준일", "alloc_ratio": "9.1주당신주배정주식수(주)", "subs_start": "11.청약예정일구주주시작일", "subs_end": "11.청약예정일구주주종료일", "payment_date": "12.납입일", "listing_date": "16.신주의상장예정일", "rights_start": "청약대상자구주주(신주인수권증서보유자)특별계좌보유자(기존\"명부주주\")공동대표주관회사(삼성증권㈜및NH투자증권㈜)본ㆍ지점", "issue_price": "6.신주발행가액-예정발행가-보통주식(원)1차발행가액확정", "price_fix_date": "6.신주발행가액예정발행가보통주식(원)확정예정일"}, "file": "20260921000086.xml"}','["권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
-INSERT INTO "schedule_versions" VALUES('20260922000105',24,'2026-09-25T13:32:56','2026-07-22','2026-07-21','2026-09-09','2026-09-10','2026-09-04','2026-09-09','2026-09-10','2026-09-17','2026-10-02',1074,0.800804792,'{"evidence": {"listing_date": "16.신주의상장예정일증자등기조기완료및유관기관협의에따른신주상장예정일변경", "record_date": "8.신주배정기준일", "alloc_ratio": "9.1주당신주배정주식수(주)", "subs_start": "11.청약예정일구주주시작일", "subs_end": "11.청약예정일구주주종료일", "payment_date": "12.납입일", "rights_start": "청약대상자구주주(신주인수권증서보유자)특별계좌보유자(기존''명부주주'')(주)상상인증권의본ㆍ지점", "issue_price": "6.신주발행가액확정발행가보통주식(원)", "price_fix_date": "6.신주발행가액예정발행가보통주식(원)확정예정일"}, "file": "20260922000105.xml"}','["권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
-INSERT INTO "schedule_versions" VALUES('20260923000183',31,'2026-09-25T13:32:56','2026-09-22','2026-09-21',NULL,NULL,NULL,'2026-09-28','2026-09-28','2026-09-28',NULL,50000,0.0657894,'{"evidence": {"record_date": "8.신주배정기준일", "alloc_ratio": "9.1주당신주배정주식수(주)", "subs_start": "11.청약예정일구주주시작일", "subs_end": "11.청약예정일구주주종료일", "payment_date": "12.납입일", "issue_price": "6.신주발행가액확정발행가보통주식(원)"}, "file": "20260923000183.xml"}','["권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)", "listing_date 못 찾음", "rights_start 못 찾음", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
-INSERT INTO "schedule_versions" VALUES('20260923000500',37,'2026-09-25T13:32:57','2026-10-01','2026-09-30','2026-10-22','2026-10-28','2026-11-04','2026-11-09','2026-11-10','2026-11-12','2026-11-25',2360,0.5955872198,'{"evidence": {"record_date": "8.신주배정기준일", "subs_start": "11.청약예정일구주주시작일", "subs_end": "11.청약예정일구주주종료일", "payment_date": "12.납입일", "listing_date": "16.신주의상장예정일", "rights_start": "라.신주인수권에관한사항-2)신주인수권증서상장예정기간", "alloc_ratio": "9.1주당신주배정주식수(주)", "issue_price": "6.신주발행가액예정발행가보통주식(원)확정예정일", "price_fix_date": "6.신주발행가액일정변경에따른정정확정예정일"}, "file": "20260923000500.xml"}','["권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
+INSERT INTO "schedule_versions" VALUES('20260918000349',10,'2026-09-25T13:44:16','2026-09-22','2026-09-21',NULL,NULL,'2026-10-28','2026-11-02','2026-11-03','2026-11-05','2026-11-17',1499,0.6628181743,'{"evidence": {"record_date": "8.신주배정기준일관계기관의''증권신고서에대한정정신고서제출요구''에따른정정추후결정", "subs_start": "11.청약예정일관계기관의''증권신고서에대한정정신고서제출요구''에따른정정구주주시작일", "subs_end": "11.청약예정일구주주종료일", "payment_date": "12.납입일관계기관의''증권신고서에대한정정신고서제출요구''에따른정정추후결정", "listing_date": "16.신주의상장예정일관계기관의''증권신고서에대한정정신고서제출요구''에따른정정추후결정", "alloc_ratio": "9.1주당신주배정주식수(주)", "issue_price": "6.신주발행가액예정발행가보통주식(원)확정예정일", "price_fix_date": "6.신주발행가액관계기관의''증권신고서에대한정정신고서제출요구''에따른정정확정예정일"}, "parser": 2, "file": "20260918000349.xml"}','["인수권 상장기간 추후결정 (정정 대기)", "⚠ 금감원 정정신고서 제출요구 이력", "권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)", "rights_start 못 찾음", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
+INSERT INTO "schedule_versions" VALUES('20260921000086',14,'2026-09-25T13:44:17','2026-09-23','2026-09-22','2026-10-16','2026-10-22','2026-10-29','2026-11-03','2026-11-04','2026-11-11','2026-11-25',5110,0.2086765513,'{"evidence": {"record_date": "8.신주배정기준일", "alloc_ratio": "9.1주당신주배정주식수(주)", "subs_start": "11.청약예정일구주주시작일", "subs_end": "11.청약예정일구주주종료일", "payment_date": "12.납입일", "listing_date": "16.신주의상장예정일", "issue_price": "6.신주발행가액-예정발행가-보통주식(원)1차발행가액확정", "price_fix_date": "6.신주발행가액예정발행가보통주식(원)확정예정일", "rights_start": "신주인수권증서 상장기간 : 2026년 10월 16일 ~ 2026년 10월 22일 (5영업일)4) 금번 유상증자 시 신주인수권증서는 전자증권제도 시행일(2019년 "}, "parser": 2, "file": "20260921000086.xml"}','["권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
+INSERT INTO "schedule_versions" VALUES('20260922000105',24,'2026-09-25T13:44:18','2026-07-22','2026-07-21','2026-08-12','2026-08-19','2026-09-04','2026-09-09','2026-09-10','2026-09-17','2026-10-02',1074,0.800804792,'{"evidence": {"listing_date": "16.신주의상장예정일증자등기조기완료및유관기관협의에따른신주상장예정일변경", "record_date": "8.신주배정기준일", "alloc_ratio": "9.1주당신주배정주식수(주)", "subs_start": "11.청약예정일구주주시작일", "subs_end": "11.청약예정일구주주종료일", "payment_date": "12.납입일", "issue_price": "6.신주발행가액확정발행가보통주식(원)", "price_fix_date": "6.신주발행가액예정발행가보통주식(원)확정예정일", "rights_start": "신주인수권증서 상장예정기간 : 2026년 08월 12일 ~ 2026년 08월 19일4) 금번 유상증자시 신주인수권증서는 전자증권제도 시행일(2019년 9월 16일"}, "parser": 2, "file": "20260922000105.xml"}','["권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
+INSERT INTO "schedule_versions" VALUES('20260923000500',37,'2026-09-25T13:44:19','2026-10-01','2026-09-30','2026-10-22','2026-10-28','2026-11-04','2026-11-09','2026-11-10','2026-11-12','2026-11-25',2360,0.5955872198,'{"evidence": {"record_date": "8.신주배정기준일", "subs_start": "11.청약예정일구주주시작일", "subs_end": "11.청약예정일구주주종료일", "payment_date": "12.납입일", "listing_date": "16.신주의상장예정일", "rights_start": "라.신주인수권에관한사항-2)신주인수권증서상장예정기간", "alloc_ratio": "9.1주당신주배정주식수(주)", "issue_price": "6.신주발행가액예정발행가보통주식(원)확정예정일", "price_fix_date": "6.신주발행가액일정변경에따른정정확정예정일"}, "parser": 2, "file": "20260923000500.xml"}','["권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
 CREATE TABLE stock_daily (
     bas_dd  TEXT NOT NULL,
     code    TEXT NOT NULL,
