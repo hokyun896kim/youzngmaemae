@@ -23,3 +23,11 @@ def test_parse_piic_document():
 
 def test_ex_rights_skips_weekend_and_holiday():
     assert ex_rights_date("2026-09-28") == "2026-09-23"   # 월요일 기준일 → 추석 연휴·주말 건너뜀
+
+
+def test_parse_real_shape_price_row_with_date():
+    from tests.fixtures_dart import PIIC_DOC_REAL_SHAPE
+    s = parse_document(PIIC_DOC_REAL_SHAPE)
+    assert s.issue_price == 2360                 # 확정발행가 '-' → 예정발행가 사용
+    assert s.price_fix_date == "2026-11-04"      # 11/20 은 청약(11/09) 이후라 배제
+    assert (s.subs_start, s.subs_end) == ("2026-11-09", "2026-11-10")

@@ -77,7 +77,10 @@ def labeled_rows(rows: list[list[str]]) -> list[tuple[str, list[str]]]:
             continue
         first = labels[0]
         if first.startswith(LEAF_LABELS) and section:
-            label = section + group + "".join(labels)
+            # 행 안에 자기 그룹(보통주식 등)이 있으면 위 행의 그룹을 끌어오지 않는다
+            own = next((lb for lb in labels if lb.startswith(GROUP_LABELS)), None)
+            label = section + ("" if own else group) + "".join(labels)
+            group = own or group
         elif first.startswith(GROUP_LABELS) and section:
             group = first
             label = section + "".join(labels)
@@ -136,22 +139,28 @@ def parse_document(doc: str) -> Schedule:
     rows = labeled_rows(table_rows(doc))
     evidence: dict[str, str] = {}
     price_candidates: list[tuple[int, int, str]] = []   # (우선순위, 값, 라벨)
+    fix_candidates: list[tuple[str, str]] = []           # (확정발행가 산정/확정 예정일, 라벨)
 
     for label, values in rows:
         if not values:
             continue
         date = _first_date(values)
+        if "발행가" in label:
+            # 실측: '예정발행가 | 보통주식 | 2,360 | 확정예정일 | 날짜' 처럼 가격과 날짜가 한 행에 온다
+            if "기타주식" not in label and "종류주식" not in label:
+                n = _first_number(values, min_value=1)
+                if n is not None:
+                    prio = 0 if "확정발행가" in label else 1 if "예정발행가" in label else 2
+                    price_candidates.append((prio, int(n), label))
+            if "확정" in label and date:
+                fix_candidates.append((date, label))
+            continue
         if "신주배정기준일" in label and date and not s.record_date:
             s.record_date, evidence["record_date"] = date, label
         elif "1주당신주배정주식수" in label and s.alloc_ratio is None:
             n = _first_number(values)
             if n is not None:
                 s.alloc_ratio, evidence["alloc_ratio"] = n, label
-        elif "발행가" in label and "기타주식" not in label and "종류주식" not in label and not date:
-            n = _first_number(values, min_value=1)
-            if n is not None:
-                prio = 0 if "확정" in label else 1 if "예정" in label else 2
-                price_candidates.append((prio, int(n), label))
         elif "신주인수권증서" in label and date:
             if "종료" in label and not s.rights_end:
                 s.rights_end, evidence["rights_end"] = date, label
@@ -171,12 +180,19 @@ def parse_document(doc: str) -> Schedule:
             s.payment_date, evidence["payment_date"] = date, label
         elif "상장예정일" in label and "인수권" not in label and date and not s.listing_date:
             s.listing_date, evidence["listing_date"] = date, label
-        elif "확정" in label and "발행가" in label and date and not s.price_fix_date:
-            s.price_fix_date, evidence["price_fix_date"] = date, label
 
     if price_candidates:
         prio, value, label = min(price_candidates)
         s.issue_price, evidence["issue_price"] = value, label
+
+    # 확정발행가 날짜는 청약 전이어야 한다. 정정 공시 본문에 남은 옛 날짜(청약 이후)는 버린다.
+    if fix_candidates:
+        valid = [(d, lb) for d, lb in fix_candidates if not s.subs_start or d <= s.subs_start]
+        if valid:
+            s.price_fix_date, evidence["price_fix_date"] = max(valid)
+        else:
+            s.price_fix_date, evidence["price_fix_date"] = fix_candidates[0]
+            s.warnings.append("확정발행가 날짜가 청약일 이후 — 원문 확인 필요")
 
     # 표에 없으면 본문(기타 투자판단 사항)에서 "신주인수권증서 상장/매매 … 날짜 ~ 날짜"
     if not s.rights_start:

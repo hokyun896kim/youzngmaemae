@@ -29,3 +29,19 @@ PIIC_FIELDS = {
     "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "-", "fdpp_dtrp": "136,723,860,000",
     "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "주주배정후 실권주 일반공모", "ssl_at": "N",
 }
+
+# 실측(이렘 2026-09-23 기재정정)에서 본 행 구조를 옮긴 것: 예정발행가 행에 가격과 확정예정일이 같이 있고,
+# 정정 전 확정예정일(청약 이후 날짜)이 본문에 남아 있다.
+PIIC_DOC_REAL_SHAPE = """<DOCUMENT><TABLE><TBODY>
+<TR><TD>6. 신주 발행가액</TD><TD>일정변경에 따른 정정 확정예정일</TD><TD>2026년 11월 04일</TD></TR>
+<TR><TD>6. 신주 발행가액</TD><TD>확정예정일</TD><TD>2026년 11월 20일</TD></TR>
+<TR><TD>6. 신주 발행가액</TD><TD>확정발행가</TD><TD>보통주식 (원)</TD><TD>-</TD></TR>
+<TR><TD>기타주식 (원)</TD><TD>-</TD></TR>
+<TR><TD>예정발행가</TD><TD>보통주식 (원)</TD><TD>2,360</TD><TD>확정 예정일</TD><TD>2026년 11월 20일</TD></TR>
+<TR><TD>기타주식 (원)</TD><TD>-</TD><TD>확정 예정일</TD><TD>-</TD></TR>
+<TR><TD>8. 신주배정기준일</TD><TD>2026년 10월 01일</TD></TR>
+<TR><TD>9. 1주당 신주배정주식수 (주)</TD><TD>0.5955872198</TD></TR>
+<TR><TD>11. 청약예정일</TD><TD>구주주</TD><TD>시작일</TD><TD>2026년 11월 09일</TD></TR>
+<TR><TD>종료일</TD><TD>2026년 11월 10일</TD></TR>
+<TR><TD>12. 납입일</TD><TD>2026년 11월 12일</TD></TR>
+</TBODY></TABLE></DOCUMENT>"""
