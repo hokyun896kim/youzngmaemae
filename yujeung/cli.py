@@ -161,6 +161,15 @@ def cmd_verify(args, cfg: Config) -> int:
             check("SK디앤디 12R (2026-09-23, 브리프: 636원)", bool(sk),
                   json.dumps(sk[0], ensure_ascii=False) if sk else "못 찾음")
 
+        def tar_price_vs_close():
+            # 인수권 행의 TARSTK_ISU_PRSNT_PRC 가 본주 종가인지 확인 (실측: SK디앤디 9/23 3,335 vs 브리프 3,395)
+            sk = next((r for r in krx.rights("20260923") if "디앤디" in (r.get("ISU_NM") or "")), None)
+            close = next((r.get("TDD_CLSPRC") for r in krx.stocks("20260923", "Y") if r.get("ISU_CD") == "210980"), None)
+            tar = sk.get("TARSTK_ISU_PRSNT_PRC") if sk else None
+            check("대상 본주 가격 = 본주 종가?", tar == close,
+                  f"TARSTK_ISU_PRSNT_PRC={tar} / stk_bydd_trd 종가={close} "
+                  "(다르면 괴리율은 반드시 stk/ksq 종가로 계산 — 현재 코드가 그렇게 함)")
+
         def stk():
             rows = krx.stocks(d, "Y")
             check("KRX stk_bydd_trd (유가증권 일별)", bool(rows) and "TDD_CLSPRC" in rows[0],
@@ -170,7 +179,8 @@ def cmd_verify(args, cfg: Config) -> int:
             check("KRX ksq_bydd_trd (코스닥 일별)", True, f"{len(krx.stocks(d, 'K'))}종목")
 
         for name, fn in [("KRX sr_bydd_trd (신주인수권증서 일별)", rights_today), ("KRX sr_bydd_trd 과거분", rights_old),
-                         ("SK디앤디 12R", rights_sk), ("KRX stk_bydd_trd (유가증권 일별)", stk),
+                         ("SK디앤디 12R", rights_sk), ("대상 본주 가격 비교", tar_price_vs_close),
+                         ("KRX stk_bydd_trd (유가증권 일별)", stk),
                          ("KRX ksq_bydd_trd (코스닥 일별)", ksq)]:
             guarded(name, fn)
 
