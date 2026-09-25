@@ -240,3 +240,21 @@ def test_gate_and_verdicts():
     assert any(c["status"] == "manual" and c["text"] == "GPT 확인 필요" for c in bad["criteria"])
     reit = gate1({"purpose_pct": {"채무상환": 90.0}, "dilution_ratio": 0.2}, {}, None, None, None, "삼성FN리츠")
     assert reit["reit"] and "완화" in reit["reit_note"]
+
+
+def test_rights_history_skips_bad_spans_and_remembers_days():
+    from yujeung.pipeline import step_rights_history
+    conn = db.connect(":memory:")
+    backfill(conn, FakeDart(), FakeKrx())
+    # 비정상 일정(기간 200일) 케이스를 하나 넣어도 조회 날짜가 늘지 않는다
+    conn.execute("INSERT INTO cases (corp_code, corp_name, stock_code, corp_cls, first_rcept_no, first_rcept_dt,"
+                 " ic_mthn, is_rights, created_at) VALUES ('X','이상','123123','K','20260101000001','20260101',"
+                 "'주주배정증자',1,'t')")
+    cid = conn.execute("SELECT case_id FROM cases WHERE stock_code='123123'").fetchone()[0]
+    conn.execute("INSERT INTO disclosures VALUES ('20260101000001',?,'piic','r','20260101',0,'{}')", (cid,))
+    conn.execute("INSERT INTO schedule_versions (rcept_no, case_id, parsed_at, rights_start, rights_end, extras_json)"
+                 " VALUES ('20260101000001',?,'t','2026-02-01','2026-08-20','{\"parser\": 99}')", (cid,))
+    conn.commit()
+    krx = FakeKrx()
+    assert step_rights_history(krx, conn, TODAY) == 0      # SK 기간은 이미 조회했고, 이상 기간은 건너뜀
+    assert krx.calls == []

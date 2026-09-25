@@ -112,6 +112,14 @@ CREATE TABLE IF NOT EXISTS excluded_disclosures (
     created_at TEXT NOT NULL
 );
 
+-- 이미 조회한 KRX 날짜 (그날 해당 인수권이 없어도 다시 부르지 않기 위함)
+CREATE TABLE IF NOT EXISTS fetched_days (
+    source TEXT NOT NULL,
+    bas_dd TEXT NOT NULL,
+    fetched_at TEXT NOT NULL,
+    PRIMARY KEY (source, bas_dd)
+);
+
 -- 지수 일봉 (초과수익 계산용). idx = KOSPI / KOSDAQ
 CREATE TABLE IF NOT EXISTS index_daily (
     bas_dd TEXT NOT NULL,
