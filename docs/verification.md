@@ -16,3 +16,7 @@
 | GitHub Actions(미국 IP) → KRX Open API 접근 | ✅ 실측 | stk/ksq 성공 — 해외 IP 차단 없음 |
 | 권리락일 = 기준일 전 1영업일 | 추정 | `calendar_kr.KRX_HOLIDAYS` 2026 휴장일 목록 검증 필요 |
 | 2차 발행가 산정식·공매도 참여제한 세부 | 미착수 | brief §7 그대로 |
+| 네이버 금융 일봉 `fchart.stock.naver.com/sise.nhn` (본주·KOSPI·KOSDAQ) | ⚠️ 미확인 | 52주 위치·상장 후 수익률·지수 초과수익에 사용. pykrx OHLCV 와 같은 출처(KR-hegemony Actions 에서 동작). `verify` 에 점검 추가 |
+| DART `fnlttSinglAcntAll.json` 직전 분기 영업이익 | ⚠️ 미확인 | KR-hegemony 와 같은 API·계정 식별. 분·반기 `thstrm_amount` = 3개월 금액이라는 가정 검증 필요. `verify` 에 점검 추가 |
+| 원문 휴리스틱: 최대주주 청약 참여, 인수방식(총액/잔액/모집주선) | ⚠️ 미검증 | 문장 패턴 기반. 못 찾으면 '미확인'(GPT 확인 필요). 증권신고서 API 인수인정보(`udtmth`)가 있으면 그걸 우선 |
+| 3자배정 공시 '청약일 | 날짜' 한 줄 | 🟡 합성 픽스처 | 청약일=납입일 제외 규칙용 |

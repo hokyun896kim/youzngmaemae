@@ -93,6 +93,28 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .uc{background:#0b1322;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0}
 .uc b.t{display:block;color:var(--txt);margin-bottom:2px}
 .mbox code{background:#0b1322;border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:12px}
+.chip.stale{border-color:#8a3530;background:#2a1414;color:#f0a8a2}
+.chip.stale b{color:#fff}
+.today{display:grid;gap:8px}
+.ti{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;cursor:pointer}
+.ti:hover{border-color:var(--gold)}
+.ti .dot{font-size:15px;line-height:1.2}
+.ti small{display:block;color:var(--mut);font-size:11px;margin-top:2px}
+.vbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:-2px 0 12px;padding:10px 12px;border-radius:12px;background:#0b1322;border:1px solid var(--line)}
+.vbadge{font-size:14px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);white-space:nowrap}
+.vbadge.green{border-color:#2f6b55;color:#8fe0bf}.vbadge.yellow{border-color:#7a6420;color:var(--gold2)}
+.vbadge.blue{border-color:#2d4f8f;color:#9dbcff}.vbadge.white{color:#d8dde7}
+.vreason{font-size:12px;color:var(--txt);flex:1;min-width:200px}
+.vreason small{display:block;color:var(--mut);margin-top:2px}
+.crit{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.cr{font-size:11px;padding:3px 8px;border-radius:8px;border:1px solid var(--line);background:#0b1322;color:var(--mut)}
+.cr.pass{color:#8fe0bf;border-color:#24503f}.cr.fail{color:#f0a8a2;border-color:#5a2a27}
+.cr.manual{color:var(--gold2);border-color:#5a4a1a}
+.result{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#0b1322}
+.result h4{font-size:12px;margin-bottom:6px;color:var(--gold2)}
+.result table{min-width:0}
+.result td,.result th{padding:5px 8px;font-size:12px}
+.warnbox{margin:8px 0;font-size:12px;color:#e8c46a}
 footer{color:var(--mut);font-size:11px;margin:34px 0 10px;line-height:1.7}
 a{color:var(--gold2)}
 </style></head><body><div class="wrap">
@@ -108,6 +130,9 @@ a{color:var(--gold2)}
 </div>
 <div id="briefPreview" class="preview"></div>
 
+<h2>오늘 볼 것 <small id="todayDate"></small></h2>
+<div class="today" id="today"></div>
+
 <h2>오늘의 인수권 <small id="rdate"></small></h2>
 <div id="rights"></div>
 
@@ -115,8 +140,8 @@ a{color:var(--gold2)}
 <div class="tabs" id="tabs"></div>
 <div class="cards" id="cases"></div>
 
-<h2>알림 로그 <small>텔레그램으로 나간 메시지</small></h2>
-<div class="notes" id="notes"></div>
+<h2>판정별 성적표 <small>가상 진입 기준 · 신주 상장 +20거래일</small></h2>
+<div id="score"></div>
 
 <div class="modal" id="guide" onclick="if(event.target===this)closeGuide()"><div class="mbox">
 <button class="btn x" onclick="closeGuide()">닫기 ✕</button>
@@ -220,15 +245,22 @@ function caseCard(c){
   const hist=c.history.map(h=>`<div><a href="${dartUrl(h.rcept_no)}" target="_blank" rel="noopener">${esc(h.report_nm)}</a> <span class="mut">${h.rcept_dt}</span><br>${
     Object.entries(h.schedule).map(([k,v])=>`${k}=${esc(v)}`).join(' · ')||'<span class="mut">일정 없음</span>'}${
     h.warnings.filter(w=>!w.includes('미검증')&&!w.includes('추정')).length?`<div class="warn">⚠ ${h.warnings.filter(w=>!w.includes('미검증')&&!w.includes('추정')).map(esc).join(', ')}</div>`:''}</div>`).join('');
-  return `<div class="card ${c.is_rights?'rights':''}">
+  const v=c.verdict, g=c.gate1;
+  const vbar=v?`<div class="vbar"><span class="vbadge ${v.code}">${v.emoji} ${esc(v.name)}${v.provisional?' · 잠정':''}</span><div class="vreason">${esc(v.reason)}<small>${v.provisional?'인수권 마지막 날 괴리로 확정됩니다':'확정 '+v.decided_on+(v.live_reason!==v.reason?' · 현재: '+esc(v.live_reason):'')}${g&&g.reit_note?' · '+esc(g.reit_note):''}</small></div></div>`:'';
+  const ico={pass:'✅',fail:'❌',unknown:'❔',manual:'🤖'};
+  const crit=g?`<div class="crit">${g.criteria.map(x=>`<span class="cr ${x.status}" title="${esc(x.label)}">${ico[x.status]} ${esc(x.text==='GPT 확인 필요'?x.label+' · GPT 확인 필요':x.text)}</span>`).join('')}</div>`:'';
+  const swarn=(c.schedule_warnings||[]).length?`<div class="warnbox">⚠ ${(c.schedule_warnings).map(esc).join(' · ')}</div>`:'';
+  return `<div class="card ${c.is_rights?'rights':''}" id="case${c.case_id}">
+  ${vbar}${crit}
   <div class="ch"><div><div class="cn"><a href="${dartUrl(c.first_rcept_no)}" target="_blank" rel="noopener">${esc(c.corp_name)}</a> <span class="mut" style="font-size:13px">${esc(c.stock_code||'')} · ${esc(c.market||'')}</span></div>
   <div class="meta">최초 공시 ${c.first_rcept_dt} · ${esc(c.ic_mthn||'증자방식 미상')}</div>
   ${c.is_rights&&c.status==='open'?`<span class="stage">${esc(caseStage(s))}</span>`:''}</div>
   <div>${c.is_rights?'<span class="badge gold">주주배정 · 인수권</span>':'<span class="badge">관찰</span>'} ${debt?'<span class="badge red">채무상환형</span>':''} ${big?'<span class="badge red">초대형 희석</span>':''} ${fssReq?'<span class="badge red">금감원 정정요구</span>':''}</div></div>
   <div class="grid">${kv('발행가',fmt(s.issue_price)+'원')}${kv('배정비율',s.alloc_ratio!=null?Number(s.alloc_ratio).toFixed(4):'—')}${kv('신주÷기존주',sm.dilution_ratio!=null?(sm.dilution_ratio*100).toFixed(0)+'%':'—')}${kv('모집 규모',sm.total_amount?Math.round(sm.total_amount/1e8).toLocaleString()+'억':'—')}</div>
   ${purp?`<div class="meta">자금 목적</div><div class="purp">${purp}</div><div class="legend">${leg}</div>`:''}
-  ${c.is_rights?timeline(s):''}
-  ${spark(c.rights_series)}
+  ${c.is_rights?timeline(s):''}${swarn}
+  ${spark(c.rights_series||[])}
+  ${resultBlock(c)}
   <details><summary>공시·정정 이력 ${c.history.length}건</summary><div class="hist">${hist}</div></details>
   <details><summary>1차·2차 자료 링크</summary><div class="links">${caseLinks(c).map(([i,n,t,u,d])=>`<a class="lnk" href="${u}" target="_blank" rel="noopener"><span>${i}</span><span>${n}<span class="${t==='1차'?'t1':'t2'}">${t}</span><small>${d}</small></span></a>`).join('')}</div></details>
   <div class="ai"><div class="nsub">🤖 <b>개별기업 분석 프롬프트</b> — 이 케이스의 공시·일정·괴리율 + DART 1차 자료 링크 + 확정 결론(전제) + 검증 지침이 채워진 질문을 복사합니다. GPT·Claude에 붙여넣으세요.</div>
@@ -250,9 +282,52 @@ function renderCases(){
 function drawSparks(){document.querySelectorAll('.sparkbox').forEach(b=>{b.innerHTML=drawSpark(SPARKS[b.dataset.i],Math.max(b.clientWidth,280));});}
 addEventListener('resize',()=>DATA&&drawSparks());
 
-function renderNotes(){
-  const n=DATA.notifications;
-  $('#notes').innerHTML=n.length?n.map(x=>{const [h,...b]=x.text.split('\n');return `<div class="note"><span class="h">${esc(h)}</span>\n${esc(b.join('\n'))}<div class="mut" style="margin-top:4px">${x.sent_at}${x.delivered?'':' · 미발송'}</div></div>`}).join(''):'<div class="empty">아직 알림이 없습니다.</div>';
+// ---- 영업일 (KST, 사이트 데이터의 휴장일 목록 사용) ----
+const kstToday=()=>new Date(Date.now()+9*3600e3).toISOString().slice(0,10);
+const addDays=(iso,n)=>{const d=new Date(iso+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);};
+const isBiz=iso=>{const w=new Date(iso+'T00:00:00Z').getUTCDay();return w>0&&w<6&&!(DATA.holidays||[]).includes(iso);};
+function bizBetween(a,b){ // a 다음 날부터 b 까지 영업일 수 (b<a 면 음수)
+  if(b===a) return 0; let n=0,d=a; const step=b>a?1:-1;
+  while(d!==b){d=addDays(d,step); if(isBiz(d)) n+=step;} return n;}
+const nextBiz=iso=>{let d=addDays(iso,1);while(!isBiz(d))d=addDays(d,1);return d;};
+
+function renderToday(){
+  const t=kstToday(), tomorrow=nextBiz(t), items=[];
+  $('#todayDate').textContent=t+' 기준';
+  const open=DATA.cases.filter(c=>c.is_rights&&c.status==='open');
+  for(const c of open){
+    const s=c.schedule||{};
+    if(s.rights_end&&s.rights_end>=t){const left=bizBetween(t,s.rights_end);
+      if(left<=2) items.push({o:0,dot:'🔴',c,text:`${c.corp_name} 인수권 거래 마감 ${left===0?'오늘':'D-'+left} (${s.rights_end})`,sub:c.verdict?`${c.verdict.emoji} ${c.verdict.reason}`:''});}
+    for(const [k,l] of [['ex_rights_date','권리락'],['price_fix_date','확정발행가 산정'],['subs_start','청약 시작'],['listing_date','신주 상장']]){
+      if(s[k]===tomorrow) items.push({o:1,dot:'🟡',c,text:`${c.corp_name} ${l} D-1 (${s[k]})`,sub:c.verdict?`${c.verdict.emoji} ${c.verdict.name}`:''});}
+    const fd=`${c.first_rcept_dt.slice(0,4)}-${c.first_rcept_dt.slice(4,6)}-${c.first_rcept_dt.slice(6)}`;
+    if(fd>=addDays(t,-3)) items.push({o:2,dot:'🟢',c,text:`${c.corp_name} 신규 주주배정 공시 (${fd})`,sub:`${esc(c.ic_mthn||'')} · ${c.verdict?c.verdict.emoji+' '+c.verdict.reason:''}`});
+  }
+  items.sort((a,b)=>a.o-b.o);
+  $('#today').innerHTML=items.length?items.map(x=>`<div class="ti" onclick="jumpTo(${x.c.case_id})"><span class="dot">${x.dot}</span><div><b>${esc(x.text)}</b><small>${esc(x.sub)}</small></div></div>`).join('')
+    :'<div class="empty">오늘 챙길 일정이 없습니다. (🔴 인수권 마감 D-2 이내 · 🟡 권리락·발행가확정·청약·신주상장 D-1 · 🟢 최근 3일 신규 주주배정)</div>';
+}
+function jumpTo(id){const c=DATA.cases.find(x=>x.case_id===id);TAB=c.status==='open'?'open':'closed';renderCases();
+  const el=document.getElementById('case'+id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});}
+
+function renderScore(){
+  const V=DATA.verdicts, rows=DATA.scorecard||[];
+  const f=v=>v==null?'—':(v>0?'+':'')+v.toFixed(1)+'%';
+  $('#score').innerHTML=`<div class="tblw"><table><thead><tr><th>판정</th><th>기록</th><th>완료(+20일)</th><th>승률</th><th>평균 수익률</th><th>최대 손실</th><th>평균 초과(지수 대비)</th></tr></thead><tbody>${
+    rows.map(r=>`<tr><td>${V[r.verdict].emoji} ${V[r.verdict].name}</td><td>${r.n}건</td><td>${r.done}건</td><td>${r.win_rate==null?'—':r.win_rate+'%'}</td><td>${f(r.avg)}</td><td>${f(r.worst)}</td><td>${r.avg_excess==null?'—':(r.avg_excess>0?'+':'')+r.avg_excess.toFixed(1)+'%p'}</td></tr>`).join('')
+  }</tbody></table></div><div class="meta" style="margin-top:6px">표본 수: 기록 ${rows.reduce((a,r)=>a+r.n,0)}건 / 완료 ${rows.reduce((a,r)=>a+r.done,0)}건. 🟢⚪ 인수권 마지막 날 종가+발행가로 청약 · 🟡 신주 상장일 종가 매수 · 🔵 (상장 후 가격−발행가)÷인수권 매도가−1.</div>`;
+}
+
+function resultBlock(c){
+  const p=c.paper; if(!p) return c.is_rights?`<div class="result"><h4>들어갔다면?</h4><div class="meta">인수권 마지막 거래일 종가가 들어오면 판정을 확정하고 가상 진입을 기록합니다.</div></div>`:'';
+  const e=p.eval, V=DATA.verdicts[p.verdict];
+  const rows=(e.points||[]).map(pt=>`<tr><td>${pt.label}</td><td>${pt.date||'—'}</td><td>${fmt(pt.price)}</td><td>${pt.ret!=null?`<b class="${pt.ret>=0?'pos':'neg'}">${(pt.ret>0?'+':'')+pt.ret.toFixed(1)}%</b>`:`<span class="mut">${esc(pt.pending||'—')}</span>`}</td><td>${pt.excess!=null?(pt.excess>0?'+':'')+pt.excess.toFixed(1)+'%p':'—'}</td></tr>`).join('');
+  const snap=p.snapshot;
+  return `<div class="result"><h4>들어갔다면? — ${V.emoji} ${V.name} (판정일 ${p.decided_on}${snap.backfilled?', 백필':''})</h4>
+  <div class="meta">판정 근거(스냅샷, 불변): ${esc(snap.reason)}</div>
+  <div class="meta">진입: ${esc(e.entry_label||'')} ${e.entry!=null?fmt(e.entry)+'원':esc(e.pending||e.error||'—')}${e.entry_date?' ('+e.entry_date+')':''}${e.issue_note?' · '+esc(e.issue_note):''}</div>
+  <table style="margin-top:6px"><thead><tr><th>시점</th><th>날짜</th><th>가격</th><th>수익률</th><th>지수 대비</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function openGuide(){$('#guide').classList.add('show');}
@@ -263,7 +338,9 @@ function copyBriefing(btn){if(!DATA)return;copyText(buildBriefingPrompt(DATA),bt
 fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
   DATA=d;
   const c=d.counts;
-  $('#chips').innerHTML=[['갱신',d.generated_at.replace('T',' ').slice(0,16)],['인수권 시세',d.last_rights_date||'—'],['수집 시작',d.first_rights_date||'—'],['케이스',c.cases],['인수권 행',fmt(c.rights_daily)]].map(([l,v])=>`<div class="chip">${l}<b>${v}</b></div>`).join('');
-  renderRights();renderCases();renderNotes();
+  const age=(Date.now()-new Date(d.generated_at).getTime())/3600e3, stale=!(age<24);
+  const rc=d.cases.filter(x=>x.is_rights&&x.status==='open').length;
+  $('#chips').innerHTML=[['갱신',d.generated_at.replace('T',' ').slice(0,16)+(stale?` · ${Math.floor(age)}시간 전`:''),stale],['인수권 시세',d.last_rights_date||'—'],['주주배정 진행',rc+'건'],['가상 기록',c.paper_trades+'건'],['제외 공시',c.excluded_disclosures+'건']].map(([l,v,st])=>`<div class="chip${st?' stale':''}">${l}<b>${v}</b></div>`).join('');
+  renderToday();renderRights();renderCases();renderScore();
 }).catch(e=>{$('#chips').innerHTML=`<div class="empty">data/site.json 을 읽지 못했습니다 (${esc(e.message)}). 로컬에선 python -m http.server 로 여세요.</div>`});
 </script></body></html>

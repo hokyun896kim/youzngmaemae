@@ -13,10 +13,12 @@ import html
 import re
 from dataclasses import dataclass, field
 
-from .calendar_kr import ex_rights_date
+from datetime import date
+
+from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 2
+PARSER_VERSION = 3   # 3: 최대주주 청약·인수방식 추출, 3자배정 공시(한 줄 청약일)도 파싱
 
 _DATE_RE = re.compile(
     r"(20\d{2})\s*(?:년|[.\-/])\s*(\d{1,2})\s*(?:월|[.\-/])\s*(\d{1,2})\s*일?"
@@ -134,12 +136,72 @@ def _first_number(values: list[str], min_value: float = 0) -> float | None:
     return None
 
 
+# ---- 판정 재료: 최대주주 청약 참여, 인수 방식 (원문 휴리스틱 — 카드에 '원문 확인' 표시) ----
+_PCT_RE = re.compile(r"(\d{1,3}(?:\.\d+)?)\s*%")
+
+
+def extract_major_holder(text: str) -> dict | None:
+    """'최대주주 … 청약/참여 …' 문장에서 참여 수준. level: full(100%·전량 이상) / partial / none / unknown"""
+    best = None
+    rank = {"full": 3, "partial": 2, "none": 2, "unknown": 1}
+    for m in re.finditer(r"최대주주", text):
+        win = text[m.start(): m.start() + 220]
+        if not re.search(r"청약|참여", win):
+            continue
+        if re.search(r"미정|결정되지|확정되지", win):
+            cur = {"level": "unknown", "text": win[:140]}
+        elif re.search(r"참여하지\s*않|불참|미참여|청약하지\s*않", win):
+            cur = {"level": "none", "text": win[:140]}
+        elif re.search(r"전량|전부|초과청약", win) or any(float(x) >= 100 for x in _PCT_RE.findall(win)):
+            cur = {"level": "full", "text": win[:140]}
+        elif _PCT_RE.search(win):
+            pct = max(float(x) for x in _PCT_RE.findall(win))
+            cur = {"level": "partial", "pct": pct, "text": win[:140]}
+        else:
+            continue
+        if best is None or rank[cur["level"]] > rank[best["level"]]:
+            best = cur
+    return best
+
+
+def extract_underwriting(rows: list[tuple[str, list[str]]], raw_rows: list[list[str]], text: str) -> str | None:
+    """인수 방식: 총액인수 / 잔액인수 / 모집주선. 표의 '인수방법' 칸 우선, 없으면 본문 빈도."""
+    kinds = ("잔액인수", "총액인수", "모집주선")
+    for cells in raw_rows:
+        joined = "".join(cells).replace(" ", "")
+        if "인수방법" in joined or "인수형태" in joined:
+            for k in kinds:
+                if k in joined:
+                    return k
+    counts = {k: text.replace(" ", "").count(k) for k in kinds}
+    k, n = max(counts.items(), key=lambda kv: kv[1])
+    return k if n else None
+
+
+def validate_schedule(s: dict) -> tuple[dict, list[str]]:
+    """합쳐진 일정의 논리 검사. (고친 일정, 경고) — 원본은 건드리지 않는다.
+    - 인수권 기간이 청약 기간과 똑같으면 '인수권 기간 파싱 실패' → 값 비움
+    - 인수권 마지막 날이 청약 시작 5거래일 전보다 늦으면 경고"""
+    s = dict(s)
+    warns: list[str] = []
+    if s.get("rights_start") and s.get("rights_start") == s.get("subs_start") and \
+            (s.get("rights_end") or s.get("rights_start")) == (s.get("subs_end") or s.get("subs_start")):
+        warns.append("인수권 기간 파싱 실패 (청약일과 동일) — 원문 확인")
+        s["rights_start"] = s["rights_end"] = None
+    if s.get("rights_end") and s.get("subs_start"):
+        limit = shift_business_days(date.fromisoformat(s["subs_start"]), -5).isoformat()
+        if s["rights_end"] > limit:
+            warns.append(f"인수권 마지막 날 {s['rights_end']} 이 청약 5거래일 전({limit})보다 늦음 — 원문 확인")
+    return s, warns
+
+
 _RIGHTS_TEXT_RE = re.compile(r"신주인수권증서[^.。\n]{0,80}?(?:상장|매매|거래)[^.。\n]{0,80}")
 
 
 def parse_document(doc: str) -> Schedule:
     s = Schedule()
-    rows = labeled_rows(table_rows(doc))
+    raw_rows = table_rows(doc)
+    rows = labeled_rows(raw_rows)
     evidence: dict[str, str] = {}
     price_candidates: list[tuple[int, int, str]] = []   # (우선순위, 값, 라벨)
     fix_candidates: list[tuple[str, str]] = []           # (확정발행가 산정/확정 예정일, 라벨)
@@ -178,11 +240,17 @@ def parse_document(doc: str) -> Schedule:
                 s.rights_start = ds[0]
                 s.rights_end = ds[1] if len(ds) > 1 else s.rights_end
                 evidence["rights_start"] = label
-        elif "청약" in label and "우리사주" not in label and date:
+        elif ("청약" in label and "우리사주" not in label and date
+              and not any(k in label for k in ("공고", "대상자", "결과", "보유자"))):
             if "종료" in label and not s.subs_end:
                 s.subs_end, evidence["subs_end"] = date, label
             elif "시작" in label and not s.subs_start:
                 s.subs_start, evidence["subs_start"] = date, label
+            elif "시작" not in label and "종료" not in label and not s.subs_start:
+                # 3자배정 공시: '청약일 | 날짜' 한 줄 (기간이면 '날짜 ~ 날짜')
+                ds = [d for v in values for d in find_dates(v)]
+                s.subs_start, s.subs_end = ds[0], ds[-1]
+                evidence["subs_start"] = label
         elif "납입일" in label and date and not s.payment_date:
             s.payment_date, evidence["payment_date"] = date, label
         elif "상장예정일" in label and "인수권" not in label and date and not s.listing_date:
@@ -230,7 +298,10 @@ def parse_document(doc: str) -> Schedule:
         if getattr(s, name) is None:
             s.warnings.append(f"{name} 못 찾음")
     s.warnings.append("미검증 파서: 실제 공시 원문으로 정확도 확인 전")
-    s.extras = {"evidence": evidence, "parser": PARSER_VERSION}
+    text = clean(doc)
+    s.extras = {"evidence": evidence, "parser": PARSER_VERSION,
+                "facts": {"major_holder": extract_major_holder(text),
+                          "underwriting": extract_underwriting(rows, raw_rows, text)}}
     return s
 
 

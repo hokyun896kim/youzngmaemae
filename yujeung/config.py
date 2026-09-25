@@ -30,10 +30,8 @@ def _load_dotenv(path: Path) -> None:
 class Config:
     dart_api_key: str
     krx_api_key: str
-    telegram_token: str
-    telegram_chat_id: str
     db_path: Path
-    gap_alert_pct: float      # |괴리율| 이 이 이상이면 알림
+    gap_alert_pct: float      # |괴리율| 이 이 이상이면 싸다/비싸다 (관문 2 기준)
 
     @classmethod
     def load(cls) -> "Config":
@@ -41,8 +39,6 @@ class Config:
         return cls(
             dart_api_key=os.environ.get("DART_API_KEY", ""),
             krx_api_key=os.environ.get("KRX_API_KEY", ""),
-            telegram_token=os.environ.get("TELEGRAM_BOT_TOKEN", ""),
-            telegram_chat_id=os.environ.get("TELEGRAM_CHAT_ID", ""),
             db_path=Path(os.environ.get("YUJEUNG_DB", DATA_DIR / "yujeung.sqlite3")),
             gap_alert_pct=float(os.environ.get("GAP_ALERT_PCT", "20")),
         )

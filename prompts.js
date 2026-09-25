@@ -99,6 +99,8 @@ ${CHART_RULE}
 - 자금 목적 비중: ${purpose}
 - 발행가(최신 공시 기준): ${P_N(s.issue_price)}원
 - 현재 사이클 위치: ${caseStage(s)}
+- 자동 판정: ${c.verdict ? `${c.verdict.emoji} ${c.verdict.name}${c.verdict.provisional ? '(잠정)' : ''} — ${c.verdict.reason}` : '데이터없음'}
+- 관문1 항목: ${c.gate1 ? c.gate1.criteria.map(x => `${x.label}=${{pass: '통과', fail: '탈락', unknown: '미확인', manual: 'GPT 확인 필요'}[x.status]}(${x.text})`).join(' / ') : '데이터없음'}${c.gate1 && c.gate1.reit_note ? `\n- 참고: ${c.gate1.reit_note}` : ''}
 - 최근 본주 종가: ${stockLast ? `${stockLast.d} ${P_N(stockLast.close)}원` : '데이터없음'}
 
 [일정]
@@ -118,7 +120,7 @@ ${links}
 
 [분석 요청 — 깊게]
 1. 자금 목적의 실체: 공시의 자금 목적 비중을 그대로 믿지 말고, 증권신고서 '자금의 사용목적' 세부 내역으로 성장 투자형인지 채무상환·연명형인지 판정해라. 채무상환이면 어떤 부채(만기·금리·사모사채 여부)인지 밝혀라.
-2. 필터 5개 판정: ①~⑤를 하나씩 통과/탈락/미확인으로 판정하고 근거를 대라(⑤는 공시일 기준 52주 고저 위치를 계산). 하나라도 탈락이면 B(본업) 후보가 아니다.
+2. 필터 5개 판정: ①~⑤를 하나씩 통과/탈락/미확인으로 판정하고 근거를 대라(⑤는 공시일 기준 52주 고저 위치를 계산). 하나라도 탈락이면 B(본업) 후보가 아니다. 위 '자동 판정'에서 "GPT 확인 필요"·"미확인"인 항목(업계 순위, 대체 불가, 최대주주 청약 등)을 특히 채워라.
 3. 발행조건: 1차·2차(확정) 발행가 산식과 할인율, 확정발행가가 1차보다 내려갈 수 있는 본주 가격 수준(이 케이스의 "부분적 보험" 구간)을 계산해라.
 4. 최대주주·특수관계인 청약 참여율과 실권주 처리 방식(일반공모 / 총액인수 / 모집주선 미발행)을 확인하고, 실권 시 수급에 미치는 영향을 판단해라.
 5. A(인수권 괴리) 판정: 위 괴리율 추이로 인수권이 싼지 비싼지, "인수권 매수 + 청약" 시 신주 원가(인수권 + 발행가)가 상장일 예상 주가 대비 유리한지 계산해라. 괴리가 방치된 이유를 전제 6번 기준으로 설명해라.
@@ -135,7 +137,7 @@ function buildBriefingPrompt(d) {
     const s = c.schedule || {}, sm = c.summary || {};
     const last = (c.rights_series || []).filter(p => p.gap != null).at(-1);
     const purpose = Object.entries(sm.purpose_pct || {}).map(([k, v]) => `${k}${v}%`).join('/') || '-';
-    return `- ${c.corp_name}(${P_NA(c.stock_code)}) | ${P_NA(c.ic_mthn)} | 자금목적 ${purpose} | 희석 ${sm.dilution_ratio != null ? (sm.dilution_ratio * 100).toFixed(0) + '%' : '-'} | 발행가 ${P_N(s.issue_price)} | ${caseStage(s)} | 권리락 ${P_NA(s.ex_rights_date)} · 인수권 ${P_NA(s.rights_start)}~${P_NA(s.rights_end)} · 상장 ${P_NA(s.listing_date)}${last ? ` | 괴리율 ${P_PCT(last.gap)}(${last.d})` : ''}`;
+    return `- ${c.verdict ? c.verdict.emoji + ' ' : ''}${c.corp_name}(${P_NA(c.stock_code)}) | ${P_NA(c.ic_mthn)} | 자금목적 ${purpose} | 희석 ${sm.dilution_ratio != null ? (sm.dilution_ratio * 100).toFixed(0) + '%' : '-'} | 발행가 ${P_N(s.issue_price)} | ${caseStage(s)} | 권리락 ${P_NA(s.ex_rights_date)} · 인수권 ${P_NA(s.rights_start)}~${P_NA(s.rights_end)} · 상장 ${P_NA(s.listing_date)}${last ? ` | 괴리율 ${P_PCT(last.gap)}(${last.d})` : ''}`;
   }).join('\n') : '- (진행 중인 주주배정 케이스 없음)';
   const rights = (d.rights_today || []).length ? d.rights_today.map(r =>
     `- ${r.name}: 인수권 ${P_N(r.close)} / 본주 ${P_N(r.stock)} / 발행가 ${P_N(r.issue)} / 이론가 ${P_N(r.fair)} / 괴리율 ${P_PCT(r.gap)} / 인수권+청약 원가 ${P_N(r.cost)} / 거래량 ${P_N(r.volume)} / 상장폐지 ${P_NA(r.delist)}`

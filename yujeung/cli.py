@@ -1,6 +1,8 @@
 """python -m yujeung <명령>
 
-  daily            감지 → 일정 파싱 → 시세 → 알림 → site.json → SQL 덤프 (Actions 가 매일 실행)
+  daily            감지 → 일정 파싱 → 시세 → 판정·가상성과 → site.json → SQL 덤프 (Actions 가 매일 실행)
+  backfill-cases   최근 N개월 유상증자결정 공시를 월 단위로 조회해 진행 중 케이스 채우기 (멱등)
+  report-case      종목코드로 케이스 요약 출력 (일정·괴리율 추이·판정·가상성과)
   backfill-rights  KRX 인수권 일별 시세 과거분 적재 (2010-02-12~)
   import-rights    HTS 에서 옮긴 인수권 종가 CSV 적재
   export           site.json 만 다시 생성
@@ -25,8 +27,8 @@ def open_db(cfg: Config):
     return db.connect(cfg.db_path)
 
 
-def save(conn) -> None:
-    write_site(conn, SITE_JSON)
+def save(conn, cfg: Config | None = None) -> None:
+    write_site(conn, SITE_JSON, cfg)
     db.dump_sql(conn, DUMP_PATH)
 
 
@@ -47,11 +49,56 @@ def cmd_daily(args, cfg: Config) -> int:
     conn = open_db(cfg)
     today = _date(args.today) if args.today else today_kst()
     report = run_daily(cfg, conn, today, args.lookback, args.price_days)
-    save(conn)
+    save(conn, cfg)
     print(json.dumps(report, ensure_ascii=False, indent=1))
     errors = [p for p in report.get("prices", []) if "error" in p]
     # 전부 실패했을 때만 실패 처리 (휴장일·미갱신 하루 정도는 정상)
     return 1 if report.get("prices") and len(errors) == len(report["prices"]) else 0
+
+
+def cmd_backfill_cases(args, cfg: Config) -> int:
+    from .pipeline import run_daily
+    conn = open_db(cfg)
+    today = _date(args.today) if args.today else today_kst()
+    report = run_daily(cfg, conn, today, price_days=args.price_days, backfill_months=args.months)
+    if not args.dry_run:
+        save(conn, cfg)
+    print(json.dumps(report, ensure_ascii=False, indent=1))
+    for code in args.report or []:
+        print_case(conn, cfg, code, today)
+    return 0
+
+
+def print_case(conn, cfg: Config, code: str, today) -> None:
+    from .export import _case_json
+    rows = conn.execute("SELECT * FROM cases WHERE stock_code=? ORDER BY first_rcept_dt DESC", (code,)).fetchall()
+    print(f"\n===== {code} : 케이스 {len(rows)}건 =====")
+    for c in rows:
+        j = _case_json(conn, c, cfg, today)
+        print(f"[case {j['case_id']}] {j['corp_name']} {j['ic_mthn']} 최초공시 {j['first_rcept_dt']} 상태 {j['status']}")
+        print("  공시:", " / ".join(f"{h['rcept_dt']} {h['report_nm']}" for h in j["history"]))
+        print("  일정:", json.dumps(j["schedule"], ensure_ascii=False))
+        if j["schedule_warnings"]:
+            print("  일정 경고:", j["schedule_warnings"])
+        if not j["is_rights"]:
+            continue
+        print("  판정:", j["verdict"]["emoji"], j["verdict"]["name"], "|", j["verdict"]["reason"],
+              "(잠정)" if j["verdict"]["provisional"] else f"(확정 {j['verdict']['decided_on']})")
+        print("  관문1:", "; ".join(f"{x['label']}={x['status']}({x['text']})" for x in j["gate1"]["criteria"]))
+        print("  재무/52주:", json.dumps(j["facts"], ensure_ascii=False))
+        print("  인수권 괴리율 추이:")
+        for p in j["rights_series"]:
+            print(f"    {p['d']} {p['name']} 인수권 {p['rights']} 본주 {p['stock']} 발행가 {p['issue']} "
+                  f"이론가 {p['fair']} 괴리 {p['gap']}% 원가 {p['cost']}")
+        if j["paper"]:
+            print("  가상성과:", json.dumps(j["paper"]["eval"], ensure_ascii=False))
+
+
+def cmd_report_case(args, cfg: Config) -> int:
+    conn = open_db(cfg)
+    for code in args.codes:
+        print_case(conn, cfg, code, today_kst())
+    return 0
 
 
 def cmd_backfill(args, cfg: Config) -> int:
@@ -185,8 +232,28 @@ def cmd_verify(args, cfg: Config) -> int:
                          ("KRX ksq_bydd_trd (코스닥 일별)", ksq)]:
             guarded(name, fn)
 
+    def naver_checks():
+        from .naver import NaverClient
+        n = NaverClient()
+        rows = n.daily("210980", 30)
+        check("네이버 일봉 210980", bool(rows), f"{len(rows)}일, 마지막 {rows[-1] if rows else '-'}")
+        idx = n.daily("KOSPI", 5)
+        check("네이버 일봉 KOSPI", bool(idx), f"마지막 {idx[-1] if idx else '-'}")
+
+    def fin_checks():
+        dart = DartClient(cfg.dart_api_key)
+        res = None
+        # 최근 30일 유상증자결정 공시를 낸 상장사 하나로 점검
+        items = dart.search((today_kst() - timedelta(days=30)).strftime("%Y%m%d"), today_kst().strftime("%Y%m%d"))
+        corp = next((i for i in items if is_piic_report(i.get("report_nm", "")) and i.get("corp_cls") in ("Y", "K")), None)
+        if corp:
+            res = dart.latest_op_income(corp["corp_code"], today_kst())
+        check("DART 재무(직전 분기 영업이익)", res is not None, f"{corp['corp_name'] if corp else '-'} {res}")
+
     if cfg.dart_api_key:
         guarded("DART", dart_checks)
+        guarded("DART 재무", fin_checks)
+    guarded("네이버 일봉", naver_checks)
     else:
         check("DART_API_KEY", False, "없음")
     if cfg.krx_api_key:
@@ -203,6 +270,14 @@ def main(argv=None) -> int:
     p.add_argument("--today")
     p.add_argument("--lookback", type=int, default=7, help="DART 감지 기간(일)")
     p.add_argument("--price-days", type=int, default=5, help="KRX 재수집 영업일 수")
+    p = sub.add_parser("backfill-cases")
+    p.add_argument("--months", type=int, default=5)
+    p.add_argument("--today")
+    p.add_argument("--price-days", type=int, default=5)
+    p.add_argument("--dry-run", action="store_true", help="결과를 저장하지 않음 (점검용)")
+    p.add_argument("--report", nargs="*", help="끝나고 요약할 종목코드")
+    p = sub.add_parser("report-case")
+    p.add_argument("codes", nargs="+")
     p = sub.add_parser("backfill-rights")
     p.add_argument("--start", required=True)
     p.add_argument("--end", required=True)
@@ -212,5 +287,6 @@ def main(argv=None) -> int:
     sub.add_parser("verify")
     args = ap.parse_args(argv)
     cfg = Config.load()
-    return {"daily": cmd_daily, "backfill-rights": cmd_backfill, "import-rights": cmd_import,
+    return {"daily": cmd_daily, "backfill-cases": cmd_backfill_cases, "report-case": cmd_report_case,
+            "backfill-rights": cmd_backfill, "import-rights": cmd_import,
             "export": cmd_export, "verify": cmd_verify}[args.cmd](args, cfg)

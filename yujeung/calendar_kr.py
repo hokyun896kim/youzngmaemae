@@ -29,3 +29,18 @@ def prev_business_day(d: date) -> date:
 
 def ex_rights_date(record_date: str) -> str:
     return prev_business_day(date.fromisoformat(record_date)).isoformat()
+
+
+def shift_business_days(d: date, n: int) -> date:
+    """n 영업일 뒤(n<0 이면 앞). n=0 이면 d 가 영업일이 아닐 때 다음 영업일."""
+    step = 1 if n >= 0 else -1
+    if n == 0:
+        while not is_business_day(d):
+            d += timedelta(days=1)
+        return d
+    left = abs(n)
+    while left:
+        d += timedelta(days=step)
+        if is_business_day(d):
+            left -= 1
+    return d

@@ -11,10 +11,15 @@
 - `yujeung/detect.py` — 유상증자결정 감지 + 주주배정 필터 + 정정 공시를 케이스로 묶기
 - `yujeung/schedule_parser.py` — 공시 원문에서 일정·발행가 추출 (정정마다 schedule_versions 에 버전 저장)
 - `yujeung/krx.py`, `yujeung/prices.py` — KRX Open API 인수권(sr_bydd_trd)·본주 시세, 괴리율
-- `yujeung/notify.py` — 텔레그램 (헤더 자동, 순번 = notifications.seq)
+- `yujeung/notify.py` — 알림 문구 생성·기록만 (발송 없음, 헤더 자동, 순번 = notifications.seq). 알림 역할은 사이트 '오늘 볼 것'
+- `yujeung/verdict.py` — 관문1(채무상환·희석·최대주주·영업흑자·52주·총액인수)+관문2(괴리) → 🟢🟡🔵⚪
+- `yujeung/paper.py` — 가상 성과: 인수권 마지막 날 판정 스냅샷(불변) + 상장 후 수익률·지수 초과
+- `yujeung/naver.py` — 네이버 일봉(본주·지수), `dart.latest_op_income` — 직전 분기 영업이익
 - `yujeung/pipeline.py` — daily 흐름, `yujeung/export.py` — data/site.json, `index.html` — 화면
 - `prompts.js` — GPT 분석지침(전체 브리핑) + 개별기업 분석 프롬프트. brief 확정 결론을 "전제"로, 수집기 맹점을 "검증 지침"으로 포함 — brief 와 어긋나게 고치지 말 것
 - DB: 실행 시 `data/yujeung.sql`(커밋되는 텍스트 덤프) → SQLite 복원 → 갱신 → 다시 덤프. 바이너리는 커밋 금지
 - 검증 상태는 docs/verification.md, 실측은 `python -m yujeung verify`
 - 테스트: `python -m pytest -q` (네트워크 불필요). 테스트 픽스처는 합성 데이터
-- 날짜는 항상 KST 기준 (`cli.today_kst`) — Actions 러너는 UTC
+- 날짜는 항상 KST 기준 (`cli.today_kst`, `db.now()`) — Actions 러너는 UTC
+- 파서 로직을 바꾸면 `schedule_parser.PARSER_VERSION` 을 올린다 (기존 공시 재파싱). 판정 로직을 바꾸면 `verdict.LOGIC_VERSION` 을 올린다 (과거 스냅샷은 불변)
+- 진행 상황: docs/progress.md

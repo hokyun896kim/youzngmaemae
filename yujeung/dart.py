@@ -110,6 +110,44 @@ class DartClient:
             groups = [groups]
         return {g.get("title", ""): g.get("list", []) for g in groups}
 
+    # ---- 재무: 직전 분기 영업이익 ----
+    def statement(self, corp_code: str, year: int, reprt_code: str, fs_div: str) -> list[dict]:
+        """단일회사 전체 재무제표 (fnlttSinglAcntAll). KR-hegemony 에서 쓰는 것과 같은 API."""
+        data = self._json("fnlttSinglAcntAll.json", {"corp_code": corp_code, "bsns_year": str(year),
+                                                      "reprt_code": reprt_code, "fs_div": fs_div})
+        return data.get("list", [])
+
+    def latest_op_income(self, corp_code: str, today) -> tuple[int, str] | None:
+        """가장 최근에 공시된 분기의 영업이익(3개월)과 그 기간 라벨.
+        분기·반기보고서 손익계산서의 thstrm_amount 는 해당 3개월 금액, 사업보고서는 연간 금액(→ 4분기 = 연간 − 3분기 누적)."""
+        tries = [(today.year, "11014", "3분기"), (today.year, "11012", "반기"), (today.year, "11013", "1분기"),
+                 (today.year - 1, "11011", "4분기"), (today.year - 1, "11014", "3분기")]
+        for year, reprt, label in tries:
+            for fs in ("CFS", "OFS"):
+                try:
+                    rows = self.statement(corp_code, year, reprt, fs)
+                except DartError:
+                    rows = []
+                if not rows:
+                    continue
+                if reprt == "11011":
+                    annual = pick_account(rows, OP_IDS, OP_NM, ["thstrm_amount"])
+                    q3 = None
+                    try:
+                        q3_rows = self.statement(corp_code, year, "11014", fs)
+                        q3 = pick_account(q3_rows, OP_IDS, OP_NM, ["thstrm_add_amount"])
+                    except DartError:
+                        pass
+                    if annual is not None:
+                        if q3 is not None:
+                            return int(annual - q3), f"{year} 4분기(연간−3분기누적, {fs})"
+                        return int(annual), f"{year} 연간({fs})"
+                else:
+                    v = pick_account(rows, OP_IDS, OP_NM, ["thstrm_amount"])
+                    if v is not None:
+                        return int(v), f"{year} {label}(3개월, {fs})"
+        return None
+
     # ---- 원문 ----
     def document(self, rcept_no: str) -> dict[str, str]:
         """공시서류원본파일(zip) → {파일명: 본문 텍스트}"""
@@ -121,6 +159,33 @@ class DartClient:
             # 오류면 zip 대신 XML/JSON 메시지가 온다
             raise DartError("doc", content[:200].decode("utf-8", "replace"))
         return unzip_document(content)
+
+
+# 영업이익 계정 식별 (KR-hegemony dart.py 와 동일)
+OP_IDS = {"dart_OperatingIncomeLoss", "ifrs-full_OperatingIncomeLoss",
+          "ifrs-full_ProfitLossFromOperatingActivities"}
+OP_NM = ("영업이익", "영업이익(손실)")
+
+
+def pick_account(rows: list[dict], ids: set[str], nms: tuple, fields: list[str]) -> float | None:
+    """손익계산서(IS/CIS) 행에서 계정을 찾아 fields 우선순위대로 첫 숫자."""
+    def grab(r):
+        for fld in fields:
+            v = to_int(r.get(fld))
+            if v is not None:
+                return float(v)
+        return None
+    for r in rows:
+        if r.get("sj_div") in ("IS", "CIS") and r.get("account_id") in ids:
+            v = grab(r)
+            if v is not None:
+                return v
+    for r in rows:
+        if r.get("sj_div") in ("IS", "CIS") and any(k in (r.get("account_nm") or "").replace(" ", "") for k in nms):
+            v = grab(r)
+            if v is not None:
+                return v
+    return None
 
 
 def unzip_document(content: bytes) -> dict[str, str]:
