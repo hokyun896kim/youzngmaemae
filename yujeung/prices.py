@@ -27,13 +27,34 @@ def short_code(code: str | None) -> str | None:
     return digits[-6:] if len(digits) >= 6 else digits
 
 
-def _case_for_stock(conn: sqlite3.Connection, stock_code: str | None) -> int | None:
+def _case_for_stock(conn: sqlite3.Connection, stock_code: str | None, bas_dd: str | None = None) -> int | None:
+    """본주 코드의 주주배정 케이스 중, 그 날짜 이전에 공시된 가장 최근 것."""
     if not stock_code:
         return None
+    until = re.sub(r"\D", "", bas_dd) if bas_dd else "99999999"
     row = conn.execute(
-        "SELECT case_id FROM cases WHERE stock_code=? ORDER BY first_rcept_dt DESC LIMIT 1", (stock_code,)
+        "SELECT case_id FROM cases WHERE stock_code=? AND is_rights=1 AND first_rcept_dt<=? "
+        "ORDER BY first_rcept_dt DESC LIMIT 1", (stock_code, until)
     ).fetchone()
     return row["case_id"] if row else None
+
+
+def rights_stock_code(isu_cd: str, tar_code: str | None = None) -> str | None:
+    """인수권 종목코드 앞 6자리 = 본주 단축코드 (실측: SK디앤디 12R '2109801G' → 210980)."""
+    head = (isu_cd or "")[:6]
+    return head if re.fullmatch(r"\d{6}", head) else short_code(tar_code)
+
+
+def relink_rights(conn: sqlite3.Connection) -> int:
+    """인수권 행 전체를 케이스에 다시 연결 (백필로 케이스가 늦게 생긴 경우)."""
+    n = 0
+    for r in conn.execute("SELECT bas_dd, isu_cd, tar_code, case_id FROM rights_daily").fetchall():
+        cid = _case_for_stock(conn, rights_stock_code(r["isu_cd"], r["tar_code"]), r["bas_dd"])
+        if cid != r["case_id"]:
+            conn.execute("UPDATE rights_daily SET case_id=? WHERE bas_dd=? AND isu_cd=?", (cid, r["bas_dd"], r["isu_cd"]))
+            n += 1
+    conn.commit()
+    return n
 
 
 def store_rights_rows(conn: sqlite3.Connection, rows: list[dict], source: str = "krx") -> int:
@@ -50,7 +71,7 @@ def store_rights_rows(conn: sqlite3.Connection, rows: list[dict], source: str = 
              to_int(r.get("LIST_SHRS")), to_int(r.get("ISU_PRC")),
              iso(r["DELIST_DD"]) if re.sub(r"\D", "", r.get("DELIST_DD") or "") else None,
              tar, r.get("TARSTK_ISU_NM"), to_int(r.get("TARSTK_ISU_PRSNT_PRC")),
-             _case_for_stock(conn, tar), source),
+             _case_for_stock(conn, rights_stock_code(r["ISU_CD"], tar), iso(r["BAS_DD"])), source),
         )
         n += 1
     conn.commit()
@@ -78,7 +99,8 @@ def store_stock_rows(conn: sqlite3.Connection, rows: list[dict], codes: set[str]
 def tracked_stocks(conn: sqlite3.Connection, bas_dd: str) -> dict[str, set[str]]:
     """시장별 추적 종목: 진행 중 주주배정 케이스 + 그날 인수권의 대상 본주."""
     by_mkt: dict[str, set[str]] = {}
-    for r in conn.execute("SELECT stock_code, corp_cls FROM cases WHERE status='open' AND stock_code IS NOT NULL"):
+    for r in conn.execute("SELECT stock_code, corp_cls FROM cases WHERE status='open' AND is_rights=1 "
+                          "AND stock_code IS NOT NULL"):
         by_mkt.setdefault(r["corp_cls"] or "Y", set()).add(r["stock_code"])
     for r in conn.execute(
         "SELECT DISTINCT tar_code, mkt_nm FROM rights_daily WHERE bas_dd=? AND tar_code IS NOT NULL", (iso(bas_dd),)
@@ -136,7 +158,8 @@ def gaps_for_day(conn: sqlite3.Connection, bas_dd: str) -> list[Gap]:
 
 
 def import_manual_csv(conn: sqlite3.Connection, path: Path) -> int:
-    """HTS 에서 손으로 옮긴 인수권 종가. 컬럼: date,isu_nm,close,stock_code,stock_close,issue_price"""
+    """HTS 에서 손으로 옮긴 인수권 종가. 컬럼: date,isu_nm,close,stock_code,stock_close,issue_price
+    isu_cd 는 본주코드+MAN (앞 6자리 = 본주 코드 규칙 유지)."""
     n = 0
     with open(path, encoding="utf-8-sig") as f:
         for row in csv.DictReader(f):
@@ -144,8 +167,9 @@ def import_manual_csv(conn: sqlite3.Connection, path: Path) -> int:
             conn.execute(
                 "INSERT OR REPLACE INTO rights_daily (bas_dd, isu_cd, isu_nm, close, issue_price, tar_code,"
                 " tar_price, case_id, source) VALUES (?,?,?,?,?,?,?,?, 'manual')",
-                (iso(row["date"]), f"MANUAL-{code}", row["isu_nm"].strip(), to_int(row["close"]),
-                 to_int(row.get("issue_price")), code, to_int(row.get("stock_close")), _case_for_stock(conn, code)),
+                (iso(row["date"]), f"{code}MAN", row["isu_nm"].strip(), to_int(row["close"]),
+                 to_int(row.get("issue_price")), code, to_int(row.get("stock_close")),
+                 _case_for_stock(conn, code, row["date"])),
             )
             n += 1
     conn.commit()

@@ -3,8 +3,10 @@ from __future__ import annotations
 
 import json
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+KST = timezone(timedelta(hours=9))
 
 SCHEMA = """
 -- API 응답 원본. 파싱 로직이 바뀌어도 여기서 재처리한다.
@@ -91,20 +93,66 @@ CREATE TABLE IF NOT EXISTS stock_daily (
     PRIMARY KEY (bas_dd, code)
 );
 
--- 알림 발송 기록. id 가 곧 헤더의 #순번.
+-- 알림 문구 기록 (발송은 하지 않음). seq 가 곧 헤더의 #순번.
 CREATE TABLE IF NOT EXISTS notifications (
     seq      INTEGER PRIMARY KEY AUTOINCREMENT,
     topic    TEXT NOT NULL,
     dedup_key TEXT UNIQUE,
     text     TEXT NOT NULL,
-    sent_at  TEXT NOT NULL,
-    delivered INTEGER NOT NULL
+    sent_at  TEXT NOT NULL
+);
+
+-- 수집 대상에서 뺀 공시. 재실행 때 다시 받지 않도록 기억한다 (백필 멱등성).
+CREATE TABLE IF NOT EXISTS excluded_disclosures (
+    rcept_no   TEXT PRIMARY KEY,
+    corp_code  TEXT,
+    corp_name  TEXT,
+    stock_code TEXT,
+    reason     TEXT NOT NULL,     -- 증자방식·금액 없음 / 청약일=납입일 / 상장+30일 경과 ...
+    created_at TEXT NOT NULL
+);
+
+-- 지수 일봉 (초과수익 계산용). idx = KOSPI / KOSDAQ
+CREATE TABLE IF NOT EXISTS index_daily (
+    bas_dd TEXT NOT NULL,
+    idx    TEXT NOT NULL,
+    open REAL, high REAL, low REAL, close REAL,
+    PRIMARY KEY (bas_dd, idx)
+);
+
+-- 판정 재료 중 공시 밖에서 가져오는 값 (재무·52주 위치). 판정 때마다 최신값을 쓴다.
+CREATE TABLE IF NOT EXISTS case_facts (
+    case_id      INTEGER PRIMARY KEY REFERENCES cases(case_id),
+    op_income    INTEGER,   -- 직전 분기 영업이익 (원)
+    op_period    TEXT,      -- 예: 2026 반기(3개월)
+    pos52        REAL,      -- 공시일 기준 52주 고저 범위 내 위치 (0~1)
+    pos52_basis  TEXT,      -- 계산에 쓴 날짜·고저
+    updated_at   TEXT NOT NULL
+);
+
+-- 가상 성과 기록. 판정이 확정되는 순간(인수권 마지막 날)의 근거를 스냅샷으로 남긴다 — 이후 불변.
+CREATE TABLE IF NOT EXISTS paper_trades (
+    case_id       INTEGER PRIMARY KEY REFERENCES cases(case_id),
+    verdict       TEXT NOT NULL,    -- green / yellow / blue / white
+    decided_on    TEXT NOT NULL,    -- 판정 기준일 (인수권 마지막 거래일)
+    logic_version INTEGER NOT NULL,
+    snapshot_json TEXT NOT NULL,    -- 관문 점수·괴리율·이유·진입 규칙·발행가 등
+    created_at    TEXT NOT NULL
 );
 """
 
 
 def now() -> str:
-    return datetime.now().isoformat(timespec="seconds")
+    """KST 기준 시각 (+09:00 포함). Actions 러너는 UTC 라서 명시한다."""
+    return datetime.now(KST).isoformat(timespec="seconds")
+
+
+def _migrate(conn: sqlite3.Connection) -> None:
+    # 텔레그램 발송 제거 → notifications.delivered 컬럼 삭제 (SQLite 3.35+)
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(notifications)")]
+    if "delivered" in cols:
+        conn.execute("ALTER TABLE notifications DROP COLUMN delivered")
+        conn.commit()
 
 
 def connect(path: Path | str) -> sqlite3.Connection:
@@ -114,6 +162,7 @@ def connect(path: Path | str) -> sqlite3.Connection:
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     conn.executescript(SCHEMA)
+    _migrate(conn)
     return conn
 
 

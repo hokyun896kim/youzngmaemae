@@ -6,8 +6,6 @@ name: 유증 수집기
 #   DART_API_KEY        (필수) opendart 인증키
 #   KRX_API_KEY         (필수) openapi.krx.co.kr 인증키 — '신주인수권증서 일별매매정보',
 #                        '유가증권/코스닥 일별매매정보' 서비스 이용신청 승인 필요
-#   TELEGRAM_BOT_TOKEN  (선택) 없으면 알림은 site.json 알림 로그에만 남음
-#   TELEGRAM_CHAT_ID    (선택)
 
 on:
   schedule:
@@ -19,8 +17,11 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'daily / verify / backfill-rights'
+        description: 'daily / verify / backfill-cases / backfill-rights'
         default: daily
+      months:
+        description: 'backfill-cases 개월 수'
+        default: '5'
       start:
         description: 'backfill 시작일 YYYYMMDD (backfill-rights 전용)'
         default: ''
@@ -40,10 +41,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
+      PYTHONUNBUFFERED: '1'
       DART_API_KEY: ${{ secrets.DART_API_KEY }}
       KRX_API_KEY: ${{ secrets.KRX_API_KEY }}
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -60,10 +60,16 @@ jobs:
       - name: Run
         run: |
           CMD="${{ github.event.inputs.command || 'daily' }}"
-          if [ "${{ github.event_name }}" = "push" ]; then CMD=verify; fi
+          if [ "${{ github.event_name }}" = "push" ]; then
+            # PR 브랜치: 실제 API 점검 + 백필 시험 실행(저장 안 함) 결과를 로그로
+            python -m yujeung verify || echo "::warning::verify 일부 실패"
+            python -m yujeung backfill-cases --months 5 --dry-run --report 210980 290650
+            exit 0
+          fi
           case "$CMD" in
             daily)  python -m yujeung daily ;;
             verify) python -m yujeung verify ;;
+            backfill-cases) python -m yujeung backfill-cases --months "${{ github.event.inputs.months || 5 }}" --report 210980 290650 ;;
             backfill-rights) python -m yujeung backfill-rights --start "${{ github.event.inputs.start }}" --end "${{ github.event.inputs.end }}" ;;
             *) echo "unknown command $CMD"; exit 1 ;;
           esac

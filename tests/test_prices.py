@@ -2,7 +2,7 @@ from yujeung import db
 from yujeung.prices import compute_gap, gaps_for_day, short_code, store_rights_rows
 
 RIGHTS_ROW = {
-    "BAS_DD": "20260923", "MKT_NM": "KOSPI", "ISU_CD": "J21098012", "ISU_NM": "SK디앤디 12R",
+    "BAS_DD": "20260923", "MKT_NM": "KOSPI", "ISU_CD": "2109801G", "ISU_NM": "SK디앤디 12R",
     "TDD_CLSPRC": "636", "TDD_OPNPRC": "650", "TDD_HGPRC": "700", "TDD_LWPRC": "600",
     "ACC_TRDVOL": "1,234,567", "ACC_TRDVAL": "800,000,000", "LIST_SHRS": "44,681,000",
     "ISU_PRC": "2,260", "DELIST_DD": "20260930", "TARSTK_ISU_SRT_CD": "210980",
