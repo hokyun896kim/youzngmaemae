@@ -113,7 +113,8 @@ def step_detect(dart: DartClient, conn, today: date, bgn: date, alerts: bool = T
                 windows: list[tuple[date, date]] | None = None) -> list[DetectEvent]:
     fmt = "%Y%m%d"
     events = detect(dart, conn, bgn.strftime(fmt), today.strftime(fmt),
-                    [(a.strftime(fmt), b.strftime(fmt)) for a, b in windows] if windows else None)
+                    [(a.strftime(fmt), b.strftime(fmt)) for a, b in windows] if windows else None,
+                    rights_only=bool(windows))
     for ev in events:
         # 브리프 파이프라인 1단계: 주주배정 계열만 알림 문구. 나머지는 사이트 '관찰' 탭에만 기록
         if not alerts or ev.kind != "new_case" or not ev.is_rights:
@@ -381,6 +382,10 @@ def step_gap_alerts(conn, cfg: Config) -> None:
                           dedup_key=f"gap:{g.isu_nm}:{g.bas_dd}")
 
 
+def _log(msg: str) -> None:
+    print(f"[{db.now()[11:19]}] {msg}", flush=True)
+
+
 def run_daily(cfg: Config, conn, today: date, lookback_days: int = 7, price_days: int = 5,
               dart: DartClient | None = None, krx: KrxClient | None = None,
               naver: NaverClient | None = None, backfill_months: int = 0) -> dict:
@@ -400,23 +405,31 @@ def run_daily(cfg: Config, conn, today: date, lookback_days: int = 7, price_days
             detected = step_detect(dart, conn, today, today - timedelta(days=lookback_days))
         report["detected"] = len(detected)
         merge_duplicate_cases(conn)
+        _log(f"감지 {len(detected)}건 → 원문 일정 파싱")
         step_schedules(dart, conn, alerts)
+        _log("증권신고서 보강")
         step_estk(dart, conn, today, alerts)
         report["cleanup"] = step_cleanup(conn, today)
+        _log(f"정리 {report['cleanup']}")
     else:
         report["dart"] = "DART_API_KEY 없음 — 건너뜀"
     if krx or cfg.krx_api_key:
         krx = krx or KrxClient(cfg.krx_api_key, conn)
+        _log("KRX 시세")
         report["prices"] = step_prices(krx, conn, today, price_days)
         report["rights_history_days"] = step_rights_history(krx, conn, today)
+        _log(f"인수권 과거 시세 {report['rights_history_days']}일 보충")
     else:
         report["krx"] = "KRX_API_KEY 없음 — 건너뜀"
     report["relinked"] = relink_rights(conn)
     naver = naver or NaverClient()
+    _log("네이버 일봉")
     report["market"] = step_market(naver, conn, today)
     if dart:
+        _log("DART 재무")
         report["financials"] = step_financials(dart, conn, today)
     report["paper_recorded"] = step_verdicts(conn, cfg, backfilled=bool(backfill_months))
+    _log(f"판정·가상성과 {report['paper_recorded']}건 기록")
     if alerts:
         step_gap_alerts(conn, cfg)
     return report

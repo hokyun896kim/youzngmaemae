@@ -51,9 +51,16 @@ def _shift(yyyymmdd: str, days: int) -> str:
     return (datetime.strptime(yyyymmdd, "%Y%m%d") + timedelta(days=days)).strftime("%Y%m%d")
 
 
-def _find_piic_fields(client: DartClient, corp_code: str, rcept_no: str, rcept_dt: str) -> dict:
+def _find_piic_fields(client: DartClient, corp_code: str, rcept_no: str, rcept_dt: str,
+                     cache: dict | None = None) -> dict:
     # piicDecsn 의 기간은 "최초접수일" 기준 → 정정 공시는 원공시 날짜로 잡힌다. 넉넉히 1년 전부터.
-    items = client.piic_decisions(corp_code, _shift(rcept_dt, -365), rcept_dt)
+    # 같은 회사 공시가 여러 건이면 한 번만 조회 (cache: corp_code → items)
+    if cache is not None and corp_code in cache:
+        items = cache[corp_code]
+    else:
+        items = client.piic_decisions(corp_code, _shift(rcept_dt, -365), _shift(rcept_dt, 30))
+        if cache is not None:
+            cache[corp_code] = items
     for it in items:
         if it.get("rcept_no") == rcept_no:
             return it
@@ -108,7 +115,7 @@ def _open_case_for(conn: sqlite3.Connection, corp_code: str, rcept_dt: str) -> s
     ).fetchone()
 
 
-def upsert_disclosure(conn, rep: dict, fields: dict) -> DetectEvent | None:
+def upsert_disclosure(conn, rep: dict, fields: dict, rights_only: bool = False) -> DetectEvent | None:
     """공시 1건을 적재. 이미 알거나(적재·제외) 제외 대상이면 None."""
     rcept_no = rep["rcept_no"]
     if is_known(conn, rcept_no):
@@ -123,6 +130,11 @@ def upsert_disclosure(conn, rep: dict, fields: dict) -> DetectEvent | None:
         # 새 케이스인데 증자방식·금액이 비어 있으면 판단 재료가 없다 → 제외
         if not ic_mthn or not summarize_fields(fields)["total_amount"]:
             exclude(conn, rcept_no, rep["corp_code"], rep["corp_name"], "증자방식·금액 없음")
+            conn.commit()
+            return None
+        # 백필: 관찰용(비주주배정)은 과거분을 들이지 않는다 — 일일 수집분만 관찰 탭에
+        if rights_only and not is_rights_offering(ic_mthn):
+            exclude(conn, rcept_no, rep["corp_code"], rep["corp_name"], "백필 제외(비주주배정)")
             conn.commit()
             return None
         cur = conn.execute(
@@ -150,7 +162,7 @@ def upsert_disclosure(conn, rep: dict, fields: dict) -> DetectEvent | None:
 
 
 def detect(client: DartClient, conn: sqlite3.Connection, bgn_de: str, end_de: str,
-           windows: list[tuple[str, str]] | None = None) -> list[DetectEvent]:
+           windows: list[tuple[str, str]] | None = None, rights_only: bool = False) -> list[DetectEvent]:
     """windows 가 있으면 여러 구간(월 단위)을 모두 모은 뒤 처리 — 구간 순서와 무관하게 원공시 → 정정 순."""
     seen, reports = set(), []
     for bgn, end in windows or [(bgn_de, end_de)]:
@@ -159,12 +171,14 @@ def detect(client: DartClient, conn: sqlite3.Connection, bgn_de: str, end_de: st
                 seen.add(r["rcept_no"])
                 reports.append(r)
     reports.sort(key=lambda r: r["rcept_no"])   # 원공시 → 정정 순서 보장
-    events = []
-    for rep in reports:
-        if is_known(conn, rep["rcept_no"]):
-            continue
-        fields = _find_piic_fields(client, rep["corp_code"], rep["rcept_no"], rep["rcept_dt"])
-        ev = upsert_disclosure(conn, rep, fields)
+    events, cache = [], {}
+    todo = [r for r in reports if not is_known(conn, r["rcept_no"])]
+    print(f"[detect] 유상증자결정 {len(reports)}건 중 신규 {len(todo)}건", flush=True)
+    for i, rep in enumerate(todo, 1):
+        if i % 100 == 0:
+            print(f"[detect] {i}/{len(todo)}", flush=True)
+        fields = _find_piic_fields(client, rep["corp_code"], rep["rcept_no"], rep["rcept_dt"], cache)
+        ev = upsert_disclosure(conn, rep, fields, rights_only)
         if ev:
             events.append(ev)
     return events

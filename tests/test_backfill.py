@@ -131,14 +131,12 @@ def test_backfill_end_to_end_and_idempotent():
     assert all(len(set(c)) == 2 for c in dart.search_calls)
 
     names = sorted(r[0] for r in conn.execute("SELECT corp_name FROM cases"))
-    # [3] 셀리드 재제출 원공시는 하나로, 빈 공시·내부 증자·상장+30일 지난 건은 제외
-    assert names == ["SK디앤디", "셀리드"]
+    # 백필은 주주배정만 들인다. 빈 공시는 '증자방식·금액 없음', 관찰용(3자배정)은 '백필 제외'
+    assert names == ["SK디앤디"]
     reasons = {r[0]: r[1] for r in conn.execute("SELECT rcept_no, reason FROM excluded_disclosures")}
     assert reasons[EMPTY["rcept_no"]] == "증자방식·금액 없음"
-    assert reasons[INTERNAL["rcept_no"]].startswith("청약일=납입일")
-    assert "경과" in reasons[OLD["rcept_no"]]
-    assert conn.execute("SELECT COUNT(*) FROM disclosures d JOIN cases c USING(case_id) "
-                        "WHERE c.corp_name='셀리드'").fetchone()[0] == 2
+    for rep in (CEL1, CEL2, INTERNAL, OLD):
+        assert reasons[rep["rcept_no"]] == "백필 제외(비주주배정)"
 
     # [2] 인수권 isu_cd 앞 6자리로 케이스 연결 + 인수권 기간 과거 시세 보충
     sk_id, sk_first = conn.execute("SELECT case_id, first_rcept_no FROM cases WHERE stock_code='210980'").fetchone()
@@ -182,6 +180,21 @@ def test_backfill_end_to_end_and_idempotent():
     run_daily(cfg(), conn, date(2026, 12, 1), lookback_days=7, price_days=1, dart=dart, krx=krx, naver=FakeNaver())
     assert conn.execute("SELECT status FROM cases WHERE case_id=?", (sk_id,)).fetchone()[0] == "closed"
     assert conn.execute("SELECT COUNT(*) FROM paper_trades").fetchone()[0] == 1
+
+
+def test_daily_merge_internal_and_expired():
+    """일일 수집(관찰용 포함): 셀리드 재제출 병합 · 청약일=납입일 제외 · 상장+30일 경과 제외."""
+    conn = db.connect(":memory:")
+    dart = FakeDart()
+    dart.reports = [CEL1, CEL2, INTERNAL, OLD]
+    run_daily(cfg(), conn, date(2026, 9, 25), lookback_days=90, price_days=1, dart=dart, krx=FakeKrx(),
+              naver=FakeNaver())
+    assert [r[0] for r in conn.execute("SELECT corp_name FROM cases")] == ["셀리드"]
+    assert conn.execute("SELECT COUNT(*) FROM disclosures d JOIN cases c USING(case_id) "
+                        "WHERE c.corp_name='셀리드'").fetchone()[0] == 2
+    reasons = {r[0]: r[1] for r in conn.execute("SELECT rcept_no, reason FROM excluded_disclosures")}
+    assert reasons[INTERNAL["rcept_no"]].startswith("청약일=납입일")
+    assert "경과" in reasons[OLD["rcept_no"]]
 
 
 def test_merge_existing_duplicate_cases():

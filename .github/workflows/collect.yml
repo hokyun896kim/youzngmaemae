@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     env:
+      PYTHONUNBUFFERED: '1'
       DART_API_KEY: ${{ secrets.DART_API_KEY }}
       KRX_API_KEY: ${{ secrets.KRX_API_KEY }}
     steps:
