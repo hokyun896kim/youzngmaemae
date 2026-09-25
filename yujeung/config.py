@@ -1,4 +1,4 @@
-"""환경변수 기반 설정. .env 파일이 있으면 읽는다(외부 패키지 없이)."""
+"""환경변수 기반 설정. GitHub Actions 에선 Secrets, 로컬에선 .env 로 넣는다."""
 from __future__ import annotations
 
 import os
@@ -9,6 +9,10 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # 알림 헤더의 [작업명 #순번] 에 들어갈 작업명
 JOB_NAME = "유증수집"
+
+DATA_DIR = ROOT / "data"
+DUMP_PATH = DATA_DIR / "yujeung.sql"          # git 에 커밋되는 원본 (텍스트 덤프)
+SITE_JSON = DATA_DIR / "site.json"            # index.html 이 읽는 파일
 
 
 def _load_dotenv(path: Path) -> None:
@@ -25,26 +29,20 @@ def _load_dotenv(path: Path) -> None:
 @dataclass(frozen=True)
 class Config:
     dart_api_key: str
-    krx_id: str
-    krx_pw: str
+    krx_api_key: str
     telegram_token: str
     telegram_chat_id: str
     db_path: Path
-    # 검증 필요: 신주인수권증서 시세를 주는 KRX 화면(bld). `verify` 로 확인 후 확정.
-    krx_rights_bld: str
-    # 괴리율 알림 임계값 (인수권 종가가 이론가 대비 이만큼 이상 싸거나 비쌀 때)
-    gap_alert_pct: float
+    gap_alert_pct: float      # |괴리율| 이 이 이상이면 알림
 
     @classmethod
     def load(cls) -> "Config":
         _load_dotenv(ROOT / ".env")
         return cls(
             dart_api_key=os.environ.get("DART_API_KEY", ""),
-            krx_id=os.environ.get("KRX_ID", ""),
-            krx_pw=os.environ.get("KRX_PW", ""),
+            krx_api_key=os.environ.get("KRX_API_KEY", ""),
             telegram_token=os.environ.get("TELEGRAM_BOT_TOKEN", ""),
             telegram_chat_id=os.environ.get("TELEGRAM_CHAT_ID", ""),
-            db_path=Path(os.environ.get("YUJEUNG_DB", ROOT / "data" / "yujeung.sqlite3")),
-            krx_rights_bld=os.environ.get("KRX_RIGHTS_BLD", "dbms/MDC/STAT/standard/MDCSTAT01701"),
+            db_path=Path(os.environ.get("YUJEUNG_DB", DATA_DIR / "yujeung.sqlite3")),
             gap_alert_pct=float(os.environ.get("GAP_ALERT_PCT", "20")),
         )

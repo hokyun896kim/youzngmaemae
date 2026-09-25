@@ -1,5 +1,7 @@
 .env
-data/
 __pycache__/
 *.pyc
 .pytest_cache/
+# SQLite 바이너리는 커밋하지 않음 → data/yujeung.sql (텍스트 덤프)이 원본
+data/*.sqlite3
+data/*.sqlite3-journal
