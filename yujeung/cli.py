@@ -101,27 +101,43 @@ def cmd_verify(args, cfg: Config) -> int:
         ok &= cond
         print(f"{'✅' if cond else '❌'} {name} {detail}")
 
-    if cfg.dart_api_key:
+    def guarded(name, fn):
+        try:
+            fn()
+        except Exception as e:  # noqa: BLE001 — 점검 명령은 모든 오류를 보고만 한다
+            check(name, False, f"{type(e).__name__}: {e}")
+
+    def dart_checks():
         dart = DartClient(cfg.dart_api_key)
         end = today_kst()
         items = dart.search((end - timedelta(days=80)).strftime("%Y%m%d"), end.strftime("%Y%m%d"))
         check("DART list.json", bool(items), f"{len(items)}건, 키: {sorted(items[0])[:8] if items else '-'}")
         piic = [i for i in items if is_piic_report(i.get("report_nm", ""))]
         check("유상증자결정 보고서 검색", bool(piic), f"{len(piic)}건")
-        if piic:
-            p = piic[0]
+        from .detect import is_rights_offering
+        from .schedule_parser import parse_documents
+        need = {"rcept_no", "ic_mthn", "nstk_ostk_cnt", "bfic_tisstk_ostk", "fdpp_dtrp", "fdpp_op"}
+        seen, parsed = set(), 0
+        for p in piic:
+            if p["corp_code"] in seen or len(seen) >= 6:
+                continue
+            seen.add(p["corp_code"])
             rows = dart.piic_decisions(p["corp_code"], (end - timedelta(days=400)).strftime("%Y%m%d"),
                                        end.strftime("%Y%m%d"))
-            need = {"rcept_no", "ic_mthn", "nstk_ostk_cnt", "bfic_tisstk_ostk", "fdpp_dtrp", "fdpp_op"}
-            check("piicDecsn 필드", bool(rows) and need <= set(rows[0]), f"{p['corp_name']} {rows[0] if rows else ''}")
-            from .schedule_parser import parse_documents
-            sch = parse_documents(dart.document(p["rcept_no"]))
-            print("   원문 파싱:", json.dumps(sch.as_row(), ensure_ascii=False))
-            print("   근거:", json.dumps(sch.extras.get("evidence"), ensure_ascii=False))
-    else:
-        check("DART_API_KEY", False, "없음")
+            row = next((r for r in rows if r.get("rcept_no") == p["rcept_no"]), rows[0] if rows else {})
+            check(f"piicDecsn {p['corp_name']}", need <= set(row), f"증자방식={row.get('ic_mthn')} "
+                  f"신주={row.get('nstk_ostk_cnt')} 채무상환={row.get('fdpp_dtrp')}")
+            # 원문 파서는 주주배정 건으로 최대 3건 실측
+            if is_rights_offering(row.get("ic_mthn")) and parsed < 3:
+                parsed += 1
+                sch = parse_documents(dart.document(p["rcept_no"]))
+                print(f"   [{p['report_nm']} {p['rcept_no']}] 원문 파싱:", json.dumps(sch.as_row(), ensure_ascii=False))
+                print("   근거:", json.dumps(sch.extras.get("evidence"), ensure_ascii=False))
+                print("   경고:", sch.warnings)
+        if not parsed:
+            print("   (최근 80일 안에 주주배정 건이 없어 원문 파서 실측 못 함)")
 
-    if cfg.krx_api_key:
+    def krx_checks():
         krx = KrxClient(cfg.krx_api_key)
         d = prev_business_day(today_kst()).strftime("%Y%m%d")
         rows = krx.rights(d)
@@ -130,8 +146,21 @@ def cmd_verify(args, cfg: Config) -> int:
               f"{d} {len(rows)}종목 " + (json.dumps(rows[0], ensure_ascii=False) if rows else "(그날 상장 인수권 없음)"))
         old = krx.rights("20200414")
         check("KRX 과거분(2020-04-14)", True, f"{len(old)}종목")
+        sk = [r for r in krx.rights("20260923") if "디앤디" in (r.get("ISU_NM") or "")]
+        check("SK디앤디 12R (2026-09-23, 브리프: 636원)", bool(sk),
+              json.dumps(sk[0], ensure_ascii=False) if sk else "못 찾음")
         stk = krx.stocks(d, "Y")
-        check("KRX stk_bydd_trd", bool(stk) and "TDD_CLSPRC" in stk[0], f"{len(stk)}종목")
+        check("KRX stk_bydd_trd", bool(stk) and "TDD_CLSPRC" in stk[0],
+              f"{len(stk)}종목 " + (json.dumps(stk[0], ensure_ascii=False) if stk else ""))
+        ksq = krx.stocks(d, "K")
+        check("KRX ksq_bydd_trd", bool(ksq), f"{len(ksq)}종목")
+
+    if cfg.dart_api_key:
+        guarded("DART", dart_checks)
+    else:
+        check("DART_API_KEY", False, "없음")
+    if cfg.krx_api_key:
+        guarded("KRX", krx_checks)
     else:
         check("KRX_API_KEY", False, "없음")
     return 0 if ok else 1
