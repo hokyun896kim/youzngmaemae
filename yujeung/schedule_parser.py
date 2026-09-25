@@ -18,7 +18,8 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 9   # 9: 미정 항목은 앞 행 날짜도 지움(경남제약 청약일), 인수권 시작 ≤ 기준일 버림(클로봇)
+PARSER_VERSION = 10  # 10: 본문이 '-'로 비고 정정표에만 '추후결정' → 미정 기록(경남제약)
+#                      9: 미정 항목은 앞 행 날짜도 지움(경남제약 청약일), 인수권 시작 ≤ 기준일 버림(클로봇)
 #                      8: 행에 '추후결정/미정'이 있으면 그 항목은 미정(같은 행의 날짜 = 정정전) — 실측 경남제약 9/18,
 #                        본문 후보 점수 = 항목 행을 찾은 칸(미정 포함)
 #                      7: 본문 시작 후보 중 항목을 가장 많이 찾은 것(정정표가 본문 뒤에 붙는 경우 — 경남제약),
@@ -334,6 +335,16 @@ def parse_document(doc: str) -> Schedule:
     본문에서 못 찾은 필드만 정정후 값으로 채운다. 둘이 다르면 경고."""
     _, body, corrected, s = _best_split(doc)
     text = clean(doc)
+    # 본문엔 미정 칸이 '-'로만 남고 '추후결정'은 앞머리 정정표에만 있는 경우 (실측 경남제약 9/18 v9):
+    # 본문이 비어 있고 원문 어디든 그 항목 행에 '추후결정/미정'이 있으면 미정으로 기록
+    tbd = set(s.extras.get("tbd", []))
+    for label, _values in labeled_rows(table_rows(doc)):
+        fld = _date_field(label)
+        if fld and fld not in tbd and any(k in label for k in TBD_WORDS) and getattr(s, fld) is None:
+            tbd.add(fld)
+            s.warnings.append(f"{FIELD_KO[fld]} 추후결정 (정정 대기)" if fld != "rights_start"
+                              else "인수권 상장기간 추후결정 (정정 대기)")
+    s.extras["tbd"] = sorted(tbd)
     if corrected:
         c = _parse_body(_rows_doc(corrected))
         filled, differ = [], []

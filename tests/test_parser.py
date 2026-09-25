@@ -165,3 +165,25 @@ def test_rights_start_equal_to_record_date_dropped():
     doc = PIIC_DOC.replace("2026년 09월 21일부터 2026년 09월 29일까지", "2026년 09월 02일")
     s = parse_document(doc)
     assert s.record_date == "2026-09-02" and s.rights_start is None
+
+
+def test_tbd_only_in_correction_preamble_body_dash():
+    """실측 경남제약 9/18 (v9): 정정표에만 '추후결정', 정정 반영 본문은 '-'. 날짜 없음 + 미정 기록이 남아야
+    케이스 일정이 이전 정정 날짜로 되돌아가지 않는다."""
+    why = "관계기관의 정정신고서 제출요구에 따른 정정"
+    corr = f"""<TABLE><TBODY>
+<TR><TD>항 목</TD><TD>정정사유</TD><TD>정 정 전</TD><TD>정 정 후</TD></TR>
+<TR><TD>8. 신주배정기준일</TD><TD>{why}</TD><TD>2026년 09월 22일</TD><TD>추후결정</TD></TR>
+<TR><TD>12. 납입일</TD><TD>{why}</TD><TD>2026년 11월 05일</TD><TD>추후결정</TD></TR>
+<TR><TD>16. 신주의 상장예정일</TD><TD>{why}</TD><TD>2026년 11월 17일</TD><TD>추후결정</TD></TR>
+</TBODY></TABLE>"""
+    body = """<TABLE><TBODY>
+<TR><TD>1. 신주의 종류와 수</TD><TD>보통주식 (주)</TD><TD>6,000,000</TD></TR>
+<TR><TD>6. 신주 발행가액</TD><TD>예정발행가</TD><TD>보통주식 (원)</TD><TD>1,499</TD></TR>
+<TR><TD>8. 신주배정기준일</TD><TD>-</TD></TR>
+<TR><TD>12. 납입일</TD><TD>-</TD></TR>
+<TR><TD>16. 신주의 상장예정일</TD><TD>-</TD></TR>
+</TBODY></TABLE>"""
+    s = parse_document("<DOCUMENT>" + corr + body + "</DOCUMENT>")
+    assert (s.record_date, s.payment_date, s.listing_date) == (None, None, None)
+    assert {"record_date", "payment_date", "listing_date"} <= set(s.extras["tbd"])
