@@ -233,29 +233,39 @@ def step_prices(krx: KrxClient, conn, today: date, days: int) -> list[dict]:
     return results
 
 
-def step_rights_history(krx: KrxClient, conn, today: date, max_days: int = 250) -> int:
-    """주주배정 케이스의 인수권 거래기간 중 아직 없는 날을 KRX 에서 채운다 (백필된 과거 케이스용)."""
-    last = prev_business_day(today) if today.weekday() < 5 else today
+MAX_RIGHTS_SPAN_DAYS = 20   # 인수권 상장기간은 보통 5거래일. 이보다 길면 파싱 이상으로 보고 건너뛴다
+
+
+def step_rights_history(krx: KrxClient, conn, today: date, max_days: int = 150) -> int:
+    """주주배정 케이스의 인수권 거래기간 중 아직 조회 안 한 날을 KRX 에서 채운다 (백필된 과거 케이스용).
+    - 기간이 공시 전이거나 20일을 넘는 비정상 일정은 건너뜀
+    - 최근 날짜부터 채우고, 한 번 조회한 날은 fetched_days 에 기억"""
+    last = today - timedelta(days=1)
     need: set[date] = set()
     for c in conn.execute("SELECT * FROM cases WHERE is_rights=1").fetchall():
         sch, _ = checked_schedule(conn, c["case_id"])
         if not (sch.get("rights_start") and sch.get("rights_end")):
             continue
-        d = date.fromisoformat(sch["rights_start"])
-        end = min(date.fromisoformat(sch["rights_end"]), last)
+        d, end = date.fromisoformat(sch["rights_start"]), date.fromisoformat(sch["rights_end"])
+        disc = date(int(c["first_rcept_dt"][:4]), int(c["first_rcept_dt"][4:6]), int(c["first_rcept_dt"][6:]))
+        if d < disc or end < d or (end - d).days > MAX_RIGHTS_SPAN_DAYS:
+            continue
+        end = min(end, last)
         while d <= end:
             if is_business_day(d) and not conn.execute(
-                    "SELECT 1 FROM rights_daily WHERE bas_dd=? AND substr(isu_cd,1,6)=?",
-                    (d.isoformat(), c["stock_code"])).fetchone():
+                    "SELECT 1 FROM fetched_days WHERE source='krx.rights' AND bas_dd=?", (d.isoformat(),)).fetchone():
                 need.add(d)
             d += timedelta(days=1)
     done = 0
-    for d in sorted(need)[:max_days]:
+    for d in sorted(need, reverse=True)[:max_days]:
         try:
             collect_day(krx, conn, d.strftime("%Y%m%d"))
-            done += 1
         except KrxError:
             continue
+        conn.execute("INSERT OR REPLACE INTO fetched_days (source, bas_dd, fetched_at) VALUES ('krx.rights',?,?)",
+                     (d.isoformat(), db.now()))
+        conn.commit()
+        done += 1
     return done
 
 
