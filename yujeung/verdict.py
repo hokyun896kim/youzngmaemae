@@ -11,17 +11,38 @@
   🟡 yellow 관문1 통과, 괴리 신호 없음      → 신주 상장일 매물 후 본주 매수 (B)
   🔵 blue   인수권 고평가                   → 인수권 마지막 날 매도 vs 청약 유지 비교 (A 매도)
   ⚪ white  관문1 탈락                      → 관찰 샘플 (인수권 매수+청약 가정으로 기록, 가설 검증용)
+  🟢? green_q / 🟡? yellow_q  관문1 자동 6개 중 '미확인'이 하나라도 있으면 🟢/🟡 대신 "확인 필요" (v2~).
+      업계 1~3위·대체 불가(수동 2개)는 늘 GPT 확인 대상이라 이 규칙에서 뺀다.
+      가상 성과·백테스트는 따로 집계 → "미확인 포함 🟢가 실제로 얼마나 틀렸나" 비교용
 """
 from __future__ import annotations
 
-LOGIC_VERSION = 1
+LOGIC_VERSION = 2   # 2: 관문1 자동 항목 미확인 → 🟢?/🟡? 확인 필요
 
+# 순서 = 화면 정렬·집계 순서 (확인 필요는 🟢/🟡 바로 다음)
 VERDICTS = {
     "green": ("🟢", "인수권 매수+청약"),
     "yellow": ("🟡", "상장일 후 본주 매수"),
+    "green_q": ("🟢?", "확인 필요 · 인수권 매수+청약 후보"),
+    "yellow_q": ("🟡?", "확인 필요 · 상장일 후 본주 매수 후보"),
     "blue": ("🔵", "인수권 매도 vs 청약"),
     "white": ("⚪", "관찰 샘플"),
 }
+
+# 미확인일 때 화면·프롬프트에 쓰는 항목명
+UNKNOWN_LABEL = {"dilution": "희석률 미확인", "major": "최대주주 청약 여부 미확인", "op": "직전 분기 영업이익 미확인",
+                 "pos52": "52주 위치 미확인", "uw": "인수 방식(총액·잔액인수) 미확인", "debt": "자금 목적(채무상환) 미확인"}
+
+
+def base(verdict: str) -> str:
+    """확인 필요(green_q/yellow_q) → 원래 판정. 진입 방식·측정 시점은 원래 판정을 따른다."""
+    return verdict[:-2] if verdict.endswith("_q") else verdict
+
+
+def unconfirmed(g1: dict) -> list[dict]:
+    """관문1 자동 항목 중 미확인 (수동 2개 제외)."""
+    return [{"key": c["key"], "label": UNKNOWN_LABEL.get(c["key"], c["label"] + " 미확인")}
+            for c in g1["criteria"] if c["status"] == "unknown"]
 
 
 def is_reit(corp_name: str) -> bool:
@@ -98,7 +119,8 @@ def decide(g1: dict, gap: float | None, cheap: float = -20.0, rich: float = 20.0
     if gap is not None and gap >= rich:
         return "blue"
     if g1["passed"]:
-        return "green" if gap is not None and gap <= cheap else "yellow"
+        v = "green" if gap is not None and gap <= cheap else "yellow"
+        return v + "_q" if g1.get("n_unknown") else v
     return "white"
 
 

@@ -16,6 +16,8 @@ from __future__ import annotations
 import re
 from datetime import date
 
+from .verdict import base, unconfirmed
+
 SCENARIOS = [("좋음", 0.15), ("보통", 0.0), ("나쁨", -0.15), ("최악", -0.30)]
 SCENARIO_NOTE = ("기본값 시나리오 — Phase 1 백테스트 완료 시 실제 상장일 수익률 분포(25/50/75 퍼센타일)로 "
                  "교체 예정")
@@ -28,7 +30,8 @@ STAGES = {
     "tbd": "인수권 일정 미정",
 }
 TRACKING = "진입 구간 종료 — 성과 추적 중"
-CONCLUSION = {"green": "매수 검토", "yellow": "상장일 대기", "blue": "인수권 매도", "white": "패스"}
+CONCLUSION = {"green": "매수 검토", "yellow": "상장일 대기", "blue": "인수권 매도", "white": "패스",
+              "green_q": "매수 검토 전 확인 필요", "yellow_q": "상장일 대기 · 확인 필요"}
 NEXT_QUARTER = {"1분기": "2Q", "반기": "3Q", "3분기": "4Q", "4분기": "1Q"}
 
 
@@ -156,6 +159,9 @@ def _next_quarter(op_period: str | None) -> str:
 
 
 def recheck(verdict: str, g1: dict, gap: float | None, op_period: str | None, cheap: float, rich: float) -> str:
+    if verdict.endswith("_q"):
+        items = " · ".join(u["label"] for u in unconfirmed(g1))
+        return f"{items} → GPT로 확인되면 {'🟢' if verdict == 'green_q' else '🟡'} 확정, 하나라도 탈락이면 ⚪"
     if verdict == "blue":
         return f"괴리율 +{rich:.0f}% 아래로 내려오면 청약 유지 검토"
     if verdict == "green":
@@ -194,7 +200,7 @@ def conclusion(verdict: str, g1: dict, gap: float | None, stg: str | None = None
     if verdict == "blue" and not g1["passed"]:
         reason = f"인수권 고평가 괴리율 {gap:+.1f}% · " + reason
     word = CONCLUSION[verdict]
-    if verdict in ("green", "blue") and stg in ("4", "5", "listed"):
+    if base(verdict) in ("green", "blue") and stg in ("4", "5", "listed"):
         word = TRACKING       # 인수권 거래가 끝나 이제 들어갈 수 없다 — 판정은 가상 성과로 추적
     return {"word": word, "reason": reason}
 
@@ -208,7 +214,7 @@ def quick(verdict: str, g1: dict, gap: float | None, sch: dict, facts: dict, clo
     issue = issue_estimate(sch, facts.get("discount"), r, closes, today, confirmed)
     be = breakeven(stg, sch, issue, closes, rights_close)
     scen, note = scenarios_for(verdict, card)
-    tracking = verdict in ("green", "blue") and stg in ("4", "5", "listed")
+    tracking = base(verdict) in ("green", "blue") and stg in ("4", "5", "listed")
     return {
         **conclusion(verdict, g1, gap, stg),
         "recheck": ("신주 상장일 시가 · +5 · +20거래일 가상 성과로 판정 검증" if tracking

@@ -262,3 +262,25 @@ def test_rights_history_skips_bad_spans_and_remembers_days():
     krx = FakeKrx()
     assert step_rights_history(krx, conn, TODAY) == 0      # SK 기간은 이미 조회했고, 이상 기간은 건너뜀
     assert krx.calls == []
+
+
+def test_unconfirmed_makes_check_needed():
+    """[16] 관문1 자동 6개 중 미확인이 하나라도 있으면 🟢 → 🟢? / 🟡 → 🟡? (수동 2개는 제외)."""
+    from yujeung.estimate import conclusion, recheck
+    from yujeung.verdict import LOGIC_VERSION, VERDICTS, base, unconfirmed
+    good = {"purpose_pct": {"시설": 80.0}, "dilution_ratio": 0.3}
+    g = gate1(good, {"underwriting": "총액인수"}, 1_000_000_000, "2026 반기", 0.3, "X")   # 최대주주 청약 미확인
+    assert g["passed"] and g["n_unknown"] == 1
+    assert decide(g, -35.0) == "green_q" and decide(g, -5.0) == "yellow_q" and decide(g, 25.0) == "blue"
+    assert [u["label"] for u in unconfirmed(g)] == ["최대주주 청약 여부 미확인"]
+    assert base("green_q") == "green" and base("blue") == "blue" and LOGIC_VERSION >= 2
+    assert list(VERDICTS)[:4] == ["green", "yellow", "green_q", "yellow_q"]          # 정렬: 🟢/🟡 다음
+    assert VERDICTS["green_q"][0] == "🟢?" and "확인 필요" in VERDICTS["green_q"][1]
+    assert conclusion("green_q", g, -35.0)["word"] == "매수 검토 전 확인 필요"
+    assert recheck("green_q", g, -35.0, "2026 반기", -20, 20).startswith("최대주주 청약 여부 미확인 → GPT로 확인되면 🟢 확정")
+    # 수동 2개(업계 1~3위·대체 불가)만 남은 경우는 그대로 🟢
+    full = gate1(good, {"underwriting": "총액인수", "major_holder": {"level": "full"}}, 1, "2026 반기", 0.3, "X")
+    assert decide(full, -35.0) == "green"
+    # 관문1 탈락이면 미확인이 있어도 ⚪
+    bad = gate1({"purpose_pct": {"채무상환": 90.0}, "dilution_ratio": 0.3}, {}, None, None, None, "Y")
+    assert decide(bad, -35.0) == "white"

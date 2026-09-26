@@ -20,7 +20,7 @@ from datetime import date
 
 from . import db
 from .calendar_kr import prev_business_day, shift_business_days
-from .verdict import LOGIC_VERSION
+from .verdict import LOGIC_VERSION, VERDICTS, base
 
 POINTS = {
     "rights": [("상장일 시가", "open", 0), ("+5일", "close", 5), ("+20일", "close", 20)],
@@ -95,7 +95,7 @@ def evaluate(conn: sqlite3.Connection, case: sqlite3.Row, trade: sqlite3.Row, sc
     stock = _series(conn, "stock_daily", "code", case["stock_code"])
     index = _series(conn, "index_daily", "idx", INDEX_OF.get(case["corp_cls"], "KOSPI"))
     idx_by_day = {r["bas_dd"]: r for r in index}
-    kind = "yellow" if verdict == "yellow" else "rights"
+    kind = "yellow" if base(verdict) == "yellow" else "rights"
 
     issue, issue_note = final_issue_price(snap.get("issue_price"), schedule, today)
 
@@ -149,7 +149,7 @@ def evaluate(conn: sqlite3.Connection, case: sqlite3.Row, trade: sqlite3.Row, sc
 def scorecard(results: list[dict]) -> list[dict]:
     """판정별 성적 (마지막 측정 시점 = +20일 기준). results: [{verdict, eval}]"""
     rows = []
-    for v in ("green", "yellow", "blue", "white"):
+    for v in VERDICTS:          # 확인 필요(🟢?/🟡?)도 따로 집계
         mine = [r for r in results if r["verdict"] == v]
         done = [r["eval"]["points"][-1] for r in mine if r["eval"].get("points") and "ret" in r["eval"]["points"][-1]]
         rets = [p["ret"] for p in done]

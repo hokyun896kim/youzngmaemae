@@ -106,6 +106,10 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .vbadge{font-size:14px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);white-space:nowrap}
 .vbadge.green{border-color:#2f6b55;color:#8fe0bf}.vbadge.yellow{border-color:#7a6420;color:var(--gold2)}
 .vbadge.blue{border-color:#2d4f8f;color:#9dbcff}.vbadge.white{color:#d8dde7}
+.vbadge.green_q{border:1.5px dashed #2f6b55;color:#8fe0bf}.vbadge.yellow_q{border:1.5px dashed #7a6420;color:var(--gold2)}
+.unc{margin-top:6px;padding:7px 9px;border:1px solid #5a2a27;border-radius:9px;background:rgba(194,84,77,.08)}
+.unc .ul{color:#ff8a80;font-weight:700;font-size:12.5px;line-height:1.5}
+.unc .btn{margin-top:6px;width:100%}
 .vreason{font-size:12px;color:var(--txt);flex:1 1 220px;min-width:0;line-height:1.5}
 .vreason small{display:block;color:var(--mut);margin-top:2px}
 .crit{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
@@ -180,6 +184,7 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
  .card{padding:13px}
  .cn{font-size:17px}
  .vbar{padding:9px 10px}
+ .vbadge{white-space:normal;line-height:1.35;max-width:100%}
  .quick .ql{grid-template-columns:70px minmax(0,1fr);gap:6px}
  th,td{padding:8px 8px}
  .tblw th:first-child,.tblw td:first-child{position:sticky;left:0;z-index:1;background:var(--panel)}
@@ -295,7 +300,7 @@ function timeline(s){
 }
 
 // ---- 유증 진행 레이스 바: 공시 → 권리락 → 인수권 → 청약 → 상장 → +20일 ----
-const VCOL={green:'var(--grn)',yellow:'var(--gold)',blue:'var(--blu)',white:'#c9d1de'};
+const VCOL={green:'var(--grn)',yellow:'var(--gold)',green_q:'var(--grn)',yellow_q:'var(--gold)',blue:'var(--blu)',white:'#c9d1de'};
 const isoOf=d8=>`${d8.slice(0,4)}-${d8.slice(4,6)}-${d8.slice(6)}`;
 const md=d=>d?d.slice(5).replace('-','/'):'';
 const dayDiff=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
@@ -449,7 +454,8 @@ function renderCases(){
   const names={open:'주주배정 진행 중',watch:'기타 방식(관찰)',closed:'종료'};
   $('#tabs').innerHTML=Object.keys(groups).map(k=>`<button class="tab ${k===TAB?'on':''}" data-k="${k}">${names[k]} ${DATA.cases.filter(groups[k]).length}</button>`).join('');
   document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{TAB=b.dataset.k;renderCases();});
-  const list=DATA.cases.filter(groups[TAB]);
+  const rank=Object.keys(DATA.verdicts||{}), rk=c=>{const i=rank.indexOf((c.verdict||{}).code);return i<0?99:i;};
+  const list=DATA.cases.filter(groups[TAB]).map((c,i)=>[c,i]).sort((a,b)=>rk(a[0])-rk(b[0])||a[1]-b[1]).map(x=>x[0]);
   SPARKS.length=0;
   $('#cases').innerHTML=list.length?list.map(caseCard).join(''):'<div class="empty">해당 케이스가 없습니다.</div>';
   drawSparks();
@@ -518,6 +524,9 @@ function quickBox(c){
   const rows=(q.table||[]).map(t=>`<tr><td>${t.name}</td><td><b>${fmt(t.price)}</b>원</td><td><b class="${t.pct>=0?'pos':'neg'}">${(t.pct>0?'+':'')+t.pct}%</b></td></tr>`).join('');
   return `<div class="quick"><div class="qw">${v.emoji||''} ${esc(q.word)}</div><div class="qs">30초 결론 · ${esc(q.stage_name)}</div>
   <div class="ql"><span>이유</span><div>${esc(q.reason)}</div></div>
+  ${(v.unconfirmed||[]).length?`<div class="unc"><div class="ul">⚠ ${v.unconfirmed.map(u=>esc(u.label)).join(' · ')}</div>
+    <button class="btn gold" data-label="🤖 미확인 항목만 GPT로 확인 (프롬프트 복사)" onclick="copyCheck(${c.case_id},this)">🤖 미확인 항목만 GPT로 확인 (프롬프트 복사)</button>
+    <div class="preview" id="pq${c.case_id}"></div></div>`:''}
   <div class="ql"><span>다시 볼 조건</span><div>${esc(q.recheck)}</div></div>
   <div class="ql"><span>발행가</span><div>${esc(is.text||'—')}</div></div>
   ${be?`<div class="ql"><span>본전선</span><div><b>${fmt(be.value)}원</b> — ${esc(be.how)} <span class="mut">(${esc(be.text)})</span></div></div>`:`<div class="ql"><span>본전선</span><div class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</div></div>`}
@@ -539,6 +548,7 @@ function resultBlock(c){
 function openGuide(){$('#guide').classList.add('show');}
 function closeGuide(){$('#guide').classList.remove('show');}
 addEventListener('keydown',e=>{if(e.key==='Escape')closeGuide();});
+function copyCheck(id,btn){const c=DATA.cases.find(x=>x.case_id===id);copyText(buildCheckPrompt(c),btn,$('#pq'+id),btn.dataset.label);}
 function copyCase(id,btn){const c=DATA.cases.find(x=>x.case_id===id);copyText(buildCasePrompt(c,DATA),btn,$('#pv'+id),btn.dataset.label);}
 function copyBriefing(btn){if(!DATA)return;copyText(buildBriefingPrompt(DATA),btn,$('#briefPreview'),'🤖 전체 브리핑 프롬프트 복사');}
 fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{

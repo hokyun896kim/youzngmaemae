@@ -12,7 +12,7 @@ from .calendar_kr import KRX_HOLIDAYS
 from .config import Config
 from .pipeline import SCHEDULE_LABELS, checked_schedule, latest_facts, live_verdict
 from .prices import compute_gap
-from .verdict import VERDICTS
+from .verdict import VERDICTS, unconfirmed
 
 
 def _history(conn: sqlite3.Connection, case_id: int) -> list[dict]:
@@ -84,7 +84,9 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         "verdict": {"code": v, "emoji": emoji, "name": name,
                     "reason": json.loads(trade["snapshot_json"])["reason"] if trade else live["reason"],
                     "provisional": not trade, "decided_on": trade["decided_on"] if trade else None,
-                    "live_reason": live["reason"]},
+                    "live_reason": live["reason"],
+                    # 🟢?/🟡? 확인 필요: 관문1 자동 항목 중 미확인 (화면 빨간 글씨 + 그 항목만 묻는 GPT 프롬프트)
+                    "unconfirmed": unconfirmed(live["gate1"]) if v.endswith("_q") else []},
         "paper": paper_json, "quick": quick,
     })
     return base

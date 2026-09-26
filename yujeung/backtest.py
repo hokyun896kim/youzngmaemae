@@ -31,7 +31,7 @@ from .naver import INDEX_SYMBOL, NaverClient, NaverError
 from .pipeline import (MAX_RIGHTS_SPAN_DAYS, checked_schedule, latest_facts, live_verdict, save_pos52, step_estk,
                        step_schedules)
 from .prices import relink_rights, store_rights_rows, store_stock_rows
-from .verdict import LOGIC_VERSION, VERDICTS
+from .verdict import LOGIC_VERSION, VERDICTS, base
 
 FIRST_YEAR = 2020
 LAST_DAY = date(2026, 6, 30)          # 원공시 대상 마지막 날
@@ -452,7 +452,7 @@ def aggregate(out_dir: Path = BACKTEST_DIR) -> dict:
     by_verdict = []
     for v, (emoji, name) in VERDICTS.items():
         mine = [r for r in recs if r["verdict"] == v]
-        labels = [lb for lb, _, _ in paper.POINTS["yellow" if v == "yellow" else "rights"]]
+        labels = [lb for lb, _, _ in paper.POINTS["yellow" if base(v) == "yellow" else "rights"]]
         by_verdict.append({"verdict": v, "emoji": emoji, "name": name, "n": len(mine),
                            "points": [{"label": lb, **stats([_point(r["eval"], lb) for r in mine])} for lb in labels]})
     filters = []
