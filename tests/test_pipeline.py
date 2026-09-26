@@ -230,3 +230,17 @@ def test_second_offering_same_year_gets_its_own_fields():
     cases = conn.execute("SELECT first_rcept_no, is_rights FROM cases").fetchall()
     assert [tuple(c) for c in cases] == [(first["rcept_no"], 1)]
     assert conn.execute("SELECT reason FROM excluded_disclosures WHERE rcept_no=?", (second["rcept_no"],)).fetchone()[0].startswith("백필 제외")
+
+
+def test_latest_facts_keeps_false():
+    """'신주인수권증서의 상장여부 아니오' → rights_listed=False 가 합칠 때 버려지면 안 된다 (2020 백테스트에서 0건으로 집계됨)."""
+    from yujeung.pipeline import latest_facts, save_schedule
+    from yujeung.schedule_parser import Schedule
+    conn = db.connect(":memory:")
+    conn.execute("INSERT INTO cases (corp_code, corp_name, stock_code, corp_cls, first_rcept_no, first_rcept_dt, "
+                 "ic_mthn, is_rights, created_at) VALUES ('c','케이비캐피탈','021960','E','r1','20200318','주주배정',1,'x')")
+    conn.execute("INSERT INTO disclosures (rcept_no, case_id, kind, report_nm, rcept_dt, is_correction, fields_json) "
+                 "VALUES ('r1',1,'piic','x','20200318',0,'{}')")
+    save_schedule(conn, "r1", 1, Schedule(record_date="2020-03-18", extras={"facts": {"rights_listed": False, "major_holder": {}}}))
+    f = latest_facts(conn, 1)
+    assert f["rights_listed"] is False and "major_holder" not in f

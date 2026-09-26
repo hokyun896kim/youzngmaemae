@@ -93,7 +93,7 @@ def latest_facts(conn: sqlite3.Connection, case_id: int) -> dict:
     for r in conn.execute("SELECT extras_json FROM schedule_versions WHERE case_id=? ORDER BY rcept_no", (case_id,)):
         f = json.loads(r[0] or "{}").get("facts") or {}
         for k, v in f.items():
-            if v:
+            if v or v is False:      # False 도 정보다 — '인수권 상장여부 아니오'(rights_listed) 가 빠지던 문제
                 facts[k] = v
     return facts
 
