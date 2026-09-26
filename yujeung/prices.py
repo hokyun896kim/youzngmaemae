@@ -133,6 +133,11 @@ class Gap:
     gap_pct: float       # (인수권 / 이론가 − 1) × 100. 음수 = 인수권이 싸다
     effective_cost: int  # 인수권 매수 + 청약 시 신주 원가
 
+    @property
+    def discount_pct(self) -> float:
+        """실제 신주원가 할인율 = (인수권 + 발행가) ÷ 본주 − 1. 음수 = 본주보다 싸게 신주를 얻는다 ([17])."""
+        return round((self.effective_cost / self.stock_close - 1) * 100, 1)
+
 
 def compute_gap(rights_close, stock_close, issue_price, bas_dd="", isu_nm="") -> Gap | None:
     if not (rights_close and stock_close and issue_price):

@@ -18,7 +18,8 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 12  # 12: 인수권 문장의 '전자증권제도 시행일' 날짜 무시(기준일 미정일 때 — 경남제약 2019-09-16)
+PARSER_VERSION = 13  # 13: '실권주 미발행' + 잔액·총액인수 없음 → 인수방식 '실권주미발행'(관문1 탈락) — 아이에이
+#                     12: 인수권 문장의 '전자증권제도 시행일' 날짜 무시(기준일 미정일 때 — 경남제약 2019-09-16)
 #                     11: 옛 양식(2020) 인수권 기간 — 첫 후보가 무효여도 계속 탐색, '날짜~날짜 신주인수권증서 상장 거래기간'(증권신고서),
 #                        '신주인수권증서의 상장여부 아니오' 기록
 #                     10: 본문이 '-'로 비고 정정표에만 '추후결정' → 미정 기록(경남제약)
@@ -333,18 +334,29 @@ def extract_major_holder(text: str) -> dict | None:
     return best
 
 
+# 실측 아이에이: "미청약된 주식(실권주 및 단수주)은 미발행 처리합니다" / "실권주 및 단수주는 미발행 처리할 예정"
+_NO_FORFEIT_RE = re.compile(r"실권주[^.。]{0,25}?(?:미발행|발행\s*하?지\s*(?:아니|않))")
+
+
 def extract_underwriting(rows: list[tuple[str, list[str]]], raw_rows: list[list[str]], text: str) -> str | None:
-    """인수 방식: 총액인수 / 잔액인수 / 모집주선. 표의 '인수방법' 칸 우선, 없으면 본문 빈도."""
+    """인수 방식: 총액인수 / 잔액인수 / 모집주선 / 실권주미발행. 표의 '인수방법' 칸 우선, 없으면 본문 빈도.
+    [17] 원문에 '실권주 미발행'이 있고 잔액·총액인수 계약이 없으면 '실권주미발행' — 인수단이 남는 물량을 책임지지 않는다
+    (실측 아이에이: 미확인으로 두면 관문1 통과로 잘못 간다)."""
     kinds = ("잔액인수", "총액인수", "모집주선")
+    found = None
     for cells in raw_rows:
         joined = "".join(cells).replace(" ", "")
         if "인수방법" in joined or "인수형태" in joined:
-            for k in kinds:
-                if k in joined:
-                    return k
-    counts = {k: text.replace(" ", "").count(k) for k in kinds}
-    k, n = max(counts.items(), key=lambda kv: kv[1])
-    return k if n else None
+            found = next((k for k in kinds if k in joined), None)
+            if found:
+                break
+    if not found:
+        counts = {k: text.replace(" ", "").count(k) for k in kinds}
+        k, n = max(counts.items(), key=lambda kv: kv[1])
+        found = k if n else None
+    if found not in ("잔액인수", "총액인수") and _NO_FORFEIT_RE.search(text):
+        return "실권주미발행"
+    return found
 
 
 def validate_schedule(s: dict) -> tuple[dict, list[str]]:

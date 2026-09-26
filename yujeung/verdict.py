@@ -11,17 +11,44 @@
   🟡 yellow 관문1 통과, 괴리 신호 없음      → 신주 상장일 매물 후 본주 매수 (B)
   🔵 blue   인수권 고평가                   → 인수권 마지막 날 매도 vs 청약 유지 비교 (A 매도)
   ⚪ white  관문1 탈락                      → 관찰 샘플 (인수권 매수+청약 가정으로 기록, 가설 검증용)
+  🟢? green_q / 🟡? yellow_q  관문1 자동 6개 중 '미확인'이 하나라도 있으면 🟢/🟡 대신 "확인 필요" (v2~).
+      업계 1~3위·대체 불가(수동 2개)는 늘 GPT 확인 대상이라 이 규칙에서 뺀다.
+      가상 성과·백테스트는 따로 집계 → "미확인 포함 🟢가 실제로 얼마나 틀렸나" 비교용
 """
 from __future__ import annotations
 
-LOGIC_VERSION = 1
+LOGIC_VERSION = 3   # 3: 🟢 에 신주원가 할인율 ≤ −10% 추가, '실권주 미발행' = 인수방식 탈락 ([17] 아이에이 검수)
+#                   2: 관문1 자동 항목 미확인 → 🟢?/🟡? 확인 필요
 
+# 🟢 두 번째 조건: 실제 신주원가 할인율 = (인수권 + 발행가) ÷ 본주 − 1 ≤ DISC_MAX.
+# 괴리율만 싸도 발행가가 본주에 붙어 있으면 실제로 싸게 사는 게 아니다.
+# −10% 는 임시값 — 백테스트(기출문제)로 조정 예정
+DISC_MAX = -10.0
+
+# 순서 = 화면 정렬·집계 순서 (확인 필요는 🟢/🟡 바로 다음)
 VERDICTS = {
     "green": ("🟢", "인수권 매수+청약"),
     "yellow": ("🟡", "상장일 후 본주 매수"),
+    "green_q": ("🟢?", "확인 필요 · 인수권 매수+청약 후보"),
+    "yellow_q": ("🟡?", "확인 필요 · 상장일 후 본주 매수 후보"),
     "blue": ("🔵", "인수권 매도 vs 청약"),
     "white": ("⚪", "관찰 샘플"),
 }
+
+# 미확인일 때 화면·프롬프트에 쓰는 항목명
+UNKNOWN_LABEL = {"dilution": "희석률 미확인", "major": "최대주주 청약 여부 미확인", "op": "직전 분기 영업이익 미확인",
+                 "pos52": "52주 위치 미확인", "uw": "인수 방식(총액·잔액인수) 미확인", "debt": "자금 목적(채무상환) 미확인"}
+
+
+def base(verdict: str) -> str:
+    """확인 필요(green_q/yellow_q) → 원래 판정. 진입 방식·측정 시점은 원래 판정을 따른다."""
+    return verdict[:-2] if verdict.endswith("_q") else verdict
+
+
+def unconfirmed(g1: dict) -> list[dict]:
+    """관문1 자동 항목 중 미확인 (수동 2개 제외)."""
+    return [{"key": c["key"], "label": UNKNOWN_LABEL.get(c["key"], c["label"] + " 미확인")}
+            for c in g1["criteria"] if c["status"] == "unknown"]
 
 
 def is_reit(corp_name: str) -> bool:
@@ -73,6 +100,8 @@ def gate1(summary: dict, facts: dict, op_income: int | None, op_period: str | No
         crit.append(_c("uw", "총액인수", "pass", uw))
     elif uw == "모집주선":
         crit.append(_c("uw", "총액인수", "fail", "모집주선(인수단 책임 없음)"))
+    elif uw == "실권주미발행":
+        crit.append(_c("uw", "총액인수", "fail", "실권주 미발행 — 인수단 책임 없음"))
     else:
         crit.append(_c("uw", "총액인수", "unknown", "인수방식 미확인"))
 
@@ -94,15 +123,22 @@ def gate1(summary: dict, facts: dict, op_income: int | None, op_period: str | No
     }
 
 
-def decide(g1: dict, gap: float | None, cheap: float = -20.0, rich: float = 20.0) -> str:
+def green_price(gap: float | None, disc: float | None, cheap: float = -20.0, disc_max: float = DISC_MAX) -> bool:
+    """🟢 가격 조건: 괴리율 ≤ cheap AND 신주원가 할인율 ≤ disc_max (할인율 모르면 🟢 아님)."""
+    return gap is not None and gap <= cheap and disc is not None and disc <= disc_max
+
+
+def decide(g1: dict, gap: float | None, cheap: float = -20.0, rich: float = 20.0,
+           disc: float | None = None, disc_max: float = DISC_MAX) -> str:
     if gap is not None and gap >= rich:
         return "blue"
     if g1["passed"]:
-        return "green" if gap is not None and gap <= cheap else "yellow"
+        v = "green" if green_price(gap, disc, cheap, disc_max) else "yellow"
+        return v + "_q" if g1.get("n_unknown") else v
     return "white"
 
 
-def reason_line(g1: dict, gap: float | None, verdict: str) -> str:
+def reason_line(g1: dict, gap: float | None, verdict: str, disc: float | None = None) -> str:
     """예: '채무상환 100% · 희석 240% → 패스 · 괴리 -40.8% → ⚪ 관찰 샘플'"""
     crit = {c["key"]: c for c in g1["criteria"]}
     items = [crit["debt"]["text"], crit["dilution"]["text"].replace(" (100% 이상 즉시 탈락)", "")]
@@ -111,5 +147,7 @@ def reason_line(g1: dict, gap: float | None, verdict: str) -> str:
     if g1["passed"] and g1["n_unknown"]:
         head += f"(미확인 {g1['n_unknown']})"
     tail = f" · 괴리 {gap:+.1f}%" if gap is not None else " · 괴리 대기"
+    if disc is not None:
+        tail += f" · 원가할인 {disc:+.1f}%"
     emoji, name = VERDICTS[verdict]
     return f"{head}{tail} → {emoji} {name}"

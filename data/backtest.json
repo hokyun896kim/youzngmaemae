@@ -1,30 +1,36 @@
 {
- "generated_at": "2026-09-26T09:07:16+09:00",
- "logic_version": 1,
+ "generated_at": "2026-09-26T11:11:50+09:00",
+ "logic_version": 3,
  "years": [
   {
    "year": 2020,
-   "generated_at": "2026-09-26T09:07:16+09:00",
-   "cases": 57,
-   "parse_ok": 35,
-   "parse_rate": 61.4,
+   "generated_at": "2026-09-26T11:11:50+09:00",
+   "logic_version": 3,
+   "stale": false,
+   "cases": 56,
+   "no_rights_listing": 0,
+   "parse_target": 56,
+   "parse_ok": 49,
+   "parse_rate": 87.5,
+   "parse_rate_all": 87.5,
    "missing_by_field": {
-    "record_date": 7,
-    "rights_start": 22,
-    "rights_end": 22,
-    "subs_start": 7,
-    "listing_date": 10
+    "record_date": 1,
+    "rights_start": 7,
+    "rights_end": 7,
+    "subs_start": 1,
+    "listing_date": 6
    },
-   "out_of_year": 23,
+   "out_of_year": 0,
    "starts_with_correction": 9,
-   "no_rights_price": 1,
-   "scored": 34,
+   "no_rights_price": 2,
+   "scored": 47,
    "naver_missing": 0,
    "financials_missing": 1,
    "holidays_registered": 153
   }
  ],
- "n_scored": 34,
+ "n_scored": 47,
+ "stale_years": [],
  "by_verdict": [
   {
    "verdict": "green",
@@ -50,6 +56,46 @@
    "verdict": "yellow",
    "emoji": "🟡",
    "name": "상장일 후 본주 매수",
+   "n": 0,
+   "points": [
+    {
+     "label": "+5일",
+     "n": 0
+    },
+    {
+     "label": "+10일",
+     "n": 0
+    },
+    {
+     "label": "+20일",
+     "n": 0
+    }
+   ]
+  },
+  {
+   "verdict": "green_q",
+   "emoji": "🟢?",
+   "name": "확인 필요 · 인수권 매수+청약 후보",
+   "n": 0,
+   "points": [
+    {
+     "label": "상장일 시가",
+     "n": 0
+    },
+    {
+     "label": "+5일",
+     "n": 0
+    },
+    {
+     "label": "+20일",
+     "n": 0
+    }
+   ]
+  },
+  {
+   "verdict": "yellow_q",
+   "emoji": "🟡?",
+   "name": "확인 필요 · 상장일 후 본주 매수 후보",
    "n": 1,
    "points": [
     {
@@ -94,43 +140,43 @@
    "verdict": "blue",
    "emoji": "🔵",
    "name": "인수권 매도 vs 청약",
-   "n": 4,
+   "n": 5,
    "points": [
     {
      "label": "상장일 시가",
-     "n": 4,
-     "win_rate": 25,
-     "mean": -38.1,
-     "median": -46.3,
-     "p25": -105.9,
-     "p75": 21.5,
-     "worst": -214.9,
-     "excess_mean": -40.2,
-     "excess_median": -52.9
+     "n": 5,
+     "win_rate": 20,
+     "mean": -10.0,
+     "median": -12.2,
+     "p25": -17.1,
+     "p75": -2.1,
+     "worst": -28.1,
+     "excess_mean": -12.5,
+     "excess_median": -13.3
     },
     {
      "label": "+5일",
-     "n": 4,
-     "win_rate": 25,
-     "mean": -29.3,
-     "median": -46.5,
-     "p25": -75.2,
-     "p75": -0.7,
-     "worst": -148.5,
-     "excess_mean": -29.9,
-     "excess_median": -51.2
+     "n": 5,
+     "win_rate": 20,
+     "mean": -7.7,
+     "median": -10.4,
+     "p25": -12.4,
+     "p75": -3.9,
+     "worst": -19.4,
+     "excess_mean": -9.1,
+     "excess_median": -10.6
     },
     {
      "label": "+20일",
-     "n": 4,
-     "win_rate": 50,
-     "mean": 27.9,
-     "median": 1.6,
-     "p25": -82.6,
-     "p75": 112.2,
-     "worst": -137.7,
-     "excess_mean": 23.5,
-     "excess_median": -6.2
+     "n": 5,
+     "win_rate": 40,
+     "mean": -4.7,
+     "median": -15.7,
+     "p25": -17.0,
+     "p75": 4.2,
+     "worst": -18.0,
+     "excess_mean": -8.9,
+     "excess_median": -8.9
     }
    ]
   },
@@ -138,42 +184,42 @@
    "verdict": "white",
    "emoji": "⚪",
    "name": "관찰 샘플",
-   "n": 29,
+   "n": 41,
    "points": [
     {
      "label": "상장일 시가",
-     "n": 29,
-     "win_rate": 59,
-     "mean": 2.0,
-     "median": 2.4,
-     "p25": -3.4,
-     "p75": 8.8,
+     "n": 41,
+     "win_rate": 49,
+     "mean": 0.5,
+     "median": 0.0,
+     "p25": -7.3,
+     "p75": 8.6,
      "worst": -35.5,
-     "excess_mean": -3.2,
-     "excess_median": -3.6
+     "excess_mean": -4.5,
+     "excess_median": -3.8
     },
     {
      "label": "+5일",
-     "n": 29,
-     "win_rate": 76,
-     "mean": 9.3,
-     "median": 7.6,
-     "p25": 0.5,
-     "p75": 21.5,
+     "n": 41,
+     "win_rate": 63,
+     "mean": 7.2,
+     "median": 1.8,
+     "p25": -3.4,
+     "p75": 19.8,
      "worst": -30.7,
-     "excess_mean": 2.1,
-     "excess_median": 2.3
+     "excess_mean": 0.2,
+     "excess_median": -1.3
     },
     {
      "label": "+20일",
-     "n": 29,
-     "win_rate": 66,
-     "mean": 12.0,
-     "median": 5.5,
-     "p25": -1.3,
-     "p75": 21.7,
+     "n": 41,
+     "win_rate": 56,
+     "mean": 8.5,
+     "median": 2.1,
+     "p25": -2.3,
+     "p75": 18.0,
      "worst": -45.7,
-     "excess_mean": 2.5,
+     "excess_mean": -0.8,
      "excess_median": -4.3
     }
    ]
@@ -186,43 +232,43 @@
    "rows": [
     {
      "bucket": "관문1 탈락",
-     "n": 32,
+     "n": 45,
      "points": [
       {
        "label": "상장일 시가",
-       "n": 32,
-       "win_rate": 53,
-       "mean": 0.3,
-       "median": 0.6,
-       "p25": -7.4,
-       "p75": 8.4,
+       "n": 45,
+       "win_rate": 44,
+       "mean": -0.9,
+       "median": -1.2,
+       "p25": -8.1,
+       "p75": 8.3,
        "worst": -35.5,
-       "excess_mean": -4.2,
-       "excess_median": -3.8
+       "excess_mean": -5.4,
+       "excess_median": -4.0
       },
       {
        "label": "+5일",
-       "n": 32,
-       "win_rate": 69,
-       "mean": 7.3,
-       "median": 4.3,
-       "p25": -4.0,
-       "p75": 20.2,
+       "n": 45,
+       "win_rate": 58,
+       "mean": 5.5,
+       "median": 1.6,
+       "p25": -4.4,
+       "p75": 18.5,
        "worst": -30.7,
-       "excess_mean": 1.0,
-       "excess_median": -1.4
+       "excess_mean": -0.8,
+       "excess_median": -1.8
       },
       {
        "label": "+20일",
-       "n": 32,
-       "win_rate": 62,
-       "mean": 10.5,
-       "median": 3.9,
-       "p25": -1.4,
-       "p75": 21.9,
+       "n": 45,
+       "win_rate": 53,
+       "mean": 7.1,
+       "median": 2.1,
+       "p25": -3.2,
+       "p75": 18.0,
        "worst": -45.7,
-       "excess_mean": 1.8,
-       "excess_median": -4.3
+       "excess_mean": -1.6,
+       "excess_median": -5.3
       }
      ]
     },
@@ -276,85 +322,85 @@
    "rows": [
     {
      "bucket": "채무상환 50% 미만",
-     "n": 22,
+     "n": 28,
      "points": [
       {
        "label": "상장일 시가",
-       "n": 22,
-       "win_rate": 59,
-       "mean": -0.0,
-       "median": 3.0,
-       "p25": -7.9,
-       "p75": 9.4,
+       "n": 28,
+       "win_rate": 46,
+       "mean": -1.6,
+       "median": -0.8,
+       "p25": -8.3,
+       "p75": 9.0,
        "worst": -35.5,
-       "excess_mean": -4.4,
-       "excess_median": -3.8
+       "excess_mean": -6.5,
+       "excess_median": -4.3
       },
       {
        "label": "+5일",
-       "n": 22,
-       "win_rate": 68,
-       "mean": 5.9,
-       "median": 6.5,
-       "p25": -3.3,
-       "p75": 16.6,
+       "n": 28,
+       "win_rate": 57,
+       "mean": 4.2,
+       "median": 1.4,
+       "p25": -4.8,
+       "p75": 14.2,
        "worst": -30.7,
-       "excess_mean": 0.0,
-       "excess_median": -1.6
+       "excess_mean": -1.9,
+       "excess_median": -2.0
       },
       {
        "label": "+20일",
-       "n": 22,
-       "win_rate": 64,
-       "mean": 9.1,
-       "median": 3.2,
-       "p25": -2.5,
-       "p75": 12.2,
+       "n": 28,
+       "win_rate": 54,
+       "mean": 7.5,
+       "median": 2.2,
+       "p25": -2.9,
+       "p75": 10.6,
        "worst": -45.7,
-       "excess_mean": 0.9,
-       "excess_median": -5.7
+       "excess_mean": -1.4,
+       "excess_median": -8.1
       }
      ]
     },
     {
      "bucket": "채무상환 50% 이상",
-     "n": 12,
+     "n": 19,
      "points": [
       {
        "label": "상장일 시가",
-       "n": 12,
-       "win_rate": 50,
-       "mean": 2.9,
-       "median": 0.2,
-       "p25": -2.4,
-       "p75": 8.6,
-       "worst": -11.0,
-       "excess_mean": -2.6,
-       "excess_median": -2.3
+       "n": 19,
+       "win_rate": 47,
+       "mean": 1.5,
+       "median": 0.0,
+       "p25": -6.7,
+       "p75": 8.4,
+       "worst": -12.2,
+       "excess_mean": -3.0,
+       "excess_median": -0.7
       },
       {
        "label": "+5일",
-       "n": 12,
-       "win_rate": 75,
-       "mean": 10.2,
-       "median": 5.0,
-       "p25": -0.6,
-       "p75": 23.5,
+       "n": 19,
+       "win_rate": 63,
+       "mean": 7.8,
+       "median": 1.8,
+       "p25": -3.6,
+       "p75": 20.0,
        "worst": -14.6,
-       "excess_mean": 2.8,
-       "excess_median": 0.5
+       "excess_mean": 1.0,
+       "excess_median": -1.3
       },
       {
        "label": "+20일",
-       "n": 12,
-       "win_rate": 67,
-       "mean": 12.3,
-       "median": 14.7,
-       "p25": -0.4,
-       "p75": 22.4,
-       "worst": -6.1,
-       "excess_mean": 2.7,
-       "excess_median": -2.0
+       "n": 19,
+       "win_rate": 58,
+       "mean": 6.4,
+       "median": 2.1,
+       "p25": -3.7,
+       "p75": 20.1,
+       "worst": -26.6,
+       "excess_mean": -1.7,
+       "excess_median": 0.3
       }
      ]
     }
@@ -365,86 +411,128 @@
    "title": "희석률",
    "rows": [
     {
-     "bucket": "희석 50% 미만",
-     "n": 20,
+     "bucket": "희석 100% 이상",
+     "n": 1,
      "points": [
       {
        "label": "상장일 시가",
-       "n": 20,
-       "win_rate": 65,
-       "mean": 2.6,
-       "median": 5.3,
-       "p25": -8.3,
-       "p75": 11.3,
-       "worst": -35.5,
-       "excess_mean": -2.8,
-       "excess_median": -3.4
+       "n": 1,
+       "win_rate": 0,
+       "mean": -3.9,
+       "median": -3.9,
+       "p25": -3.9,
+       "p75": -3.9,
+       "worst": -3.9,
+       "excess_mean": -13.8,
+       "excess_median": -13.8
       },
       {
        "label": "+5일",
-       "n": 20,
-       "win_rate": 70,
-       "mean": 7.4,
-       "median": 6.6,
-       "p25": -6.6,
-       "p75": 20.2,
-       "worst": -30.7,
-       "excess_mean": 0.6,
-       "excess_median": 0.8
+       "n": 1,
+       "win_rate": 0,
+       "mean": -1.1,
+       "median": -1.1,
+       "p25": -1.1,
+       "p75": -1.1,
+       "worst": -1.1,
+       "excess_mean": -14.8,
+       "excess_median": -14.8
       },
       {
        "label": "+20일",
-       "n": 20,
-       "win_rate": 60,
-       "mean": 9.0,
-       "median": 3.2,
-       "p25": -2.9,
-       "p75": 18.9,
+       "n": 1,
+       "win_rate": 0,
+       "mean": -2.3,
+       "median": -2.3,
+       "p25": -2.3,
+       "p75": -2.3,
+       "worst": -2.3,
+       "excess_mean": -16.8,
+       "excess_median": -16.8
+      }
+     ]
+    },
+    {
+     "bucket": "희석 50% 미만",
+     "n": 31,
+     "points": [
+      {
+       "label": "상장일 시가",
+       "n": 31,
+       "win_rate": 48,
+       "mean": -0.5,
+       "median": 0.0,
+       "p25": -8.9,
+       "p75": 9.2,
+       "worst": -35.5,
+       "excess_mean": -5.8,
+       "excess_median": -3.9
+      },
+      {
+       "label": "+5일",
+       "n": 31,
+       "win_rate": 58,
+       "mean": 3.8,
+       "median": 1.2,
+       "p25": -8.2,
+       "p75": 11.9,
+       "worst": -30.7,
+       "excess_mean": -2.8,
+       "excess_median": -2.4
+      },
+      {
+       "label": "+20일",
+       "n": 31,
+       "win_rate": 48,
+       "mean": 4.3,
+       "median": -0.4,
+       "p25": -7.0,
+       "p75": 11.5,
        "worst": -45.7,
-       "excess_mean": 0.5,
-       "excess_median": -5.7
+       "excess_mean": -4.4,
+       "excess_median": -7.2
       }
      ]
     },
     {
      "bucket": "희석 50~100%",
-     "n": 14,
+     "n": 15,
      "points": [
       {
        "label": "상장일 시가",
-       "n": 14,
-       "win_rate": 43,
-       "mean": -1.2,
-       "median": -1.3,
-       "p25": -3.3,
-       "p75": 4.2,
+       "n": 15,
+       "win_rate": 47,
+       "mean": 0.3,
+       "median": -2.1,
+       "p25": -4.7,
+       "p75": 6.4,
        "worst": -28.1,
-       "excess_mean": -5.1,
-       "excess_median": -4.0
+       "excess_mean": -3.0,
+       "excess_median": -3.8
       },
       {
        "label": "+5일",
-       "n": 14,
-       "win_rate": 71,
-       "mean": 7.3,
-       "median": 5.3,
-       "p25": 0.1,
-       "p75": 15.9,
+       "n": 15,
+       "win_rate": 67,
+       "mean": 9.9,
+       "median": 8.3,
+       "p25": -1.7,
+       "p75": 22.2,
        "worst": -19.4,
-       "excess_mean": 1.5,
-       "excess_median": -1.9
+       "excess_mean": 4.4,
+       "excess_median": 5.8
       },
       {
        "label": "+20일",
-       "n": 14,
-       "win_rate": 71,
-       "mean": 12.0,
-       "median": 8.5,
-       "p25": 0.0,
-       "p75": 21.4,
+       "n": 15,
+       "win_rate": 73,
+       "mean": 13.4,
+       "median": 11.5,
+       "p25": 0.4,
+       "p75": 22.9,
        "worst": -18.0,
-       "excess_mean": 3.1,
-       "excess_median": -1.8
+       "excess_mean": 5.3,
+       "excess_median": 1.5
       }
      ]
     }
@@ -498,85 +586,85 @@
     },
     {
      "bucket": "직전 분기 적자",
-     "n": 21,
+     "n": 31,
      "points": [
       {
        "label": "상장일 시가",
-       "n": 21,
-       "win_rate": 48,
-       "mean": -1.4,
-       "median": -0.5,
-       "p25": -8.1,
-       "p75": 6.4,
+       "n": 31,
+       "win_rate": 42,
+       "mean": -2.3,
+       "median": -2.8,
+       "p25": -8.5,
+       "p75": 4.8,
        "worst": -35.5,
-       "excess_mean": -5.3,
-       "excess_median": -3.8
+       "excess_mean": -6.3,
+       "excess_median": -3.9
       },
       {
        "label": "+5일",
-       "n": 21,
-       "win_rate": 67,
-       "mean": 6.2,
-       "median": 7.6,
-       "p25": -4.4,
-       "p75": 19.8,
+       "n": 31,
+       "win_rate": 55,
+       "mean": 4.4,
+       "median": 1.6,
+       "p25": -8.2,
+       "p75": 19.1,
        "worst": -30.7,
-       "excess_mean": 0.3,
-       "excess_median": 2.3
+       "excess_mean": -0.9,
+       "excess_median": -1.3
       },
       {
        "label": "+20일",
-       "n": 21,
-       "win_rate": 57,
-       "mean": 10.5,
+       "n": 31,
+       "win_rate": 52,
+       "mean": 6.9,
        "median": 2.1,
-       "p25": -1.3,
-       "p75": 22.3,
+       "p25": -9.3,
+       "p75": 20.1,
        "worst": -45.7,
-       "excess_mean": 2.7,
+       "excess_mean": -0.4,
        "excess_median": -4.3
       }
      ]
     },
     {
      "bucket": "직전 분기 흑자",
-     "n": 12,
+     "n": 15,
      "points": [
       {
        "label": "상장일 시가",
-       "n": 12,
-       "win_rate": 67,
-       "mean": 4.9,
-       "median": 6.2,
-       "p25": -0.5,
-       "p75": 14.9,
+       "n": 15,
+       "win_rate": 53,
+       "mean": 3.5,
+       "median": 0.6,
+       "p25": -5.6,
+       "p75": 15.4,
        "worst": -28.1,
-       "excess_mean": -1.2,
-       "excess_median": -5.2
+       "excess_mean": -2.8,
+       "excess_median": -8.0
       },
       {
        "label": "+5일",
-       "n": 12,
-       "win_rate": 75,
-       "mean": 9.6,
-       "median": 5.4,
-       "p25": -0.1,
-       "p75": 21.9,
+       "n": 15,
+       "win_rate": 67,
+       "mean": 8.2,
+       "median": 1.8,
+       "p25": -2.0,
+       "p75": 15.7,
        "worst": -19.4,
-       "excess_mean": 2.7,
-       "excess_median": -1.8
+       "excess_mean": 0.0,
+       "excess_median": -2.2
       },
       {
        "label": "+20일",
-       "n": 12,
-       "win_rate": 75,
-       "mean": 9.9,
-       "median": 7.0,
-       "p25": 0.4,
-       "p75": 18.9,
+       "n": 15,
+       "win_rate": 60,
+       "mean": 7.3,
+       "median": 4.2,
+       "p25": -2.5,
+       "p75": 17.4,
        "worst": -18.0,
-       "excess_mean": 0.4,
-       "excess_median": -2.8
+       "excess_mean": -3.5,
+       "excess_median": -5.3
       }
      ]
     }
@@ -588,211 +676,211 @@
    "rows": [
     {
      "bucket": "괴리 +20% 이상",
+     "n": 5,
+     "points": [
+      {
+       "label": "상장일 시가",
+       "n": 5,
+       "win_rate": 20,
+       "mean": -10.0,
+       "median": -12.2,
+       "p25": -17.1,
+       "p75": -2.1,
+       "worst": -28.1,
+       "excess_mean": -12.5,
+       "excess_median": -13.3
+      },
+      {
+       "label": "+5일",
+       "n": 5,
+       "win_rate": 20,
+       "mean": -7.7,
+       "median": -10.4,
+       "p25": -12.4,
+       "p75": -3.9,
+       "worst": -19.4,
+       "excess_mean": -9.1,
+       "excess_median": -10.6
+      },
+      {
+       "label": "+20일",
+       "n": 5,
+       "win_rate": 40,
+       "mean": -4.7,
+       "median": -15.7,
+       "p25": -17.0,
+       "p75": 4.2,
+       "worst": -18.0,
+       "excess_mean": -8.9,
+       "excess_median": -8.9
+      }
+     ]
+    },
+    {
+     "bucket": "괴리 0~+20%",
      "n": 4,
      "points": [
       {
        "label": "상장일 시가",
        "n": 4,
        "win_rate": 25,
-       "mean": -9.4,
-       "median": -9.6,
-       "p25": -19.9,
-       "p75": 0.8,
-       "worst": -28.1,
-       "excess_mean": -11.5,
-       "excess_median": -11.6
+       "mean": -1.4,
+       "median": -5.3,
+       "p25": -9.9,
+       "p75": 3.2,
+       "worst": -11.3,
+       "excess_mean": -2.9,
+       "excess_median": -6.6
       },
       {
        "label": "+5일",
        "n": 4,
-       "win_rate": 25,
-       "mean": -7.0,
-       "median": -8.2,
-       "p25": -14.2,
-       "p75": -1.0,
-       "worst": -19.4,
-       "excess_mean": -7.6,
-       "excess_median": -6.5
+       "win_rate": 50,
+       "mean": 7.6,
+       "median": 2.1,
+       "p25": -4.0,
+       "p75": 13.8,
+       "worst": -5.8,
+       "excess_mean": 4.7,
+       "excess_median": 2.2
       },
       {
        "label": "+20일",
        "n": 4,
        "win_rate": 50,
-       "mean": -1.7,
-       "median": -5.8,
-       "p25": -16.3,
-       "p75": 8.9,
-       "worst": -18.0,
-       "excess_mean": -6.2,
-       "excess_median": -8.0
-      }
-     ]
-    },
-    {
-     "bucket": "괴리 0~+20%",
-     "n": 3,
-     "points": [
-      {
-       "label": "상장일 시가",
-       "n": 3,
-       "win_rate": 33,
        "mean": -1.4,
-       "median": -9.5,
-       "p25": -10.4,
+       "median": -0.3,
+       "p25": -5.2,
        "p75": 3.5,
-       "worst": -11.3,
-       "excess_mean": -0.9,
-       "excess_median": -4.8
-      },
-      {
-       "label": "+5일",
-       "n": 3,
-       "win_rate": 67,
-       "mean": 11.3,
-       "median": 7.7,
-       "p25": 1.0,
-       "p75": 19.9,
-       "worst": -5.8,
-       "excess_mean": 9.3,
-       "excess_median": 5.8
-      },
-      {
-       "label": "+20일",
-       "n": 3,
-       "win_rate": 67,
-       "mean": 2.3,
-       "median": 2.2,
-       "p25": -0.3,
-       "p75": 4.8,
-       "worst": -2.8,
-       "excess_mean": -3.1,
-       "excess_median": -3.8
+       "worst": -12.5,
+       "excess_mean": -6.9,
+       "excess_median": -4.0
       }
      ]
     },
     {
      "bucket": "괴리 −20~0%",
-     "n": 12,
+     "n": 15,
      "points": [
       {
        "label": "상장일 시가",
-       "n": 12,
-       "win_rate": 75,
-       "mean": 6.8,
-       "median": 7.1,
-       "p25": 0.4,
-       "p75": 14.5,
+       "n": 15,
+       "win_rate": 73,
+       "mean": 6.6,
+       "median": 5.4,
+       "p25": 0.2,
+       "p75": 14.7,
        "worst": -8.1,
-       "excess_mean": 1.7,
-       "excess_median": 4.2
+       "excess_mean": 1.0,
+       "excess_median": 3.7
       },
       {
        "label": "+5일",
-       "n": 12,
-       "win_rate": 92,
-       "mean": 12.5,
-       "median": 14.2,
-       "p25": 1.5,
-       "p75": 21.0,
+       "n": 15,
+       "win_rate": 87,
+       "mean": 12.0,
+       "median": 12.8,
+       "p25": 1.4,
+       "p75": 20.2,
        "worst": -9.9,
-       "excess_mean": 6.5,
-       "excess_median": 8.2
+       "excess_mean": 5.6,
+       "excess_median": 8.6
       },
       {
        "label": "+20일",
-       "n": 12,
+       "n": 15,
        "win_rate": 67,
-       "mean": 10.0,
-       "median": 4.2,
+       "mean": 10.6,
+       "median": 6.4,
        "p25": -1.3,
-       "p75": 18.9,
+       "p75": 19.9,
        "worst": -28.7,
-       "excess_mean": 1.1,
-       "excess_median": -2.6
+       "excess_mean": 0.9,
+       "excess_median": -0.9
       }
      ]
     },
     {
      "bucket": "괴리 −40% 이하",
-     "n": 7,
+     "n": 11,
      "points": [
       {
        "label": "상장일 시가",
-       "n": 7,
-       "win_rate": 57,
-       "mean": 2.0,
-       "median": 2.4,
-       "p25": -5.0,
-       "p75": 4.5,
+       "n": 11,
+       "win_rate": 55,
+       "mean": 3.0,
+       "median": 1.1,
+       "p25": -5.5,
+       "p75": 6.9,
        "worst": -11.0,
-       "excess_mean": -5.6,
-       "excess_median": -6.6
+       "excess_mean": -2.5,
+       "excess_median": -3.1
       },
       {
        "label": "+5일",
-       "n": 7,
-       "win_rate": 57,
-       "mean": 5.5,
-       "median": 3.1,
-       "p25": -2.2,
-       "p75": 8.2,
+       "n": 11,
+       "win_rate": 45,
+       "mean": 5.9,
+       "median": 0.0,
+       "p25": -2.8,
+       "p75": 11.7,
        "worst": -14.6,
-       "excess_mean": -5.8,
+       "excess_mean": -3.2,
        "excess_median": -6.0
       },
       {
        "label": "+20일",
-       "n": 7,
-       "win_rate": 71,
-       "mean": 26.9,
-       "median": 8.5,
-       "p25": 2.6,
-       "p75": 30.2,
-       "worst": -1.7,
-       "excess_mean": 13.6,
+       "n": 11,
+       "win_rate": 64,
+       "mean": 16.9,
+       "median": 5.5,
+       "p25": -1.1,
+       "p75": 18.7,
+       "worst": -26.6,
+       "excess_mean": 6.8,
        "excess_median": -6.0
       }
      ]
     },
     {
      "bucket": "괴리 −40~−20%",
-     "n": 7,
+     "n": 11,
      "points": [
       {
        "label": "상장일 시가",
-       "n": 7,
-       "win_rate": 57,
-       "mean": 2.3,
-       "median": 4.3,
-       "p25": -1.6,
-       "p75": 7.4,
-       "worst": -8.9,
-       "excess_mean": -2.7,
-       "excess_median": -3.8
+       "n": 11,
+       "win_rate": 27,
+       "mean": -5.1,
+       "median": -4.3,
+       "p25": -8.9,
+       "p75": 1.9,
+       "worst": -35.1,
+       "excess_mean": -10.1,
+       "excess_median": -4.0
       },
       {
        "label": "+5일",
-       "n": 7,
-       "win_rate": 86,
-       "mean": 12.5,
-       "median": 8.3,
-       "p25": 4.0,
-       "p75": 22.6,
-       "worst": -8.9,
-       "excess_mean": 6.0,
-       "excess_median": -1.3
+       "n": 11,
+       "win_rate": 64,
+       "mean": 5.3,
+       "median": 1.8,
+       "p25": -5.2,
+       "p75": 14.9,
+       "worst": -19.7,
+       "excess_mean": -1.2,
+       "excess_median": -3.4
       },
       {
        "label": "+20일",
-       "n": 7,
-       "win_rate": 71,
-       "mean": 12.1,
-       "median": 11.5,
-       "p25": 0.5,
-       "p75": 22.4,
-       "worst": -6.1,
-       "excess_mean": 5.3,
-       "excess_median": 0.3
+       "n": 11,
+       "win_rate": 45,
+       "mean": 5.6,
+       "median": -0.4,
+       "p25": -4.2,
+       "p75": 16.9,
+       "worst": -13.7,
+       "excess_mean": -2.8,
+       "excess_median": -10.9
       }
      ]
     },
@@ -851,6 +939,22 @@
    "use": false
   },
   "yellow": {
+   "n": 0,
+   "p75": null,
+   "p50": null,
+   "p25": null,
+   "min": null,
+   "use": false
+  },
+  "green_q": {
+   "n": 0,
+   "p75": null,
+   "p50": null,
+   "p25": null,
+   "min": null,
+   "use": false
+  },
+  "yellow_q": {
    "n": 1,
    "p75": 14.4,
    "p50": 14.4,
@@ -859,18 +963,18 @@
    "use": false
   },
   "blue": {
-   "n": 4,
-   "p75": 0.8,
-   "p50": -9.6,
-   "p25": -19.9,
+   "n": 5,
+   "p75": -2.1,
+   "p50": -12.2,
+   "p25": -17.1,
    "min": -28.1,
-   "use": false
+   "use": true
   },
   "white": {
-   "n": 29,
-   "p75": 8.8,
-   "p50": 2.4,
-   "p25": -3.4,
+   "n": 41,
+   "p75": 8.6,
+   "p50": 0.0,
+   "p25": -7.3,
    "min": -35.5,
    "use": true
   }
@@ -884,10 +988,10 @@
    "stock_code": "294870",
    "first_rcept_dt": "20200110",
    "verdict": "blue",
-   "reason": "채무상환 0% · 희석 50% → 패스 · 괴리 +828.3% → 🔵 인수권 매도 vs 청약",
+   "reason": "채무상환 0% · 희석 50% → 패스 · 괴리 +828.3% · 원가할인 +13.5% → 🔵 인수권 매도 vs 청약",
    "gap": 828.3,
    "decided_on": "2020-02-26",
-   "ret20": -137.7,
+   "ret20": -18.0,
    "base_open": -28.1
   },
   {
@@ -896,7 +1000,7 @@
    "stock_code": "222800",
    "first_rcept_dt": "20200225",
    "verdict": "white",
-   "reason": "채무상환 76% · 희석 40% · 52주 위치 85% → 패스 · 괴리 -12.9% → ⚪ 관찰 샘플",
+   "reason": "채무상환 76% · 희석 40% · 52주 위치 85% → 패스 · 괴리 -12.9% · 원가할인 -3.5% → ⚪ 관찰 샘플",
    "gap": -12.9,
    "decided_on": "2020-04-13",
    "ret20": 18.0,
@@ -908,10 +1012,10 @@
    "stock_code": "293940",
    "first_rcept_dt": "20200317",
    "verdict": "blue",
-   "reason": "채무상환 0% · 희석 9% → 관문1 통과(미확인 2) · 괴리 +1840.0% → 🔵 인수권 매도 vs 청약",
+   "reason": "채무상환 0% · 희석 9% → 관문1 통과(미확인 2) · 괴리 +1840.0% · 원가할인 +5.8% → 🔵 인수권 매도 vs 청약",
    "gap": 1840.0,
    "decided_on": "2020-05-08",
-   "ret20": 67.5,
+   "ret20": 4.2,
    "base_open": 9.6
   },
   {
@@ -920,7 +1024,7 @@
    "stock_code": "017180",
    "first_rcept_dt": "20200407",
    "verdict": "white",
-   "reason": "채무상환 66% · 희석 29% · 영업손실 -40억 (2020 1분기(3개월, CFS)) · 52주 위치 89% → 패스 · 괴리 -44.6% → ⚪ 관찰 샘플",
+   "reason": "채무상환 66% · 희석 29% · 영업손실 -40억 (2020 1분기(3개월, CFS)) · 52주 위치 89% → 패스 · 괴리 -44.6% · 원가할인 -23.2% → ⚪ 관찰 샘플",
    "gap": -44.6,
    "decided_on": "2020-06-09",
    "ret20": -0.4,
@@ -928,11 +1032,23 @@
   },
   {
    "year": 2020,
+   "corp_name": "유네코",
+   "stock_code": "064510",
+   "first_rcept_dt": "20200414",
+   "verdict": "white",
+   "reason": "채무상환 82% · 희석 47% · 영업손실 -22억 (2020 1분기(3개월, CFS)) → 패스 · 괴리 -69.6% · 원가할인 -13.9% → ⚪ 관찰 샘플",
+   "gap": -69.6,
+   "decided_on": "2020-06-25",
+   "ret20": -26.6,
+   "base_open": -7.5
+  },
+  {
+   "year": 2020,
    "corp_name": "에이디테크놀로지",
    "stock_code": "200710",
    "first_rcept_dt": "20200417",
    "verdict": "white",
-   "reason": "채무상환 15% · 희석 35% · 52주 위치 58% → 패스 · 괴리 +2.4% → ⚪ 관찰 샘플",
+   "reason": "채무상환 15% · 희석 35% · 52주 위치 58% → 패스 · 괴리 +2.4% · 원가할인 +0.3% → ⚪ 관찰 샘플",
    "gap": 2.4,
    "decided_on": "2020-06-26",
    "ret20": 7.5,
@@ -944,7 +1060,7 @@
    "stock_code": "011000",
    "first_rcept_dt": "20200429",
    "verdict": "white",
-   "reason": "채무상환 50% · 희석 50% · 영업손실 -29억 (2020 1분기(3개월, CFS)) · 52주 위치 66% → 패스 · 괴리 -38.8% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 35% · 영업손실 -29억 (2020 1분기(3개월, CFS)) · 52주 위치 66% → 패스 · 괴리 -38.8% · 원가할인 -14.7% → ⚪ 관찰 샘플",
    "gap": -38.8,
    "decided_on": "2020-06-12",
    "ret20": -0.5,
@@ -952,11 +1068,23 @@
   },
   {
    "year": 2020,
+   "corp_name": "디모아",
+   "stock_code": "016670",
+   "first_rcept_dt": "20200429",
+   "verdict": "white",
+   "reason": "채무상환 0% · 희석 100% · 52주 위치 55% → 패스 · 괴리 -66.0% · 원가할인 -21.6% → ⚪ 관찰 샘플",
+   "gap": -66.0,
+   "decided_on": "2020-06-29",
+   "ret20": -2.3,
+   "base_open": -3.9
+  },
+  {
+   "year": 2020,
    "corp_name": "CJ CGV",
    "stock_code": "079160",
    "first_rcept_dt": "20200508",
    "verdict": "white",
-   "reason": "채무상환 73% · 희석 66% · 영업손실 -716억 (2020 1분기(3개월, CFS)) → 패스 · 괴리 -26.6% → ⚪ 관찰 샘플",
+   "reason": "채무상환 73% · 희석 66% · 영업손실 -716억 (2020 1분기(3개월, CFS)) → 패스 · 괴리 -26.6% · 원가할인 -3.4% → ⚪ 관찰 샘플",
    "gap": -26.6,
    "decided_on": "2020-07-09",
    "ret20": 33.7,
@@ -968,7 +1096,7 @@
    "stock_code": "003490",
    "first_rcept_dt": "20200513",
    "verdict": "white",
-   "reason": "채무상환 100% · 희석 83% · 영업손실 -828억 (2020 1분기(3개월, CFS)) → 패스 · 괴리 -37.3% → ⚪ 관찰 샘플",
+   "reason": "채무상환 100% · 희석 83% · 영업손실 -828억 (2020 1분기(3개월, CFS)) → 패스 · 괴리 -37.3% · 원가할인 -5.9% → ⚪ 관찰 샘플",
    "gap": -37.3,
    "decided_on": "2020-06-30",
    "ret20": 11.5,
@@ -980,7 +1108,7 @@
    "stock_code": "047820",
    "first_rcept_dt": "20200519",
    "verdict": "white",
-   "reason": "채무상환 0% · 희석 30% · 영업손실 -20억 (2020 1분기(3개월, CFS)) · 52주 위치 74% → 패스 · 괴리 -43.7% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 30% · 영업손실 -20억 (2020 1분기(3개월, CFS)) · 52주 위치 74% → 패스 · 괴리 -43.7% · 원가할인 -9.9% → ⚪ 관찰 샘플",
    "gap": -43.7,
    "decided_on": "2020-07-23",
    "ret20": 116.2,
@@ -992,7 +1120,7 @@
    "stock_code": "089590",
    "first_rcept_dt": "20200521",
    "verdict": "white",
-   "reason": "채무상환 78% · 희석 46% · 영업손실 -657억 (2020 1분기(3개월, CFS)) → 패스 · 괴리 -38.2% → ⚪ 관찰 샘플",
+   "reason": "채무상환 78% · 희석 46% · 영업손실 -657억 (2020 1분기(3개월, CFS)) → 패스 · 괴리 -38.2% · 원가할인 -6.9% → ⚪ 관찰 샘플",
    "gap": -38.2,
    "decided_on": "2020-07-28",
    "ret20": -6.1,
@@ -1000,23 +1128,11 @@
   },
   {
    "year": 2020,
-   "corp_name": "이수화학",
-   "stock_code": "005950",
-   "first_rcept_dt": "20200522",
-   "verdict": "white",
-   "reason": "채무상환 0% · 희석 51% · 52주 위치 72% → 패스 · 괴리 -48.2% → ⚪ 관찰 샘플",
-   "gap": -48.2,
-   "decided_on": "2020-07-17",
-   "ret20": 13.5,
-   "base_open": 3.7
-  },
-  {
-   "year": 2020,
    "corp_name": "웨이브일렉트로",
    "stock_code": "095270",
    "first_rcept_dt": "20200528",
    "verdict": "white",
-   "reason": "채무상환 34% · 희석 34% · 영업손실 -35억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -16.8% → ⚪ 관찰 샘플",
+   "reason": "채무상환 34% · 희석 34% · 영업손실 -35억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -16.8% · 원가할인 -4.9% → ⚪ 관찰 샘플",
    "gap": -16.8,
    "decided_on": "2020-09-10",
    "ret20": -28.7,
@@ -1028,19 +1144,31 @@
    "stock_code": "027970",
    "first_rcept_dt": "20200529",
    "verdict": "blue",
-   "reason": "채무상환 100% · 희석 95% → 패스 · 괴리 +30.0% → 🔵 인수권 매도 vs 청약",
+   "reason": "채무상환 100% · 희석 95% → 패스 · 괴리 +30.0% · 원가할인 +1.9% → 🔵 인수권 매도 vs 청약",
    "gap": 30.0,
    "decided_on": "2020-07-14",
-   "ret20": 246.2,
+   "ret20": 22.8,
    "base_open": -2.1
+  },
+  {
+   "year": 2020,
+   "corp_name": "쌍방울",
+   "stock_code": "102280",
+   "first_rcept_dt": "20200611",
+   "verdict": "white",
+   "reason": "채무상환 57% · 희석 72% · 영업손실 -3억 (2020 1분기(3개월, CFS)) · 52주 위치 50% → 패스 · 괴리 -80.9% · 원가할인 -21.8% → ⚪ 관찰 샘플",
+   "gap": -80.9,
+   "decided_on": "2020-07-29",
+   "ret20": 2.1,
+   "base_open": 8.6
   },
   {
    "year": 2020,
    "corp_name": "엘앤에프",
    "stock_code": "066970",
    "first_rcept_dt": "20200617",
-   "verdict": "yellow",
-   "reason": "채무상환 0% · 희석 13% → 관문1 통과(미확인 1) · 괴리 -2.8% → 🟡 상장일 후 본주 매수",
+   "verdict": "yellow_q",
+   "reason": "채무상환 0% · 희석 13% → 관문1 통과(미확인 1) · 괴리 -2.8% · 원가할인 -0.9% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
    "gap": -2.8,
    "decided_on": "2020-07-28",
    "ret20": -5.6,
@@ -1052,7 +1180,7 @@
    "stock_code": "105330",
    "first_rcept_dt": "20200629",
    "verdict": "white",
-   "reason": "채무상환 38% · 희석 81% · 영업손실 -36억 (2020 반기(3개월, CFS)) · 52주 위치 76% → 패스 · 괴리 -27.3% → ⚪ 관찰 샘플",
+   "reason": "채무상환 38% · 희석 81% · 영업손실 -36억 (2020 반기(3개월, CFS)) · 52주 위치 76% → 패스 · 괴리 -27.3% · 원가할인 -9.7% → ⚪ 관찰 샘플",
    "gap": -27.3,
    "decided_on": "2020-08-31",
    "ret20": 22.5,
@@ -1064,7 +1192,7 @@
    "stock_code": "080720",
    "first_rcept_dt": "20200702",
    "verdict": "white",
-   "reason": "채무상환 74% · 희석 34% · 영업손실 -25억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -26.8% → ⚪ 관찰 샘플",
+   "reason": "채무상환 74% · 희석 34% · 영업손실 -25억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -26.8% · 원가할인 -8.6% → ⚪ 관찰 샘플",
    "gap": -26.8,
    "decided_on": "2020-08-25",
    "ret20": 22.3,
@@ -1072,11 +1200,35 @@
   },
   {
    "year": 2020,
+   "corp_name": "다이나믹디자인",
+   "stock_code": "145210",
+   "first_rcept_dt": "20200720",
+   "verdict": "white",
+   "reason": "채무상환 67% · 희석 86% · 영업손실 -23억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -16.7% · 원가할인 -0.8% → ⚪ 관찰 샘플",
+   "gap": -16.7,
+   "decided_on": "2020-10-26",
+   "ret20": -13.7,
+   "base_open": -5.9
+  },
+  {
+   "year": 2020,
+   "corp_name": "한창",
+   "stock_code": "005110",
+   "first_rcept_dt": "20200722",
+   "verdict": "white",
+   "reason": "채무상환 76% · 희석 92% · 영업손실 -12억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -58.9% · 원가할인 -8.8% → ⚪ 관찰 샘플",
+   "gap": -58.9,
+   "decided_on": "2020-09-03",
+   "ret20": 22.9,
+   "base_open": 24.6
+  },
+  {
+   "year": 2020,
    "corp_name": "마니커",
    "stock_code": "027740",
    "first_rcept_dt": "20200724",
    "verdict": "white",
-   "reason": "채무상환 19% · 희석 25% · 영업손실 -89억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -11.0% → ⚪ 관찰 샘플",
+   "reason": "채무상환 19% · 희석 25% · 영업손실 -89억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -11.0% · 원가할인 -2.4% → ⚪ 관찰 샘플",
    "gap": -11.0,
    "decided_on": "2020-09-09",
    "ret20": 2.1,
@@ -1088,7 +1240,7 @@
    "stock_code": "272450",
    "first_rcept_dt": "20200805",
    "verdict": "white",
-   "reason": "채무상환 0% · 희석 50% · 영업손실 -596억 (2020 반기(3개월, OFS)) → 패스 · 괴리 -12.1% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 50% · 영업손실 -596억 (2020 반기(3개월, OFS)) → 패스 · 괴리 -12.1% · 원가할인 -2.6% → ⚪ 관찰 샘플",
    "gap": -12.1,
    "decided_on": "2020-10-15",
    "ret20": 58.0,
@@ -1096,11 +1248,23 @@
   },
   {
    "year": 2020,
+   "corp_name": "케이에이치필룩스",
+   "stock_code": "033180",
+   "first_rcept_dt": "20200806",
+   "verdict": "white",
+   "reason": "채무상환 53% · 희석 39% · 영업손실 -11억 (2020 3분기(3개월, CFS)) → 패스 · 괴리 -75.0% · 원가할인 -11.8% → ⚪ 관찰 샘플",
+   "gap": -75.0,
+   "decided_on": "2021-03-03",
+   "ret20": 14.5,
+   "base_open": 1.1
+  },
+  {
+   "year": 2020,
    "corp_name": "한진",
    "stock_code": "002320",
    "first_rcept_dt": "20200806",
    "verdict": "white",
-   "reason": "채무상환 0% · 희석 25% · 52주 위치 58% → 패스 · 괴리 -14.0% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 25% · 52주 위치 58% → 패스 · 괴리 -14.0% · 원가할인 -3.9% → ⚪ 관찰 샘플",
    "gap": -14.0,
    "decided_on": "2020-10-19",
    "ret20": -3.2,
@@ -1108,11 +1272,23 @@
   },
   {
    "year": 2020,
+   "corp_name": "지나인제약",
+   "stock_code": "078650",
+   "first_rcept_dt": "20200810",
+   "verdict": "white",
+   "reason": "채무상환 16% · 희석 54% · 영업손실 -75억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -11.9% · 원가할인 -2.9% → ⚪ 관찰 샘플",
+   "gap": -11.9,
+   "decided_on": "2020-10-20",
+   "ret20": 36.5,
+   "base_open": 4.2
+  },
+  {
+   "year": 2020,
    "corp_name": "정다운",
    "stock_code": "208140",
    "first_rcept_dt": "20200813",
    "verdict": "white",
-   "reason": "채무상환 40% · 희석 58% · 영업손실 -8억 (2020 반기(3개월, CFS)) · 52주 위치 67% → 패스 · 괴리 +11.8% → ⚪ 관찰 샘플",
+   "reason": "채무상환 40% · 희석 58% · 영업손실 -8억 (2020 반기(3개월, CFS)) · 52주 위치 67% → 패스 · 괴리 +11.8% · 원가할인 +2.1% → ⚪ 관찰 샘플",
    "gap": 11.8,
    "decided_on": "2020-09-28",
    "ret20": 2.2,
@@ -1124,7 +1300,7 @@
    "stock_code": "009810",
    "first_rcept_dt": "20200819",
    "verdict": "white",
-   "reason": "채무상환 0% · 희석 90% · 영업손실 -5억 (2020 3분기(3개월, CFS)) → 패스 · 괴리 -42.6% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 90% · 영업손실 -5억 (2020 3분기(3개월, CFS)) → 패스 · 괴리 -42.6% · 원가할인 -10.1% → ⚪ 관찰 샘플",
    "gap": -42.6,
    "decided_on": "2020-12-07",
    "ret20": -1.7,
@@ -1132,23 +1308,11 @@
   },
   {
    "year": 2020,
-   "corp_name": "다이나믹솔루션",
-   "stock_code": "290660",
-   "first_rcept_dt": "20200821",
-   "verdict": "white",
-   "reason": "채무상환 19% · 희석 52% · 영업손실 -33억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -29.6% → ⚪ 관찰 샘플",
-   "gap": -29.6,
-   "decided_on": "2020-10-29",
-   "ret20": 1.5,
-   "base_open": 6.4
-  },
-  {
-   "year": 2020,
    "corp_name": "모아라이프플러스",
    "stock_code": "142760",
    "first_rcept_dt": "20200827",
    "verdict": "white",
-   "reason": "채무상환 80% · 희석 43% · 영업손실 -29억 (2020 반기(3개월, CFS)) · 52주 위치 68% → 패스 · 괴리 -8.0% → ⚪ 관찰 샘플",
+   "reason": "채무상환 80% · 희석 43% · 영업손실 -29억 (2020 반기(3개월, CFS)) · 52주 위치 68% → 패스 · 괴리 -8.0% · 원가할인 -1.3% → ⚪ 관찰 샘플",
    "gap": -8.0,
    "decided_on": "2020-10-28",
    "ret20": 28.7,
@@ -1160,7 +1324,7 @@
    "stock_code": "010050",
    "first_rcept_dt": "20200828",
    "verdict": "white",
-   "reason": "채무상환 0% · 희석 30% · 52주 위치 54% → 패스 · 괴리 -66.7% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 30% · 52주 위치 54% → 패스 · 괴리 -66.7% · 원가할인 -1.9% → ⚪ 관찰 샘플",
    "gap": -66.7,
    "decided_on": "2020-10-19",
    "ret20": 8.5,
@@ -1168,11 +1332,23 @@
   },
   {
    "year": 2020,
+   "corp_name": "두산에너빌리티",
+   "stock_code": "034020",
+   "first_rcept_dt": "20200904",
+   "verdict": "white",
+   "reason": "채무상환 100% · 희석 48% · 52주 위치 87% → 패스 · 괴리 -21.2% · 원가할인 -7.8% → ⚪ 관찰 샘플",
+   "gap": -21.2,
+   "decided_on": "2020-11-24",
+   "ret20": -7.9,
+   "base_open": -10.3
+  },
+  {
+   "year": 2020,
    "corp_name": "두산퓨얼셀",
    "stock_code": "336260",
    "first_rcept_dt": "20200904",
    "verdict": "white",
-   "reason": "채무상환 0% · 희석 14% · 52주 위치 89% → 패스 · 괴리 -48.8% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 14% · 52주 위치 89% → 패스 · 괴리 -48.8% · 원가할인 -13.9% → ⚪ 관찰 샘플",
    "gap": -48.8,
    "decided_on": "2020-11-26",
    "ret20": 46.9,
@@ -1184,11 +1360,35 @@
    "stock_code": "225430",
    "first_rcept_dt": "20200910",
    "verdict": "white",
-   "reason": "채무상환 60% · 희석 30% · 52주 위치 56% → 패스 · 괴리 -1.2% → ⚪ 관찰 샘플",
+   "reason": "채무상환 60% · 희석 30% · 52주 위치 56% → 패스 · 괴리 -1.2% · 원가할인 -0.1% → ⚪ 관찰 샘플",
    "gap": -1.2,
    "decided_on": "2020-11-10",
    "ret20": 1.5,
    "base_open": -0.0
+  },
+  {
+   "year": 2020,
+   "corp_name": "전진바이오팜",
+   "stock_code": "110020",
+   "first_rcept_dt": "20200911",
+   "verdict": "white",
+   "reason": "채무상환 39% · 희석 26% · 영업손실 -5억 (2020 반기(3개월, OFS)) · 52주 위치 90% → 패스 · 괴리 -33.1% · 원가할인 -9.5% → ⚪ 관찰 샘플",
+   "gap": -33.1,
+   "decided_on": "2020-11-11",
+   "ret20": 2.6,
+   "base_open": -35.1
+  },
+  {
+   "year": 2020,
+   "corp_name": "헬릭스미스",
+   "stock_code": "084990",
+   "first_rcept_dt": "20200917",
+   "verdict": "white",
+   "reason": "채무상환 31% · 희석 28% · 영업손실 -144억 (2020 3분기(3개월, CFS)) → 패스 · 괴리 -32.1% · 원가할인 -16.8% → ⚪ 관찰 샘플",
+   "gap": -32.1,
+   "decided_on": "2020-12-09",
+   "ret20": -13.7,
+   "base_open": -9.0
   },
   {
    "year": 2020,
@@ -1208,7 +1408,7 @@
    "stock_code": "298690",
    "first_rcept_dt": "20200928",
    "verdict": "white",
-   "reason": "채무상환 0% · 희석 58% · 영업손실 -514억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -43.8% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 58% · 영업손실 -514억 (2020 반기(3개월, CFS)) → 패스 · 괴리 -43.8% · 원가할인 -12.1% → ⚪ 관찰 샘플",
    "gap": -43.8,
    "decided_on": "2020-11-12",
    "ret20": 5.5,
@@ -1216,11 +1416,23 @@
   },
   {
    "year": 2020,
+   "corp_name": "드림텍",
+   "stock_code": "192650",
+   "first_rcept_dt": "20201012",
+   "verdict": "white",
+   "reason": "채무상환 0% · 희석 6% · 52주 위치 69% → 패스 · 괴리 -26.6% · 원가할인 -7.5% → ⚪ 관찰 샘플",
+   "gap": -26.6,
+   "decided_on": "2020-11-26",
+   "ret20": -2.2,
+   "base_open": -7.3
+  },
+  {
+   "year": 2020,
    "corp_name": "유바이오로직스",
    "stock_code": "206650",
    "first_rcept_dt": "20201012",
    "verdict": "white",
-   "reason": "채무상환 0% · 희석 13% · 영업손실 -46억 (2020 3분기(3개월, OFS)) · 52주 위치 64% → 패스 · 괴리 -19.0% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 13% · 영업손실 -46억 (2020 3분기(3개월, OFS)) · 52주 위치 64% → 패스 · 괴리 -19.0% · 원가할인 -8.3% → ⚪ 관찰 샘플",
    "gap": -19.0,
    "decided_on": "2020-12-08",
    "ret20": -1.3,
@@ -1228,11 +1440,47 @@
   },
   {
    "year": 2020,
+   "corp_name": "에치에프알",
+   "stock_code": "230240",
+   "first_rcept_dt": "20201013",
+   "verdict": "white",
+   "reason": "채무상환 24% · 희석 8% · 영업손실 -30억 (2020 3분기(3개월, CFS)) · 52주 위치 56% → 패스 · 괴리 +1.0% · 원가할인 +0.2% → ⚪ 관찰 샘플",
+   "gap": 1.0,
+   "decided_on": "2020-12-08",
+   "ret20": -12.5,
+   "base_open": -1.2
+  },
+  {
+   "year": 2020,
+   "corp_name": "에스프리즘",
+   "stock_code": "288620",
+   "first_rcept_dt": "20201016",
+   "verdict": "white",
+   "reason": "채무상환 0% · 희석 14% · 52주 위치 70% → 패스 · 괴리 -5.8% · 원가할인 -0.9% → ⚪ 관찰 샘플",
+   "gap": -5.8,
+   "decided_on": "2020-12-08",
+   "ret20": 16.9,
+   "base_open": 19.1
+  },
+  {
+   "year": 2020,
+   "corp_name": "체시스",
+   "stock_code": "033250",
+   "first_rcept_dt": "20201103",
+   "verdict": "blue",
+   "reason": "채무상환 77% · 희석 33% · 영업손실 -2억 (2020 3분기(3개월, CFS)) · 52주 위치 51% → 패스 · 괴리 +22.4% · 원가할인 +2.8% → 🔵 인수권 매도 vs 청약",
+   "gap": 22.4,
+   "decided_on": "2021-01-04",
+   "ret20": -17.0,
+   "base_open": -12.2
+  },
+  {
+   "year": 2020,
    "corp_name": "포스코퓨처엠",
    "stock_code": "003670",
    "first_rcept_dt": "20201106",
    "verdict": "white",
-   "reason": "채무상환 0% · 희석 27% · 52주 위치 71% → 패스 · 괴리 -10.9% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 27% · 52주 위치 71% → 패스 · 괴리 -10.9% · 원가할인 -4.6% → ⚪ 관찰 샘플",
    "gap": -10.9,
    "decided_on": "2021-01-05",
    "ret20": 21.7,
@@ -1244,7 +1492,7 @@
    "stock_code": "003490",
    "first_rcept_dt": "20201116",
    "verdict": "white",
-   "reason": "채무상환 100% · 희석 83% · 영업손실 -314억 (2020 3분기(3개월, CFS)) · 52주 위치 82% → 패스 · 괴리 -15.9% → ⚪ 관찰 샘플",
+   "reason": "채무상환 55% · 희석 99% · 영업손실 -314억 (2020 3분기(3개월, CFS)) · 52주 위치 82% → 패스 · 괴리 -15.9% · 원가할인 -5.1% → ⚪ 관찰 샘플",
    "gap": -15.9,
    "decided_on": "2021-02-22",
    "ret20": -1.3,
@@ -1256,10 +1504,10 @@
    "stock_code": "020760",
    "first_rcept_dt": "20201127",
    "verdict": "blue",
-   "reason": "채무상환 0% · 희석 22% · 영업손실 -62억 (2020 3분기(3개월, CFS)) · 52주 위치 64% → 패스 · 괴리 +113.1% → 🔵 인수권 매도 vs 청약",
+   "reason": "채무상환 0% · 희석 22% · 영업손실 -62억 (2020 3분기(3개월, CFS)) · 52주 위치 64% → 패스 · 괴리 +113.1% · 원가할인 +13.6% → 🔵 인수권 매도 vs 청약",
    "gap": 113.1,
    "decided_on": "2021-01-29",
-   "ret20": -64.2,
+   "ret20": -15.7,
    "base_open": -17.1
   },
   {
@@ -1268,7 +1516,7 @@
    "stock_code": "060560",
    "first_rcept_dt": "20201211",
    "verdict": "white",
-   "reason": "채무상환 52% · 희석 50% · 영업손실 -6억 (2020 3분기(3개월, CFS)) → 패스 · 괴리 -10.6% → ⚪ 관찰 샘플",
+   "reason": "채무상환 52% · 희석 50% · 영업손실 -6억 (2020 3분기(3개월, CFS)) → 패스 · 괴리 -10.6% · 원가할인 -2.4% → ⚪ 관찰 샘플",
    "gap": -10.6,
    "decided_on": "2021-02-16",
    "ret20": 17.9,
@@ -1280,11 +1528,23 @@
    "stock_code": "009830",
    "first_rcept_dt": "20201221",
    "verdict": "white",
-   "reason": "채무상환 0% · 희석 20% · 52주 위치 83% → 패스 · 괴리 +6.7% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 20% · 52주 위치 83% → 패스 · 괴리 +6.7% · 원가할인 +1.0% → ⚪ 관찰 샘플",
    "gap": 6.7,
    "decided_on": "2021-02-15",
    "ret20": -2.8,
    "base_open": -11.3
+  },
+  {
+   "year": 2020,
+   "corp_name": "메디콕스",
+   "stock_code": "054180",
+   "first_rcept_dt": "20201222",
+   "verdict": "white",
+   "reason": "채무상환 68% · 희석 49% · 영업손실 -20억 (2020 4분기(연간−3분기누적, CFS)) · 52주 위치 65% → 패스 · 괴리 -33.3% · 원가할인 -7.9% → ⚪ 관찰 샘플",
+   "gap": -33.3,
+   "decided_on": "2021-04-21",
+   "ret20": -0.4,
+   "base_open": -4.3
   }
  ]
 }

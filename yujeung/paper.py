@@ -20,7 +20,7 @@ from datetime import date
 
 from . import db
 from .calendar_kr import prev_business_day, shift_business_days
-from .verdict import LOGIC_VERSION
+from .verdict import LOGIC_VERSION, VERDICTS, base
 
 POINTS = {
     "rights": [("상장일 시가", "open", 0), ("+5일", "close", 5), ("+20일", "close", 20)],
@@ -56,14 +56,14 @@ def record_if_due(conn: sqlite3.Connection, case: sqlite3.Row, schedule: dict, l
         return False
     snap = {
         "verdict": live["verdict"], "reason": live["reason"], "gate1": live["gate1"],
-        "gap": live["gap_on"].get(last), "rights_close": row["close"],
+        "gap": live["gap_on"].get(last), "disc": live.get("disc_on", {}).get(last), "rights_close": row["close"],
         "issue_price": schedule.get("issue_price") or row["issue_price"],
         "stock_close": live["stock_on"].get(last), "listing_date": schedule.get("listing_date"),
         "market": case["corp_cls"], "backfilled": backfilled,
     }
     # 마지막 날 괴리로 판정을 다시 확정 (라이브 판정은 최신 괴리 기준이라 다를 수 있음)
-    snap["verdict"] = live["decide"](snap["gap"])
-    snap["reason"] = live["reason_for"](snap["gap"], snap["verdict"])
+    snap["verdict"] = live["decide"](snap["gap"], snap["disc"])
+    snap["reason"] = live["reason_for"](snap["gap"], snap["verdict"], snap["disc"])
     conn.execute(
         "INSERT INTO paper_trades (case_id, verdict, decided_on, logic_version, snapshot_json, created_at)"
         " VALUES (?,?,?,?,?,?)",
@@ -95,7 +95,7 @@ def evaluate(conn: sqlite3.Connection, case: sqlite3.Row, trade: sqlite3.Row, sc
     stock = _series(conn, "stock_daily", "code", case["stock_code"])
     index = _series(conn, "index_daily", "idx", INDEX_OF.get(case["corp_cls"], "KOSPI"))
     idx_by_day = {r["bas_dd"]: r for r in index}
-    kind = "yellow" if verdict == "yellow" else "rights"
+    kind = "yellow" if base(verdict) == "yellow" else "rights"
 
     issue, issue_note = final_issue_price(snap.get("issue_price"), schedule, today)
 
@@ -149,7 +149,7 @@ def evaluate(conn: sqlite3.Connection, case: sqlite3.Row, trade: sqlite3.Row, sc
 def scorecard(results: list[dict]) -> list[dict]:
     """판정별 성적 (마지막 측정 시점 = +20일 기준). results: [{verdict, eval}]"""
     rows = []
-    for v in ("green", "yellow", "blue", "white"):
+    for v in VERDICTS:          # 확인 필요(🟢?/🟡?)도 따로 집계
         mine = [r for r in results if r["verdict"] == v]
         done = [r["eval"]["points"][-1] for r in mine if r["eval"].get("points") and "ret" in r["eval"]["points"][-1]]
         rets = [p["ret"] for p in done]

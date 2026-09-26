@@ -12,7 +12,7 @@
 - `yujeung/schedule_parser.py` — 공시 원문에서 일정·발행가·할인율 추출 (정정마다 schedule_versions 에 버전 저장). 정정공시의 '정정전/정정후' 표는 본문 파싱에서 제외. 케이스 일정 = 최신 유상증자결정 원문 기준(`pipeline.latest_schedule`)
 - `yujeung/krx.py`, `yujeung/prices.py` — KRX Open API 인수권(sr_bydd_trd)·본주 시세, 괴리율
 - `yujeung/notify.py` — 알림 문구 생성·기록만 (발송 없음, 헤더 자동, 순번 = notifications.seq). 알림 역할은 사이트 '오늘 볼 것'
-- `yujeung/verdict.py` — 관문1(채무상환·희석·최대주주·영업흑자·52주·총액인수)+관문2(괴리) → 🟢🟡🔵⚪
+- `yujeung/verdict.py` — 관문1(채무상환·희석·최대주주·영업흑자·52주·총액인수)+관문2(괴리) → 🟢🟡🔵⚪. 관문1 자동 항목 미확인이 있으면 🟢?/🟡?(green_q/yellow_q) 확인 필요 — 진입·측정은 `verdict.base()` 로 원래 판정을 따르고 집계는 따로
 - `yujeung/estimate.py` — 카드 '30초 결론' + 발행가 추정(할인율 d) + 단계별 본전선 + 어림 손익표 + 매물 소화일수
 - `yujeung/paper.py` — 가상 성과: 인수권 마지막 날 판정 스냅샷(불변) + 상장 후 수익률·지수 초과
 - `yujeung/backtest.py` — 과거 유증 백테스트(기출문제). 연도별 임시 DB, 미래 정보 금지(`dart.op_income_asof`), 결과 data/backtest/*.json + data/backtest.json. 설명·한계는 docs/backtest.md

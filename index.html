@@ -106,6 +106,10 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .vbadge{font-size:14px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);white-space:nowrap}
 .vbadge.green{border-color:#2f6b55;color:#8fe0bf}.vbadge.yellow{border-color:#7a6420;color:var(--gold2)}
 .vbadge.blue{border-color:#2d4f8f;color:#9dbcff}.vbadge.white{color:#d8dde7}
+.vbadge.green_q{border:1.5px dashed #2f6b55;color:#8fe0bf}.vbadge.yellow_q{border:1.5px dashed #7a6420;color:var(--gold2)}
+.unc{margin-top:6px;padding:7px 9px;border:1px solid #5a2a27;border-radius:9px;background:rgba(194,84,77,.08)}
+.unc .ul{color:#ff8a80;font-weight:700;font-size:12.5px;line-height:1.5}
+.unc .btn{margin-top:6px;width:100%}
 .vreason{font-size:12px;color:var(--txt);flex:1 1 220px;min-width:0;line-height:1.5}
 .vreason small{display:block;color:var(--mut);margin-top:2px}
 .crit{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
@@ -128,6 +132,8 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .quick td,.quick th{padding:4px 8px;font-size:12px}
 .quick .fn{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5}
 .quick .red{color:#f0a8a2;font-weight:700}
+.gcs{display:grid;gap:3px}.gcs small{font-size:11px}
+.gc b{font-variant-numeric:tabular-nums}.gc.ok b{color:#8fe0bf}.gc.no b{color:#f0a8a2}.gc.na b{color:var(--mut)}
 /* 유증 진행 레이스 바 */
 .race{margin:0 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#0b1322}
 .race .rrow{display:flex;align-items:center;gap:10px}
@@ -180,6 +186,7 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
  .card{padding:13px}
  .cn{font-size:17px}
  .vbar{padding:9px 10px}
+ .vbadge{white-space:normal;line-height:1.35;max-width:100%}
  .quick .ql{grid-template-columns:70px minmax(0,1fr);gap:6px}
  th,td{padding:8px 8px}
  .tblw th:first-child,.tblw td:first-child{position:sticky;left:0;z-index:1;background:var(--panel)}
@@ -295,7 +302,7 @@ function timeline(s){
 }
 
 // ---- 유증 진행 레이스 바: 공시 → 권리락 → 인수권 → 청약 → 상장 → +20일 ----
-const VCOL={green:'var(--grn)',yellow:'var(--gold)',blue:'var(--blu)',white:'#c9d1de'};
+const VCOL={green:'var(--grn)',yellow:'var(--gold)',green_q:'var(--grn)',yellow_q:'var(--gold)',blue:'var(--blu)',white:'#c9d1de'};
 const isoOf=d8=>`${d8.slice(0,4)}-${d8.slice(4,6)}-${d8.slice(6)}`;
 const md=d=>d?d.slice(5).replace('-','/'):'';
 const dayDiff=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
@@ -361,7 +368,7 @@ function gauge(c){
     needle=`<line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="var(--txt)" stroke-width="3" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="6" fill="var(--txt)"/>`;
     zone=g<=-T?['저평가','var(--blu)']:g>=T?['고평가','var(--red)']:['적정','#aab4c6'];
     big=`<div class="gv" style="color:${zone[1]}">${pct(g)}<span class="gz">${zone[0]}</span></div>`;
-    sub=`${ended?'최종 · 인수권 마지막 날':'최근 거래일'} ${md(last.d)} · 인수권 ${fmt(last.rights)} / 이론가 ${fmt(last.fair)}${Math.abs(g)>R?' · 게이지 범위 밖':''}`;
+    sub=`${ended?'최종 · 인수권 마지막 날':'최근 거래일'} ${md(last.d)} · 인수권 ${fmt(last.rights)} / 이론가 ${fmt(last.fair)}${last.disc!=null?' · 신주원가 할인율 '+pct(last.disc):''}${Math.abs(g)>R?' · 게이지 범위 밖':''} · KRX 정규장 종가 기준`;
   }
   const svg=`<svg class="g" viewBox="-12 0 254 136" role="img" aria-label="괴리율 온도계 ${pre?esc(sub):pct(pts.at(-1).gap)}">${zones}${pre?'':tick(-T)+tick(T)}${tick(-R)}${tick(R)}
     ${pre?`<text x="${cx}" y="${cy-22}" font-size="12" fill="var(--mut)" text-anchor="middle">${esc(sub)}</text>`:zl(-(R+T)/2,'저평가','var(--blu)')+zl(0,'적정','#aab4c6')+zl((R+T)/2,'고평가','var(--red)')}${needle}</svg>`;
@@ -449,7 +456,8 @@ function renderCases(){
   const names={open:'주주배정 진행 중',watch:'기타 방식(관찰)',closed:'종료'};
   $('#tabs').innerHTML=Object.keys(groups).map(k=>`<button class="tab ${k===TAB?'on':''}" data-k="${k}">${names[k]} ${DATA.cases.filter(groups[k]).length}</button>`).join('');
   document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{TAB=b.dataset.k;renderCases();});
-  const list=DATA.cases.filter(groups[TAB]);
+  const rank=Object.keys(DATA.verdicts||{}), rk=c=>{const i=rank.indexOf((c.verdict||{}).code);return i<0?99:i;};
+  const list=DATA.cases.filter(groups[TAB]).map((c,i)=>[c,i]).sort((a,b)=>rk(a[0])-rk(b[0])||a[1]-b[1]).map(x=>x[0]);
   SPARKS.length=0;
   $('#cases').innerHTML=list.length?list.map(caseCard).join(''):'<div class="empty">해당 케이스가 없습니다.</div>';
   drawSparks();
@@ -501,16 +509,24 @@ function renderExam(B){
   const e=v=>v==null?'—':(v>0?'+':'')+Number(v).toFixed(1)+'%p';
   const head='<tr><th>구분</th><th>측정</th><th>건수</th><th>승률</th><th>평균</th><th>중앙값</th><th>25%</th><th>75%</th><th>최악</th><th>지수 대비(평균)</th></tr>';
   const line=(name,p,first)=>`<tr><td>${first?name:''}</td><td>${esc(p.label)}</td><td>${p.n||0}</td><td>${p.win_rate==null?'—':p.win_rate+'%'}</td><td>${f(p.mean)}</td><td>${f(p.median)}</td><td>${f(p.p25)}</td><td>${f(p.p75)}</td><td class="${p.worst<0?'neg':''}">${f(p.worst)}</td><td>${e(p.excess_mean)}</td></tr>`;
-  const yrs=B.years.map(y=>`<tr><td>${y.year}${y.months&&y.months<12?` (1~${y.months}월)`:''}</td><td>${y.cases}</td><td>${y.no_rights_listing??'—'}</td><td>${y.parse_ok}</td><td><b>${y.parse_rate==null?'—':y.parse_rate+'%'}</b></td><td>${y.scored}</td><td>${y.no_rights_price}</td><td>${y.naver_missing}</td><td>${y.financials_missing}</td></tr>`).join('');
+  const yrs=B.years.map(y=>`<tr><td>${y.year}${y.months&&y.months<12?` (1~${y.months}월)`:''}</td><td class="${y.stale?'pos':''}">v${y.logic_version||1}${y.stale?' · 재채점 필요':''}</td><td>${y.cases}</td><td>${y.no_rights_listing??'—'}</td><td>${y.parse_ok}</td><td><b>${y.parse_rate==null?'—':y.parse_rate+'%'}</b></td><td>${y.scored}</td><td>${y.no_rights_price}</td><td>${y.naver_missing}</td><td>${y.financials_missing}</td></tr>`).join('');
   const verd=B.by_verdict.map(v=>v.points.map((p,i)=>line(`${v.emoji} ${esc(v.name)}`,p,i===0)).join('')).join('');
   const filt=B.filters.map(fl=>`<h4 style="margin:14px 0 6px;font-size:13px;color:var(--gold2)">${esc(fl.title)}</h4><div class="tblw"><table><thead>${head}</thead><tbody>${fl.rows.map(r=>r.points.map((p,i)=>line(esc(r.bucket),p,i===0)).join('')).join('')}</tbody></table></div>`).join('');
-  $('#exam').innerHTML=`<div class="meta">채점 ${B.n_scored}건 · 판정 로직 v${B.logic_version} · 생성 ${esc((B.generated_at||'').slice(0,16).replace('T',' '))}</div>
+  const stale=(B.stale_years||[]).length?`<div class="warnbox">⚠ ${B.stale_years.join('·')}년은 옛 판정 로직으로 채점돼 합산에서 뺐습니다 — Actions 에서 backtest 를 다시 돌리면 v${B.logic_version} 기준으로 들어갑니다.</div>`:'';
+  $('#exam').innerHTML=`${stale}<div class="meta">채점 ${B.n_scored}건 · 판정 로직 v${B.logic_version} · 생성 ${esc((B.generated_at||'').slice(0,16).replace('T',' '))}</div>
   <h4 style="margin:12px 0 6px;font-size:13px;color:var(--gold2)">연도별 파싱 성공률</h4>
-  <div class="tblw"><table><thead><tr><th>연도</th><th>주주배정</th><th>인수권 비상장</th><th>파싱 성공</th><th>성공률</th><th>채점</th><th>인수권 시세 없음</th><th>52주 미확인</th><th>재무 미확인</th></tr></thead><tbody>${yrs}</tbody></table></div>
+  <div class="tblw"><table><thead><tr><th>연도</th><th>판정 로직</th><th>주주배정</th><th>인수권 비상장</th><th>파싱 성공</th><th>성공률</th><th>채점</th><th>인수권 시세 없음</th><th>52주 미확인</th><th>재무 미확인</th></tr></thead><tbody>${yrs}</tbody></table></div>
   <h4 style="margin:14px 0 6px;font-size:13px;color:var(--gold2)">판정별 (진입·측정은 가상 성과와 동일)</h4>
   <div class="tblw"><table><thead>${head}</thead><tbody>${verd}</tbody></table></div>
   <h4 style="margin:14px 0 0;font-size:13px;color:var(--gold2)">필터 하나씩 떼어 보기</h4><div class="meta">${esc(B.base_note||'')}</div>${filt}
   <div class="meta" style="margin-top:8px">표본 수는 정보로만 표시합니다. 파싱 실패·인수권 시세 없음은 채점에서 빠집니다 — 한계는 docs/backtest.md.</div>`;
+}
+// 🟢 가격 조건 두 숫자 나란히: 괴리율 ≤ −20% AND 신주원가 할인율 ≤ −10%(임시값, 백테스트로 조정 예정)
+function greenCheck(q){
+  const g=q.green_check; if(!g||(g.gap==null&&g.disc==null)) return '';
+  const it=(lab,v,lim,ok,note)=>`<span class="gc ${v==null?'na':ok?'ok':'no'}">${lab} <b>${v==null?'—':pct(v)}</b> <small>(기준 ≤ ${lim}%${note||''}) ${v==null?'대기':ok?'✅ 충족':'❌ 미달'}</small></span>`;
+  return `<div class="ql"><span>🟢 가격 조건</span><div class="gcs">${it('괴리율',g.gap,g.cheap,g.gap_ok)}${it('신주원가 할인율',g.disc,g.disc_max,g.disc_ok,' · 임시값')}
+    <small class="mut">신주원가 할인율 = (인수권 + 발행가) ÷ 본주 − 1 · KRX 정규장 종가 기준 (포털 통합가와 다를 수 있음)</small></div></div>`;
 }
 function quickBox(c){
   const q=c.quick; if(!q) return '';
@@ -518,6 +534,10 @@ function quickBox(c){
   const rows=(q.table||[]).map(t=>`<tr><td>${t.name}</td><td><b>${fmt(t.price)}</b>원</td><td><b class="${t.pct>=0?'pos':'neg'}">${(t.pct>0?'+':'')+t.pct}%</b></td></tr>`).join('');
   return `<div class="quick"><div class="qw">${v.emoji||''} ${esc(q.word)}</div><div class="qs">30초 결론 · ${esc(q.stage_name)}</div>
   <div class="ql"><span>이유</span><div>${esc(q.reason)}</div></div>
+  ${(v.unconfirmed||[]).length?`<div class="unc"><div class="ul">⚠ ${v.unconfirmed.map(u=>esc(u.label)).join(' · ')}</div>
+    <button class="btn gold" data-label="🤖 미확인 항목만 GPT로 확인 (프롬프트 복사)" onclick="copyCheck(${c.case_id},this)">🤖 미확인 항목만 GPT로 확인 (프롬프트 복사)</button>
+    <div class="preview" id="pq${c.case_id}"></div></div>`:''}
+  ${greenCheck(q)}
   <div class="ql"><span>다시 볼 조건</span><div>${esc(q.recheck)}</div></div>
   <div class="ql"><span>발행가</span><div>${esc(is.text||'—')}</div></div>
   ${be?`<div class="ql"><span>본전선</span><div><b>${fmt(be.value)}원</b> — ${esc(be.how)} <span class="mut">(${esc(be.text)})</span></div></div>`:`<div class="ql"><span>본전선</span><div class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</div></div>`}
@@ -539,6 +559,7 @@ function resultBlock(c){
 function openGuide(){$('#guide').classList.add('show');}
 function closeGuide(){$('#guide').classList.remove('show');}
 addEventListener('keydown',e=>{if(e.key==='Escape')closeGuide();});
+function copyCheck(id,btn){const c=DATA.cases.find(x=>x.case_id===id);copyText(buildCheckPrompt(c),btn,$('#pq'+id),btn.dataset.label);}
 function copyCase(id,btn){const c=DATA.cases.find(x=>x.case_id===id);copyText(buildCasePrompt(c,DATA),btn,$('#pv'+id),btn.dataset.label);}
 function copyBriefing(btn){if(!DATA)return;copyText(buildBriefingPrompt(DATA),btn,$('#briefPreview'),'🤖 전체 브리핑 프롬프트 복사');}
 fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{

@@ -156,8 +156,9 @@ def test_backtest_year(tmp_path):
     rec = next(r for r in out["cases"] if r["corp_name"] == "기출전자")
     assert rec["status"] == "scored" and rec["naver"] is False and rec["pos52"] is None
     assert rec["decided_on"] == "2021-04-26"
-    # 괴리 = 1000 / (7000 − 5000) − 1 = −50% → 관문1 통과(채무상환 0·희석 30%·흑자, 나머지 미확인) → 🟢
-    assert rec["gap"] == -50.0 and rec["verdict"] == "green"
+    # 괴리 = 1000 / (7000 − 5000) − 1 = −50% → 관문1 통과(채무상환 0·희석 30%·흑자) 이지만
+    # 최대주주 청약·인수방식·52주 미확인 → 🟢 대신 🟢? 확인 필요 (판정 로직 v2)
+    assert rec["gap"] == -50.0 and rec["verdict"] == "green_q"
     base = {p["label"]: p for p in rec["base"]["points"]}
     assert rec["base"]["entry"] == 6000
     assert base["상장일 시가"]["ret"] == round((6500 / 6000 - 1) * 100, 1)
@@ -165,13 +166,18 @@ def test_backtest_year(tmp_path):
     assert next(r for r in out["cases"] if r["corp_name"] == "파싱실패")["status"] == "parse_fail"
     assert (tmp_path / "2021.json").exists()
 
+    # 옛 판정 로직으로 채점된 해는 합산에서 빠지고 '재채점 필요'로만 (버전 구분)
+    old = json.loads((tmp_path / "2021.json").read_text(encoding="utf-8"))
+    (tmp_path / "2020.json").write_text(json.dumps(dict(old, year=2020, logic_version=1), ensure_ascii=False), encoding="utf-8")
     agg = backtest.aggregate(tmp_path)
-    assert agg["n_scored"] == 1 and agg["years"][0]["parse_rate"] == 50.0
-    green = next(v for v in agg["by_verdict"] if v["verdict"] == "green")
+    assert agg["stale_years"] == [2020] and agg["years"][0]["stale"] and not agg["years"][1]["stale"]
+    assert agg["n_scored"] == 1 and agg["years"][1]["parse_rate"] == 50.0
+    assert next(v for v in agg["by_verdict"] if v["verdict"] == "green")["n"] == 0   # 확인 필요는 따로 집계
+    green = next(v for v in agg["by_verdict"] if v["verdict"] == "green_q")
     assert green["n"] == 1 and green["points"][-1]["median"] == 20.0 and green["points"][-1]["win_rate"] == 100
     gap_rows = {r["bucket"]: r for r in next(f for f in agg["filters"] if f["key"] == "gap")["rows"]}
     assert gap_rows["괴리 −40% 이하"]["n"] == 1
-    assert agg["card_scenarios"]["green"]["n"] == 1 and agg["card_scenarios"]["green"]["use"] is False
+    assert agg["card_scenarios"]["green_q"]["n"] == 1 and agg["card_scenarios"]["green_q"]["use"] is False
     json.dumps(agg, ensure_ascii=False)
 
 

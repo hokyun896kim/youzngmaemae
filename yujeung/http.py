@@ -6,7 +6,7 @@ from typing import Callable
 
 import requests
 
-RETRY_WAITS = (5, 20)     # 연결 실패·시간 초과면 5초, 20초 쉬고 다시 (총 3번)
+RETRY_WAITS = (5, 20, 60)  # 연결 실패·시간 초과면 5·20·60초 쉬고 다시 (총 4번) — 실측 09-26 11:08 opendart 연결 시간 초과 3연속
 
 
 def retrying(get: Callable[..., requests.Response], waits: tuple = RETRY_WAITS,

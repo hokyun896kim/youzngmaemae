@@ -31,7 +31,7 @@ from .naver import INDEX_SYMBOL, NaverClient, NaverError
 from .pipeline import (MAX_RIGHTS_SPAN_DAYS, checked_schedule, latest_facts, live_verdict, save_pos52, step_estk,
                        step_schedules)
 from .prices import relink_rights, store_rights_rows, store_stock_rows
-from .verdict import LOGIC_VERSION, VERDICTS
+from .verdict import LOGIC_VERSION, VERDICTS, base
 
 FIRST_YEAR = 2020
 LAST_DAY = date(2026, 6, 30)          # 원공시 대상 마지막 날
@@ -442,17 +442,23 @@ BASE_POINTS = ("상장일 시가", "+5일", "+20일")
 
 
 def aggregate(out_dir: Path = BACKTEST_DIR) -> dict:
-    years, recs = [], []
+    """연도 결과 합산. 판정 로직이 지금(LOGIC_VERSION)과 다른 해는 채점에서 빼고 '재채점 필요'로만 표시 —
+    판정 기준이 바뀌면 옛 채점과 섞이지 않게 (버전 구분)."""
+    years, recs, stale = [], [], []
     for f in sorted(out_dir.glob("*.json")):
         y = json.loads(f.read_text(encoding="utf-8"))
-        years.append({"year": y["year"], "generated_at": y["generated_at"], **{k: v for k, v in y["counts"].items()
-                                                                            if k != "krx"}})
+        lv = y.get("logic_version", 1)
+        years.append({"year": y["year"], "generated_at": y["generated_at"], "logic_version": lv,
+                      "stale": lv != LOGIC_VERSION, **{k: v for k, v in y["counts"].items() if k != "krx"}})
+        if lv != LOGIC_VERSION:
+            stale.append(y["year"])
+            continue
         recs += [dict(r, year=y["year"]) for r in y["cases"] if r.get("status") == "scored"]
 
     by_verdict = []
     for v, (emoji, name) in VERDICTS.items():
         mine = [r for r in recs if r["verdict"] == v]
-        labels = [lb for lb, _, _ in paper.POINTS["yellow" if v == "yellow" else "rights"]]
+        labels = [lb for lb, _, _ in paper.POINTS["yellow" if base(v) == "yellow" else "rights"]]
         by_verdict.append({"verdict": v, "emoji": emoji, "name": name, "n": len(mine),
                            "points": [{"label": lb, **stats([_point(r["eval"], lb) for r in mine])} for lb in labels]})
     filters = []
@@ -473,6 +479,7 @@ def aggregate(out_dir: Path = BACKTEST_DIR) -> dict:
                    "p25": percentile(rets, 0.25), "min": min(rets) if rets else None,
                    "use": len(rets) >= MIN_CARD_N}
     out = {"generated_at": db.now(), "logic_version": LOGIC_VERSION, "years": years, "n_scored": len(recs),
+           "stale_years": stale,
            "by_verdict": by_verdict, "filters": filters, "card_scenarios": card, "min_card_n": MIN_CARD_N,
            "base_note": "필터별 결과는 판정과 무관하게 모든 케이스를 '인수권 마지막 날 인수권 매수 + 청약'으로 "
                         "진입했다고 보고 잰 비교 기준",

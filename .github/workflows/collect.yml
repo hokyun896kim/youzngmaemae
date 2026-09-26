@@ -32,7 +32,7 @@ on:
         description: 'backfill 종료일 YYYYMMDD'
         default: ''
       args:
-        description: 'doc-grep 접수번호 목록 (공백 구분)'
+        description: 'doc-grep 접수번호 목록 (공백 구분) [--kw 키워드 ...]'
         default: ''
 
 permissions:
@@ -86,7 +86,7 @@ jobs:
               NOEXP=""; [ "${{ github.ref }}" != "refs/heads/main" ] && NOEXP="--no-export"
               if [ -n "${{ github.event.inputs.year }}" ]; then python -m yujeung backtest --year "${{ github.event.inputs.year }}" $NOEXP
               else python -m yujeung backtest --aggregate-only; fi ;;
-            doc-grep) python -m yujeung doc-grep ${{ github.event.inputs.args }} --kw 인수권증서 배정기준일 상장예정 ;;
+            doc-grep) python -m yujeung doc-grep ${{ github.event.inputs.args }} ;;   # 키워드는 args 에 --kw ... 로 (기본: 인수권증서 배정기준일)
             backtest-compare) python -m yujeung backtest --year "${{ github.event.inputs.year }}" --compare-tail ;;
             *) echo "unknown command $CMD"; exit 1 ;;
           esac
