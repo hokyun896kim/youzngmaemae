@@ -18,7 +18,8 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 11  # 11: 옛 양식(2020) 인수권 기간 — 첫 후보가 무효여도 계속 탐색, '날짜~날짜 신주인수권증서 상장 거래기간'(증권신고서),
+PARSER_VERSION = 12  # 12: 인수권 문장의 '전자증권제도 시행일' 날짜 무시(기준일 미정일 때 — 경남제약 2019-09-16)
+#                     11: 옛 양식(2020) 인수권 기간 — 첫 후보가 무효여도 계속 탐색, '날짜~날짜 신주인수권증서 상장 거래기간'(증권신고서),
 #                        '신주인수권증서의 상장여부 아니오' 기록
 #                     10: 본문이 '-'로 비고 정정표에만 '추후결정' → 미정 기록(경남제약)
 #                      9: 미정 항목은 앞 행 날짜도 지움(경남제약 청약일), 인수권 시작 ≤ 기준일 버림(클로봇)
@@ -553,6 +554,8 @@ def _parse_body(doc: str) -> Schedule:
                 break
             if s.record_date and ds[0] <= s.record_date:
                 continue     # 기준일 이전 날짜(이사회결의일·전자증권 시행일 등) — 다음 후보를 본다 (실측 2020 유네코)
+            if any(k in chunk for k in ("전자증권", "시행일", "전자등록")):
+                continue     # '전자증권제도 시행일(2019년 9월 16일)' — 기준일이 미정이면 위 검사로 못 거른다 (실측 경남제약)
             s.rights_start = ds[0]
             s.rights_end = ds[1] if len(ds) > 1 else None
             evidence["rights_start"] = chunk[:120]

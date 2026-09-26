@@ -230,3 +230,12 @@ def test_rights_not_listed_marked():
                            "<TR><TD>18. 신주인수권양도여부</TD><TD>아니오</TD></TR>"
                            "<TR><TD>- 신주인수권증서의 상장여부</TD><TD>아니오</TD></TR>")
     assert parse_document(doc).extras["facts"]["rights_listed"] is False
+
+
+def test_electronic_securities_date_not_rights_when_record_tbd():
+    """기준일이 추후결정이면 '기준일 이전' 검사가 안 걸린다 → 전자증권 시행일(2019-09-16)을 인수권 시작으로 잡으면 안 됨."""
+    doc = (PIIC_DOC.replace("<TD>6. 신주배정기준일</TD><TD>2026년 09월 02일</TD>", "<TD>6. 신주배정기준일</TD><TD>추후결정</TD>")
+           .replace("<P>신주인수권증서의 상장예정기간은 2026년 09월 21일부터 2026년 09월 29일까지이며, 거래소 승인에 따라 변경될 수 있습니다.</P>",
+                    "<P>신주인수권증서는 전자증권제도 시행일(2019년 9월 16일) 이후 전자등록 방식으로 상장되어 거래됩니다.</P>"))
+    s = parse_document(doc)
+    assert s.record_date is None and s.rights_start is None
