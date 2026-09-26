@@ -158,6 +158,9 @@ def cmd_backtest(args, cfg: Config) -> int:
     from .dart import DartClient
     from .krx import KrxClient
     from .naver import NaverClient
+    if args.compare_tail:
+        res = backtest.compare_tail(args.year, DartClient(cfg.dart_api_key), today_kst(), months=args.months)
+        return 0 if res["identical"] else 1
     if not args.aggregate_only:
         # 원문·시세 원본은 메모리에 쌓지 않는다(conn=None) — 연도당 수백 MB
         backtest.run_year(args.year, cfg, DartClient(cfg.dart_api_key), KrxClient(cfg.krx_api_key),
@@ -169,6 +172,30 @@ def cmd_backtest(args, cfg: Config) -> int:
                       "card_scenarios": agg["card_scenarios"]}, ensure_ascii=False, indent=1))
     if DUMP_PATH.exists() and not args.no_export:
         save(open_db(cfg))   # 카드 손익표를 새 분포로 다시 그림
+    return 0
+
+
+def cmd_doc_grep(args, cfg: Config) -> int:
+    """원문 여러 건에서 키워드 앞뒤 문맥 + 파싱 결과 — 옛 공시 양식 차이 점검용."""
+    import re
+    from .dart import DartClient, DartError
+    from .schedule_parser import clean, parse_document
+    dart = DartClient(cfg.dart_api_key)
+    for rno in args.rcept_no:
+        try:
+            files = dart.document(rno)
+        except DartError as e:
+            print(f"===== {rno}: {e}")
+            continue
+        for name, doc in files.items():
+            text = clean(doc)
+            s = parse_document(doc)
+            print(f"===== {rno} / {name}: {len(text):,}자 · 일정 {json.dumps({k: v for k, v in s.as_row().items() if v}, ensure_ascii=False)}")
+            print(f"  경고: {s.warnings}")
+            for kw in args.kw:
+                hits = [m.start() for m in re.finditer(re.escape(kw), text)][: args.n]
+                for i in hits:
+                    print(f"  [{kw}@{i}] {text[max(0, i - 120): i + 220]!r}")
     return 0
 
 
@@ -347,6 +374,10 @@ def main(argv=None) -> int:
     p.add_argument("--end", required=True)
     p = sub.add_parser("import-rights")
     p.add_argument("csv")
+    p = sub.add_parser("doc-grep")
+    p.add_argument("rcept_no", nargs="+")
+    p.add_argument("--kw", nargs="+", default=["인수권증서", "배정기준일"])
+    p.add_argument("--n", type=int, default=4)
     p = sub.add_parser("parse-doc")
     p.add_argument("rcept_no")
     p = sub.add_parser("backtest")
@@ -354,10 +385,12 @@ def main(argv=None) -> int:
     p.add_argument("--aggregate-only", action="store_true", help="연도별 결과만 다시 합산")
     p.add_argument("--months", type=int, default=12, help="그해 앞 N개월 원공시만 (점검용)")
     p.add_argument("--no-export", action="store_true", help="site.json 다시 만들지 않음")
+    p.add_argument("--compare-tail", action="store_true",
+                   help="꼬리 기간 상세 조회 생략 전후로 감지 단계만 비교(저장 안 함) — 케이스·공시 묶음이 같아야 함")
     sub.add_parser("export")
     sub.add_parser("verify")
     args = ap.parse_args(argv)
     cfg = Config.load()
     return {"daily": cmd_daily, "backfill-cases": cmd_backfill_cases, "report-case": cmd_report_case,
             "backfill-rights": cmd_backfill, "import-rights": cmd_import,
-            "backtest": cmd_backtest, "parse-doc": cmd_parse_doc, "export": cmd_export, "verify": cmd_verify}[args.cmd](args, cfg)
+            "backtest": cmd_backtest, "parse-doc": cmd_parse_doc, "doc-grep": cmd_doc_grep, "export": cmd_export, "verify": cmd_verify}[args.cmd](args, cfg)

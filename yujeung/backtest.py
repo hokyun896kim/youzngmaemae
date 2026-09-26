@@ -207,6 +207,79 @@ def _compact(ev: dict) -> dict:
                        for p in ev.get("points", [])]}
 
 
+# ---- 공시 감지 (본 기간 + 꼬리) ----
+def tail_keep(end: date):
+    """꼬리 기간(해 넘어간 +120일) 공시는 '그 회사 케이스가 이미 있을 때만' 상세 조회.
+    케이스가 없는 회사의 꼬리 공시는 새 케이스(원공시 → out_of_year, 정정 → 정정으로 시작)만 만들고
+    scope_cases 에서 지워지므로 결과에 영향이 없다. 케이스가 있는 회사는 원공시까지 전부 조회해야 한다 —
+    꼬리 원공시가 새 케이스를 열어야 뒤따르는 정정이 그해 케이스에 잘못 붙지 않는다."""
+    cut = end.strftime("%Y%m%d")
+
+    def keep(conn, rep: dict) -> bool:
+        return rep["rcept_dt"] <= cut or conn.execute(
+            "SELECT 1 FROM cases WHERE corp_code=? LIMIT 1", (rep["corp_code"],)).fetchone() is not None
+    return keep
+
+
+def detect_year(dart: DartClient, conn, bgn: date, end: date, last: date, tail_filter: bool = True) -> dict:
+    tail = min(end + timedelta(days=CORRECTION_TAIL_DAYS), last)
+    fmt = "%Y%m%d"
+    detect(dart, conn, bgn.strftime(fmt), tail.strftime(fmt),
+           [(a.strftime(fmt), b.strftime(fmt)) for a, b in windows(bgn, tail)],
+           rights_only=True, listed=("Y", "K", "E"), keep=tail_keep(end) if tail_filter else None)
+    scope = scope_cases(conn, bgn, end)
+    merge_duplicate_cases(conn)
+    return scope
+
+
+def case_signature(conn) -> dict:
+    """채점 대상을 결정하는 것 = 남은 주주배정 케이스와 거기 붙은 공시(원문 파싱·시세·판정은 이것의 함수)."""
+    out = {}
+    for c in conn.execute("SELECT * FROM cases WHERE is_rights=1").fetchall():
+        out[c["first_rcept_no"]] = {
+            "corp_name": c["corp_name"], "ic_mthn": c["ic_mthn"], "status": c["status"],
+            "disclosures": [tuple(r) for r in conn.execute(
+                "SELECT rcept_no, kind, is_correction FROM disclosures WHERE case_id=? ORDER BY rcept_no",
+                (c["case_id"],))]}
+    return out
+
+
+class CallCounter:
+    """API 클라이언트 감싸기: 호출 수를 세고, 같은 인자 호출은 캐시(비교 실행 두 번째에 네트워크 안 씀)."""
+    def __init__(self, inner, cache: dict):
+        self._inner, self._cache, self.calls = inner, cache, {}
+
+    def __getattr__(self, name):
+        fn = getattr(self._inner, name)
+
+        def call(*a, **kw):
+            self.calls[name] = self.calls.get(name, 0) + 1
+            key = (name, a, tuple(sorted(kw.items())))
+            if key not in self._cache:
+                self._cache[key] = fn(*a, **kw)
+            return self._cache[key]
+        return call
+
+
+def compare_tail(year: int, dart: DartClient, today: date, months: int = 12) -> dict:
+    """꼬리 기간 상세 조회 생략 전후 비교 — 감지 단계만 두 번(두 번째는 캐시) 돌려 케이스·공시 묶음이 같은지."""
+    bgn, end = year_range(year, today, months)
+    last = today - timedelta(days=1)
+    cache, out = {}, {}
+    for mode, flt in (("before", False), ("after", True)):
+        client = CallCounter(dart, cache)
+        conn = db.connect(":memory:")
+        scope = detect_year(client, conn, bgn, end, last, tail_filter=flt)
+        out[mode] = {"sig": case_signature(conn), "calls": dict(client.calls), "scope": scope}
+    a, b = out["before"]["sig"], out["after"]["sig"]
+    diff = sorted(set(a) ^ set(b)) + sorted(k for k in set(a) & set(b) if a[k] != b[k])
+    res = {"year": year, "cases_before": len(a), "cases_after": len(b), "identical": not diff, "diff": diff,
+           "calls_before": out["before"]["calls"], "calls_after": out["after"]["calls"],
+           "scope_before": out["before"]["scope"], "scope_after": out["after"]["scope"]}
+    _log(f"비교 {year}: {json.dumps(res, ensure_ascii=False)}")
+    return res
+
+
 # ---- 연도 실행 ----
 def run_year(year: int, cfg: Config, dart: DartClient, krx: KrxClient, naver: NaverClient,
              today: date, out_dir: Path = BACKTEST_DIR, db_path: str = ":memory:", months: int = 12) -> dict:
@@ -221,13 +294,7 @@ def run_year(year: int, cfg: Config, dart: DartClient, krx: KrxClient, naver: Na
     holidays = register_trading_days(trading_days)
     _log(f"거래일 {len(trading_days)}일 (휴장일 {holidays}일 보충)")
 
-    tail = min(end + timedelta(days=CORRECTION_TAIL_DAYS), last)
-    fmt = "%Y%m%d"
-    detect(dart, conn, bgn.strftime(fmt), tail.strftime(fmt),
-           [(a.strftime(fmt), b.strftime(fmt)) for a, b in windows(bgn, tail)],
-           rights_only=True, listed=("Y", "K", "E"))
-    scope = scope_cases(conn, bgn, end)
-    merge_duplicate_cases(conn)
+    scope = detect_year(dart, conn, bgn, end, last)
     cases = conn.execute("SELECT * FROM cases WHERE is_rights=1 ORDER BY first_rcept_dt").fetchall()
     _log(f"주주배정 케이스 {len(cases)}건 {scope} → 원문 파싱")
     step_schedules(dart, conn, alerts=False)

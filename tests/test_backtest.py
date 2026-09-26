@@ -138,9 +138,10 @@ def test_backtest_year(tmp_path):
     out = backtest.run_year(2021, cfg, dart, krx, FakeNaver(), TODAY, out_dir=tmp_path)
     assert HOLIDAYS_2021 <= KRX_HOLIDAYS                              # 거래일로 과거 휴장일 보충
     c = out["counts"]
-    # 대상: 기출전자(상장폐지 E 포함) + 파싱실패. 작년건(정정으로 시작)·내년건 제외, 3자배정·비상장 제외
+    # 대상: 기출전자(상장폐지 E 포함) + 파싱실패. 작년건(정정으로 시작) 제외, 3자배정·비상장 제외
+    # 내년건(꼬리 기간, 그 회사 케이스 없음)은 상세 조회조차 안 함 → out_of_year 0
     assert c["cases"] == 2 and c["parse_ok"] == 1 and c["parse_rate"] == 50.0
-    assert c["starts_with_correction"] == 1 and c["out_of_year"] == 1
+    assert c["starts_with_correction"] == 1 and c["out_of_year"] == 0
     assert c["missing_by_field"]["record_date"] == 1
     # KRX 인수권은 인수권 기간 날짜만 조회
     assert sorted(krx.rights_calls) == RIGHTS_DAYS
@@ -184,3 +185,59 @@ def test_stats_and_card_scenarios():
     assert estimate.scenarios_for("green", card) == (estimate.SCENARIOS, estimate.SCENARIO_NOTE)
     t = estimate.pnl_table({"value": 1000}, scen)
     assert [x["price"] for x in t] == [1120, 1015, 910, 650]
+
+
+def test_tail_skip_keeps_cases_identical():
+    """꼬리 기간 상세 조회 생략 전후 감지 결과가 같아야 한다.
+    함정: 6월 케이스 회사가 이듬해 1/05 새 주주배정(꼬리 원공시) + 1/15 그 정정 → 원공시를 건너뛰면
+    1/15 정정이 2021년 케이스(240일 안)에 붙어 일정이 덮어써진다. 그래서 '케이스가 있는 회사'는 꼬리 원공시도 조회."""
+    dart = FakeDart()
+    again = dict(B, rcept_no="20220105000100", rcept_dt="20220105")
+    again_corr = dict(again, rcept_no="20220115000100", rcept_dt="20220115", report_nm=A_CORR["report_nm"])
+    other_corr = dict(NEXT, rcept_no="20220120000100", rcept_dt="20220120", report_nm=A_CORR["report_nm"])
+    dart.reports += [again, again_corr, other_corr]
+    res = backtest.compare_tail(2021, dart, TODAY)
+    assert res["identical"] and res["cases_before"] == res["cases_after"] == 2
+    # 생략 효과: 케이스 없는 회사(내년건)의 상세 조회가 빠진다
+    assert res["calls_before"]["piic_decisions"] > res["calls_after"]["piic_decisions"]
+    assert res["scope_before"]["out_of_year"] == 2 and res["scope_after"]["out_of_year"] == 1
+
+    # 정정만 조회하는 단순 규칙이었다면 1/15 정정이 2021년 케이스에 붙는다 (이 규칙을 쓰지 않는 이유)
+    from yujeung import db
+    from yujeung.detect import detect, is_correction
+    conn = db.connect(":memory:")
+    detect(dart, conn, "20210101", "20220430", rights_only=True, listed=("Y", "K", "E"),
+           keep=lambda _c, r: r["rcept_dt"] <= "20211231" or is_correction(r["report_nm"]))
+    first = conn.execute("SELECT case_id FROM cases WHERE first_rcept_no=?", (B["rcept_no"],)).fetchone()[0]
+    assert conn.execute("SELECT 1 FROM disclosures WHERE rcept_no='20220115000100' AND case_id=?", (first,)).fetchone()
+
+
+def test_returns_never_below_minus_100():
+    """수익률 분모 = 투입 원금 → 어떤 판정도 −100% 밑이 나올 수 없다.
+    예전 🔵 (가격−발행가)÷인수권−1: 인수권 100 · 발행가 1,000 · 상장 후 785 → −315% (2020 실측 최악 −214.9%)."""
+    import sqlite3
+    from yujeung import db, paper
+    conn = db.connect(":memory:")
+    conn.execute("INSERT INTO cases (corp_code, corp_name, stock_code, corp_cls, first_rcept_no, first_rcept_dt, "
+                 "ic_mthn, is_rights, created_at) VALUES ('c','폭락','111110','K','r','20200301','주주배정',1,'x')")
+    case = conn.execute("SELECT * FROM cases").fetchone()
+    days = [d.isoformat() for d in trading_days(date(2020, 5, 4), date(2020, 7, 31))]
+    for i, d in enumerate(days):                       # 상장 후 발행가 밑으로, 끝내 0원 근처까지
+        p = max(1000 - i * 60, 0)
+        conn.execute("INSERT INTO stock_daily (bas_dd, code, close, open, high, low) VALUES (?,?,?,?,?,?)",
+                     (d, "111110", p, p, p, p))
+        conn.execute("INSERT INTO index_daily (bas_dd, idx, open, high, low, close) VALUES (?,?,?,?,?,?)",
+                     (d, "KOSDAQ", 1000, 1000, 1000, 1000))
+    sch = {"listing_date": days[0], "issue_price": 1000, "subs_start": "2020-04-20"}
+    for verdict in ("green", "yellow", "blue", "white"):
+        snap = {"rights_close": 100, "issue_price": 1000, "listing_date": days[0], "reason": "x"}
+        trade = {"verdict": verdict, "decided_on": "2020-04-10", "snapshot_json": json.dumps(snap)}
+        ev = paper.evaluate(conn, case, trade, sch, TODAY)
+        rets = [p["ret"] for p in ev["points"] if "ret" in p]
+        assert rets and min(rets) >= -100, (verdict, rets)
+        if verdict != "yellow":
+            assert ev["entry"] == 1100                  # 🔵도 투입 원금(인수권+발행가)
+    blue = paper.evaluate(conn, case, {"verdict": "blue", "decided_on": "2020-04-10", "snapshot_json": json.dumps(
+        {"rights_close": 100, "issue_price": 1000, "listing_date": days[0], "reason": "x"})}, sch, TODAY)
+    assert blue["points"][1]["ret"] == round((700 / 1100 - 1) * 100, 1)   # +5일 700원
+    assert isinstance(conn, sqlite3.Connection)

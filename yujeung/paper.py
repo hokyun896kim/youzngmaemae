@@ -108,9 +108,12 @@ def evaluate(conn: sqlite3.Connection, case: sqlite3.Row, trade: sqlite3.Row, sc
         if not (rc and issue):
             out["error"] = "인수권 종가 또는 발행가 없음"
             return out
-        entry = rc + issue if verdict != "blue" else rc
+        # 분모 = 투입 원금(인수권+발행가). 🔵(인수권 매도)도 같은 원금 기준 — '팔지 않고 청약했다면'의 수익률,
+        # 낮을수록 매도 판정 적중. 예전 (가격−발행가)÷인수권−1 은 가격<발행가면 −100% 밑으로 떨어졌다 (2020 최악 −214.9%)
+        entry = rc + issue
         out.update(entry=entry, entry_date=entry_date,
-                   entry_label="신주 원가(인수권+발행가)" if verdict != "blue" else "인수권 매도가")
+                   entry_label="신주 원가(인수권+발행가)" if verdict != "blue"
+                   else "신주 원가(인수권+발행가) · 🔵은 팔지 않았다면 — 낮을수록 적중")
     else:
         if listing_idx is None or stock[listing_idx]["bas_dd"] != listing:
             out.update(entry_label="상장일 종가", pending=f"대기 중 ({listing or '상장일 미정'})")
@@ -129,10 +132,7 @@ def evaluate(conn: sqlite3.Connection, case: sqlite3.Row, trade: sqlite3.Row, sc
             pt["date"] = r["bas_dd"]
             pt["price"] = price
             if entry and price:
-                if verdict == "blue":
-                    ret = ((price - issue) / entry - 1) * 100
-                else:
-                    ret = (price / entry - 1) * 100
+                ret = (price / entry - 1) * 100      # 투입 원금 대비 — 가격 ≥ 0 이면 항상 −100% 이상
                 pt["ret"] = round(ret, 1)
                 ir = idx_by_day.get(r["bas_dd"])
                 if base_idx and ir and base_idx["close"] and ir[field]:

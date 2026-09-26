@@ -383,7 +383,7 @@ function renderScore(){
   const f=v=>v==null?'—':(v>0?'+':'')+v.toFixed(1)+'%';
   $('#score').innerHTML=`<div class="tblw"><table><thead><tr><th>판정</th><th>기록</th><th>완료(+20일)</th><th>승률</th><th>평균 수익률</th><th>최대 손실</th><th>평균 초과(지수 대비)</th></tr></thead><tbody>${
     rows.map(r=>`<tr><td>${V[r.verdict].emoji} ${V[r.verdict].name}</td><td>${r.n}건</td><td>${r.done}건</td><td>${r.win_rate==null?'—':r.win_rate+'%'}</td><td>${f(r.avg)}</td><td>${f(r.worst)}</td><td>${r.avg_excess==null?'—':(r.avg_excess>0?'+':'')+r.avg_excess.toFixed(1)+'%p'}</td></tr>`).join('')
-  }</tbody></table></div><div class="meta" style="margin-top:6px">표본 수: 기록 ${rows.reduce((a,r)=>a+r.n,0)}건 / 완료 ${rows.reduce((a,r)=>a+r.done,0)}건. 🟢⚪ 인수권 마지막 날 종가+발행가로 청약 · 🟡 신주 상장일 종가 매수 · 🔵 (상장 후 가격−발행가)÷인수권 매도가−1.</div>`;
+  }</tbody></table></div><div class="meta" style="margin-top:6px">표본 수: 기록 ${rows.reduce((a,r)=>a+r.n,0)}건 / 완료 ${rows.reduce((a,r)=>a+r.done,0)}건. 🟢⚪ 인수권 마지막 날 종가+발행가로 청약 · 🟡 신주 상장일 종가 매수 · 🔵 같은 원가(인수권+발행가)로 "팔지 않고 청약했다면" 수익률 — 낮을수록 매도 판정 적중.</div>`;
 }
 
 function renderExam(B){

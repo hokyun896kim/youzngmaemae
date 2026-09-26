@@ -166,9 +166,10 @@ def upsert_disclosure(conn, rep: dict, fields: dict, rights_only: bool = False) 
 
 def detect(client: DartClient, conn: sqlite3.Connection, bgn_de: str, end_de: str,
            windows: list[tuple[str, str]] | None = None, rights_only: bool = False,
-           listed: tuple = LISTED) -> list[DetectEvent]:
+           listed: tuple = LISTED, keep=None) -> list[DetectEvent]:
     """windows 가 있으면 여러 구간(월 단위)을 모두 모은 뒤 처리 — 구간 순서와 무관하게 원공시 → 정정 순.
-    listed: 받을 법인구분. 백테스트는 상장폐지 회사(현재 'E')도 넣어 생존편향을 줄인다."""
+    listed: 받을 법인구분. 백테스트는 상장폐지 회사(현재 'E')도 넣어 생존편향을 줄인다.
+    keep(conn, rep): False 면 상세 조회(piicDecsn)·적재 없이 건너뜀 — 백테스트 꼬리 기간용."""
     seen, reports = set(), []
     for bgn, end in windows or [(bgn_de, end_de)]:
         for r in client.search(bgn, end, pblntf_ty="B"):
@@ -179,13 +180,19 @@ def detect(client: DartClient, conn: sqlite3.Connection, bgn_de: str, end_de: st
     events, cache = [], {}
     todo = [r for r in reports if not is_known(conn, r["rcept_no"])]
     print(f"[detect] 유상증자결정 {len(reports)}건 중 신규 {len(todo)}건", flush=True)
+    skipped = 0
     for i, rep in enumerate(todo, 1):
         if i % 100 == 0:
             print(f"[detect] {i}/{len(todo)}", flush=True)
+        if keep is not None and not keep(conn, rep):
+            skipped += 1
+            continue
         fields = _find_piic_fields(client, rep["corp_code"], rep["rcept_no"], rep["rcept_dt"], cache)
         ev = upsert_disclosure(conn, rep, fields, rights_only)
         if ev:
             events.append(ev)
+    if skipped:
+        print(f"[detect] 상세 조회 생략 {skipped}건", flush=True)
     return events
 
 
