@@ -1,36 +1,36 @@
 {
  "year": 2025,
  "months": 12,
- "generated_at": "2026-09-26T18:12:05+09:00",
+ "generated_at": "2026-09-26T15:53:27+09:00",
  "logic_version": 3,
- "strategy_version": 3,
+ "strategy_version": 1,
  "range": [
   "2025-01-01",
   "2025-12-31"
  ],
  "counts": {
   "cases": 55,
-  "no_rights_listing": 1,
-  "parse_target": 54,
-  "parse_ok": 20,
-  "parse_rate": 37.0,
-  "parse_rate_all": 36.4,
+  "no_rights_listing": 2,
+  "parse_target": 53,
+  "parse_ok": 51,
+  "parse_rate": 96.2,
+  "parse_rate_all": 92.7,
   "missing_by_field": {
-   "record_date": 31,
-   "rights_start": 34,
-   "rights_end": 34,
-   "subs_start": 31,
-   "listing_date": 31
+   "record_date": 0,
+   "rights_start": 2,
+   "rights_end": 2,
+   "subs_start": 0,
+   "listing_date": 0
   },
   "out_of_year": 1,
   "starts_with_correction": 14,
-  "no_rights_price": 1,
-  "scored": 19,
+  "no_rights_price": 0,
+  "scored": 51,
   "naver_missing": 0,
-  "financials_missing": 20,
+  "financials_missing": 0,
   "krx": {
-   "rights_days": 55,
-   "stock_calls": 187,
+   "rights_days": 135,
+   "stock_calls": 476,
    "errors": 0
   },
   "holidays_registered": 153
@@ -47,6 +47,7 @@
     "20250312000469",
     "20250409002063",
     "20250424000108",
+    "20250515002823",
     "20250530000614"
    ],
    "schedule": {
@@ -60,19 +61,19 @@
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 26.2,
    "dilution": 0.7072,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -3237127479,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.1789709172259508,
    "gate": {
     "debt": "pass",
     "dilution": "fail",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
-    "uw": "unknown",
+    "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
@@ -82,8 +83,6 @@
     "entry_date": "2025-06-25",
     "rsi": 31.9,
     "atr": 55.4,
-    "atr_pct": 9.63,
-    "ind_src": "naver",
     "stop": 464,
     "gate": true,
     "points": [
@@ -106,7 +105,7 @@
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-05-23",
-   "reason": "채무상환 26% · 희석 71% → 패스 · 괴리 -56.0% · 원가할인 -14.9% → ⚪ 관찰 샘플",
+   "reason": "채무상환 26% · 희석 71% · 영업손실 -32억 (2025 1분기(3개월, CFS)) → 패스 · 괴리 -56.0% · 원가할인 -14.9% → ⚪ 관찰 샘플",
    "gap": -56.0,
    "eval": {
     "entry": 615,
@@ -180,6 +179,7 @@
     "20250324000773",
     "20250409001154",
     "20250430001398",
+    "20250430001534",
     "20250519000120"
    ],
    "schedule": {
@@ -193,17 +193,17 @@
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.168,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -256654905544,
+   "op_period": "2024 4분기(연간−3분기누적, CFS)",
    "pos52": 0.013581895430503772,
    "gate": {
     "debt": "pass",
     "dilution": "pass",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
     "uw": "fail",
     "rank": "manual",
@@ -214,10 +214,8 @@
     "entry": 172100,
     "entry_date": "2025-06-13",
     "rsi": 49.8,
-    "atr": 6316.1,
-    "atr_pct": 3.67,
-    "ind_src": "naver",
-    "stop": 159468,
+    "atr": 6318.3,
+    "stop": 159463,
     "gate": true,
     "points": [
      {
@@ -239,7 +237,7 @@
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-05-12",
-   "reason": "채무상환 0% · 희석 17% · 모집주선(인수단 책임 없음) → 패스 · 괴리 +10.6% · 원가할인 +1.7% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 17% · 영업손실 -2,567억 (2024 4분기(연간−3분기누적, CFS)) · 모집주선(인수단 책임 없음) → 패스 · 괴리 +10.6% · 원가할인 +1.7% → ⚪ 관찰 샘플",
    "gap": 10.6,
    "eval": {
     "entry": 171750,
@@ -311,6 +309,7 @@
    "rcept_nos": [
     "20250314001465",
     "20250429000686",
+    "20250516000292",
     "20250602000871",
     "20250616000192",
     "20250707000212"
@@ -322,21 +321,21 @@
     "subs_start": "2025-07-09",
     "listing_date": "2025-07-29",
     "issue_price": 899,
-    "alloc_ratio": 1.2052484304
+    "alloc_ratio": 1.2055528878
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 100.0,
    "dilution": 1.2036,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -165150625,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.11484490398818316,
    "gate": {
     "debt": "fail",
     "dilution": "fail",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
     "uw": "pass",
     "rank": "manual",
@@ -346,11 +345,9 @@
    "s2": {
     "entry": 884,
     "entry_date": "2025-07-29",
-    "rsi": 24.3,
-    "atr": 72.0,
-    "atr_pct": 8.14,
-    "ind_src": "naver",
-    "stop": 740,
+    "rsi": 21.5,
+    "atr": 729.9,
+    "stop": -576,
     "gate": true,
     "points": [
      {
@@ -372,7 +369,7 @@
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-06-30",
-   "reason": "채무상환 100% · 희석 120% → 패스 · 괴리 -87.8% · 원가할인 -25.2% → ⚪ 관찰 샘플",
+   "reason": "채무상환 100% · 희석 120% · 영업손실 -2억 (2025 1분기(3개월, CFS)) → 패스 · 괴리 -87.8% · 원가할인 -25.2% → ⚪ 관찰 샘플",
    "gap": -87.8,
    "eval": {
     "entry": 943,
@@ -445,6 +442,7 @@
     "20250318000742",
     "20250415000335",
     "20250502000284",
+    "20250526000393",
     "20250612000153"
    ],
    "schedule": {
@@ -458,30 +456,28 @@
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.398,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -2705489039,
+   "op_period": "2025 1분기(3개월, OFS)",
    "pos52": 0.23884480291401067,
    "gate": {
     "debt": "pass",
     "dilution": "pass",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
-    "uw": "unknown",
+    "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
-   "gate_passed": true,
+   "gate_passed": false,
    "s2": {
     "entry": 4325,
     "entry_date": "2025-07-07",
     "rsi": 35.8,
-    "atr": 618.0,
-    "atr_pct": 14.29,
-    "ind_src": "naver",
+    "atr": 618.1,
     "stop": 3089,
     "gate": true,
     "points": [
@@ -502,9 +498,9 @@
     ]
    },
    "status": "scored",
-   "verdict": "green_q",
+   "verdict": "white",
    "decided_on": "2025-06-04",
-   "reason": "채무상환 0% · 희석 40% → 관문1 통과(미확인 3) · 괴리 -75.3% · 원가할인 -50.3% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
+   "reason": "채무상환 0% · 희석 40% · 영업손실 -27억 (2025 1분기(3개월, OFS)) → 패스 · 괴리 -75.3% · 원가할인 -50.3% → ⚪ 관찰 샘플",
    "gap": -75.3,
    "eval": {
     "entry": 5455,
@@ -582,6 +578,7 @@
     "20250418000639",
     "20250421000435",
     "20250430001080",
+    "20250514000842",
     "20250521000278",
     "20250627000349"
    ],
@@ -596,17 +593,17 @@
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.0902,
-   "op_income": null,
-   "op_period": null,
+   "op_income": 560746176000,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.9679892855517486,
    "gate": {
     "debt": "pass",
     "dilution": "pass",
     "major": "unknown",
-    "op": "unknown",
+    "op": "pass",
     "pos52": "fail",
     "uw": "pass",
     "rank": "manual",
@@ -617,10 +614,8 @@
     "entry": 919000,
     "entry_date": "2025-07-21",
     "rsi": 60.4,
-    "atr": 41263.1,
-    "atr_pct": 4.49,
-    "ind_src": "naver",
-    "stop": 836474,
+    "atr": 41297.8,
+    "stop": 836404,
     "gate": false,
     "points": [
      {
@@ -715,6 +710,7 @@
     "20250321001207",
     "20250401002061",
     "20250414001388",
+    "20250508000657",
     "20250522000063"
    ],
    "schedule": {
@@ -728,17 +724,17 @@
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 50.7,
    "dilution": 0.9036,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -1714048500,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.5459413754227734,
    "gate": {
     "debt": "fail",
     "dilution": "fail",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "fail",
     "uw": "fail",
     "rank": "manual",
@@ -748,11 +744,9 @@
    "s2": {
     "entry": 957,
     "entry_date": "2025-06-11",
-    "rsi": 30.9,
-    "atr": 276.5,
-    "atr_pct": 28.89,
-    "ind_src": "naver",
-    "stop": 404,
+    "rsi": 30.2,
+    "atr": 3973.7,
+    "stop": -6990,
     "gate": true,
     "points": [
      {
@@ -774,7 +768,7 @@
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-05-15",
-   "reason": "채무상환 51% · 희석 90% · 52주 위치 55% · 실권주 미발행 — 인수단 책임 없음 → 패스 · 괴리 -98.5% · 원가할인 -31.6% → ⚪ 관찰 샘플",
+   "reason": "채무상환 51% · 희석 90% · 영업손실 -17억 (2025 1분기(3개월, CFS)) · 52주 위치 55% · 실권주 미발행 — 인수단 책임 없음 → 패스 · 괴리 -98.5% · 원가할인 -31.6% → ⚪ 관찰 샘플",
    "gap": -98.5,
    "eval": {
     "entry": 1381,
@@ -849,6 +843,7 @@
     "20250417000392",
     "20250421000211",
     "20250423000357",
+    "20250515002678",
     "20250530001163"
    ],
    "schedule": {
@@ -862,30 +857,28 @@
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.3843,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -3699250492,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.2005990383857492,
    "gate": {
     "debt": "pass",
     "dilution": "pass",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
-    "uw": "unknown",
+    "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
-   "gate_passed": true,
+   "gate_passed": false,
    "s2": {
     "entry": 6030,
     "entry_date": "2025-06-27",
     "rsi": 44.8,
-    "atr": 566.8,
-    "atr_pct": 9.4,
-    "ind_src": "naver",
+    "atr": 567.1,
     "stop": 4896,
     "gate": true,
     "points": [
@@ -906,9 +899,9 @@
     ]
    },
    "status": "scored",
-   "verdict": "green_q",
+   "verdict": "white",
    "decided_on": "2025-05-23",
-   "reason": "채무상환 0% · 희석 38% → 관문1 통과(미확인 3) · 괴리 -55.7% · 원가할인 -21.1% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
+   "reason": "채무상환 0% · 희석 38% · 영업손실 -37억 (2025 1분기(3개월, CFS)) → 패스 · 괴리 -55.7% · 원가할인 -21.1% → ⚪ 관찰 샘플",
    "gap": -55.7,
    "eval": {
     "entry": 6152,
@@ -979,6 +972,7 @@
    "first_rcept_dt": "20250328",
    "rcept_nos": [
     "20250328000577",
+    "20250508000726",
     "20250529000475",
     "20250704000406"
    ],
@@ -988,24 +982,24 @@
     "rights_end": "2025-06-27",
     "subs_start": "2025-07-08",
     "listing_date": "2025-07-28",
-    "issue_price": 3085,
+    "issue_price": 2955,
     "alloc_ratio": 0.3530511453
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.4413,
-   "op_income": null,
-   "op_period": null,
+   "op_income": 3014234984,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.1031225400157439,
    "gate": {
     "debt": "pass",
     "dilution": "pass",
     "major": "unknown",
-    "op": "unknown",
+    "op": "pass",
     "pos52": "pass",
-    "uw": "unknown",
+    "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
@@ -1014,9 +1008,7 @@
     "entry": 3380,
     "entry_date": "2025-07-28",
     "rsi": 35.1,
-    "atr": 111.2,
-    "atr_pct": 3.29,
-    "ind_src": "naver",
+    "atr": 111.1,
     "stop": 3158,
     "gate": true,
     "points": [
@@ -1039,7 +1031,7 @@
    "status": "scored",
    "verdict": "yellow_q",
    "decided_on": "2025-06-27",
-   "reason": "채무상환 0% · 희석 44% → 관문1 통과(미확인 3) · 괴리 +6.4% · 원가할인 +1.0% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "reason": "채무상환 0% · 희석 44% → 관문1 통과(미확인 1) · 괴리 +6.4% · 원가할인 +1.0% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
    "gap": 6.4,
    "eval": {
     "entry": 3380,
@@ -1072,7 +1064,7 @@
     ]
    },
    "base": {
-    "entry": 3670,
+    "entry": 3540,
     "entry_date": "2025-06-27",
     "error": null,
     "pending": null,
@@ -1082,22 +1074,22 @@
       "label": "상장일 시가",
       "date": "2025-07-28",
       "price": 3375,
-      "ret": -8.0,
-      "excess": -13.7
+      "ret": -4.7,
+      "excess": -10.3
      },
      {
       "label": "+5일",
       "date": "2025-08-04",
       "price": 3290,
-      "ret": -10.4,
-      "excess": -13.4
+      "ret": -7.1,
+      "excess": -10.1
      },
      {
       "label": "+20일",
       "date": "2025-08-26",
       "price": 3325,
-      "ret": -9.4,
-      "excess": -13.4
+      "ret": -6.1,
+      "excess": -10.1
      }
     ]
    }
@@ -1112,22 +1104,126 @@
     "20250402003492",
     "20250422000540",
     "20250512000476",
+    "20250515001794",
     "20250617000246"
    ],
    "schedule": {
     "record_date": "2025-05-14",
-    "rights_start": null,
-    "rights_end": null,
+    "rights_start": "2025-06-02",
+    "rights_end": "2025-06-10",
     "subs_start": "2025-06-19",
     "listing_date": "2025-07-11",
-    "issue_price": 1735,
+    "issue_price": 1553,
     "alloc_ratio": 0.7134142148
    },
-   "missing": [
-    "rights_start",
-    "rights_end"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.6958,
+   "op_income": 4287847766,
+   "op_period": "2025 1분기(3개월, CFS)",
+   "pos52": 0.25651867512332627,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 3380,
+    "entry_date": "2025-07-11",
+    "rsi": 64.1,
+    "atr": 269.2,
+    "stop": 2842,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-07-18",
+      "price": 4380,
+      "ret": 29.6,
+      "excess": 27.1
+     },
+     {
+      "label": "+10일",
+      "date": "2025-07-25",
+      "price": 3770,
+      "ret": 11.5,
+      "excess": 10.7
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-06-10",
+   "reason": "채무상환 0% · 희석 70% → 패스 · 괴리 -36.3% · 원가할인 -8.6% → ⚪ 관찰 샘플",
+   "gap": -36.3,
+   "eval": {
+    "entry": 1897,
+    "entry_date": "2025-06-10",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-07-11",
+      "price": 3115,
+      "ret": 64.2,
+      "excess": 60.5
+     },
+     {
+      "label": "+5일",
+      "date": "2025-07-18",
+      "price": 4380,
+      "ret": 130.9,
+      "excess": 124.5
+     },
+     {
+      "label": "+20일",
+      "date": "2025-08-08",
+      "price": 3505,
+      "ret": 84.8,
+      "excess": 79.8
+     }
+    ]
+   },
+   "base": {
+    "entry": 1897,
+    "entry_date": "2025-06-10",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-07-11",
+      "price": 3115,
+      "ret": 64.2,
+      "excess": 60.5
+     },
+     {
+      "label": "+5일",
+      "date": "2025-07-18",
+      "price": 4380,
+      "ret": 130.9,
+      "excess": 124.5
+     },
+     {
+      "label": "+20일",
+      "date": "2025-08-08",
+      "price": 3505,
+      "ret": 84.8,
+      "excess": 79.8
+     }
+    ]
+   }
   },
   {
    "case_id": 20,
@@ -1139,6 +1235,7 @@
     "20250411003108",
     "20250425000755",
     "20250515000273",
+    "20250520000246",
     "20250623000108"
    ],
    "schedule": {
@@ -1176,22 +1273,22 @@
     "rights_end": "2025-07-23",
     "subs_start": "2025-08-04",
     "listing_date": "2025-08-26",
-    "issue_price": 2160,
+    "issue_price": 1569,
     "alloc_ratio": 0.5983518293
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 7.5,
    "dilution": 0.5522,
-   "op_income": null,
-   "op_period": null,
+   "op_income": 207586653,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.24356223175965666,
    "gate": {
     "debt": "pass",
     "dilution": "fail",
     "major": "unknown",
-    "op": "unknown",
+    "op": "pass",
     "pos52": "pass",
     "uw": "unknown",
     "rank": "manual",
@@ -1203,8 +1300,6 @@
     "entry_date": "2025-08-26",
     "rsi": 30.6,
     "atr": 101.9,
-    "atr_pct": 5.43,
-    "ind_src": "naver",
     "stop": 1673,
     "gate": true,
     "points": [
@@ -1230,7 +1325,7 @@
    "reason": "채무상환 8% · 희석 55% → 패스 · 괴리 -16.8% · 원가할인 -5.3% → ⚪ 관찰 샘플",
    "gap": -16.8,
    "eval": {
-    "entry": 2760,
+    "entry": 2169,
     "entry_date": "2025-07-23",
     "error": null,
     "pending": null,
@@ -1240,27 +1335,27 @@
       "label": "상장일 시가",
       "date": "2025-08-26",
       "price": 1912,
-      "ret": -30.7,
-      "excess": -28.3
+      "ret": -11.8,
+      "excess": -9.4
      },
      {
       "label": "+5일",
       "date": "2025-09-02",
       "price": 1869,
-      "ret": -32.3,
-      "excess": -29.9
+      "ret": -13.8,
+      "excess": -11.4
      },
      {
       "label": "+20일",
       "date": "2025-09-23",
       "price": 1952,
-      "ret": -29.3,
-      "excess": -36.5
+      "ret": -10.0,
+      "excess": -17.2
      }
     ]
    },
    "base": {
-    "entry": 2760,
+    "entry": 2169,
     "entry_date": "2025-07-23",
     "error": null,
     "pending": null,
@@ -1270,22 +1365,22 @@
       "label": "상장일 시가",
       "date": "2025-08-26",
       "price": 1912,
-      "ret": -30.7,
-      "excess": -28.3
+      "ret": -11.8,
+      "excess": -9.4
      },
      {
       "label": "+5일",
       "date": "2025-09-02",
       "price": 1869,
-      "ret": -32.3,
-      "excess": -29.9
+      "ret": -13.8,
+      "excess": -11.4
      },
      {
       "label": "+20일",
       "date": "2025-09-23",
       "price": 1952,
-      "ret": -29.3,
-      "excess": -36.5
+      "ret": -10.0,
+      "excess": -17.2
      }
     ]
    }
@@ -1298,6 +1393,7 @@
    "first_rcept_dt": "20250421",
    "rcept_nos": [
     "20250421000366",
+    "20250514000879",
     "20250530000343",
     "20250707000039"
    ],
@@ -1307,24 +1403,24 @@
     "rights_end": "2025-06-30",
     "subs_start": "2025-07-09",
     "listing_date": "2025-07-29",
-    "issue_price": 1782,
+    "issue_price": 1575,
     "alloc_ratio": 0.5812571554
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 45.4,
    "dilution": 0.5797,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -1443300931,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.07597073719752391,
    "gate": {
     "debt": "pass",
     "dilution": "fail",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
-    "uw": "unknown",
+    "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
@@ -1333,9 +1429,7 @@
     "entry": 1595,
     "entry_date": "2025-07-29",
     "rsi": 27.5,
-    "atr": 121.9,
-    "atr_pct": 7.64,
-    "ind_src": "naver",
+    "atr": 121.8,
     "stop": 1351,
     "gate": true,
     "points": [
@@ -1358,10 +1452,10 @@
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-06-30",
-   "reason": "채무상환 45% · 희석 58% → 패스 · 괴리 -19.3% · 원가할인 -2.1% → ⚪ 관찰 샘플",
+   "reason": "채무상환 45% · 희석 58% · 영업손실 -14억 (2025 1분기(3개월, CFS)) → 패스 · 괴리 -19.3% · 원가할인 -2.1% → ⚪ 관찰 샘플",
    "gap": -19.3,
    "eval": {
-    "entry": 1962,
+    "entry": 1755,
     "entry_date": "2025-06-30",
     "error": null,
     "pending": null,
@@ -1371,27 +1465,27 @@
       "label": "상장일 시가",
       "date": "2025-07-29",
       "price": 1583,
-      "ret": -19.3,
-      "excess": -22.1
+      "ret": -9.8,
+      "excess": -12.6
      },
      {
       "label": "+5일",
       "date": "2025-08-05",
       "price": 1547,
-      "ret": -21.2,
-      "excess": -23.3
+      "ret": -11.9,
+      "excess": -14.0
      },
      {
       "label": "+20일",
       "date": "2025-08-27",
       "price": 1532,
-      "ret": -21.9,
-      "excess": -24.5
+      "ret": -12.7,
+      "excess": -15.3
      }
     ]
    },
    "base": {
-    "entry": 1962,
+    "entry": 1755,
     "entry_date": "2025-06-30",
     "error": null,
     "pending": null,
@@ -1401,22 +1495,22 @@
       "label": "상장일 시가",
       "date": "2025-07-29",
       "price": 1583,
-      "ret": -19.3,
-      "excess": -22.1
+      "ret": -9.8,
+      "excess": -12.6
      },
      {
       "label": "+5일",
       "date": "2025-08-05",
       "price": 1547,
-      "ret": -21.2,
-      "excess": -23.3
+      "ret": -11.9,
+      "excess": -14.0
      },
      {
       "label": "+20일",
       "date": "2025-08-27",
       "price": 1532,
-      "ret": -21.9,
-      "excess": -24.5
+      "ret": -12.7,
+      "excess": -15.3
      }
     ]
    }
@@ -1438,22 +1532,22 @@
     "rights_end": "2025-06-24",
     "subs_start": "2025-07-03",
     "listing_date": "2025-07-24",
-    "issue_price": 4310,
+    "issue_price": 4065,
     "alloc_ratio": 0.1548648686
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 28.7,
    "dilution": 0.1549,
-   "op_income": null,
-   "op_period": null,
+   "op_income": 26551539946,
+   "op_period": "2024 연간(CFS)",
    "pos52": 0.5821152192605331,
    "gate": {
     "debt": "pass",
     "dilution": "pass",
     "major": "unknown",
-    "op": "unknown",
+    "op": "pass",
     "pos52": "fail",
     "uw": "pass",
     "rank": "manual",
@@ -1464,9 +1558,7 @@
     "entry": 4220,
     "entry_date": "2025-07-24",
     "rsi": 41.3,
-    "atr": 91.6,
-    "atr_pct": 2.17,
-    "ind_src": "naver",
+    "atr": 91.5,
     "stop": 4037,
     "gate": true,
     "points": [
@@ -1492,7 +1584,7 @@
    "reason": "채무상환 29% · 희석 15% · 52주 위치 58% → 패스 · 괴리 대기 → ⚪ 관찰 샘플",
    "gap": null,
    "eval": {
-    "entry": 4313,
+    "entry": 4068,
     "entry_date": "2025-06-24",
     "error": null,
     "pending": null,
@@ -1502,27 +1594,27 @@
       "label": "상장일 시가",
       "date": "2025-07-24",
       "price": 4230,
-      "ret": -1.9,
-      "excess": -5.3
+      "ret": 4.0,
+      "excess": 0.6
      },
      {
       "label": "+5일",
       "date": "2025-07-31",
       "price": 4250,
-      "ret": -1.5,
-      "excess": -6.0
+      "ret": 4.5,
+      "excess": -0.1
      },
      {
       "label": "+20일",
       "date": "2025-08-22",
       "price": 4380,
-      "ret": 1.6,
-      "excess": -0.5
+      "ret": 7.7,
+      "excess": 5.6
      }
     ]
    },
    "base": {
-    "entry": 4313,
+    "entry": 4068,
     "entry_date": "2025-06-24",
     "error": null,
     "pending": null,
@@ -1532,22 +1624,22 @@
       "label": "상장일 시가",
       "date": "2025-07-24",
       "price": 4230,
-      "ret": -1.9,
-      "excess": -5.3
+      "ret": 4.0,
+      "excess": 0.6
      },
      {
       "label": "+5일",
       "date": "2025-07-31",
       "price": 4250,
-      "ret": -1.5,
-      "excess": -6.0
+      "ret": 4.5,
+      "excess": -0.1
      },
      {
       "label": "+20일",
       "date": "2025-08-22",
       "price": 4380,
-      "ret": 1.6,
-      "excess": -0.5
+      "ret": 7.7,
+      "excess": 5.6
      }
     ]
    }
@@ -1562,6 +1654,7 @@
     "20250513000489",
     "20250604000053",
     "20250616000047",
+    "20250624000344",
     "20250627000218",
     "20250731000070"
    ],
@@ -1571,22 +1664,22 @@
     "rights_end": "2025-07-24",
     "subs_start": "2025-08-04",
     "listing_date": "2025-08-21",
-    "issue_price": 707,
+    "issue_price": 552,
     "alloc_ratio": 0.2362879391
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.2361,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -920653892,
+   "op_period": "2025 1분기(3개월, OFS)",
    "pos52": 0.24691358024691357,
    "gate": {
     "debt": "pass",
     "dilution": "pass",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
     "uw": "fail",
     "rank": "manual",
@@ -1596,11 +1689,9 @@
    "s2": {
     "entry": 919,
     "entry_date": "2025-08-21",
-    "rsi": 48.1,
-    "atr": 146.9,
-    "atr_pct": 15.98,
-    "ind_src": "naver",
-    "stop": 625,
+    "rsi": 35.7,
+    "atr": 361.9,
+    "stop": 195,
     "gate": true,
     "points": [
      {
@@ -1622,10 +1713,10 @@
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-07-24",
-   "reason": "채무상환 0% · 희석 24% · 실권주 미발행 — 인수단 책임 없음 → 패스 · 괴리 +10.7% · 원가할인 +1.7% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 24% · 영업손실 -9억 (2025 1분기(3개월, OFS)) · 실권주 미발행 — 인수단 책임 없음 → 패스 · 괴리 +10.7% · 원가할인 +1.7% → ⚪ 관찰 샘플",
    "gap": 10.7,
    "eval": {
-    "entry": 842,
+    "entry": 687,
     "entry_date": "2025-07-24",
     "error": null,
     "pending": null,
@@ -1635,27 +1726,27 @@
       "label": "상장일 시가",
       "date": "2025-08-21",
       "price": 891,
-      "ret": 5.8,
-      "excess": 9.5
+      "ret": 29.7,
+      "excess": 33.3
      },
      {
       "label": "+5일",
       "date": "2025-08-28",
       "price": 1196,
-      "ret": 42.0,
-      "excess": 43.5
+      "ret": 74.1,
+      "excess": 75.5
      },
      {
       "label": "+20일",
       "date": "2025-09-18",
       "price": 2920,
-      "ret": 246.8,
-      "excess": 241.0
+      "ret": 325.0,
+      "excess": 319.2
      }
     ]
    },
    "base": {
-    "entry": 842,
+    "entry": 687,
     "entry_date": "2025-07-24",
     "error": null,
     "pending": null,
@@ -1665,22 +1756,22 @@
       "label": "상장일 시가",
       "date": "2025-08-21",
       "price": 891,
-      "ret": 5.8,
-      "excess": 9.5
+      "ret": 29.7,
+      "excess": 33.3
      },
      {
       "label": "+5일",
       "date": "2025-08-28",
       "price": 1196,
-      "ret": 42.0,
-      "excess": 43.5
+      "ret": 74.1,
+      "excess": 75.5
      },
      {
       "label": "+20일",
       "date": "2025-09-18",
       "price": 2920,
-      "ret": 246.8,
-      "excess": 241.0
+      "ret": 325.0,
+      "excess": 319.2
      }
     ]
    }
@@ -1694,6 +1785,7 @@
    "rcept_nos": [
     "20250513000505",
     "20250526000452",
+    "20250605000361",
     "20250613000014",
     "20250717000003"
    ],
@@ -1708,19 +1800,19 @@
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.1482,
-   "op_income": null,
-   "op_period": null,
+   "op_income": 17150145795,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.08150373111623713,
    "gate": {
     "debt": "pass",
     "dilution": "pass",
     "major": "unknown",
-    "op": "unknown",
+    "op": "pass",
     "pos52": "pass",
-    "uw": "unknown",
+    "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
@@ -1729,10 +1821,8 @@
     "entry": 150400,
     "entry_date": "2025-08-08",
     "rsi": 59.5,
-    "atr": 7369.6,
-    "atr_pct": 4.9,
-    "ind_src": "naver",
-    "stop": 135661,
+    "atr": 7363.6,
+    "stop": 135673,
     "gate": false,
     "points": [
      {
@@ -1754,7 +1844,7 @@
    "status": "scored",
    "verdict": "yellow_q",
    "decided_on": "2025-07-10",
-   "reason": "채무상환 0% · 희석 15% → 관문1 통과(미확인 3) · 괴리 +7.9% · 원가할인 +2.0% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "reason": "채무상환 0% · 희석 15% → 관문1 통과(미확인 1) · 괴리 +7.9% · 원가할인 +2.0% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
    "gap": 7.9,
    "eval": {
     "entry": 150400,
@@ -1827,6 +1917,7 @@
     "20250514000776",
     "20250528000394",
     "20250613000388",
+    "20250627000587",
     "20250630000101",
     "20250804000010"
    ],
@@ -1836,24 +1927,24 @@
     "rights_end": "2025-07-25",
     "subs_start": "2025-08-06",
     "listing_date": "2025-08-29",
-    "issue_price": 5430,
+    "issue_price": 5800,
     "alloc_ratio": 0.5400273526
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.54,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -1069785728,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.38427179209528967,
    "gate": {
     "debt": "pass",
     "dilution": "fail",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
-    "uw": "unknown",
+    "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
@@ -1862,10 +1953,8 @@
     "entry": 5160,
     "entry_date": "2025-08-29",
     "rsi": 31.7,
-    "atr": 492.3,
-    "atr_pct": 9.54,
-    "ind_src": "naver",
-    "stop": 4175,
+    "atr": 492.1,
+    "stop": 4176,
     "gate": true,
     "points": [
      {
@@ -1887,10 +1976,10 @@
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-07-25",
-   "reason": "채무상환 0% · 희석 54% → 패스 · 괴리 -67.6% · 원가할인 -8.8% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 54% · 영업손실 -11억 (2025 1분기(3개월, CFS)) → 패스 · 괴리 -67.6% · 원가할인 -8.8% → ⚪ 관찰 샘플",
    "gap": -67.6,
    "eval": {
-    "entry": 5731,
+    "entry": 6101,
     "entry_date": "2025-07-25",
     "error": null,
     "pending": null,
@@ -1900,27 +1989,27 @@
       "label": "상장일 시가",
       "date": "2025-08-29",
       "price": 5050,
-      "ret": -11.9,
-      "excess": -11.3
+      "ret": -17.2,
+      "excess": -16.6
      },
      {
       "label": "+5일",
       "date": "2025-09-05",
       "price": 4955,
-      "ret": -13.5,
-      "excess": -14.1
+      "ret": -18.8,
+      "excess": -19.3
      },
      {
       "label": "+20일",
       "date": "2025-09-26",
       "price": 5130,
-      "ret": -10.5,
-      "excess": -14.0
+      "ret": -15.9,
+      "excess": -19.4
      }
     ]
    },
    "base": {
-    "entry": 5731,
+    "entry": 6101,
     "entry_date": "2025-07-25",
     "error": null,
     "pending": null,
@@ -1930,22 +2019,22 @@
       "label": "상장일 시가",
       "date": "2025-08-29",
       "price": 5050,
-      "ret": -11.9,
-      "excess": -11.3
+      "ret": -17.2,
+      "excess": -16.6
      },
      {
       "label": "+5일",
       "date": "2025-09-05",
       "price": 4955,
-      "ret": -13.5,
-      "excess": -14.1
+      "ret": -18.8,
+      "excess": -19.3
      },
      {
       "label": "+20일",
       "date": "2025-09-26",
       "price": 5130,
-      "ret": -10.5,
-      "excess": -14.0
+      "ret": -15.9,
+      "excess": -19.4
      }
     ]
    }
@@ -1959,6 +2048,7 @@
    "rcept_nos": [
     "20250514001221",
     "20250528000657",
+    "20250613000494",
     "20250616000064",
     "20250718000126"
    ],
@@ -1968,24 +2058,24 @@
     "rights_end": "2025-07-11",
     "subs_start": "2025-07-22",
     "listing_date": "2025-08-13",
-    "issue_price": 2910,
+    "issue_price": 1948,
     "alloc_ratio": 0.6858745309
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.6859,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -2266001460,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.5108905431486077,
    "gate": {
     "debt": "pass",
     "dilution": "fail",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "fail",
-    "uw": "unknown",
+    "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
@@ -1995,8 +2085,6 @@
     "entry_date": "2025-08-13",
     "rsi": 23.6,
     "atr": 189.6,
-    "atr_pct": 11.26,
-    "ind_src": "naver",
     "stop": 1305,
     "gate": true,
     "points": [
@@ -2019,10 +2107,10 @@
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-07-11",
-   "reason": "채무상환 0% · 희석 69% · 52주 위치 51% → 패스 · 괴리 -73.4% · 원가할인 -27.8% → ⚪ 관찰 샘플",
+   "reason": "채무상환 0% · 희석 69% · 영업손실 -23억 (2025 1분기(3개월, CFS)) · 52주 위치 51% → 패스 · 괴리 -73.4% · 원가할인 -27.8% → ⚪ 관찰 샘플",
    "gap": -73.4,
    "eval": {
-    "entry": 3231,
+    "entry": 2269,
     "entry_date": "2025-07-11",
     "error": null,
     "pending": null,
@@ -2032,27 +2120,27 @@
       "label": "상장일 시가",
       "date": "2025-08-13",
       "price": 1625,
-      "ret": -49.7,
-      "excess": -51.7
+      "ret": -28.4,
+      "excess": -30.4
      },
      {
       "label": "+5일",
       "date": "2025-08-21",
       "price": 1665,
-      "ret": -48.5,
-      "excess": -45.6
+      "ret": -26.6,
+      "excess": -23.7
      },
      {
       "label": "+20일",
       "date": "2025-09-11",
       "price": 1673,
-      "ret": -48.2,
-      "excess": -52.5
+      "ret": -26.3,
+      "excess": -30.6
      }
     ]
    },
    "base": {
-    "entry": 3231,
+    "entry": 2269,
     "entry_date": "2025-07-11",
     "error": null,
     "pending": null,
@@ -2062,22 +2150,22 @@
       "label": "상장일 시가",
       "date": "2025-08-13",
       "price": 1625,
-      "ret": -49.7,
-      "excess": -51.7
+      "ret": -28.4,
+      "excess": -30.4
      },
      {
       "label": "+5일",
       "date": "2025-08-21",
       "price": 1665,
-      "ret": -48.5,
-      "excess": -45.6
+      "ret": -26.6,
+      "excess": -23.7
      },
      {
       "label": "+20일",
       "date": "2025-09-11",
       "price": 1673,
-      "ret": -48.2,
-      "excess": -52.5
+      "ret": -26.3,
+      "excess": -30.6
      }
     ]
    }
@@ -2094,63 +2182,126 @@
     "20250522000262",
     "20250619000165",
     "20250704000105",
+    "20250813000695",
     "20250828000546"
    ],
    "schedule": {
-    "record_date": "2025-06-26",
-    "rights_start": "2025-07-15",
-    "rights_end": "2025-07-21",
-    "subs_start": "2025-08-04",
-    "listing_date": "2025-08-26",
-    "issue_price": 4085,
+    "record_date": "2025-07-08",
+    "rights_start": "2025-07-25",
+    "rights_end": "2025-07-31",
+    "subs_start": "2025-09-01",
+    "listing_date": "2025-09-22",
+    "issue_price": 3125,
     "alloc_ratio": 0.4996732494
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.4997,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -3648605528,
+   "op_period": "2025 1분기(3개월, OFS)",
    "pos52": 0.09521003451468979,
    "gate": {
     "debt": "pass",
     "dilution": "pass",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
     "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
-   "gate_passed": true,
+   "gate_passed": false,
    "s2": {
-    "entry": 4220,
-    "entry_date": "2025-08-26",
-    "rsi": 41.0,
-    "atr": 323.3,
-    "atr_pct": 7.66,
-    "ind_src": "naver",
-    "stop": 3573,
-    "gate": true,
+    "entry": 6030,
+    "entry_date": "2025-09-22",
+    "rsi": 61.0,
+    "atr": 589.0,
+    "stop": 4852,
+    "gate": false,
     "points": [
      {
       "label": "+5일",
-      "date": "2025-09-02",
-      "price": 3755,
-      "ret": -11.0,
-      "excess": -10.0
+      "date": "2025-09-29",
+      "price": 6290,
+      "ret": 4.3,
+      "excess": 7.5
      },
      {
       "label": "+10일",
-      "date": "2025-09-09",
-      "price": 4730,
-      "ret": 12.1,
-      "excess": 9.2
+      "date": "2025-10-13",
+      "price": 7320,
+      "ret": 21.4,
+      "excess": 23.0
      }
     ]
    },
-   "status": "no_rights_price"
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-07-31",
+   "reason": "채무상환 0% · 희석 50% · 영업손실 -36억 (2025 1분기(3개월, OFS)) → 패스 · 괴리 -43.3% · 원가할인 -10.2% → ⚪ 관찰 샘플",
+   "gap": -43.3,
+   "eval": {
+    "entry": 3751,
+    "entry_date": "2025-07-31",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-09-22",
+      "price": 5780,
+      "ret": 54.1,
+      "excess": 46.2
+     },
+     {
+      "label": "+5일",
+      "date": "2025-09-29",
+      "price": 6290,
+      "ret": 67.7,
+      "excess": 62.5
+     },
+     {
+      "label": "+20일",
+      "date": "2025-10-27",
+      "price": 6120,
+      "ret": 63.2,
+      "excess": 51.1
+     }
+    ]
+   },
+   "base": {
+    "entry": 3751,
+    "entry_date": "2025-07-31",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-09-22",
+      "price": 5780,
+      "ret": 54.1,
+      "excess": 46.2
+     },
+     {
+      "label": "+5일",
+      "date": "2025-09-29",
+      "price": 6290,
+      "ret": 67.7,
+      "excess": 62.5
+     },
+     {
+      "label": "+20일",
+      "date": "2025-10-27",
+      "price": 6120,
+      "ret": 63.2,
+      "excess": 51.1
+     }
+    ]
+   }
   },
   {
    "case_id": 30,
@@ -2161,6 +2312,7 @@
    "rcept_nos": [
     "20250523000502",
     "20250610000374",
+    "20250620000185",
     "20250625000297",
     "20250731000268"
    ],
@@ -2170,36 +2322,34 @@
     "rights_end": "2025-07-24",
     "subs_start": "2025-08-04",
     "listing_date": "2025-08-25",
-    "issue_price": 1037,
+    "issue_price": 858,
     "alloc_ratio": 0.3633733924
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.3634,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -629500749,
+   "op_period": "2025 1분기(3개월, OFS)",
    "pos52": 0.0017953321364452424,
    "gate": {
     "debt": "pass",
     "dilution": "pass",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
-    "uw": "unknown",
+    "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
-   "gate_passed": true,
+   "gate_passed": false,
    "s2": {
     "entry": 871,
     "entry_date": "2025-08-25",
-    "rsi": 25.9,
-    "atr": 78.4,
-    "atr_pct": 9.0,
-    "ind_src": "naver",
-    "stop": 714,
+    "rsi": 21.4,
+    "atr": 243.3,
+    "stop": 384,
     "gate": true,
     "points": [
      {
@@ -2219,42 +2369,12 @@
     ]
    },
    "status": "scored",
-   "verdict": "yellow_q",
+   "verdict": "white",
    "decided_on": "2025-07-24",
-   "reason": "채무상환 0% · 희석 36% → 관문1 통과(미확인 3) · 괴리 -33.9% · 원가할인 -8.4% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "reason": "채무상환 0% · 희석 36% · 영업손실 -6억 (2025 1분기(3개월, OFS)) → 패스 · 괴리 -33.9% · 원가할인 -8.4% → ⚪ 관찰 샘플",
    "gap": -33.9,
    "eval": {
-    "entry": 871,
-    "entry_date": "2025-08-25",
-    "error": null,
-    "pending": null,
-    "issue_note": null,
-    "points": [
-     {
-      "label": "+5일",
-      "date": "2025-09-01",
-      "price": 825,
-      "ret": -5.3,
-      "excess": -3.6
-     },
-     {
-      "label": "+10일",
-      "date": "2025-09-08",
-      "price": 832,
-      "ret": -4.5,
-      "excess": -7.1
-     },
-     {
-      "label": "+20일",
-      "date": "2025-09-22",
-      "price": 1460,
-      "ret": 67.6,
-      "excess": 58.1
-     }
-    ]
-   },
-   "base": {
-    "entry": 1228,
+    "entry": 1049,
     "entry_date": "2025-07-24",
     "error": null,
     "pending": null,
@@ -2264,22 +2384,52 @@
       "label": "상장일 시가",
       "date": "2025-08-25",
       "price": 860,
-      "ret": -30.0,
-      "excess": -27.7
+      "ret": -18.0,
+      "excess": -15.8
      },
      {
       "label": "+5일",
       "date": "2025-09-01",
       "price": 825,
-      "ret": -32.8,
-      "excess": -29.7
+      "ret": -21.4,
+      "excess": -18.3
      },
      {
       "label": "+20일",
       "date": "2025-09-22",
       "price": 1460,
-      "ret": 18.9,
-      "excess": 10.9
+      "ret": 39.2,
+      "excess": 31.2
+     }
+    ]
+   },
+   "base": {
+    "entry": 1049,
+    "entry_date": "2025-07-24",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-08-25",
+      "price": 860,
+      "ret": -18.0,
+      "excess": -15.8
+     },
+     {
+      "label": "+5일",
+      "date": "2025-09-01",
+      "price": 825,
+      "ret": -21.4,
+      "excess": -18.3
+     },
+     {
+      "label": "+20일",
+      "date": "2025-09-22",
+      "price": 1460,
+      "ret": 39.2,
+      "excess": 31.2
      }
     ]
    }
@@ -2292,6 +2442,7 @@
    "first_rcept_dt": "20250526",
    "rcept_nos": [
     "20250526000389",
+    "20250611000557",
     "20250626000379",
     "20250731000247"
    ],
@@ -2301,22 +2452,22 @@
     "rights_end": "2025-07-24",
     "subs_start": "2025-08-04",
     "listing_date": "2025-08-28",
-    "issue_price": 14220,
+    "issue_price": 21350,
     "alloc_ratio": 0.6247809315
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 0.0,
    "dilution": 0.599,
-   "op_income": null,
-   "op_period": null,
+   "op_income": 3019344752,
+   "op_period": "2025 1분기(3개월, CFS)",
    "pos52": 0.6443771484694713,
    "gate": {
     "debt": "pass",
     "dilution": "fail",
     "major": "unknown",
-    "op": "unknown",
+    "op": "pass",
     "pos52": "fail",
     "uw": "fail",
     "rank": "manual",
@@ -2327,10 +2478,8 @@
     "entry": 23550,
     "entry_date": "2025-08-28",
     "rsi": 30.6,
-    "atr": 1135.1,
-    "atr_pct": 4.82,
-    "ind_src": "naver",
-    "stop": 21280,
+    "atr": 1136.0,
+    "stop": 21278,
     "gate": true,
     "points": [
      {
@@ -2355,7 +2504,7 @@
    "reason": "채무상환 0% · 희석 60% · 52주 위치 64% · 모집주선(인수단 책임 없음) → 패스 · 괴리 -23.9% · 원가할인 -4.9% → ⚪ 관찰 샘플",
    "gap": -23.9,
    "eval": {
-    "entry": 18560,
+    "entry": 25690,
     "entry_date": "2025-07-24",
     "error": null,
     "pending": null,
@@ -2365,27 +2514,27 @@
       "label": "상장일 시가",
       "date": "2025-08-28",
       "price": 23700,
-      "ret": 27.7,
-      "excess": 28.9
+      "ret": -7.7,
+      "excess": -6.6
      },
      {
       "label": "+5일",
       "date": "2025-09-04",
       "price": 22950,
-      "ret": 23.7,
-      "excess": 24.2
+      "ret": -10.7,
+      "excess": -10.1
      },
      {
       "label": "+20일",
       "date": "2025-09-25",
       "price": 22700,
-      "ret": 22.3,
-      "excess": 17.0
+      "ret": -11.6,
+      "excess": -16.9
      }
     ]
    },
    "base": {
-    "entry": 18560,
+    "entry": 25690,
     "entry_date": "2025-07-24",
     "error": null,
     "pending": null,
@@ -2395,22 +2544,22 @@
       "label": "상장일 시가",
       "date": "2025-08-28",
       "price": 23700,
-      "ret": 27.7,
-      "excess": 28.9
+      "ret": -7.7,
+      "excess": -6.6
      },
      {
       "label": "+5일",
       "date": "2025-09-04",
       "price": 22950,
-      "ret": 23.7,
-      "excess": 24.2
+      "ret": -10.7,
+      "excess": -10.1
      },
      {
       "label": "+20일",
       "date": "2025-09-25",
       "price": 22700,
-      "ret": 22.3,
-      "excess": 17.0
+      "ret": -11.6,
+      "excess": -16.9
      }
     ]
    }
@@ -2432,8 +2581,8 @@
     "rights_start": null,
     "rights_end": null,
     "subs_start": "2025-09-08",
-    "listing_date": "2025-10-16",
-    "issue_price": 992,
+    "listing_date": "2025-09-30",
+    "issue_price": 721,
     "alloc_ratio": 0.6627477502
    },
    "missing": [
@@ -2475,6 +2624,7 @@
    "first_rcept_dt": "20250610",
    "rcept_nos": [
     "20250610000366",
+    "20250624000414",
     "20250709000178",
     "20250812000308"
    ],
@@ -2484,22 +2634,22 @@
     "rights_end": "2025-08-05",
     "subs_start": "2025-08-14",
     "listing_date": "2025-09-04",
-    "issue_price": 1295,
+    "issue_price": 964,
     "alloc_ratio": 0.6779159202
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 1.6,
    "dilution": 0.6779,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -4744777675,
+   "op_period": "2025 1분기(3개월, OFS)",
    "pos52": 0.2520775623268698,
    "gate": {
     "debt": "pass",
     "dilution": "fail",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
     "uw": "pass",
     "rank": "manual",
@@ -2511,8 +2661,6 @@
     "entry_date": "2025-09-04",
     "rsi": 51.9,
     "atr": 86.5,
-    "atr_pct": 6.6,
-    "ind_src": "naver",
     "stop": 1137,
     "gate": false,
     "points": [
@@ -2535,10 +2683,10 @@
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-08-05",
-   "reason": "채무상환 2% · 희석 68% → 패스 · 괴리 -22.8% · 원가할인 -5.2% → ⚪ 관찰 샘플",
+   "reason": "채무상환 2% · 희석 68% · 영업손실 -47억 (2025 1분기(3개월, OFS)) → 패스 · 괴리 -22.8% · 원가할인 -5.2% → ⚪ 관찰 샘플",
    "gap": -22.8,
    "eval": {
-    "entry": 1535,
+    "entry": 1204,
     "entry_date": "2025-08-05",
     "error": null,
     "pending": null,
@@ -2548,27 +2696,27 @@
       "label": "상장일 시가",
       "date": "2025-09-04",
       "price": 1250,
-      "ret": -18.6,
-      "excess": -18.7
+      "ret": 3.8,
+      "excess": 3.7
      },
      {
       "label": "+5일",
       "date": "2025-09-11",
       "price": 1372,
-      "ret": -10.6,
-      "excess": -15.1
+      "ret": 14.0,
+      "excess": 9.4
      },
      {
       "label": "+20일",
       "date": "2025-10-02",
       "price": 1471,
-      "ret": -4.2,
-      "excess": -11.1
+      "ret": 22.2,
+      "excess": 15.2
      }
     ]
    },
    "base": {
-    "entry": 1535,
+    "entry": 1204,
     "entry_date": "2025-08-05",
     "error": null,
     "pending": null,
@@ -2578,22 +2726,22 @@
       "label": "상장일 시가",
       "date": "2025-09-04",
       "price": 1250,
-      "ret": -18.6,
-      "excess": -18.7
+      "ret": 3.8,
+      "excess": 3.7
      },
      {
       "label": "+5일",
       "date": "2025-09-11",
       "price": 1372,
-      "ret": -10.6,
-      "excess": -15.1
+      "ret": 14.0,
+      "excess": 9.4
      },
      {
       "label": "+20일",
       "date": "2025-10-02",
       "price": 1471,
-      "ret": -4.2,
-      "excess": -11.1
+      "ret": 22.2,
+      "excess": 15.2
      }
     ]
    }
@@ -2607,6 +2755,7 @@
    "rcept_nos": [
     "20250612000467",
     "20250723000230",
+    "20250818000231",
     "20250902000187"
    ],
    "schedule": {
@@ -2615,24 +2764,24 @@
     "rights_end": "2025-08-26",
     "subs_start": "2025-09-04",
     "listing_date": "2025-09-24",
-    "issue_price": 290,
+    "issue_price": 262,
     "alloc_ratio": 0.9836776401
    },
    "missing": [],
    "naver": true,
-   "financials": false,
+   "financials": true,
    "debt_pct": 23.9,
    "dilution": 0.9837,
-   "op_income": null,
-   "op_period": null,
+   "op_income": -158728746,
+   "op_period": "2025 반기(3개월, CFS)",
    "pos52": 0.10207336523125997,
    "gate": {
     "debt": "pass",
     "dilution": "fail",
     "major": "unknown",
-    "op": "unknown",
+    "op": "fail",
     "pos52": "pass",
-    "uw": "unknown",
+    "uw": "pass",
     "rank": "manual",
     "irreplaceable": "manual"
    },
@@ -2640,11 +2789,9 @@
    "s2": {
     "entry": 450,
     "entry_date": "2025-09-24",
-    "rsi": 48.5,
-    "atr": 76.5,
-    "atr_pct": 16.99,
-    "ind_src": "naver",
-    "stop": 297,
+    "rsi": 30.5,
+    "atr": 2762.4,
+    "stop": -5075,
     "gate": true,
     "points": [
      {
@@ -2666,10 +2813,10 @@
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-08-26",
-   "reason": "채무상환 24% · 희석 98% → 패스 · 괴리 -77.2% · 원가할인 -39.2% → ⚪ 관찰 샘플",
+   "reason": "채무상환 24% · 희석 98% · 영업손실 -2억 (2025 반기(3개월, CFS)) → 패스 · 괴리 -77.2% · 원가할인 -39.2% → ⚪ 관찰 샘플",
    "gap": -77.2,
    "eval": {
-    "entry": 334,
+    "entry": 306,
     "entry_date": "2025-08-26",
     "error": null,
     "pending": null,
@@ -2679,27 +2826,27 @@
       "label": "상장일 시가",
       "date": "2025-09-24",
       "price": 434,
-      "ret": 29.9,
-      "excess": 21.3
+      "ret": 41.8,
+      "excess": 33.2
      },
      {
       "label": "+5일",
       "date": "2025-10-01",
       "price": 397,
-      "ret": 18.9,
-      "excess": 13.4
+      "ret": 29.7,
+      "excess": 24.3
      },
      {
       "label": "+20일",
       "date": "2025-10-29",
       "price": 366,
-      "ret": 9.6,
-      "excess": -2.9
+      "ret": 19.6,
+      "excess": 7.1
      }
     ]
    },
    "base": {
-    "entry": 334,
+    "entry": 306,
     "entry_date": "2025-08-26",
     "error": null,
     "pending": null,
@@ -2709,22 +2856,22 @@
       "label": "상장일 시가",
       "date": "2025-09-24",
       "price": 434,
-      "ret": 29.9,
-      "excess": 21.3
+      "ret": 41.8,
+      "excess": 33.2
      },
      {
       "label": "+5일",
       "date": "2025-10-01",
       "price": 397,
-      "ret": 18.9,
-      "excess": 13.4
+      "ret": 29.7,
+      "excess": 24.3
      },
      {
       "label": "+20일",
       "date": "2025-10-29",
       "price": 366,
-      "ret": 9.6,
-      "excess": -2.9
+      "ret": 19.6,
+      "excess": 7.1
      }
     ]
    }
@@ -2741,22 +2888,122 @@
     "20250828000238"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-07-25",
+    "rights_start": "2025-08-14",
+    "rights_end": "2025-08-21",
+    "subs_start": "2025-09-01",
+    "listing_date": "2025-09-22",
+    "issue_price": 2970,
+    "alloc_ratio": 0.2550131502
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.255,
+   "op_income": 8287671073,
+   "op_period": "2025 반기(3개월, CFS)",
+   "pos52": 0.5155763239875389,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 3335,
+    "entry_date": "2025-09-22",
+    "rsi": 64.4,
+    "atr": 46.9,
+    "stop": 3241,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-09-29",
+      "price": 3370,
+      "ret": 1.0,
+      "excess": 2.1
+     },
+     {
+      "label": "+10일",
+      "date": "2025-10-13",
+      "price": 3395,
+      "ret": 1.8,
+      "excess": -1.5
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "blue",
+   "decided_on": "2025-08-21",
+   "reason": "채무상환 0% · 희석 26% · 52주 위치 52% → 패스 · 괴리 +57.8% · 원가할인 +0.8% → 🔵 인수권 매도 vs 청약",
+   "gap": 57.8,
+   "eval": {
+    "entry": 3041,
+    "entry_date": "2025-08-21",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-09-22",
+      "price": 3260,
+      "ret": 7.2,
+      "excess": -3.1
+     },
+     {
+      "label": "+5일",
+      "date": "2025-09-29",
+      "price": 3370,
+      "ret": 10.8,
+      "excess": 1.6
+     },
+     {
+      "label": "+20일",
+      "date": "2025-10-27",
+      "price": 3400,
+      "ret": 11.8,
+      "excess": -16.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 3041,
+    "entry_date": "2025-08-21",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-09-22",
+      "price": 3260,
+      "ret": 7.2,
+      "excess": -3.1
+     },
+     {
+      "label": "+5일",
+      "date": "2025-09-29",
+      "price": 3370,
+      "ret": 10.8,
+      "excess": 1.6
+     },
+     {
+      "label": "+20일",
+      "date": "2025-10-27",
+      "price": 3400,
+      "ret": 11.8,
+      "excess": -16.9
+     }
+    ]
+   }
   },
   {
    "case_id": 39,
@@ -2767,26 +3014,128 @@
    "rcept_nos": [
     "20250716000208",
     "20250813001105",
+    "20250813001269",
     "20250829001825",
     "20251014000212"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-09-02",
+    "rights_start": "2025-09-23",
+    "rights_end": "2025-09-29",
+    "subs_start": "2025-10-16",
+    "listing_date": "2025-11-07",
+    "issue_price": 18830,
+    "alloc_ratio": 0.0871696097
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.0872,
+   "op_income": -4451825396,
+   "op_period": "2025 반기(3개월, OFS)",
+   "pos52": 0.7849316282229245,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 24900,
+    "entry_date": "2025-11-07",
+    "rsi": 44.3,
+    "atr": 1532.5,
+    "stop": 21835,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-11-14",
+      "price": 24200,
+      "ret": -2.8,
+      "excess": -5.2
+     },
+     {
+      "label": "+10일",
+      "date": "2025-11-21",
+      "price": 21835,
+      "ret": -12.3,
+      "stopped": "2025-11-18",
+      "excess": -12.5
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "blue",
+   "decided_on": "2025-09-29",
+   "reason": "채무상환 0% · 희석 9% · 영업손실 -45억 (2025 반기(3개월, OFS)) · 52주 위치 78% → 패스 · 괴리 +32.7% · 원가할인 +8.8% → 🔵 인수권 매도 vs 청약",
+   "gap": 32.7,
+   "eval": {
+    "entry": 28080,
+    "entry_date": "2025-09-29",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-11-07",
+      "price": 24750,
+      "ret": -11.9,
+      "excess": -16.1
+     },
+     {
+      "label": "+5일",
+      "date": "2025-11-14",
+      "price": 24200,
+      "ret": -13.8,
+      "excess": -19.9
+     },
+     {
+      "label": "+20일",
+      "date": "2025-12-05",
+      "price": 22100,
+      "ret": -21.3,
+      "excess": -30.5
+     }
+    ]
+   },
+   "base": {
+    "entry": 28080,
+    "entry_date": "2025-09-29",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-11-07",
+      "price": 24750,
+      "ret": -11.9,
+      "excess": -16.1
+     },
+     {
+      "label": "+5일",
+      "date": "2025-11-14",
+      "price": 24200,
+      "ret": -13.8,
+      "excess": -19.9
+     },
+     {
+      "label": "+20일",
+      "date": "2025-12-05",
+      "price": 22100,
+      "ret": -21.3,
+      "excess": -30.5
+     }
+    ]
+   }
   },
   {
    "case_id": 40,
@@ -2798,22 +3147,20 @@
     "20250806000236"
    ],
    "schedule": {
-    "record_date": null,
+    "record_date": "2025-09-26",
     "rights_start": null,
     "rights_end": null,
-    "subs_start": null,
+    "subs_start": "2025-09-29",
     "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "issue_price": 50000,
+    "alloc_ratio": 0.0138768
    },
    "missing": [
-    "record_date",
     "rights_start",
     "rights_end",
-    "subs_start",
     "listing_date"
    ],
-   "status": "parse_fail"
+   "status": "no_rights_listing"
   },
   {
    "case_id": 41,
@@ -2823,26 +3170,127 @@
    "first_rcept_dt": "20250814",
    "rcept_nos": [
     "20250814002368",
+    "20250915000291",
     "20250930000478",
     "20251110000102"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-10-02",
+    "rights_start": "2025-10-28",
+    "rights_end": "2025-11-03",
+    "subs_start": "2025-11-12",
+    "listing_date": "2025-12-04",
+    "issue_price": 1496,
+    "alloc_ratio": 0.5810626759
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.5811,
+   "op_income": -2662318375,
+   "op_period": "2025 반기(3개월, CFS)",
+   "pos52": 0.07432662802591204,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1599,
+    "entry_date": "2025-12-04",
+    "rsi": 30.9,
+    "atr": 146.0,
+    "stop": 1307,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-12-11",
+      "price": 1638,
+      "ret": 2.4,
+      "excess": 1.9
+     },
+     {
+      "label": "+10일",
+      "date": "2025-12-18",
+      "price": 1770,
+      "ret": 10.7,
+      "excess": 13.8
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-11-03",
+   "reason": "채무상환 0% · 희석 58% · 영업손실 -27억 (2025 반기(3개월, CFS)) → 패스 · 괴리 -60.0% · 원가할인 -7.0% → ⚪ 관찰 샘플",
+   "gap": -60.0,
+   "eval": {
+    "entry": 1596,
+    "entry_date": "2025-11-03",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-04",
+      "price": 1602,
+      "ret": 0.4,
+      "excess": -1.8
+     },
+     {
+      "label": "+5일",
+      "date": "2025-12-11",
+      "price": 1638,
+      "ret": 2.6,
+      "excess": 0.4
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-06",
+      "price": 1715,
+      "ret": 7.5,
+      "excess": 2.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 1596,
+    "entry_date": "2025-11-03",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-04",
+      "price": 1602,
+      "ret": 0.4,
+      "excess": -1.8
+     },
+     {
+      "label": "+5일",
+      "date": "2025-12-11",
+      "price": 1638,
+      "ret": 2.6,
+      "excess": 0.4
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-06",
+      "price": 1715,
+      "ret": 7.5,
+      "excess": 2.9
+     }
+    ]
+   }
   },
   {
    "case_id": 42,
@@ -2852,26 +3300,127 @@
    "first_rcept_dt": "20250818",
    "rcept_nos": [
     "20250818000177",
+    "20250908000125",
     "20250916000044",
     "20251030000223"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-09-18",
+    "rights_start": "2025-10-14",
+    "rights_end": "2025-10-20",
+    "subs_start": "2025-11-03",
+    "listing_date": "2025-11-24",
+    "issue_price": 1307,
+    "alloc_ratio": 0.71186217
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 73.2,
+   "dilution": 0.6085,
+   "op_income": -6787209600,
+   "op_period": "2025 반기(3개월, CFS)",
+   "pos52": 0.02238403451995685,
+   "gate": {
+    "debt": "fail",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1093,
+    "entry_date": "2025-11-24",
+    "rsi": 25.7,
+    "atr": 114.8,
+    "stop": 863,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-12-01",
+      "price": 1415,
+      "ret": 29.5,
+      "excess": 21.8
+     },
+     {
+      "label": "+10일",
+      "date": "2025-12-08",
+      "price": 1798,
+      "ret": 64.5,
+      "excess": 56.2
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-10-20",
+   "reason": "채무상환 73% · 희석 61% · 영업손실 -68억 (2025 반기(3개월, CFS)) → 패스 · 괴리 -41.3% · 원가할인 -4.2% → ⚪ 관찰 샘플",
+   "gap": -41.3,
+   "eval": {
+    "entry": 1405,
+    "entry_date": "2025-10-20",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-11-24",
+      "price": 1091,
+      "ret": -22.3,
+      "excess": -22.1
+     },
+     {
+      "label": "+5일",
+      "date": "2025-12-01",
+      "price": 1415,
+      "ret": 0.7,
+      "excess": -4.6
+     },
+     {
+      "label": "+20일",
+      "date": "2025-12-22",
+      "price": 1845,
+      "ret": 31.3,
+      "excess": 25.2
+     }
+    ]
+   },
+   "base": {
+    "entry": 1405,
+    "entry_date": "2025-10-20",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-11-24",
+      "price": 1091,
+      "ret": -22.3,
+      "excess": -22.1
+     },
+     {
+      "label": "+5일",
+      "date": "2025-12-01",
+      "price": 1415,
+      "ret": 0.7,
+      "excess": -4.6
+     },
+     {
+      "label": "+20일",
+      "date": "2025-12-22",
+      "price": 1845,
+      "ret": 31.3,
+      "excess": 25.2
+     }
+    ]
+   }
   },
   {
    "case_id": 43,
@@ -2881,26 +3430,127 @@
    "first_rcept_dt": "20250818",
    "rcept_nos": [
     "20250818000224",
+    "20250901000410",
     "20250916000067",
     "20251030000356"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-09-18",
+    "rights_start": "2025-10-14",
+    "rights_end": "2025-10-20",
+    "subs_start": "2025-11-03",
+    "listing_date": "2025-11-21",
+    "issue_price": 1549,
+    "alloc_ratio": 0.5341201421
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.5341,
+   "op_income": -3372418969,
+   "op_period": "2025 반기(3개월, CFS)",
+   "pos52": 0.2677654687922183,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1733,
+    "entry_date": "2025-11-21",
+    "rsi": 34.7,
+    "atr": 170.9,
+    "stop": 1391,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-11-28",
+      "price": 1866,
+      "ret": 7.7,
+      "excess": 2.1
+     },
+     {
+      "label": "+10일",
+      "date": "2025-12-05",
+      "price": 1943,
+      "ret": 12.1,
+      "excess": 5.1
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-10-20",
+   "reason": "채무상환 0% · 희석 53% · 영업손실 -34억 (2025 반기(3개월, CFS)) → 패스 · 괴리 -60.4% · 원가할인 -20.8% → ⚪ 관찰 샘플",
+   "gap": -60.4,
+   "eval": {
+    "entry": 1870,
+    "entry_date": "2025-10-20",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-11-21",
+      "price": 1655,
+      "ret": -11.5,
+      "excess": -10.5
+     },
+     {
+      "label": "+5일",
+      "date": "2025-11-28",
+      "price": 1866,
+      "ret": -0.2,
+      "excess": -4.4
+     },
+     {
+      "label": "+20일",
+      "date": "2025-12-19",
+      "price": 1890,
+      "ret": 1.1,
+      "excess": -3.4
+     }
+    ]
+   },
+   "base": {
+    "entry": 1870,
+    "entry_date": "2025-10-20",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-11-21",
+      "price": 1655,
+      "ret": -11.5,
+      "excess": -10.5
+     },
+     {
+      "label": "+5일",
+      "date": "2025-11-28",
+      "price": 1866,
+      "ret": -0.2,
+      "excess": -4.4
+     },
+     {
+      "label": "+20일",
+      "date": "2025-12-19",
+      "price": 1890,
+      "ret": 1.1,
+      "excess": -3.4
+     }
+    ]
+   }
   },
   {
    "case_id": 44,
@@ -2915,22 +3565,122 @@
     "20251020000058"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-09-06",
+    "rights_start": "2025-09-22",
+    "rights_end": "2025-09-26",
+    "subs_start": "2025-10-22",
+    "listing_date": "2025-11-13",
+    "issue_price": 3910,
+    "alloc_ratio": 0.3499999971
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 89.6,
+   "dilution": 0.35,
+   "op_income": 13657941490,
+   "op_period": "2025 반기(3개월, CFS)",
+   "pos52": 0.2539902845246357,
+   "gate": {
+    "debt": "fail",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 4265,
+    "entry_date": "2025-11-13",
+    "rsi": 46.2,
+    "atr": 94.9,
+    "stop": 4075,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-11-20",
+      "price": 4350,
+      "ret": 2.0,
+      "excess": 6.0
+     },
+     {
+      "label": "+10일",
+      "date": "2025-11-27",
+      "price": 4465,
+      "ret": 4.7,
+      "excess": 9.1
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-09-26",
+   "reason": "채무상환 90% · 희석 35% → 패스 · 괴리 -39.6% · 원가할인 -2.5% → ⚪ 관찰 샘플",
+   "gap": -39.6,
+   "eval": {
+    "entry": 4067,
+    "entry_date": "2025-09-26",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-11-13",
+      "price": 4275,
+      "ret": 5.1,
+      "excess": -16.8
+     },
+     {
+      "label": "+5일",
+      "date": "2025-11-20",
+      "price": 4350,
+      "ret": 7.0,
+      "excess": -11.3
+     },
+     {
+      "label": "+20일",
+      "date": "2025-12-11",
+      "price": 4300,
+      "ret": 5.7,
+      "excess": -15.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 4067,
+    "entry_date": "2025-09-26",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-11-13",
+      "price": 4275,
+      "ret": 5.1,
+      "excess": -16.8
+     },
+     {
+      "label": "+5일",
+      "date": "2025-11-20",
+      "price": 4350,
+      "ret": 7.0,
+      "excess": -11.3
+     },
+     {
+      "label": "+20일",
+      "date": "2025-12-11",
+      "price": 4300,
+      "ret": 5.7,
+      "excess": -15.7
+     }
+    ]
+   }
   },
   {
    "case_id": 45,
@@ -2941,26 +3691,127 @@
    "rcept_nos": [
     "20250822000349",
     "20250904000445",
+    "20250905000425",
     "20250929000090",
     "20251106000040"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-10-01",
+    "rights_start": "2025-10-24",
+    "rights_end": "2025-10-30",
+    "subs_start": "2025-11-10",
+    "listing_date": "2025-12-02",
+    "issue_price": 1216,
+    "alloc_ratio": 0.3885833732
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 18.7,
+   "dilution": 0.3886,
+   "op_income": -1808766001,
+   "op_period": "2025 반기(3개월, CFS)",
+   "pos52": 0.13475521085797382,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1198,
+    "entry_date": "2025-12-02",
+    "rsi": 33.7,
+    "atr": 117.7,
+    "stop": 963,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-12-09",
+      "price": 1208,
+      "ret": 0.8,
+      "excess": 0.5
+     },
+     {
+      "label": "+10일",
+      "date": "2025-12-16",
+      "price": 1226,
+      "ret": 2.3,
+      "excess": 3.6
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-10-30",
+   "reason": "채무상환 19% · 희석 39% · 영업손실 -18억 (2025 반기(3개월, CFS)) → 패스 · 괴리 -87.3% · 원가할인 -32.3% → ⚪ 관찰 샘플",
+   "gap": -87.3,
+   "eval": {
+    "entry": 1307,
+    "entry_date": "2025-10-30",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-02",
+      "price": 1244,
+      "ret": -4.8,
+      "excess": -8.2
+     },
+     {
+      "label": "+5일",
+      "date": "2025-12-09",
+      "price": 1208,
+      "ret": -7.6,
+      "excess": -12.1
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-02",
+      "price": 1438,
+      "ret": 10.0,
+      "excess": 3.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 1307,
+    "entry_date": "2025-10-30",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-02",
+      "price": 1244,
+      "ret": -4.8,
+      "excess": -8.2
+     },
+     {
+      "label": "+5일",
+      "date": "2025-12-09",
+      "price": 1208,
+      "ret": -7.6,
+      "excess": -12.1
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-02",
+      "price": 1438,
+      "ret": 10.0,
+      "excess": 3.9
+     }
+    ]
+   }
   },
   {
    "case_id": 46,
@@ -2970,26 +3821,127 @@
    "first_rcept_dt": "20250828",
    "rcept_nos": [
     "20250828001077",
+    "20250911000396",
     "20250926000239",
     "20251105000069"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-09-30",
+    "rights_start": "2025-10-23",
+    "rights_end": "2025-10-29",
+    "subs_start": "2025-11-07",
+    "listing_date": "2025-12-01",
+    "issue_price": 155500,
+    "alloc_ratio": 0.103301966
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.1015,
+   "op_income": 240743602,
+   "op_period": "2025 반기(3개월, CFS)",
+   "pos52": 0.847137799746176,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 231000,
+    "entry_date": "2025-12-01",
+    "rsi": 58.7,
+    "atr": 20778.7,
+    "stop": 189443,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-12-08",
+      "price": 287500,
+      "ret": 24.5,
+      "excess": 23.9
+     },
+     {
+      "label": "+10일",
+      "date": "2025-12-15",
+      "price": 313000,
+      "ret": 35.5,
+      "excess": 33.7
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-10-29",
+   "reason": "채무상환 0% · 희석 10% · 52주 위치 85% → 패스 · 괴리 -26.0% · 원가할인 -12.5% → ⚪ 관찰 샘플",
+   "gap": -26.0,
+   "eval": {
+    "entry": 229300,
+    "entry_date": "2025-10-29",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-01",
+      "price": 238500,
+      "ret": 4.0,
+      "excess": 1.9
+     },
+     {
+      "label": "+5일",
+      "date": "2025-12-08",
+      "price": 287500,
+      "ret": 25.4,
+      "excess": 22.5
+     },
+     {
+      "label": "+20일",
+      "date": "2025-12-30",
+      "price": 261000,
+      "ret": 13.8,
+      "excess": 11.2
+     }
+    ]
+   },
+   "base": {
+    "entry": 229300,
+    "entry_date": "2025-10-29",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-01",
+      "price": 238500,
+      "ret": 4.0,
+      "excess": 1.9
+     },
+     {
+      "label": "+5일",
+      "date": "2025-12-08",
+      "price": 287500,
+      "ret": 25.4,
+      "excess": 22.5
+     },
+     {
+      "label": "+20일",
+      "date": "2025-12-30",
+      "price": 261000,
+      "ret": 13.8,
+      "excess": 11.2
+     }
+    ]
+   }
   },
   {
    "case_id": 47,
@@ -3000,25 +3952,126 @@
    "rcept_nos": [
     "20250829001902",
     "20250929000062",
+    "20251201000556",
     "20251202000060"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-10-01",
+    "rights_start": "2025-10-28",
+    "rights_end": "2025-11-03",
+    "subs_start": "2025-12-04",
+    "listing_date": "2025-12-24",
+    "issue_price": 9940,
+    "alloc_ratio": 0.3828225496
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 17.2,
+   "dilution": 0.3802,
+   "op_income": -788526798,
+   "op_period": "2025 반기(3개월, CFS)",
+   "pos52": 0.571514889943893,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 17190,
+    "entry_date": "2025-12-24",
+    "rsi": 65.6,
+    "atr": 1439.8,
+    "stop": 14310,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-05",
+      "price": 16550,
+      "ret": -3.7,
+      "excess": -8.3
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-12",
+      "price": 17650,
+      "ret": 2.7,
+      "excess": -1.1
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-11-03",
+   "reason": "채무상환 17% · 희석 38% · 영업손실 -8억 (2025 반기(3개월, CFS)) · 52주 위치 57% → 패스 · 괴리 -45.3% · 원가할인 -14.4% → ⚪ 관찰 샘플",
+   "gap": -45.3,
+   "eval": {
+    "entry": 12485,
+    "entry_date": "2025-11-03",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-24",
+      "price": 16510,
+      "ret": 32.2,
+      "excess": 31.5
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-05",
+      "price": 16550,
+      "ret": 32.6,
+      "excess": 27.9
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-26",
+      "price": 23250,
+      "ret": 86.2,
+      "excess": 69.8
+     }
+    ]
+   },
+   "base": {
+    "entry": 12485,
+    "entry_date": "2025-11-03",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-24",
+      "price": 16510,
+      "ret": 32.2,
+      "excess": 31.5
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-05",
+      "price": 16550,
+      "ret": 32.6,
+      "excess": 27.9
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-26",
+      "price": 23250,
+      "ret": 86.2,
+      "excess": 69.8
+     }
+    ]
+   }
   },
   {
    "case_id": 48,
@@ -3029,25 +4082,126 @@
    "rcept_nos": [
     "20250902000099",
     "20251020000104",
+    "20251111000331",
     "20251201000359"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-10-22",
+    "rights_start": "2025-11-11",
+    "rights_end": "2025-11-17",
+    "subs_start": "2025-12-03",
+    "listing_date": "2025-12-24",
+    "issue_price": 1426,
+    "alloc_ratio": 0.63824676
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 100.0,
+   "dilution": 0.6297,
+   "op_income": -5438562189,
+   "op_period": "2025 3분기(3개월, OFS)",
+   "pos52": 0.020263861343450894,
+   "gate": {
+    "debt": "fail",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 3665,
+    "entry_date": "2025-12-24",
+    "rsi": 54.5,
+    "atr": 520.5,
+    "stop": 2624,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-05",
+      "price": 4010,
+      "ret": 9.4,
+      "excess": 4.8
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-12",
+      "price": 3260,
+      "ret": -11.1,
+      "excess": -14.9
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-11-17",
+   "reason": "채무상환 100% · 희석 63% · 영업손실 -54억 (2025 3분기(3개월, OFS)) → 패스 · 괴리 -34.1% · 원가할인 -6.2% → ⚪ 관찰 샘플",
+   "gap": -34.1,
+   "eval": {
+    "entry": 1691,
+    "entry_date": "2025-11-17",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-24",
+      "price": 3420,
+      "ret": 102.2,
+      "excess": 100.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-05",
+      "price": 4010,
+      "ret": 137.1,
+      "excess": 131.1
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-26",
+      "price": 3320,
+      "ret": 96.3,
+      "excess": 78.4
+     }
+    ]
+   },
+   "base": {
+    "entry": 1691,
+    "entry_date": "2025-11-17",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-24",
+      "price": 3420,
+      "ret": 102.2,
+      "excess": 100.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-05",
+      "price": 4010,
+      "ret": 137.1,
+      "excess": 131.1
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-26",
+      "price": 3320,
+      "ret": 96.3,
+      "excess": 78.4
+     }
+    ]
+   }
   },
   {
    "case_id": 49,
@@ -3060,25 +4214,126 @@
     "20251013000065",
     "20251117000063",
     "20251117000120",
+    "20251121000444",
     "20251208000186"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-10-15",
+    "rights_start": "2025-11-24",
+    "rights_end": "2025-11-28",
+    "subs_start": "2025-12-10",
+    "listing_date": "2026-01-06",
+    "issue_price": 6120,
+    "alloc_ratio": 0.2775356801
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.2775,
+   "op_income": -2052686601,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.33459921834672957,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 6820,
+    "entry_date": "2026-01-06",
+    "rsi": 30.1,
+    "atr": 385.2,
+    "stop": 6050,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-13",
+      "price": 6680,
+      "ret": -2.1,
+      "excess": -1.4
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-20",
+      "price": 8970,
+      "ret": 31.5,
+      "excess": 29.4
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-11-28",
+   "reason": "채무상환 0% · 희석 28% · 영업손실 -21억 (2025 3분기(3개월, CFS)) → 패스 · 괴리 -32.9% · 원가할인 -2.7% → ⚪ 관찰 샘플",
+   "gap": -32.9,
+   "eval": {
+    "entry": 6590,
+    "entry_date": "2025-11-28",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-06",
+      "price": 6830,
+      "ret": 3.6,
+      "excess": -1.5
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-13",
+      "price": 6680,
+      "ret": 1.4,
+      "excess": -2.6
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-03",
+      "price": 7830,
+      "ret": 18.8,
+      "excess": -6.6
+     }
+    ]
+   },
+   "base": {
+    "entry": 6590,
+    "entry_date": "2025-11-28",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-06",
+      "price": 6830,
+      "ret": 3.6,
+      "excess": -1.5
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-13",
+      "price": 6680,
+      "ret": 1.4,
+      "excess": -2.6
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-03",
+      "price": 7830,
+      "ret": 18.8,
+      "excess": -6.6
+     }
+    ]
+   }
   },
   {
    "case_id": 50,
@@ -3089,26 +4344,127 @@
    "rcept_nos": [
     "20250908000201",
     "20251028000201",
+    "20251128001250",
     "20251204000135",
     "20251204000242"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-10-30",
+    "rights_start": "2025-11-18",
+    "rights_end": "2025-11-24",
+    "subs_start": "2025-12-08",
+    "listing_date": "2025-12-30",
+    "issue_price": 2885,
+    "alloc_ratio": 0.3033016062
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.3033,
+   "op_income": -3035084441,
+   "op_period": "2025 3분기(3개월, OFS)",
+   "pos52": 0.2266497461928934,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 3245,
+    "entry_date": "2025-12-30",
+    "rsi": 35.6,
+    "atr": 213.3,
+    "stop": 2818,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-08",
+      "price": 3185,
+      "ret": -1.8,
+      "excess": -3.8
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-15",
+      "price": 3310,
+      "ret": 2.0,
+      "excess": -0.8
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-11-24",
+   "reason": "채무상환 0% · 희석 30% · 영업손실 -30억 (2025 3분기(3개월, OFS)) → 패스 · 괴리 -57.7% · 원가할인 -8.2% → ⚪ 관찰 샘플",
+   "gap": -57.7,
+   "eval": {
+    "entry": 3105,
+    "entry_date": "2025-11-24",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-30",
+      "price": 3280,
+      "ret": 5.6,
+      "excess": -2.8
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-08",
+      "price": 3185,
+      "ret": 2.6,
+      "excess": -7.7
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-29",
+      "price": 3630,
+      "ret": 16.9,
+      "excess": -19.1
+     }
+    ]
+   },
+   "base": {
+    "entry": 3105,
+    "entry_date": "2025-11-24",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-30",
+      "price": 3280,
+      "ret": 5.6,
+      "excess": -2.8
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-08",
+      "price": 3185,
+      "ret": 2.6,
+      "excess": -7.7
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-29",
+      "price": 3630,
+      "ret": 16.9,
+      "excess": -19.1
+     }
+    ]
+   }
   },
   {
    "case_id": 51,
@@ -3119,25 +4475,126 @@
    "rcept_nos": [
     "20250912000439",
     "20251105000214",
+    "20251118000359",
     "20251209000388"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-11-07",
+    "rights_start": "2025-11-26",
+    "rights_end": "2025-12-02",
+    "subs_start": "2025-12-11",
+    "listing_date": "2026-01-07",
+    "issue_price": 2700,
+    "alloc_ratio": 0.5898361402
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 79.0,
+   "dilution": 0.5898,
+   "op_income": -2314558756,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.2550228310502283,
+   "gate": {
+    "debt": "fail",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 3700,
+    "entry_date": "2026-01-07",
+    "rsi": 39.8,
+    "atr": 337.7,
+    "stop": 3025,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-14",
+      "price": 3895,
+      "ret": 5.3,
+      "excess": 5.8
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-21",
+      "price": 3415,
+      "ret": -7.7,
+      "excess": -8.1
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-12-02",
+   "reason": "채무상환 79% · 희석 59% · 영업손실 -23억 (2025 3분기(3개월, CFS)) → 패스 · 괴리 -66.8% · 원가할인 -28.2% → ⚪ 관찰 샘플",
+   "gap": -66.8,
+   "eval": {
+    "entry": 3355,
+    "entry_date": "2025-12-02",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-07",
+      "price": 3760,
+      "ret": 12.1,
+      "excess": 8.9
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-14",
+      "price": 3895,
+      "ret": 16.1,
+      "excess": 14.6
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-04",
+      "price": 3700,
+      "ret": 10.3,
+      "excess": -13.5
+     }
+    ]
+   },
+   "base": {
+    "entry": 3355,
+    "entry_date": "2025-12-02",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-07",
+      "price": 3760,
+      "ret": 12.1,
+      "excess": 8.9
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-14",
+      "price": 3895,
+      "ret": 16.1,
+      "excess": 14.6
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-04",
+      "price": 3700,
+      "ret": 10.3,
+      "excess": -13.5
+     }
+    ]
+   }
   },
   {
    "case_id": 53,
@@ -3148,25 +4605,126 @@
    "rcept_nos": [
     "20250916000306",
     "20251023000256",
+    "20251112000574",
     "20251127000793"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-10-27",
+    "rights_start": "2025-11-13",
+    "rights_end": "2025-11-19",
+    "subs_start": "2025-12-01",
+    "listing_date": "2025-12-22",
+    "issue_price": 1397,
+    "alloc_ratio": 0.5994920748
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.5993,
+   "op_income": -1647356792,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.1980347694633409,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1630,
+    "entry_date": "2025-12-22",
+    "rsi": 43.9,
+    "atr": 182.0,
+    "stop": 1266,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-12-30",
+      "price": 1739,
+      "ret": 6.7,
+      "excess": 7.1
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-08",
+      "price": 1704,
+      "ret": 4.5,
+      "excess": 2.9
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-11-19",
+   "reason": "채무상환 0% · 희석 60% · 영업손실 -16억 (2025 3분기(3개월, CFS)) → 패스 · 괴리 -55.9% · 원가할인 -5.9% → ⚪ 관찰 샘플",
+   "gap": -55.9,
+   "eval": {
+    "entry": 1479,
+    "entry_date": "2025-11-19",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-22",
+      "price": 1566,
+      "ret": 5.9,
+      "excess": -0.2
+     },
+     {
+      "label": "+5일",
+      "date": "2025-12-30",
+      "price": 1739,
+      "ret": 17.6,
+      "excess": 11.4
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-22",
+      "price": 1474,
+      "ret": -0.3,
+      "excess": -11.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 1479,
+    "entry_date": "2025-11-19",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-22",
+      "price": 1566,
+      "ret": 5.9,
+      "excess": -0.2
+     },
+     {
+      "label": "+5일",
+      "date": "2025-12-30",
+      "price": 1739,
+      "ret": 17.6,
+      "excess": 11.4
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-22",
+      "price": 1474,
+      "ret": -0.3,
+      "excess": -11.7
+     }
+    ]
+   }
   },
   {
    "case_id": 54,
@@ -3178,25 +4736,126 @@
     "20250917000317",
     "20251001000675",
     "20251024000192",
+    "20251127000964",
     "20251201000168"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-10-28",
+    "rights_start": "2025-11-18",
+    "rights_end": "2025-11-24",
+    "subs_start": "2025-12-03",
+    "listing_date": "2025-12-26",
+    "issue_price": 1475,
+    "alloc_ratio": 0.2987191374
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.2987,
+   "op_income": -723236621,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.5644399460188934,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1680,
+    "entry_date": "2025-12-26",
+    "rsi": 31.6,
+    "atr": 87.0,
+    "stop": 1506,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-06",
+      "price": 1730,
+      "ret": 3.0,
+      "excess": -6.6
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-13",
+      "price": 1685,
+      "ret": 0.3,
+      "excess": -13.3
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "blue",
+   "decided_on": "2025-11-24",
+   "reason": "채무상환 0% · 희석 30% · 영업손실 -7억 (2025 3분기(3개월, CFS)) · 52주 위치 56% → 패스 · 괴리 +122.1% · 원가할인 +4.2% → 🔵 인수권 매도 vs 청약",
+   "gap": 122.1,
+   "eval": {
+    "entry": 1626,
+    "entry_date": "2025-11-24",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-26",
+      "price": 1711,
+      "ret": 5.2,
+      "excess": -2.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-06",
+      "price": 1730,
+      "ret": 6.4,
+      "excess": -11.3
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-27",
+      "price": 1898,
+      "ret": 16.7,
+      "excess": -15.5
+     }
+    ]
+   },
+   "base": {
+    "entry": 1626,
+    "entry_date": "2025-11-24",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-26",
+      "price": 1711,
+      "ret": 5.2,
+      "excess": -2.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-06",
+      "price": 1730,
+      "ret": 6.4,
+      "excess": -11.3
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-27",
+      "price": 1898,
+      "ret": 16.7,
+      "excess": -15.5
+     }
+    ]
+   }
   },
   {
    "case_id": 55,
@@ -3208,25 +4867,126 @@
     "20250918000295",
     "20251023000332",
     "20251107000446",
+    "20251114003022",
     "20251211000237"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-11-11",
+    "rights_start": "2025-11-28",
+    "rights_end": "2025-12-04",
+    "subs_start": "2025-12-15",
+    "listing_date": "2026-01-09",
+    "issue_price": 1535,
+    "alloc_ratio": 0.4927253118
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 92.9,
+   "dilution": 0.4927,
+   "op_income": -3113197834,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.13497782705099778,
+   "gate": {
+    "debt": "fail",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1703,
+    "entry_date": "2026-01-09",
+    "rsi": 34.3,
+    "atr": 131.3,
+    "stop": 1440,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-16",
+      "price": 1766,
+      "ret": 3.7,
+      "excess": 3.0
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-23",
+      "price": 2030,
+      "ret": 19.2,
+      "excess": 14.3
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-12-04",
+   "reason": "채무상환 93% · 희석 49% · 영업손실 -31억 (2025 3분기(3개월, CFS)) → 패스 · 괴리 -47.9% · 원가할인 -15.5% → ⚪ 관찰 샘플",
+   "gap": -47.9,
+   "eval": {
+    "entry": 1915,
+    "entry_date": "2025-12-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-09",
+      "price": 1692,
+      "ret": -11.6,
+      "excess": -13.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-16",
+      "price": 1766,
+      "ret": -7.8,
+      "excess": -10.4
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-06",
+      "price": 2525,
+      "ret": 31.9,
+      "excess": 15.6
+     }
+    ]
+   },
+   "base": {
+    "entry": 1915,
+    "entry_date": "2025-12-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-09",
+      "price": 1692,
+      "ret": -11.6,
+      "excess": -13.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-16",
+      "price": 1766,
+      "ret": -7.8,
+      "excess": -10.4
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-06",
+      "price": 2525,
+      "ret": 31.9,
+      "excess": 15.6
+     }
+    ]
+   }
   },
   {
    "case_id": 56,
@@ -3238,26 +4998,127 @@
     "20250919000546",
     "20251128001660",
     "20251212000377",
+    "20251222000268",
     "20251224000413",
     "20260130000564"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-12-29",
+    "rights_start": "2026-01-19",
+    "rights_end": "2026-01-23",
+    "subs_start": "2026-02-03",
+    "listing_date": "2026-02-23",
+    "issue_price": 855,
+    "alloc_ratio": 1.469007432
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 58.5,
+   "dilution": 1.3793,
+   "op_income": -3224443070,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.22111553784860558,
+   "gate": {
+    "debt": "fail",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "fail",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1478,
+    "entry_date": "2026-02-23",
+    "rsi": 24.8,
+    "atr": 390.8,
+    "stop": 696,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-03-03",
+      "price": 1322,
+      "ret": -10.6,
+      "excess": -9.4
+     },
+     {
+      "label": "+10일",
+      "date": "2026-03-10",
+      "price": 1098,
+      "ret": -25.7,
+      "excess": -24.5
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2026-01-23",
+   "reason": "채무상환 58% · 희석 138% · 영업손실 -32억 (2025 3분기(3개월, CFS)) · 실권주 미발행 — 인수단 책임 없음 → 패스 · 괴리 -66.7% · 원가할인 -51.5% → ⚪ 관찰 샘플",
+   "gap": -66.7,
+   "eval": {
+    "entry": 1815,
+    "entry_date": "2026-01-23",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-02-23",
+      "price": 1528,
+      "ret": -15.8,
+      "excess": -33.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-03-03",
+      "price": 1322,
+      "ret": -27.2,
+      "excess": -41.6
+     },
+     {
+      "label": "+20일",
+      "date": "2026-03-24",
+      "price": 1105,
+      "ret": -39.1,
+      "excess": -51.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 1815,
+    "entry_date": "2026-01-23",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-02-23",
+      "price": 1528,
+      "ret": -15.8,
+      "excess": -33.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-03-03",
+      "price": 1322,
+      "ret": -27.2,
+      "excess": -41.6
+     },
+     {
+      "label": "+20일",
+      "date": "2026-03-24",
+      "price": 1105,
+      "ret": -39.1,
+      "excess": -51.9
+     }
+    ]
+   }
   },
   {
    "case_id": 57,
@@ -3269,25 +5130,126 @@
     "20250923000327",
     "20250925000485",
     "20251112000046",
+    "20251117000155",
     "20251217000048"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-11-14",
+    "rights_start": "2025-12-04",
+    "rights_end": "2025-12-10",
+    "subs_start": "2025-12-19",
+    "listing_date": "2026-01-12",
+    "issue_price": 2830,
+    "alloc_ratio": 0.4096482585
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 89.8,
+   "dilution": 0.512,
+   "op_income": 95301547871,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.18129661503155478,
+   "gate": {
+    "debt": "fail",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 2845,
+    "entry_date": "2026-01-12",
+    "rsi": 30.2,
+    "atr": 139.0,
+    "stop": 2567,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-19",
+      "price": 3180,
+      "ret": 11.8,
+      "excess": 5.7
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-26",
+      "price": 3305,
+      "ret": 16.2,
+      "excess": 9.2
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-12-10",
+   "reason": "채무상환 90% · 희석 51% → 패스 · 괴리 -84.8% · 원가할인 -5.3% → ⚪ 관찰 샘플",
+   "gap": -84.8,
+   "eval": {
+    "entry": 2865,
+    "entry_date": "2025-12-10",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-12",
+      "price": 2830,
+      "ret": -1.2,
+      "excess": -13.4
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-19",
+      "price": 3180,
+      "ret": 11.0,
+      "excess": -7.6
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-09",
+      "price": 3875,
+      "ret": 35.3,
+      "excess": 7.1
+     }
+    ]
+   },
+   "base": {
+    "entry": 2865,
+    "entry_date": "2025-12-10",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-12",
+      "price": 2830,
+      "ret": -1.2,
+      "excess": -13.4
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-19",
+      "price": 3180,
+      "ret": 11.0,
+      "excess": -7.6
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-09",
+      "price": 3875,
+      "ret": 35.3,
+      "excess": 7.1
+     }
+    ]
+   }
   },
   {
    "case_id": 58,
@@ -3298,25 +5260,126 @@
    "rcept_nos": [
     "20250924000426",
     "20251029000075",
+    "20251114003060",
     "20251202000050"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-10-31",
+    "rights_start": "2025-11-19",
+    "rights_end": "2025-11-25",
+    "subs_start": "2025-12-04",
+    "listing_date": "2025-12-30",
+    "issue_price": 1788,
+    "alloc_ratio": 0.3882382793
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 7.8,
+   "dilution": 0.3882,
+   "op_income": -3939092113,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.808983666061706,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1965,
+    "entry_date": "2025-12-30",
+    "rsi": 20.6,
+    "atr": 1308.8,
+    "stop": -653,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-08",
+      "price": 1883,
+      "ret": -4.2,
+      "excess": -6.2
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-15",
+      "price": 1975,
+      "ret": 0.5,
+      "excess": -2.3
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-11-25",
+   "reason": "채무상환 8% · 희석 39% · 영업손실 -39억 (2025 3분기(3개월, CFS)) · 52주 위치 81% → 패스 · 괴리 -72.0% · 원가할인 -15.0% → ⚪ 관찰 샘플",
+   "gap": -72.0,
+   "eval": {
+    "entry": 1920,
+    "entry_date": "2025-11-25",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-30",
+      "price": 1899,
+      "ret": -1.1,
+      "excess": -9.6
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-08",
+      "price": 1883,
+      "ret": -1.9,
+      "excess": -12.2
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-29",
+      "price": 1929,
+      "ret": 0.5,
+      "excess": -35.6
+     }
+    ]
+   },
+   "base": {
+    "entry": 1920,
+    "entry_date": "2025-11-25",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-12-30",
+      "price": 1899,
+      "ret": -1.1,
+      "excess": -9.6
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-08",
+      "price": 1883,
+      "ret": -1.9,
+      "excess": -12.2
+     },
+     {
+      "label": "+20일",
+      "date": "2026-01-29",
+      "price": 1929,
+      "ret": 0.5,
+      "excess": -35.6
+     }
+    ]
+   }
   },
   {
    "case_id": 59,
@@ -3327,25 +5390,126 @@
    "rcept_nos": [
     "20250929000307",
     "20251106000118",
+    "20251117000086",
     "20251211000083"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-11-10",
+    "rights_start": "2025-11-28",
+    "rights_end": "2025-12-04",
+    "subs_start": "2025-12-15",
+    "listing_date": "2026-01-08",
+    "issue_price": 1334,
+    "alloc_ratio": 0.54472686
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 32.1,
+   "dilution": 0.5447,
+   "op_income": -2441211903,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.09988437249844348,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1316,
+    "entry_date": "2026-01-08",
+    "rsi": 27.8,
+    "atr": 116.9,
+    "stop": 1082,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-15",
+      "price": 1255,
+      "ret": -4.6,
+      "excess": -5.4
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-22",
+      "price": 1305,
+      "ret": -0.8,
+      "excess": -3.6
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-12-04",
+   "reason": "채무상환 32% · 희석 54% · 영업손실 -24억 (2025 3분기(3개월, CFS)) → 패스 · 괴리 -89.7% · 원가할인 -6.8% → ⚪ 관찰 샘플",
+   "gap": -89.7,
+   "eval": {
+    "entry": 1349,
+    "entry_date": "2025-12-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-08",
+      "price": 1322,
+      "ret": -2.0,
+      "excess": -4.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-15",
+      "price": 1255,
+      "ret": -7.0,
+      "excess": -9.3
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-05",
+      "price": 1323,
+      "ret": -1.9,
+      "excess": -21.1
+     }
+    ]
+   },
+   "base": {
+    "entry": 1349,
+    "entry_date": "2025-12-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-08",
+      "price": 1322,
+      "ret": -2.0,
+      "excess": -4.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-15",
+      "price": 1255,
+      "ret": -7.0,
+      "excess": -9.3
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-05",
+      "price": 1323,
+      "ret": -1.9,
+      "excess": -21.1
+     }
+    ]
+   }
   },
   {
    "case_id": 60,
@@ -3359,26 +5523,127 @@
     "20251124000290",
     "20251205000500",
     "20251219000445",
+    "20260106000525",
     "20260108000422",
     "20260219002337"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2026-01-12",
+    "rights_start": "2026-02-03",
+    "rights_end": "2026-02-09",
+    "subs_start": "2026-02-23",
+    "listing_date": "2026-03-19",
+    "issue_price": 3065,
+    "alloc_ratio": 0.2142302834
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 40.4,
+   "dilution": 0.2119,
+   "op_income": -10202816932,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.2893866666666667,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 3445,
+    "entry_date": "2026-03-19",
+    "rsi": 39.1,
+    "atr": 311.9,
+    "stop": 2821,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-03-26",
+      "price": 3430,
+      "ret": -0.4,
+      "excess": 0.2
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-02",
+      "price": 3080,
+      "ret": -10.6,
+      "excess": -3.0
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2026-02-09",
+   "reason": "채무상환 40% · 희석 21% · 영업손실 -102억 (2025 3분기(3개월, CFS)) → 패스 · 괴리 -37.5% · 원가할인 -9.4% → ⚪ 관찰 샘플",
+   "gap": -37.5,
+   "eval": {
+    "entry": 3756,
+    "entry_date": "2026-02-09",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-03-19",
+      "price": 3415,
+      "ret": -9.1,
+      "excess": -10.1
+     },
+     {
+      "label": "+5일",
+      "date": "2026-03-26",
+      "price": 3430,
+      "ret": -8.7,
+      "excess": -9.5
+     },
+     {
+      "label": "+20일",
+      "date": "2026-04-16",
+      "price": 3190,
+      "ret": -15.1,
+      "excess": -18.2
+     }
+    ]
+   },
+   "base": {
+    "entry": 3756,
+    "entry_date": "2026-02-09",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-03-19",
+      "price": 3415,
+      "ret": -9.1,
+      "excess": -10.1
+     },
+     {
+      "label": "+5일",
+      "date": "2026-03-26",
+      "price": 3430,
+      "ret": -8.7,
+      "excess": -9.5
+     },
+     {
+      "label": "+20일",
+      "date": "2026-04-16",
+      "price": 3190,
+      "ret": -15.1,
+      "excess": -18.2
+     }
+    ]
+   }
   },
   {
    "case_id": 62,
@@ -3389,26 +5654,127 @@
    "rcept_nos": [
     "20251015000212",
     "20251113000574",
+    "20251113000710",
     "20251216000178",
     "20251224000014"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-11-17",
+    "rights_start": "2025-12-03",
+    "rights_end": "2025-12-09",
+    "subs_start": "2025-12-18",
+    "listing_date": "2026-01-08",
+    "issue_price": 3345,
+    "alloc_ratio": 0.3864195013
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.3845,
+   "op_income": -1640951192,
+   "op_period": "2025 3분기(3개월, OFS)",
+   "pos52": 0.5144170497283744,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "fail",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 3940,
+    "entry_date": "2026-01-08",
+    "rsi": 34.8,
+    "atr": 343.8,
+    "stop": 3252,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-15",
+      "price": 4070,
+      "ret": 3.3,
+      "excess": 2.5
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-22",
+      "price": 3995,
+      "ret": 1.4,
+      "excess": -1.4
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-12-09",
+   "reason": "채무상환 0% · 희석 38% · 영업손실 -16억 (2025 3분기(3개월, OFS)) · 52주 위치 51% · 실권주 미발행 — 인수단 책임 없음 → 패스 · 괴리 -52.5% · 원가할인 -14.5% → ⚪ 관찰 샘플",
+   "gap": -52.5,
+   "eval": {
+    "entry": 3950,
+    "entry_date": "2025-12-09",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-08",
+      "price": 3935,
+      "ret": -0.4,
+      "excess": -2.5
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-15",
+      "price": 4070,
+      "ret": 3.0,
+      "excess": 0.9
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-05",
+      "price": 4730,
+      "ret": 19.7,
+      "excess": 0.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 3950,
+    "entry_date": "2025-12-09",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-01-08",
+      "price": 3935,
+      "ret": -0.4,
+      "excess": -2.5
+     },
+     {
+      "label": "+5일",
+      "date": "2026-01-15",
+      "price": 4070,
+      "ret": 3.0,
+      "excess": 0.9
+     },
+     {
+      "label": "+20일",
+      "date": "2026-02-05",
+      "price": 4730,
+      "ret": 19.7,
+      "excess": 0.7
+     }
+    ]
+   }
   },
   {
    "case_id": 63,
@@ -3418,26 +5784,127 @@
    "first_rcept_dt": "20251031",
    "rcept_nos": [
     "20251031000452",
+    "20251128001916",
     "20251215000269",
     "20260120000029"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-12-17",
+    "rights_start": "2026-01-07",
+    "rights_end": "2026-01-13",
+    "subs_start": "2026-01-22",
+    "listing_date": "2026-02-13",
+    "issue_price": 1000,
+    "alloc_ratio": 0.6038977609
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 31.3,
+   "dilution": 0.5991,
+   "op_income": -1387265027,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.1323859386686612,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1229,
+    "entry_date": "2026-02-13",
+    "rsi": 38.1,
+    "atr": 129.9,
+    "stop": 969,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-02-25",
+      "price": 1312,
+      "ret": 6.8,
+      "excess": -3.7
+     },
+     {
+      "label": "+10일",
+      "date": "2026-03-05",
+      "price": 1085,
+      "ret": -11.7,
+      "excess": -13.1
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2026-01-13",
+   "reason": "채무상환 31% · 희석 60% · 영업손실 -14억 (2025 3분기(3개월, CFS)) → 패스 · 괴리 -65.9% · 원가할인 -28.2% → ⚪ 관찰 샘플",
+   "gap": -65.9,
+   "eval": {
+    "entry": 1230,
+    "entry_date": "2026-01-13",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-02-13",
+      "price": 1192,
+      "ret": -3.1,
+      "excess": -20.6
+     },
+     {
+      "label": "+5일",
+      "date": "2026-02-25",
+      "price": 1312,
+      "ret": 6.7,
+      "excess": -23.0
+     },
+     {
+      "label": "+20일",
+      "date": "2026-03-19",
+      "price": 1005,
+      "ret": -18.3,
+      "excess": -41.1
+     }
+    ]
+   },
+   "base": {
+    "entry": 1230,
+    "entry_date": "2026-01-13",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-02-13",
+      "price": 1192,
+      "ret": -3.1,
+      "excess": -20.6
+     },
+     {
+      "label": "+5일",
+      "date": "2026-02-25",
+      "price": 1312,
+      "ret": 6.7,
+      "excess": -23.0
+     },
+     {
+      "label": "+20일",
+      "date": "2026-03-19",
+      "price": 1005,
+      "ret": -18.3,
+      "excess": -41.1
+     }
+    ]
+   }
   },
   {
    "case_id": 64,
@@ -3447,27 +5914,130 @@
    "first_rcept_dt": "20251121",
    "rcept_nos": [
     "20251121000484",
+    "20251216000021",
     "20251222000119",
     "20260129000293",
     "20260210000332"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2025-12-24",
+    "rights_start": "2026-01-15",
+    "rights_end": "2026-01-21",
+    "subs_start": "2026-02-02",
+    "listing_date": "2026-02-25",
+    "issue_price": 845,
+    "alloc_ratio": 0.4654663801
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.4561,
+   "op_income": -3776788564,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.011759935117599351,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 897,
+    "entry_date": "2026-02-25",
+    "rsi": 35.2,
+    "atr": 115.0,
+    "stop": 667,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-03-05",
+      "price": 667,
+      "ret": -25.6,
+      "stopped": "2026-03-04",
+      "excess": -9.6
+     },
+     {
+      "label": "+10일",
+      "date": "2026-03-12",
+      "price": 667,
+      "ret": -25.6,
+      "stopped": "2026-03-04",
+      "excess": -9.6
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2026-01-21",
+   "reason": "채무상환 0% · 희석 46% · 영업손실 -38억 (2025 3분기(3개월, CFS)) → 패스 · 괴리 -28.3% · 원가할인 -3.8% → ⚪ 관찰 샘플",
+   "gap": -28.3,
+   "eval": {
+    "entry": 944,
+    "entry_date": "2026-01-21",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-02-25",
+      "price": 890,
+      "ret": -5.7,
+      "excess": -29.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-03-05",
+      "price": 662,
+      "ret": -29.9,
+      "excess": -47.2
+     },
+     {
+      "label": "+20일",
+      "date": "2026-03-26",
+      "price": 848,
+      "ret": -10.2,
+      "excess": -29.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 944,
+    "entry_date": "2026-01-21",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-02-25",
+      "price": 890,
+      "ret": -5.7,
+      "excess": -29.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-03-05",
+      "price": 662,
+      "ret": -29.9,
+      "excess": -47.2
+     },
+     {
+      "label": "+20일",
+      "date": "2026-03-26",
+      "price": 848,
+      "ret": -10.2,
+      "excess": -29.7
+     }
+    ]
+   }
   },
   {
    "case_id": 65,
@@ -3477,26 +6047,127 @@
    "first_rcept_dt": "20251128",
    "rcept_nos": [
     "20251128001499",
+    "20251212000286",
     "20260108000062",
     "20260312000261"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2026-01-12",
+    "rights_start": "2026-02-02",
+    "rights_end": "2026-02-06",
+    "subs_start": "2026-03-16",
+    "listing_date": "2026-04-06",
+    "issue_price": 1963,
+    "alloc_ratio": 0.67
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.67,
+   "op_income": 616658326,
+   "op_period": "2025 3분기(3개월, OFS)",
+   "pos52": 0.1117677286742035,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 2160,
+    "entry_date": "2026-04-06",
+    "rsi": 31.3,
+    "atr": 128.6,
+    "stop": 1903,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-04-13",
+      "price": 2325,
+      "ret": 7.6,
+      "excess": 1.0
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-20",
+      "price": 2390,
+      "ret": 10.6,
+      "excess": -3.5
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2026-02-06",
+   "reason": "채무상환 0% · 희석 67% → 패스 · 괴리 -13.2% · 원가할인 -3.4% → ⚪ 관찰 샘플",
+   "gap": -13.2,
+   "eval": {
+    "entry": 2588,
+    "entry_date": "2026-02-06",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-04-06",
+      "price": 2260,
+      "ret": -12.7,
+      "excess": -19.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-04-13",
+      "price": 2325,
+      "ret": -10.2,
+      "excess": -24.3
+     },
+     {
+      "label": "+20일",
+      "date": "2026-05-06",
+      "price": 2365,
+      "ret": -8.6,
+      "excess": -53.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 2588,
+    "entry_date": "2026-02-06",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-04-06",
+      "price": 2260,
+      "ret": -12.7,
+      "excess": -19.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-04-13",
+      "price": 2325,
+      "ret": -10.2,
+      "excess": -24.3
+     },
+     {
+      "label": "+20일",
+      "date": "2026-05-06",
+      "price": 2365,
+      "ret": -8.6,
+      "excess": -53.7
+     }
+    ]
+   }
   },
   {
    "case_id": 66,
@@ -3508,26 +6179,127 @@
     "20251128001742",
     "20251128002110",
     "20251229000653",
+    "20260112000202",
     "20260120000205",
     "20260227004466"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2026-01-22",
+    "rights_start": "2026-02-11",
+    "rights_end": "2026-02-20",
+    "subs_start": "2026-03-04",
+    "listing_date": "2026-03-25",
+    "issue_price": 848,
+    "alloc_ratio": 0.63513534
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.6113,
+   "op_income": -4534050114,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.462800875273523,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 1617,
+    "entry_date": "2026-03-25",
+    "rsi": 49.6,
+    "atr": 263.9,
+    "stop": 1089,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-04-01",
+      "price": 1530,
+      "ret": -5.4,
+      "excess": -1.7
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-08",
+      "price": 1811,
+      "ret": 12.0,
+      "excess": 18.0
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2026-02-20",
+   "reason": "채무상환 0% · 희석 61% · 영업손실 -45억 (2025 3분기(3개월, CFS)) → 패스 · 괴리 -30.3% · 원가할인 -15.7% → ⚪ 관찰 샘플",
+   "gap": -30.3,
+   "eval": {
+    "entry": 1339,
+    "entry_date": "2026-02-20",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-03-25",
+      "price": 1711,
+      "ret": 27.8,
+      "excess": 29.6
+     },
+     {
+      "label": "+5일",
+      "date": "2026-04-01",
+      "price": 1530,
+      "ret": 14.3,
+      "excess": 17.5
+     },
+     {
+      "label": "+20일",
+      "date": "2026-04-22",
+      "price": 1888,
+      "ret": 41.0,
+      "excess": 38.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 1339,
+    "entry_date": "2026-02-20",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-03-25",
+      "price": 1711,
+      "ret": 27.8,
+      "excess": 29.6
+     },
+     {
+      "label": "+5일",
+      "date": "2026-04-01",
+      "price": 1530,
+      "ret": 14.3,
+      "excess": 17.5
+     },
+     {
+      "label": "+20일",
+      "date": "2026-04-22",
+      "price": 1888,
+      "ret": 41.0,
+      "excess": 38.7
+     }
+    ]
+   }
   },
   {
    "case_id": 67,
@@ -3538,26 +6310,127 @@
    "rcept_nos": [
     "20251205000323",
     "20251219000253",
+    "20251219000305",
     "20260115000118",
     "20260227006156"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2026-01-19",
+    "rights_start": "2026-02-09",
+    "rights_end": "2026-02-13",
+    "subs_start": "2026-03-04",
+    "listing_date": "2026-03-25",
+    "issue_price": 2250,
+    "alloc_ratio": 0.1432089843
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.1432,
+   "op_income": 1201537652,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.660904255319149,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 3005,
+    "entry_date": "2026-03-25",
+    "rsi": 45.4,
+    "atr": 66.9,
+    "stop": 2871,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-04-01",
+      "price": 2980,
+      "ret": -0.8,
+      "excess": 2.1
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-08",
+      "price": 3030,
+      "ret": 0.8,
+      "excess": -3.3
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2026-02-13",
+   "reason": "채무상환 0% · 희석 14% · 52주 위치 66% → 패스 · 괴리 +5.2% · 원가할인 +1.6% → ⚪ 관찰 샘플",
+   "gap": 5.2,
+   "eval": {
+    "entry": 3286,
+    "entry_date": "2026-02-13",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-03-25",
+      "price": 2980,
+      "ret": -9.3,
+      "excess": -12.5
+     },
+     {
+      "label": "+5일",
+      "date": "2026-04-01",
+      "price": 2980,
+      "ret": -9.3,
+      "excess": -8.8
+     },
+     {
+      "label": "+20일",
+      "date": "2026-04-22",
+      "price": 3065,
+      "ret": -6.7,
+      "excess": -23.3
+     }
+    ]
+   },
+   "base": {
+    "entry": 3286,
+    "entry_date": "2026-02-13",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-03-25",
+      "price": 2980,
+      "ret": -9.3,
+      "excess": -12.5
+     },
+     {
+      "label": "+5일",
+      "date": "2026-04-01",
+      "price": 2980,
+      "ret": -9.3,
+      "excess": -8.8
+     },
+     {
+      "label": "+20일",
+      "date": "2026-04-22",
+      "price": 3065,
+      "ret": -6.7,
+      "excess": -23.3
+     }
+    ]
+   }
   },
   {
    "case_id": 68,
@@ -3567,26 +6440,127 @@
    "first_rcept_dt": "20251205",
    "rcept_nos": [
     "20251205000556",
+    "20260105000099",
     "20260107000372",
     "20260223002079"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2026-01-09",
+    "rights_start": "2026-02-04",
+    "rights_end": "2026-02-10",
+    "subs_start": "2026-02-25",
+    "listing_date": "2026-03-19",
+    "issue_price": 2340,
+    "alloc_ratio": 0.1780496456
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 18.2,
+   "dilution": 0.178,
+   "op_income": -6710740620,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.688470066518847,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 7390,
+    "entry_date": "2026-03-19",
+    "rsi": 70.7,
+    "atr": 819.5,
+    "stop": 5751,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-03-26",
+      "price": 9300,
+      "ret": 25.8,
+      "excess": 26.4
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-02",
+      "price": 10120,
+      "ret": 36.9,
+      "excess": 44.5
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2026-02-10",
+   "reason": "채무상환 18% · 희석 18% · 영업손실 -67억 (2025 3분기(3개월, CFS)) · 52주 위치 69% → 패스 · 괴리 +12.4% · 원가할인 +4.2% → ⚪ 관찰 샘플",
+   "gap": 12.4,
+   "eval": {
+    "entry": 3531,
+    "entry_date": "2026-02-10",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-03-19",
+      "price": 6800,
+      "ret": 92.6,
+      "excess": 90.4
+     },
+     {
+      "label": "+5일",
+      "date": "2026-03-26",
+      "price": 9300,
+      "ret": 163.4,
+      "excess": 161.5
+     },
+     {
+      "label": "+20일",
+      "date": "2026-04-16",
+      "price": 15020,
+      "ret": 325.4,
+      "excess": 321.1
+     }
+    ]
+   },
+   "base": {
+    "entry": 3531,
+    "entry_date": "2026-02-10",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-03-19",
+      "price": 6800,
+      "ret": 92.6,
+      "excess": 90.4
+     },
+     {
+      "label": "+5일",
+      "date": "2026-03-26",
+      "price": 9300,
+      "ret": 163.4,
+      "excess": 161.5
+     },
+     {
+      "label": "+20일",
+      "date": "2026-04-16",
+      "price": 15020,
+      "ret": 325.4,
+      "excess": 321.1
+     }
+    ]
+   }
   },
   {
    "case_id": 70,
@@ -3600,25 +6574,126 @@
     "20260127000003",
     "20260127000301",
     "20260130000395",
+    "20260130000463",
     "20260309001062"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2026-01-29",
+    "rights_start": "2026-02-20",
+    "rights_end": "2026-02-26",
+    "subs_start": "2026-03-11",
+    "listing_date": "2026-04-02",
+    "issue_price": 952,
+    "alloc_ratio": 0.1834195273
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.2291,
+   "op_income": -95503823455,
+   "op_period": "2025 3분기(3개월, CFS)",
+   "pos52": 0.006043370067543548,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 830,
+    "entry_date": "2026-04-02",
+    "rsi": 23.3,
+    "atr": 710.9,
+    "stop": -592,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-04-09",
+      "price": 922,
+      "ret": 11.1,
+      "excess": 0.7
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-16",
+      "price": 1003,
+      "ret": 20.8,
+      "excess": 1.8
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2026-02-26",
+   "reason": "채무상환 0% · 희석 23% · 영업손실 -955억 (2025 3분기(3개월, CFS)) → 패스 · 괴리 -40.7% · 원가할인 -6.3% → ⚪ 관찰 샘플",
+   "gap": -40.7,
+   "eval": {
+    "entry": 1076,
+    "entry_date": "2026-02-26",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-04-02",
+      "price": 895,
+      "ret": -16.8,
+      "excess": -4.8
+     },
+     {
+      "label": "+5일",
+      "date": "2026-04-09",
+      "price": 922,
+      "ret": -14.3,
+      "excess": -5.9
+     },
+     {
+      "label": "+20일",
+      "date": "2026-04-30",
+      "price": 925,
+      "ret": -14.0,
+      "excess": -18.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 1076,
+    "entry_date": "2026-02-26",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-04-02",
+      "price": 895,
+      "ret": -16.8,
+      "excess": -4.8
+     },
+     {
+      "label": "+5일",
+      "date": "2026-04-09",
+      "price": 922,
+      "ret": -14.3,
+      "excess": -5.9
+     },
+     {
+      "label": "+20일",
+      "date": "2026-04-30",
+      "price": 925,
+      "ret": -14.0,
+      "excess": -18.7
+     }
+    ]
+   }
   },
   {
    "case_id": 71,
@@ -3634,25 +6709,126 @@
     "20260225003864",
     "20260313000587",
     "20260320001255",
+    "20260320001357",
     "20260420000205"
    ],
    "schedule": {
-    "record_date": null,
-    "rights_start": null,
-    "rights_end": null,
-    "subs_start": null,
-    "listing_date": null,
-    "issue_price": null,
-    "alloc_ratio": null
+    "record_date": "2026-03-17",
+    "rights_start": "2026-04-07",
+    "rights_end": "2026-04-13",
+    "subs_start": "2026-04-22",
+    "listing_date": "2026-05-18",
+    "issue_price": 3490,
+    "alloc_ratio": 0.7400582425
    },
-   "missing": [
-    "record_date",
-    "rights_start",
-    "rights_end",
-    "subs_start",
-    "listing_date"
-   ],
-   "status": "parse_fail"
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 42.3,
+   "dilution": 0.7401,
+   "op_income": -959808189,
+   "op_period": "2025 4분기(연간−3분기누적, CFS)",
+   "pos52": 0.013324450366422385,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "s2": {
+    "entry": 4200,
+    "entry_date": "2026-05-18",
+    "rsi": 33.9,
+    "atr": 486.2,
+    "stop": 3228,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-05-26",
+      "price": 4500,
+      "ret": 7.1,
+      "excess": 1.6
+     },
+     {
+      "label": "+10일",
+      "date": "2026-06-02",
+      "price": 4130,
+      "ret": -1.7,
+      "excess": 6.0
+     }
+    ]
+   },
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2026-04-13",
+   "reason": "채무상환 42% · 희석 74% · 영업손실 -10억 (2025 4분기(연간−3분기누적, CFS)) → 패스 · 괴리 -40.2% · 원가할인 -12.8% → ⚪ 관찰 샘플",
+   "gap": -40.2,
+   "eval": {
+    "entry": 4465,
+    "entry_date": "2026-04-13",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-05-18",
+      "price": 4055,
+      "ret": -9.2,
+      "excess": -11.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-05-26",
+      "price": 4500,
+      "ret": 0.8,
+      "excess": -5.8
+     },
+     {
+      "label": "+20일",
+      "date": "2026-06-17",
+      "price": 4830,
+      "ret": 8.2,
+      "excess": 14.3
+     }
+    ]
+   },
+   "base": {
+    "entry": 4465,
+    "entry_date": "2026-04-13",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2026-05-18",
+      "price": 4055,
+      "ret": -9.2,
+      "excess": -11.2
+     },
+     {
+      "label": "+5일",
+      "date": "2026-05-26",
+      "price": 4500,
+      "ret": 0.8,
+      "excess": -5.8
+     },
+     {
+      "label": "+20일",
+      "date": "2026-06-17",
+      "price": 4830,
+      "ret": 8.2,
+      "excess": 14.3
+     }
+    ]
+   }
   }
  ]
 }

@@ -25,12 +25,19 @@ BASE = "https://opendart.fss.or.kr/api"
 
 STATUS_OK = "000"
 STATUS_NO_DATA = "013"
+STATUS_QUOTA = "020"      # 요청 제한 초과 (하루 약 2만 건)
 
 
 class DartError(RuntimeError):
     def __init__(self, status: str, message: str):
         super().__init__(f"DART {status}: {message}")
         self.status = status
+
+
+class DartQuotaError(RuntimeError):
+    """DART 하루 호출 한도 초과. DartError 가 아니다 — 곳곳의 `except DartError`(공시 하나 실패는 건너뜀)에
+    삼켜지면 이후 모든 호출이 실패한 채 결과가 조용히 틀어진다(09-26 백테스트 3회차: 2025 파싱 20/54,
+    2024·2026 재무 전부 미확인). 한도 초과는 실행 전체를 멈춘다."""
 
 
 def to_int(value: Any) -> int | None:
@@ -79,6 +86,8 @@ class DartClient:
             db.save_raw(self.conn, f"dart.{path}", key, resp.content)
         data = resp.json()
         status = data.get("status")
+        if status == STATUS_QUOTA:
+            raise DartQuotaError(f"DART {status}: {data.get('message', '')}")
         if status not in (STATUS_OK, STATUS_NO_DATA):
             raise DartError(status, data.get("message", ""))
         return data
@@ -172,6 +181,8 @@ class DartClient:
             db.save_raw(self.conn, "dart.document", rcept_no, content)
         if not content.startswith(b"PK"):
             # 오류면 zip 대신 XML/JSON 메시지가 온다
+            if f"<status>{STATUS_QUOTA}</status>".encode() in content or f'"status":"{STATUS_QUOTA}"'.encode() in content:
+                raise DartQuotaError(f"DART {STATUS_QUOTA}: " + content[:200].decode("utf-8", "replace"))
             raise DartError("doc", content[:200].decode("utf-8", "replace"))
         return unzip_document(content)
 
