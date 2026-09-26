@@ -63,3 +63,26 @@ def test_retrying_on_connect_timeout():
         raise AssertionError("재시도 후에도 실패면 예외를 올려야 함")
     except requests.ConnectTimeout:
         pass
+
+
+def test_krx_non_json_body_retried_then_krx_error():
+    """KRX 가 200 + 빈 본문(JSON 아님)을 주면 재시도, 끝까지 아니면 KrxError — 백테스트가 그날만 건너뛰게
+    (실측 2026-09-26 백테스트 2020 이 JSONDecodeError 로 통째로 중단)."""
+    import json as _json
+    import pytest
+    from yujeung.krx import KrxClient, KrxError
+
+    class R:
+        def __init__(self, body):
+            self.status_code, self.text, self.content = 200, body, body.encode()
+
+        def json(self):
+            return _json.loads(self.text)
+
+    bodies = ["", '{"OutBlock_1": [{"ISU_CD": "1"}]}']
+    slept = []
+    k = KrxClient("key", http_get=lambda *a, **kw: R(bodies.pop(0)), min_interval=0, sleep=slept.append)
+    assert k.stocks("20200102", "K") == [{"ISU_CD": "1"}] and slept == [5]
+    k2 = KrxClient("key", http_get=lambda *a, **kw: R("<html>점검</html>"), min_interval=0, sleep=slept.append)
+    with pytest.raises(KrxError):
+        k2.rights("20200102")

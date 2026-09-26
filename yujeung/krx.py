@@ -16,7 +16,7 @@ from typing import Callable
 
 import requests
 
-from .http import retrying
+from .http import RETRY_WAITS, retrying
 
 from . import db
 
@@ -38,6 +38,7 @@ class KrxClient:
         conn: sqlite3.Connection | None = None,
         http_get: Callable[..., requests.Response] | None = None,
         min_interval: float = 0.2,
+        sleep: Callable[[float], None] = time.sleep,
     ):
         if not api_key:
             raise ValueError("KRX_API_KEY 가 없습니다")
@@ -46,24 +47,35 @@ class KrxClient:
         self._get = retrying(http_get or requests.get)
         self._min_interval = min_interval
         self._last = 0.0
+        self._sleep = sleep
 
     def fetch(self, api_id: str, bas_dd: str, category: str = "sto") -> list[dict]:
-        wait = self._min_interval - (time.monotonic() - self._last)
-        if wait > 0:
-            time.sleep(wait)
-        self._last = time.monotonic()
-        resp = self._get(
-            f"{BASE}/{category}/{api_id}",
-            params={"basDd": bas_dd},
-            headers={"AUTH_KEY": self.api_key, "User-Agent": "yujeung-collector"},
-            timeout=30,
-            allow_redirects=False,   # 리다이렉트로 키가 다른 호스트에 실리는 것 방지
-        )
-        if resp.status_code != 200:
-            raise KrxError(f"KRX {api_id} {bas_dd}: HTTP {resp.status_code} {resp.text[:200]}")
+        # 200 인데 본문이 JSON 이 아닌 경우(빈 본문·점검 페이지)가 있다 — 실측 2026-09-26 백테스트 2020 중단.
+        # 5초·20초 쉬고 다시, 그래도 아니면 KrxError (호출하는 쪽이 그날만 건너뛴다)
+        for retry_wait in (*RETRY_WAITS, None):
+            wait = self._min_interval - (time.monotonic() - self._last)
+            if wait > 0:
+                time.sleep(wait)
+            self._last = time.monotonic()
+            resp = self._get(
+                f"{BASE}/{category}/{api_id}",
+                params={"basDd": bas_dd},
+                headers={"AUTH_KEY": self.api_key, "User-Agent": "yujeung-collector"},
+                timeout=30,
+                allow_redirects=False,   # 리다이렉트로 키가 다른 호스트에 실리는 것 방지
+            )
+            if resp.status_code != 200:
+                raise KrxError(f"KRX {api_id} {bas_dd}: HTTP {resp.status_code} {resp.text[:200]}")
+            try:
+                data = resp.json()
+                break
+            except ValueError:
+                if retry_wait is None:
+                    raise KrxError(f"KRX {api_id} {bas_dd}: JSON 아닌 응답 {resp.text[:120]!r}") from None
+                print(f"[retry] KRX {api_id} {bas_dd} JSON 아닌 응답 — {retry_wait}초 뒤 다시", flush=True)
+                self._sleep(retry_wait)
         if self.conn is not None:
             db.save_raw(self.conn, f"krx.{api_id}", bas_dd, resp.content)
-        data = resp.json()
         if data.get("respCode"):
             raise KrxError(f"KRX {api_id} {bas_dd}: {data.get('respCode')} {data.get('respMsg')}")
         rows = data.get("OutBlock_1") or []
