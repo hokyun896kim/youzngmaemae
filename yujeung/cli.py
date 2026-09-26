@@ -158,6 +158,9 @@ def cmd_backtest(args, cfg: Config) -> int:
     from .dart import DartClient
     from .krx import KrxClient
     from .naver import NaverClient
+    if args.compare_tail:
+        res = backtest.compare_tail(args.year, DartClient(cfg.dart_api_key), today_kst(), months=args.months)
+        return 0 if res["identical"] else 1
     if not args.aggregate_only:
         # 원문·시세 원본은 메모리에 쌓지 않는다(conn=None) — 연도당 수백 MB
         backtest.run_year(args.year, cfg, DartClient(cfg.dart_api_key), KrxClient(cfg.krx_api_key),
@@ -354,6 +357,8 @@ def main(argv=None) -> int:
     p.add_argument("--aggregate-only", action="store_true", help="연도별 결과만 다시 합산")
     p.add_argument("--months", type=int, default=12, help="그해 앞 N개월 원공시만 (점검용)")
     p.add_argument("--no-export", action="store_true", help="site.json 다시 만들지 않음")
+    p.add_argument("--compare-tail", action="store_true",
+                   help="꼬리 기간 상세 조회 생략 전후로 감지 단계만 비교(저장 안 함) — 케이스·공시 묶음이 같아야 함")
     sub.add_parser("export")
     sub.add_parser("verify")
     args = ap.parse_args(argv)

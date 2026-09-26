@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'daily / verify / backfill-cases / backfill-rights / backtest'
+        description: 'daily / verify / backfill-cases / backfill-rights / backtest / backtest-compare'
         default: daily
       year:
         description: 'backtest 연도 (2020~2026, 2026은 6월까지). 비우면 합산만'
@@ -71,6 +71,8 @@ jobs:
             python -m yujeung parse-doc 20260923000500 || true
             python -m yujeung parse-doc 20260918000349 || true
             python -m yujeung backfill-cases --months 1 --dry-run --report all   # 진행 중 주주배정 전부 재파싱 결과
+            # 백테스트 꼬리 기간 상세 조회 생략: 2020 감지 결과가 생략 전과 같은지 (다르면 실패)
+            python -m yujeung backtest --year 2020 --compare-tail
             exit 0
           fi
           case "$CMD" in
@@ -81,6 +83,7 @@ jobs:
             backtest)
               if [ -n "${{ github.event.inputs.year }}" ]; then python -m yujeung backtest --year "${{ github.event.inputs.year }}"
               else python -m yujeung backtest --aggregate-only; fi ;;
+            backtest-compare) python -m yujeung backtest --year "${{ github.event.inputs.year }}" --compare-tail ;;
             *) echo "unknown command $CMD"; exit 1 ;;
           esac
 
