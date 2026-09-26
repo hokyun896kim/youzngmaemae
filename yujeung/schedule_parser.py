@@ -18,7 +18,9 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 10  # 10: 본문이 '-'로 비고 정정표에만 '추후결정' → 미정 기록(경남제약)
+PARSER_VERSION = 11  # 11: 옛 양식(2020) 인수권 기간 — 첫 후보가 무효여도 계속 탐색, '날짜~날짜 신주인수권증서 상장 거래기간'(증권신고서),
+#                        '신주인수권증서의 상장여부 아니오' 기록
+#                     10: 본문이 '-'로 비고 정정표에만 '추후결정' → 미정 기록(경남제약)
 #                      9: 미정 항목은 앞 행 날짜도 지움(경남제약 청약일), 인수권 시작 ≤ 기준일 버림(클로봇)
 #                      8: 행에 '추후결정/미정'이 있으면 그 항목은 미정(같은 행의 날짜 = 정정전) — 실측 경남제약 9/18,
 #                        본문 후보 점수 = 항목 행을 찾은 칸(미정 포함)
@@ -46,6 +48,40 @@ def clean(text: str) -> str:
     text = _TAG_RE.sub(" ", text)
     text = html.unescape(text).replace("\xa0", " ")
     return re.sub(r"\s+", " ", text).strip()
+
+
+_D = r"20\d{2}\s*(?:년|[.\-/])\s*\d{1,2}\s*(?:월|[.\-/])\s*\d{1,2}\s*일?"
+_SEP = r"\s*(?:\([^)]{1,6}\))?\s*[~∼\-]\s*"
+# 라벨 → 기간: "신주인수권증서 상장예정기간 : 2020년 12월 02일 ~ 2020년 12월 08일" (옛 결정 공시 '기타 투자판단')
+_RIGHTS_PERIOD_AFTER = re.compile(
+    r"신주인수권증서[^.。]{0,30}?(?:상장|매매|거래)[^.。]{0,20}?기간[^0-9.。]{0,20}?(" + _D + ")" + _SEP + "(" + _D + ")")
+# 기간 → 라벨: "2020년 06월 19일 ~ 2020년 06월 25일 신주인수권증서 상장 거래기간" (증권신고서 일정표)
+_RIGHTS_PERIOD_BEFORE = re.compile(
+    r"(" + _D + ")" + _SEP + "(" + _D + r")\s*신주인수권증서\s*(?:상장|매매|거래)")
+_RIGHTS_LISTED_RE = re.compile(r"신주인수권증서의\s*상장\s*여부\s*(예|아니오|아니요)")
+
+
+def extract_rights_period(text: str, record_date: str | None = None,
+                          subs_start: str | None = None) -> tuple[str, str] | None:
+    """인수권 상장(거래)기간 (시작, 끝). 기준일 이후·청약 전이어야 한다 — 아니면 다른 문장의 날짜."""
+    t = text.replace("&cr;", " ")
+    for rx in (_RIGHTS_PERIOD_AFTER, _RIGHTS_PERIOD_BEFORE):
+        for m in rx.finditer(t):
+            a, b = find_dates(m.group(1)), find_dates(m.group(2))
+            if not (a and b) or a[0] > b[0]:
+                continue
+            if record_date and a[0] <= record_date:
+                continue
+            if subs_start and b[0] >= subs_start:
+                continue
+            return a[0], b[0]
+    return None
+
+
+def rights_listed(text: str) -> bool | None:
+    """'신주인수권증서의 상장여부 예/아니오' — 아니오면 인수권 거래가 없는 주주배정(최대주주 단독 등)."""
+    m = _RIGHTS_LISTED_RE.search(text)
+    return None if not m else m.group(1) == "예"
 
 
 def find_dates(text: str) -> list[str]:
@@ -373,6 +409,9 @@ def parse_document(doc: str) -> Schedule:
     s.extras["facts"] = {"major_holder": extract_major_holder(text),
                          "underwriting": extract_underwriting([], table_rows(doc), text),
                          "discount": extract_discount(text)}
+    listed = rights_listed(text)
+    if listed is not None:
+        s.extras["facts"]["rights_listed"] = listed
     return s
 
 
@@ -498,7 +537,11 @@ def _parse_body(doc: str) -> Schedule:
     # 표에 없으면 본문(기타 투자판단 사항)에서 "신주인수권증서 상장/매매 … 날짜 ~ 날짜"
     if not s.rights_start and "rights_start" not in tbd and not any("추후결정" in w and "인수권" in w for w in s.warnings):
         text = clean(doc)
-        for m in _RIGHTS_TEXT_RE.finditer(text):
+        period = extract_rights_period(text, s.record_date, s.subs_start)
+        if period:   # "상장예정기간 : 날짜 ~ 날짜" (옛 양식 — 앞의 '상장여부 예 … 이사회결의일' 날짜에 걸리지 않게 먼저)
+            s.rights_start, s.rights_end = period
+            evidence["rights_start"] = "인수권 상장기간(본문)"
+        for m in ([] if period else _RIGHTS_TEXT_RE.finditer(text)):
             chunk = m.group(0)
             ds = find_dates(chunk)
             if not ds:
@@ -508,6 +551,8 @@ def _parse_body(doc: str) -> Schedule:
             if any(k in head for k in ("추후", "미정")):
                 s.warnings.append("인수권 상장기간 추후결정 (정정 대기)")
                 break
+            if s.record_date and ds[0] <= s.record_date:
+                continue     # 기준일 이전 날짜(이사회결의일·전자증권 시행일 등) — 다음 후보를 본다 (실측 2020 유네코)
             s.rights_start = ds[0]
             s.rights_end = ds[1] if len(ds) > 1 else None
             evidence["rights_start"] = chunk[:120]

@@ -28,7 +28,7 @@ from .dart import DartClient, DartError
 from .detect import detect, merge_duplicate_cases
 from .krx import KrxClient, KrxError
 from .naver import INDEX_SYMBOL, NaverClient, NaverError
-from .pipeline import (MAX_RIGHTS_SPAN_DAYS, checked_schedule, live_verdict, save_pos52, step_estk,
+from .pipeline import (MAX_RIGHTS_SPAN_DAYS, checked_schedule, latest_facts, live_verdict, save_pos52, step_estk,
                        step_schedules)
 from .prices import relink_rights, store_rights_rows, store_stock_rows
 from .verdict import LOGIC_VERSION, VERDICTS
@@ -303,17 +303,23 @@ def run_year(year: int, cfg: Config, dart: DartClient, krx: KrxClient, naver: Na
     plans: dict[int, dict] = {}
     parse: dict[int, tuple[dict, list[str]]] = {}
     missing_by_field = {k: 0 for k in REQUIRED}
+    unlisted: set[int] = set()
     for c in cases:
         sch, _ = checked_schedule(conn, c["case_id"])
         missing = [k for k in REQUIRED if not sch.get(k)]
         parse[c["case_id"]] = (sch, missing)
+        # '신주인수권증서의 상장여부 아니오'(최대주주 단독 배정 등) — 인수권 거래가 원래 없다. 파싱 실패가 아니라 대상 밖
+        if missing and latest_facts(conn, c["case_id"]).get("rights_listed") is False:
+            unlisted.add(c["case_id"])
+            continue
         for k in missing:
             missing_by_field[k] += 1
         if not missing:
             plans[c["case_id"]] = {"code": c["stock_code"], "rights": rights_days(sch, _d(c["first_rcept_dt"]), last),
                                    "listing": listing_days(sch, last)}
     n_ok = len(plans)
-    _log(f"파싱 성공 {n_ok}/{len(cases)} → KRX 인수권 {len({d for p in plans.values() for d in p['rights']})}일 조회")
+    n_target = len(cases) - len(unlisted)
+    _log(f"인수권 비상장 주주배정 {len(unlisted)}건 제외 · 파싱 성공 {n_ok}/{n_target} → KRX 인수권 {len({d for p in plans.values() for d in p['rights']})}일 조회")
     krx_stats = fetch_krx(krx, conn, plans, last)
 
     records = []
@@ -326,6 +332,10 @@ def run_year(year: int, cfg: Config, dart: DartClient, krx: KrxClient, naver: Na
                "schedule": {k: sch.get(k) for k in ("record_date", "rights_start", "rights_end", "subs_start",
                                                     "listing_date", "issue_price", "alloc_ratio")},
                "missing": missing}
+        if c["case_id"] in unlisted:
+            rec["status"] = "no_rights_listing"
+            records.append(rec)
+            continue
         if missing:
             rec["status"] = "parse_fail"
             records.append(rec)
@@ -362,7 +372,9 @@ def run_year(year: int, cfg: Config, dart: DartClient, krx: KrxClient, naver: Na
     summary = {
         "year": year, "months": months, "generated_at": db.now(), "logic_version": LOGIC_VERSION, "range": [bgn.isoformat(), end.isoformat()],
         "counts": {
-            "cases": len(cases), "parse_ok": n_ok, "parse_rate": round(n_ok / len(cases) * 100, 1) if cases else None,
+            "cases": len(cases), "no_rights_listing": len(unlisted), "parse_target": n_target, "parse_ok": n_ok,
+            "parse_rate": round(n_ok / n_target * 100, 1) if n_target else None,
+            "parse_rate_all": round(n_ok / len(cases) * 100, 1) if cases else None,
             "missing_by_field": missing_by_field, **scope,
             "no_rights_price": sum(r["status"] == "no_rights_price" for r in records),
             "scored": sum(r["status"] == "scored" for r in records),

@@ -187,3 +187,46 @@ def test_tbd_only_in_correction_preamble_body_dash():
     s = parse_document("<DOCUMENT>" + corr + body + "</DOCUMENT>")
     assert (s.record_date, s.payment_date, s.listing_date) == (None, None, None)
     assert {"record_date", "payment_date", "listing_date"} <= set(s.extras["tbd"])
+
+
+# 2020 옛 양식(실측 유네코 4/14 원문 모양): 표엔 '상장여부 예'만, 기간은 '기타 투자판단' 5)번 문장에.
+# 앞쪽 '상장여부 예 … 이사회결의일 2020년 04월 14일' · '전자증권 시행일(2019년 9월 16일)' 날짜에 걸려 멈추면 안 된다
+OLD_2020 = (PIIC_DOC.replace("2026년 09월 02일", "2020년 05월 19일").replace("2026년 10월 12일", "2020년 06월 23일")
+            .replace("2026년 10월 13일", "2020년 06월 24일").replace("2026년 10월 06일", "2020년 06월 18일")
+            .replace("2026년 10월 15일", "2020년 07월 02일").replace("2026년 10월 28일", "2020년 07월 14일")
+            .replace("<TR><TD>14. 신주인수권양도여부</TD><TD>예</TD></TR>",
+                     "<TR><TD>18. 신주인수권양도여부</TD><TD>예</TD></TR>"
+                     "<TR><TD>- 신주인수권증서의 상장여부</TD><TD>예</TD></TR>"
+                     "<TR><TD>- 신주인수권증서의 매매 및 매매의 중개를 담당할 금융투자업자</TD><TD>한양증권(주)</TD></TR>"
+                     "<TR><TD>19. 이사회결의일(결정일)</TD><TD>2020년 04월 14일</TD></TR>")
+            .replace("<P>신주인수권증서의 상장예정기간은 2026년 09월 21일부터 2026년 09월 29일까지이며, 거래소 승인에 따라 변경될 수 있습니다.</P>",
+                     "<P>1) 신주인수권증서는 전자증권제도 시행일(2019년 9월 16일) 이후 전자등록 방식으로 발행됩니다.&cr;"
+                     "3) 신주인수권증서 매매의 중개를 할 증권회사는 한양증권(주)로 합니다.&cr;"
+                     "4) 신주인수권증서는 한국거래소에 상장 예정입니다.&cr;"
+                     "5) 신주인수권증서 상장예정기간 : 2020년 06월 08일~ 2020년 06월 12일&cr;</P>"))
+
+
+def test_old_2020_form_rights_period_in_text():
+    s = parse_document(OLD_2020)
+    assert s.record_date == "2020-05-19" and s.subs_start == "2020-06-23"
+    assert (s.rights_start, s.rights_end) == ("2020-06-08", "2020-06-12")
+    assert s.extras["facts"]["rights_listed"] is True
+
+
+def test_rights_period_securities_registration_table_form():
+    """증권신고서 일정표(실측 유네코 5/26): 기간이 라벨 앞. 뒤의 '상장 폐지 6/26' 을 시작일로 잡으면 안 된다."""
+    from yujeung.schedule_parser import extract_rights_period
+    text = ("2020년 05월 29일 권리락 - 2020년 06월 01일 신주배정 기준일(주주확정) - 2020년 06월 12일 신주배정 통지 - "
+            "2020년 06월 19일 ~&cr;2020년 06월 25일 신주인수권증서 상장 거래기간 5거래일 이상 거래 "
+            "2020년 06월 26일 신주인수권증서 상장 폐지 구주주 청약초일 5거래일 전 2020년 07월 01일 확정 발행가액 산정")
+    assert extract_rights_period(text, "2020-06-01", "2020-07-06") == ("2020-06-19", "2020-06-25")
+    assert extract_rights_period(text, "2020-06-20", "2020-07-06") is None       # 기준일보다 이르면 버림
+    assert extract_rights_period(text, "2020-06-01", "2020-06-24") is None       # 청약보다 늦으면 버림
+
+
+def test_rights_not_listed_marked():
+    """'신주인수권증서의 상장여부 아니오'(실측 케이비캐피탈·에스케이엔펄스) — 인수권 거래가 원래 없다."""
+    doc = PIIC_DOC.replace("<TR><TD>14. 신주인수권양도여부</TD><TD>예</TD></TR>",
+                           "<TR><TD>18. 신주인수권양도여부</TD><TD>아니오</TD></TR>"
+                           "<TR><TD>- 신주인수권증서의 상장여부</TD><TD>아니오</TD></TR>")
+    assert parse_document(doc).extras["facts"]["rights_listed"] is False

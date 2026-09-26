@@ -183,3 +183,50 @@ def test_correction_all_tbd_does_not_fall_back_to_old_dates():
     assert s.get("record_date") is None and s.get("listing_date") is None and s.get("rights_start") is None
     assert "record_date" in s["tbd"] and "listing_date" in s["tbd"]
     assert stage(s, date(2026, 9, 26)) == "tbd"
+
+
+def test_rights_period_from_earlier_securities_registration():
+    """옛 양식(2020): 결정 공시엔 인수권 기간이 없고 증권신고서 본문에만 있다. 증권신고서가 마지막 정정보다
+    먼저 나와도 인수권 기간은 가져온다 — 단 지금 일정(기준일 뒤·청약 전)에 맞을 때만."""
+    from yujeung.pipeline import latest_schedule, save_schedule
+    from yujeung.schedule_parser import Schedule
+    conn = db.connect(":memory:")
+    conn.execute("INSERT INTO cases (corp_code, corp_name, stock_code, corp_cls, first_rcept_no, first_rcept_dt, "
+                 "ic_mthn, is_rights, created_at) VALUES ('c','유네코','064510','K','20200414000001','20200414','주주배정',1,'x')")
+    for rno, kind in (("20200414000001", "piic"), ("20200526000002", "estk"), ("20200702000003", "piic")):
+        conn.execute("INSERT INTO disclosures (rcept_no, case_id, kind, report_nm, rcept_dt, is_correction, fields_json) "
+                     "VALUES (?,1,?,?,?,0,'{}')", (rno, kind, kind, rno[:8]))
+    save_schedule(conn, "20200414000001", 1, Schedule(record_date="2020-05-19", subs_start="2020-06-23"))
+    save_schedule(conn, "20200526000002", 1, Schedule(record_date="2020-06-01", subs_start="2020-07-06",
+                                                      rights_start="2020-06-19", rights_end="2020-06-25"))
+    save_schedule(conn, "20200702000003", 1, Schedule(record_date="2020-06-01", subs_start="2020-07-06",
+                                                      listing_date="2020-07-24"))
+    s = latest_schedule(conn, 1)
+    assert s["record_date"] == "2020-06-01" and (s["rights_start"], s["rights_end"]) == ("2020-06-19", "2020-06-25")
+    # 정정으로 기준일이 인수권 기간 뒤로 밀리면 옛 증권신고서 기간은 쓰지 않는다
+    save_schedule(conn, "20200702000003", 1, Schedule(record_date="2020-07-01", subs_start="2020-08-06"))
+    assert latest_schedule(conn, 1).get("rights_start") is None
+
+
+def test_second_offering_same_year_gets_its_own_fields():
+    """같은 회사 두 번째 공시가 첫 조회 구간 밖이면 다시 조회 — 안 그러면 첫 유증(주주배정) 필드를 받아
+    제3자배정이 주주배정 케이스로 잘못 잡힌다 (실측 2020 심텍 9/08·초록뱀 10/07·다이나믹솔루션 12/15)."""
+    from yujeung.detect import detect
+    first = {"rcept_no": "20200302000001", "rcept_dt": "20200302", "corp_code": "0001", "corp_name": "심텍",
+             "stock_code": "222800", "corp_cls": "K", "report_nm": "주요사항보고서(유상증자결정)"}
+    second = dict(first, rcept_no="20200908000002", rcept_dt="20200908")
+
+    class D:
+        def search(self, bgn, end, pblntf_ty="B", **kw):
+            return [r for r in (first, second) if bgn <= r["rcept_dt"] <= end]
+
+        def piic_decisions(self, corp_code, bgn, end):
+            items = [dict(PIIC_FIELDS, rcept_no=first["rcept_no"], ic_mthn="주주배정후 실권주 일반공모"),
+                     dict(PIIC_FIELDS, rcept_no=second["rcept_no"], ic_mthn="제3자배정증자", nstk_ostk_cnt="1,000,000")]
+            return [it for it in items if bgn <= it["rcept_no"][:8] <= end]
+
+    conn = db.connect(":memory:")
+    detect(D(), conn, "20200101", "20201231", rights_only=True, listed=("Y", "K", "E"))
+    cases = conn.execute("SELECT first_rcept_no, is_rights FROM cases").fetchall()
+    assert [tuple(c) for c in cases] == [(first["rcept_no"], 1)]
+    assert conn.execute("SELECT reason FROM excluded_disclosures WHERE rcept_no=?", (second["rcept_no"],)).fetchone()[0].startswith("백필 제외")
