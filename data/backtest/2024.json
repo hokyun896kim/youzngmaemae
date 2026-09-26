@@ -1,0 +1,4712 @@
+{
+ "year": 2024,
+ "months": 12,
+ "generated_at": "2026-09-26T12:50:19+09:00",
+ "logic_version": 3,
+ "range": [
+  "2024-01-01",
+  "2024-12-31"
+ ],
+ "counts": {
+  "cases": 49,
+  "no_rights_listing": 6,
+  "parse_target": 43,
+  "parse_ok": 42,
+  "parse_rate": 97.7,
+  "parse_rate_all": 85.7,
+  "missing_by_field": {
+   "record_date": 0,
+   "rights_start": 1,
+   "rights_end": 1,
+   "subs_start": 0,
+   "listing_date": 0
+  },
+  "out_of_year": 1,
+  "starts_with_correction": 10,
+  "no_rights_price": 0,
+  "scored": 42,
+  "naver_missing": 0,
+  "financials_missing": 0,
+  "krx": {
+   "rights_days": 138,
+   "stock_calls": 435,
+   "errors": 0
+  },
+  "holidays_registered": 153
+ },
+ "cases": [
+  {
+   "case_id": 7,
+   "corp_name": "판타지오",
+   "stock_code": "032800",
+   "market": "K",
+   "first_rcept_dt": "20240119",
+   "rcept_nos": [
+    "20240119000524",
+    "20240220001638",
+    "20240307000064",
+    "20240411000998"
+   ],
+   "schedule": {
+    "record_date": "2024-03-11",
+    "rights_start": "2024-03-28",
+    "rights_end": "2024-04-03",
+    "subs_start": "2024-04-15",
+    "listing_date": "2024-05-07",
+    "issue_price": 205,
+    "alloc_ratio": 0.9611884381
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.9509,
+   "op_income": -1921047856,
+   "op_period": "2023 4분기(연간−3분기누적, CFS)",
+   "pos52": 0.033439665603343965,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-04-03",
+   "reason": "채무상환 0% · 희석 95% · 영업손실 -19억 (2023 4분기(연간−3분기누적, CFS)) → 패스 · 괴리 -53.2% · 원가할인 -26.2% → ⚪ 관찰 샘플",
+   "gap": -53.2,
+   "eval": {
+    "entry": 264,
+    "entry_date": "2024-04-03",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-05-07",
+      "price": 225,
+      "ret": -14.8,
+      "excess": -14.2
+     },
+     {
+      "label": "+5일",
+      "date": "2024-05-14",
+      "price": 213,
+      "ret": -19.3,
+      "excess": -17.3
+     },
+     {
+      "label": "+20일",
+      "date": "2024-06-05",
+      "price": 215,
+      "ret": -18.6,
+      "excess": -15.2
+     }
+    ]
+   },
+   "base": {
+    "entry": 264,
+    "entry_date": "2024-04-03",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-05-07",
+      "price": 225,
+      "ret": -14.8,
+      "excess": -14.2
+     },
+     {
+      "label": "+5일",
+      "date": "2024-05-14",
+      "price": 213,
+      "ret": -19.3,
+      "excess": -17.3
+     },
+     {
+      "label": "+20일",
+      "date": "2024-06-05",
+      "price": 215,
+      "ret": -18.6,
+      "excess": -15.2
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 9,
+   "corp_name": "후성",
+   "stock_code": "093370",
+   "market": "Y",
+   "first_rcept_dt": "20240125",
+   "rcept_nos": [
+    "20240125000548",
+    "20240227006422",
+    "20240321001913",
+    "20240405003098"
+   ],
+   "schedule": {
+    "record_date": "2024-02-29",
+    "rights_start": "2024-03-25",
+    "rights_end": "2024-03-29",
+    "subs_start": "2024-04-09",
+    "listing_date": "2024-04-30",
+    "issue_price": 6400,
+    "alloc_ratio": 0.1367562386
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.1368,
+   "op_income": -6566353370,
+   "op_period": "2023 3분기(3개월, CFS)",
+   "pos52": 0.06501983873032126,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-03-29",
+   "reason": "채무상환 0% · 희석 14% · 영업손실 -66억 (2023 3분기(3개월, CFS)) → 패스 · 괴리 +14.2% · 원가할인 +2.0% → ⚪ 관찰 샘플",
+   "gap": 14.2,
+   "eval": {
+    "entry": 7690,
+    "entry_date": "2024-03-29",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-04-30",
+      "price": 7930,
+      "ret": 3.1,
+      "excess": 5.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-05-09",
+      "price": 7210,
+      "ret": -6.2,
+      "excess": -5.0
+     },
+     {
+      "label": "+20일",
+      "date": "2024-05-31",
+      "price": 7500,
+      "ret": -2.5,
+      "excess": 1.5
+     }
+    ]
+   },
+   "base": {
+    "entry": 7690,
+    "entry_date": "2024-03-29",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-04-30",
+      "price": 7930,
+      "ret": 3.1,
+      "excess": 5.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-05-09",
+      "price": 7210,
+      "ret": -6.2,
+      "excess": -5.0
+     },
+     {
+      "label": "+20일",
+      "date": "2024-05-31",
+      "price": 7500,
+      "ret": -2.5,
+      "excess": 1.5
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 11,
+   "corp_name": "다원시스",
+   "stock_code": "068240",
+   "market": "K",
+   "first_rcept_dt": "20240207",
+   "rcept_nos": [
+    "20240207001005",
+    "20240312000228",
+    "20240405000742",
+    "20240418000164"
+   ],
+   "schedule": {
+    "record_date": "2024-03-14",
+    "rights_start": "2024-04-03",
+    "rights_end": "2024-04-09",
+    "subs_start": "2024-04-22",
+    "listing_date": "2024-05-13",
+    "issue_price": 10210,
+    "alloc_ratio": 0.1138239576
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.1138,
+   "op_income": 10579948998,
+   "op_period": "2023 4분기(연간−3분기누적, CFS)",
+   "pos52": 0.4020797227036395,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": true,
+   "status": "scored",
+   "verdict": "yellow_q",
+   "decided_on": "2024-04-09",
+   "reason": "채무상환 0% · 희석 11% → 관문1 통과(미확인 1) · 괴리 -1.6% · 원가할인 -0.4% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "gap": -1.6,
+   "eval": {
+    "entry": 13280,
+    "entry_date": "2024-05-13",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2024-05-21",
+      "price": 13130,
+      "ret": -1.1,
+      "excess": -0.2
+     },
+     {
+      "label": "+10일",
+      "date": "2024-05-28",
+      "price": 12240,
+      "ret": -7.8,
+      "excess": -7.4
+     },
+     {
+      "label": "+20일",
+      "date": "2024-06-12",
+      "price": 11850,
+      "ret": -10.8,
+      "excess": -12.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 13210,
+    "entry_date": "2024-04-09",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-05-13",
+      "price": 13150,
+      "ret": -0.5,
+      "excess": -1.3
+     },
+     {
+      "label": "+5일",
+      "date": "2024-05-21",
+      "price": 13130,
+      "ret": -0.6,
+      "excess": 0.9
+     },
+     {
+      "label": "+20일",
+      "date": "2024-06-12",
+      "price": 11850,
+      "ret": -10.3,
+      "excess": -11.6
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 13,
+   "corp_name": "윈팩",
+   "stock_code": "097800",
+   "market": "K",
+   "first_rcept_dt": "20240228",
+   "rcept_nos": [
+    "20240228008497",
+    "20240321001139",
+    "20240321001707",
+    "20240322000011",
+    "20240329002504",
+    "20240503000111"
+   ],
+   "schedule": {
+    "record_date": "2024-04-02",
+    "rights_start": "2024-04-19",
+    "rights_end": "2024-04-25",
+    "subs_start": "2024-05-08",
+    "listing_date": "2024-05-31",
+    "issue_price": 868,
+    "alloc_ratio": 0.9210002212
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 39.8,
+   "dilution": 0.921,
+   "op_income": -5357947820,
+   "op_period": "2023 4분기(연간−3분기누적, OFS)",
+   "pos52": 0.4058192955589586,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-04-25",
+   "reason": "채무상환 40% · 희석 92% · 영업손실 -54억 (2023 4분기(연간−3분기누적, OFS)) → 패스 · 괴리 -34.8% · 원가할인 -9.3% → ⚪ 관찰 샘플",
+   "gap": -34.8,
+   "eval": {
+    "entry": 1078,
+    "entry_date": "2024-04-25",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-05-31",
+      "price": 1080,
+      "ret": 0.2,
+      "excess": 2.3
+     },
+     {
+      "label": "+5일",
+      "date": "2024-06-10",
+      "price": 1156,
+      "ret": 7.2,
+      "excess": 5.9
+     },
+     {
+      "label": "+20일",
+      "date": "2024-07-01",
+      "price": 1767,
+      "ret": 63.9,
+      "excess": 64.6
+     }
+    ]
+   },
+   "base": {
+    "entry": 1078,
+    "entry_date": "2024-04-25",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-05-31",
+      "price": 1080,
+      "ret": 0.2,
+      "excess": 2.3
+     },
+     {
+      "label": "+5일",
+      "date": "2024-06-10",
+      "price": 1156,
+      "ret": 7.2,
+      "excess": 5.9
+     },
+     {
+      "label": "+20일",
+      "date": "2024-07-01",
+      "price": 1767,
+      "ret": 63.9,
+      "excess": 64.6
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 14,
+   "corp_name": "HLB생명과학",
+   "stock_code": "067630",
+   "market": "K",
+   "first_rcept_dt": "20240321",
+   "rcept_nos": [
+    "20240321001329",
+    "20240508000347",
+    "20240508000546",
+    "20240523000459",
+    "20240612000141"
+   ],
+   "schedule": {
+    "record_date": "2024-05-10",
+    "rights_start": "2024-05-29",
+    "rights_end": "2024-06-04",
+    "subs_start": "2024-06-14",
+    "listing_date": "2024-07-08",
+    "issue_price": 6650,
+    "alloc_ratio": 0.1022963299
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 88.8,
+   "dilution": 0.1022,
+   "op_income": -5646641132,
+   "op_period": "2024 1분기(3개월, CFS)",
+   "pos52": 0.8566320166320166,
+   "gate": {
+    "debt": "fail",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-06-04",
+   "reason": "채무상환 89% · 희석 10% · 영업손실 -56억 (2024 1분기(3개월, CFS)) · 52주 위치 86% → 패스 · 괴리 대기 → ⚪ 관찰 샘플",
+   "gap": null,
+   "eval": {
+    "entry": 7970,
+    "entry_date": "2024-06-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-08",
+      "price": 12260,
+      "ret": 53.8,
+      "excess": 53.5
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-15",
+      "price": 11710,
+      "ret": 46.9,
+      "excess": 46.1
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-05",
+      "price": 10170,
+      "ret": 27.6,
+      "excess": 45.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 7970,
+    "entry_date": "2024-06-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-08",
+      "price": 12260,
+      "ret": 53.8,
+      "excess": 53.5
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-15",
+      "price": 11710,
+      "ret": 46.9,
+      "excess": 46.1
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-05",
+      "price": 10170,
+      "ret": 27.6,
+      "excess": 45.9
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 15,
+   "corp_name": "신라젠",
+   "stock_code": "215600",
+   "market": "K",
+   "first_rcept_dt": "20240322",
+   "rcept_nos": [
+    "20240322000735",
+    "20240419000714",
+    "20240508000270",
+    "20240514000833",
+    "20240521000306",
+    "20240613000135"
+   ],
+   "schedule": {
+    "record_date": "2024-05-10",
+    "rights_start": "2024-05-30",
+    "rights_end": "2024-06-05",
+    "subs_start": "2024-06-17",
+    "listing_date": "2024-07-09",
+    "issue_price": 2990,
+    "alloc_ratio": 0.33562882
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.3354,
+   "op_income": -4984887050,
+   "op_period": "2024 1분기(3개월, CFS)",
+   "pos52": 0.4607120933087784,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-06-05",
+   "reason": "채무상환 0% · 희석 34% · 영업손실 -50억 (2024 1분기(3개월, CFS)) → 패스 · 괴리 -61.7% · 원가할인 -12.2% → ⚪ 관찰 샘플",
+   "gap": -61.7,
+   "eval": {
+    "entry": 3304,
+    "entry_date": "2024-06-05",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-09",
+      "price": 3190,
+      "ret": -3.5,
+      "excess": -4.6
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-16",
+      "price": 3145,
+      "ret": -4.8,
+      "excess": -3.5
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-06",
+      "price": 3075,
+      "ret": -6.9,
+      "excess": 6.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 3304,
+    "entry_date": "2024-06-05",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-09",
+      "price": 3190,
+      "ret": -3.5,
+      "excess": -4.6
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-16",
+      "price": 3145,
+      "ret": -4.8,
+      "excess": -3.5
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-06",
+      "price": 3075,
+      "ret": -6.9,
+      "excess": 6.9
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 16,
+   "corp_name": "삼보산업",
+   "stock_code": "009620",
+   "market": "K",
+   "first_rcept_dt": "20240401",
+   "rcept_nos": [
+    "20240401003447",
+    "20240425000532",
+    "20240514000512",
+    "20240516001692",
+    "20240618000196"
+   ],
+   "schedule": {
+    "record_date": "2024-05-17",
+    "rights_start": "2024-06-04",
+    "rights_end": "2024-06-11",
+    "subs_start": "2024-06-20",
+    "listing_date": "2024-07-12",
+    "issue_price": 354,
+    "alloc_ratio": 0.4740828988
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 34.9,
+   "dilution": 0.4741,
+   "op_income": 902800585,
+   "op_period": "2024 1분기(3개월, CFS)",
+   "pos52": 0.19599627560521415,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": true,
+   "status": "scored",
+   "verdict": "yellow_q",
+   "decided_on": "2024-06-11",
+   "reason": "채무상환 35% · 희석 47% → 관문1 통과(미확인 1) · 괴리 -10.3% · 원가할인 -1.4% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "gap": -10.3,
+   "eval": {
+    "entry": 427,
+    "entry_date": "2024-07-12",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2024-07-19",
+      "price": 486,
+      "ret": 13.8,
+      "excess": 16.4
+     },
+     {
+      "label": "+10일",
+      "date": "2024-07-26",
+      "price": 473,
+      "ret": 10.8,
+      "excess": 17.0
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-09",
+      "price": 444,
+      "ret": 4.0,
+      "excess": 14.1
+     }
+    ]
+   },
+   "base": {
+    "entry": 415,
+    "entry_date": "2024-06-11",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-12",
+      "price": 438,
+      "ret": 5.5,
+      "excess": 7.9
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-19",
+      "price": 486,
+      "ret": 17.1,
+      "excess": 21.7
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-09",
+      "price": 444,
+      "ret": 7.0,
+      "excess": 19.0
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 17,
+   "corp_name": "캐스텍코리아",
+   "stock_code": "071850",
+   "market": "K",
+   "first_rcept_dt": "20240404",
+   "rcept_nos": [
+    "20240404002689",
+    "20240508000247",
+    "20240514001159",
+    "20240613000116"
+   ],
+   "schedule": {
+    "record_date": "2024-05-10",
+    "rights_start": "2024-05-30",
+    "rights_end": "2024-06-05",
+    "subs_start": "2024-06-17",
+    "listing_date": "2024-07-09",
+    "issue_price": 1127,
+    "alloc_ratio": 0.4394839119
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 30.0,
+   "dilution": 0.4804,
+   "op_income": -1680796448,
+   "op_period": "2024 1분기(3개월, CFS)",
+   "pos52": 0.3541666666666667,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "blue",
+   "decided_on": "2024-06-05",
+   "reason": "채무상환 30% · 희석 48% · 영업손실 -17억 (2024 1분기(3개월, CFS)) → 패스 · 괴리 +98.3% · 원가할인 +7.8% → 🔵 인수권 매도 vs 청약",
+   "gap": 98.3,
+   "eval": {
+    "entry": 1367,
+    "entry_date": "2024-06-05",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-09",
+      "price": 1144,
+      "ret": -16.3,
+      "excess": -17.4
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-16",
+      "price": 1481,
+      "ret": 8.3,
+      "excess": 9.6
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-06",
+      "price": 1570,
+      "ret": 14.9,
+      "excess": 28.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 1367,
+    "entry_date": "2024-06-05",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-09",
+      "price": 1144,
+      "ret": -16.3,
+      "excess": -17.4
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-16",
+      "price": 1481,
+      "ret": 8.3,
+      "excess": 9.6
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-06",
+      "price": 1570,
+      "ret": 14.9,
+      "excess": 28.7
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 18,
+   "corp_name": "인성정보",
+   "stock_code": "033230",
+   "market": "K",
+   "first_rcept_dt": "20240405",
+   "rcept_nos": [
+    "20240405002839",
+    "20240509000110",
+    "20240516001778",
+    "20240618000101"
+   ],
+   "schedule": {
+    "record_date": "2024-05-13",
+    "rights_start": "2024-06-04",
+    "rights_end": "2024-06-11",
+    "subs_start": "2024-06-20",
+    "listing_date": "2024-07-12",
+    "issue_price": 2045,
+    "alloc_ratio": 0.2722568738
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 39.2,
+   "dilution": 0.2882,
+   "op_income": -2610145550,
+   "op_period": "2024 1분기(3개월, CFS)",
+   "pos52": 0.3949795081967213,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-06-11",
+   "reason": "채무상환 39% · 희석 29% · 영업손실 -26억 (2024 1분기(3개월, CFS)) → 패스 · 괴리 -38.4% · 원가할인 -12.3% → ⚪ 관찰 샘플",
+   "gap": -38.4,
+   "eval": {
+    "entry": 2617,
+    "entry_date": "2024-06-11",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-12",
+      "price": 2410,
+      "ret": -7.9,
+      "excess": -5.6
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-19",
+      "price": 2360,
+      "ret": -9.8,
+      "excess": -5.3
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-09",
+      "price": 2165,
+      "ret": -17.3,
+      "excess": -5.3
+     }
+    ]
+   },
+   "base": {
+    "entry": 2617,
+    "entry_date": "2024-06-11",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-12",
+      "price": 2410,
+      "ret": -7.9,
+      "excess": -5.6
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-19",
+      "price": 2360,
+      "ret": -9.8,
+      "excess": -5.3
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-09",
+      "price": 2165,
+      "ret": -17.3,
+      "excess": -5.3
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 19,
+   "corp_name": "SG",
+   "stock_code": "255220",
+   "market": "K",
+   "first_rcept_dt": "20240405",
+   "rcept_nos": [
+    "20240405002993",
+    "20240509000379",
+    "20240517000309",
+    "20240614000107"
+   ],
+   "schedule": {
+    "record_date": "2024-05-13",
+    "rights_start": "2024-05-31",
+    "rights_end": "2024-06-07",
+    "subs_start": "2024-06-18",
+    "listing_date": "2024-07-09",
+    "issue_price": 1061,
+    "alloc_ratio": 0.5910510031
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 59.7,
+   "dilution": 0.4904,
+   "op_income": -5897252958,
+   "op_period": "2024 1분기(3개월, CFS)",
+   "pos52": 0.5587071240105541,
+   "gate": {
+    "debt": "fail",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-06-07",
+   "reason": "채무상환 60% · 희석 49% · 영업손실 -59억 (2024 1분기(3개월, CFS)) · 52주 위치 56% → 패스 · 괴리 -59.2% · 원가할인 -12.7% → ⚪ 관찰 샘플",
+   "gap": -59.2,
+   "eval": {
+    "entry": 1179,
+    "entry_date": "2024-06-07",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-09",
+      "price": 1380,
+      "ret": 17.0,
+      "excess": 17.7
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-16",
+      "price": 1911,
+      "ret": 62.1,
+      "excess": 65.2
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-06",
+      "price": 3400,
+      "ret": 188.4,
+      "excess": 203.8
+     }
+    ]
+   },
+   "base": {
+    "entry": 1179,
+    "entry_date": "2024-06-07",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-09",
+      "price": 1380,
+      "ret": 17.0,
+      "excess": 17.7
+     },
+     {
+      "label": "+5일",
+      "date": "2024-07-16",
+      "price": 1911,
+      "ret": 62.1,
+      "excess": 65.2
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-06",
+      "price": 3400,
+      "ret": 188.4,
+      "excess": 203.8
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 20,
+   "corp_name": "이렘",
+   "stock_code": "009730",
+   "market": "K",
+   "first_rcept_dt": "20240419",
+   "rcept_nos": [
+    "20240419000696",
+    "20240517000194",
+    "20240517000253",
+    "20240531002071",
+    "20240614000485",
+    "20240614000581",
+    "20240701000548",
+    "20240802000283"
+   ],
+   "schedule": {
+    "record_date": "2024-07-03",
+    "rights_start": "2024-07-22",
+    "rights_end": "2024-07-26",
+    "subs_start": "2024-08-06",
+    "listing_date": "2024-08-29",
+    "issue_price": 1175,
+    "alloc_ratio": 0.49434232
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 41.7,
+   "dilution": 0.4941,
+   "op_income": 240595151,
+   "op_period": "2024 1분기(3개월, OFS)",
+   "pos52": 0.01273922065944201,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": true,
+   "status": "scored",
+   "verdict": "green_q",
+   "decided_on": "2024-07-26",
+   "reason": "채무상환 42% · 희석 49% → 관문1 통과(미확인 1) · 괴리 -91.7% · 원가할인 -24.9% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
+   "gap": -91.7,
+   "eval": {
+    "entry": 1216,
+    "entry_date": "2024-07-26",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-08-29",
+      "price": 1398,
+      "ret": 15.0,
+      "excess": 20.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-09-05",
+      "price": 1351,
+      "ret": 11.1,
+      "excess": 20.2
+     },
+     {
+      "label": "+20일",
+      "date": "2024-10-02",
+      "price": 1082,
+      "ret": -11.0,
+      "excess": -6.6
+     }
+    ]
+   },
+   "base": {
+    "entry": 1216,
+    "entry_date": "2024-07-26",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-08-29",
+      "price": 1398,
+      "ret": 15.0,
+      "excess": 20.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-09-05",
+      "price": 1351,
+      "ret": 11.1,
+      "excess": 20.2
+     },
+     {
+      "label": "+20일",
+      "date": "2024-10-02",
+      "price": 1082,
+      "ret": -11.0,
+      "excess": -6.6
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 21,
+   "corp_name": "엑시콘",
+   "stock_code": "092870",
+   "market": "K",
+   "first_rcept_dt": "20240423",
+   "rcept_nos": [
+    "20240423000557",
+    "20240516000589",
+    "20240531002111",
+    "20240709000042"
+   ],
+   "schedule": {
+    "record_date": "2024-06-04",
+    "rights_start": "2024-06-26",
+    "rights_end": "2024-07-02",
+    "subs_start": "2024-07-11",
+    "listing_date": "2024-07-31",
+    "issue_price": 15130,
+    "alloc_ratio": 0.2137779189
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.203,
+   "op_income": -4772050020,
+   "op_period": "2024 1분기(3개월, CFS)",
+   "pos52": 0.6211192485273046,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-07-02",
+   "reason": "채무상환 0% · 희석 20% · 영업손실 -48억 (2024 1분기(3개월, CFS)) · 52주 위치 62% → 패스 · 괴리 -40.5% · 원가할인 -13.7% → ⚪ 관찰 샘플",
+   "gap": -40.5,
+   "eval": {
+    "entry": 19755,
+    "entry_date": "2024-07-02",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-31",
+      "price": 17840,
+      "ret": -9.7,
+      "excess": -6.3
+     },
+     {
+      "label": "+5일",
+      "date": "2024-08-07",
+      "price": 14490,
+      "ret": -26.7,
+      "excess": -16.8
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-29",
+      "price": 12500,
+      "ret": -36.7,
+      "excess": -27.8
+     }
+    ]
+   },
+   "base": {
+    "entry": 19755,
+    "entry_date": "2024-07-02",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-07-31",
+      "price": 17840,
+      "ret": -9.7,
+      "excess": -6.3
+     },
+     {
+      "label": "+5일",
+      "date": "2024-08-07",
+      "price": 14490,
+      "ret": -26.7,
+      "excess": -16.8
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-29",
+      "price": 12500,
+      "ret": -36.7,
+      "excess": -27.8
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 22,
+   "corp_name": "에코앤드림",
+   "stock_code": "101360",
+   "market": "K",
+   "first_rcept_dt": "20240430",
+   "rcept_nos": [
+    "20240430001082",
+    "20240517000341",
+    "20240603000021",
+    "20240709000054"
+   ],
+   "schedule": {
+    "record_date": "2024-06-05",
+    "rights_start": "2024-06-25",
+    "rights_end": "2024-07-01",
+    "subs_start": "2024-07-11",
+    "listing_date": "2024-08-01",
+    "issue_price": 31450,
+    "alloc_ratio": 0.3031766228
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 37.4,
+   "dilution": 0.2972,
+   "op_income": -636442406,
+   "op_period": "2024 1분기(3개월, CFS)",
+   "pos52": 0.3903414443397736,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-07-01",
+   "reason": "채무상환 37% · 희석 30% · 영업손실 -6억 (2024 1분기(3개월, CFS)) → 패스 · 괴리 -28.7% · 원가할인 -12.7% → ⚪ 관찰 샘플",
+   "gap": -28.7,
+   "eval": {
+    "entry": 48450,
+    "entry_date": "2024-07-01",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-08-01",
+      "price": 40900,
+      "ret": -15.6,
+      "excess": -10.9
+     },
+     {
+      "label": "+5일",
+      "date": "2024-08-08",
+      "price": 30300,
+      "ret": -37.5,
+      "excess": -25.4
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-30",
+      "price": 32350,
+      "ret": -33.2,
+      "excess": -23.8
+     }
+    ]
+   },
+   "base": {
+    "entry": 48450,
+    "entry_date": "2024-07-01",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-08-01",
+      "price": 40900,
+      "ret": -15.6,
+      "excess": -10.9
+     },
+     {
+      "label": "+5일",
+      "date": "2024-08-08",
+      "price": 30300,
+      "ret": -37.5,
+      "excess": -25.4
+     },
+     {
+      "label": "+20일",
+      "date": "2024-08-30",
+      "price": 32350,
+      "ret": -33.2,
+      "excess": -23.8
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 23,
+   "corp_name": "퀄리타스반도체",
+   "stock_code": "432720",
+   "market": "K",
+   "first_rcept_dt": "20240507",
+   "rcept_nos": [
+    "20240507000524",
+    "20240604000081",
+    "20240607000083",
+    "20240711000057"
+   ],
+   "schedule": {
+    "record_date": "2024-06-11",
+    "rights_start": "2024-06-28",
+    "rights_end": "2024-07-04",
+    "subs_start": "2024-07-15",
+    "listing_date": "2024-08-06",
+    "issue_price": 16040,
+    "alloc_ratio": 0.2355463
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.2355,
+   "op_income": -5928950842,
+   "op_period": "2024 1분기(3개월, OFS)",
+   "pos52": 0.3650780020037212,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-07-04",
+   "reason": "채무상환 0% · 희석 24% · 영업손실 -59억 (2024 1분기(3개월, OFS)) → 패스 · 괴리 -46.7% · 원가할인 -5.0% → ⚪ 관찰 샘플",
+   "gap": -46.7,
+   "eval": {
+    "entry": 17212,
+    "entry_date": "2024-07-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-08-06",
+      "price": 10330,
+      "ret": -40.0,
+      "excess": -24.3
+     },
+     {
+      "label": "+5일",
+      "date": "2024-08-13",
+      "price": 11570,
+      "ret": -32.8,
+      "excess": -23.7
+     },
+     {
+      "label": "+20일",
+      "date": "2024-09-04",
+      "price": 9250,
+      "ret": -46.3,
+      "excess": -33.3
+     }
+    ]
+   },
+   "base": {
+    "entry": 17212,
+    "entry_date": "2024-07-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-08-06",
+      "price": 10330,
+      "ret": -40.0,
+      "excess": -24.3
+     },
+     {
+      "label": "+5일",
+      "date": "2024-08-13",
+      "price": 11570,
+      "ret": -32.8,
+      "excess": -23.7
+     },
+     {
+      "label": "+20일",
+      "date": "2024-09-04",
+      "price": 9250,
+      "ret": -46.3,
+      "excess": -33.3
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 24,
+   "corp_name": "신세계톰보이",
+   "stock_code": "012580",
+   "market": "E",
+   "first_rcept_dt": "20240508",
+   "rcept_nos": [
+    "20240508000123",
+    "20240527000374"
+   ],
+   "schedule": {
+    "record_date": "2024-05-23",
+    "rights_start": null,
+    "rights_end": null,
+    "subs_start": "2024-06-21",
+    "listing_date": null,
+    "issue_price": 969,
+    "alloc_ratio": 0.0959328592
+   },
+   "missing": [
+    "rights_start",
+    "rights_end",
+    "listing_date"
+   ],
+   "status": "no_rights_listing"
+  },
+  {
+   "case_id": 26,
+   "corp_name": "셀리드",
+   "stock_code": "299660",
+   "market": "K",
+   "first_rcept_dt": "20240524",
+   "rcept_nos": [
+    "20240524000510",
+    "20240611000233",
+    "20240626000075",
+    "20240730000061",
+    "20240730000287"
+   ],
+   "schedule": {
+    "record_date": "2024-06-28",
+    "rights_start": "2024-07-17",
+    "rights_end": "2024-07-23",
+    "subs_start": "2024-08-01",
+    "listing_date": "2024-08-23",
+    "issue_price": 3090,
+    "alloc_ratio": 0.55134989
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.5513,
+   "op_income": -2419510160,
+   "op_period": "2024 1분기(3개월, CFS)",
+   "pos52": 0.0839852738150023,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-07-23",
+   "reason": "채무상환 0% · 희석 55% · 영업손실 -24억 (2024 1분기(3개월, CFS)) → 패스 · 괴리 -82.4% · 원가할인 -29.7% → ⚪ 관찰 샘플",
+   "gap": -82.4,
+   "eval": {
+    "entry": 3235,
+    "entry_date": "2024-07-23",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-08-23",
+      "price": 7700,
+      "ret": 138.0,
+      "excess": 143.8
+     },
+     {
+      "label": "+5일",
+      "date": "2024-08-30",
+      "price": 6200,
+      "ret": 91.7,
+      "excess": 97.1
+     },
+     {
+      "label": "+20일",
+      "date": "2024-09-25",
+      "price": 5870,
+      "ret": 81.5,
+      "excess": 88.0
+     }
+    ]
+   },
+   "base": {
+    "entry": 3235,
+    "entry_date": "2024-07-23",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-08-23",
+      "price": 7700,
+      "ret": 138.0,
+      "excess": 143.8
+     },
+     {
+      "label": "+5일",
+      "date": "2024-08-30",
+      "price": 6200,
+      "ret": 91.7,
+      "excess": 97.1
+     },
+     {
+      "label": "+20일",
+      "date": "2024-09-25",
+      "price": 5870,
+      "ret": 81.5,
+      "excess": 88.0
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 27,
+   "corp_name": "DXVX",
+   "stock_code": "180400",
+   "market": "K",
+   "first_rcept_dt": "20240529",
+   "rcept_nos": [
+    "20240529000328",
+    "20240614000142",
+    "20240708000026",
+    "20240819000308",
+    "20240903000029"
+   ],
+   "schedule": {
+    "record_date": "2024-07-10",
+    "rights_start": "2024-08-21",
+    "rights_end": "2024-08-27",
+    "subs_start": "2024-09-05",
+    "listing_date": "2024-09-30",
+    "issue_price": 2230,
+    "alloc_ratio": 0.6287498308
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 54.3,
+   "dilution": 0.6287,
+   "op_income": -545585643,
+   "op_period": "2024 반기(3개월, CFS)",
+   "pos52": 0.07286123618501841,
+   "gate": {
+    "debt": "fail",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-08-27",
+   "reason": "채무상환 54% · 희석 63% · 영업손실 -5억 (2024 반기(3개월, CFS)) → 패스 · 괴리 -75.9% · 원가할인 -49.0% → ⚪ 관찰 샘플",
+   "gap": -75.9,
+   "eval": {
+    "entry": 2831,
+    "entry_date": "2024-08-27",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-09-30",
+      "price": 2675,
+      "ret": -5.5,
+      "excess": -7.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-10-10",
+      "price": 2805,
+      "ret": -0.9,
+      "excess": -2.3
+     },
+     {
+      "label": "+20일",
+      "date": "2024-10-31",
+      "price": 2405,
+      "ret": -15.0,
+      "excess": -12.2
+     }
+    ]
+   },
+   "base": {
+    "entry": 2831,
+    "entry_date": "2024-08-27",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-09-30",
+      "price": 2675,
+      "ret": -5.5,
+      "excess": -7.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-10-10",
+      "price": 2805,
+      "ret": -0.9,
+      "excess": -2.3
+     },
+     {
+      "label": "+20일",
+      "date": "2024-10-31",
+      "price": 2405,
+      "ret": -15.0,
+      "excess": -12.2
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 28,
+   "corp_name": "자연과환경",
+   "stock_code": "043910",
+   "market": "K",
+   "first_rcept_dt": "20240529",
+   "rcept_nos": [
+    "20240529000537",
+    "20240613000084",
+    "20240614000121",
+    "20240718000066"
+   ],
+   "schedule": {
+    "record_date": "2024-06-18",
+    "rights_start": "2024-07-05",
+    "rights_end": "2024-07-11",
+    "subs_start": "2024-07-22",
+    "listing_date": "2024-08-09",
+    "issue_price": 647,
+    "alloc_ratio": 0.393171332
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.3932,
+   "op_income": 1320786768,
+   "op_period": "2024 1분기(3개월, CFS)",
+   "pos52": 0.1506849315068493,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": true,
+   "status": "scored",
+   "verdict": "green_q",
+   "decided_on": "2024-07-11",
+   "reason": "채무상환 0% · 희석 39% → 관문1 통과(미확인 1) · 괴리 -48.9% · 원가할인 -10.6% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
+   "gap": -48.9,
+   "eval": {
+    "entry": 739,
+    "entry_date": "2024-07-11",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-08-09",
+      "price": 667,
+      "ret": -9.7,
+      "excess": 1.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-08-19",
+      "price": 690,
+      "ret": -6.6,
+      "excess": 2.2
+     },
+     {
+      "label": "+20일",
+      "date": "2024-09-09",
+      "price": 672,
+      "ret": -9.1,
+      "excess": 7.1
+     }
+    ]
+   },
+   "base": {
+    "entry": 739,
+    "entry_date": "2024-07-11",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-08-09",
+      "price": 667,
+      "ret": -9.7,
+      "excess": 1.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-08-19",
+      "price": 690,
+      "ret": -6.6,
+      "excess": 2.2
+     },
+     {
+      "label": "+20일",
+      "date": "2024-09-09",
+      "price": 672,
+      "ret": -9.1,
+      "excess": 7.1
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 29,
+   "corp_name": "멜파스",
+   "stock_code": "096640",
+   "market": "E",
+   "first_rcept_dt": "20240611",
+   "rcept_nos": [
+    "20240611000566"
+   ],
+   "schedule": {
+    "record_date": "2024-06-25",
+    "rights_start": null,
+    "rights_end": null,
+    "subs_start": "2024-07-26",
+    "listing_date": null,
+    "issue_price": 500,
+    "alloc_ratio": 0.6192777
+   },
+   "missing": [
+    "rights_start",
+    "rights_end",
+    "listing_date"
+   ],
+   "status": "no_rights_listing"
+  },
+  {
+   "case_id": 30,
+   "corp_name": "삼성FN리츠",
+   "stock_code": "448730",
+   "market": "Y",
+   "first_rcept_dt": "20240626",
+   "rcept_nos": [
+    "20240626000475",
+    "20240802000029",
+    "20240905000102"
+   ],
+   "schedule": {
+    "record_date": "2024-08-06",
+    "rights_start": "2024-08-23",
+    "rights_end": "2024-08-29",
+    "subs_start": "2024-09-09",
+    "listing_date": "2024-10-07",
+    "issue_price": 4670,
+    "alloc_ratio": 0.1778783959
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.1779,
+   "op_income": 5611737396,
+   "op_period": "2023 연간(OFS)",
+   "pos52": 0.3003194888178914,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": true,
+   "status": "scored",
+   "verdict": "blue",
+   "decided_on": "2024-08-29",
+   "reason": "채무상환 0% · 희석 18% → 관문1 통과(미확인 1) · 괴리 +44.4% · 원가할인 +0.8% → 🔵 인수권 매도 vs 청약",
+   "gap": 44.4,
+   "eval": {
+    "entry": 4800,
+    "entry_date": "2024-08-29",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-10-07",
+      "price": 4845,
+      "ret": 0.9,
+      "excess": 4.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-10-15",
+      "price": 4825,
+      "ret": 0.5,
+      "excess": 1.6
+     },
+     {
+      "label": "+20일",
+      "date": "2024-11-05",
+      "price": 4615,
+      "ret": -3.9,
+      "excess": -0.6
+     }
+    ]
+   },
+   "base": {
+    "entry": 4800,
+    "entry_date": "2024-08-29",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-10-07",
+      "price": 4845,
+      "ret": 0.9,
+      "excess": 4.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-10-15",
+      "price": 4825,
+      "ret": 0.5,
+      "excess": 1.6
+     },
+     {
+      "label": "+20일",
+      "date": "2024-11-05",
+      "price": 4615,
+      "ret": -3.9,
+      "excess": -0.6
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 31,
+   "corp_name": "아이엠뱅크",
+   "stock_code": "005270",
+   "market": "E",
+   "first_rcept_dt": "20240626",
+   "rcept_nos": [
+    "20240626000566"
+   ],
+   "schedule": {
+    "record_date": "2024-06-26",
+    "rights_start": null,
+    "rights_end": null,
+    "subs_start": "2024-06-27",
+    "listing_date": null,
+    "issue_price": 50000,
+    "alloc_ratio": 0.0142729
+   },
+   "missing": [
+    "rights_start",
+    "rights_end",
+    "listing_date"
+   ],
+   "status": "no_rights_listing"
+  },
+  {
+   "case_id": 32,
+   "corp_name": "경남제약",
+   "stock_code": "053950",
+   "market": "K",
+   "first_rcept_dt": "20240705",
+   "rcept_nos": [
+    "20240705000462",
+    "20240719000404",
+    "20240814003224",
+    "20240830001938",
+    "20240906000482",
+    "20240906000603",
+    "20241010000263"
+   ],
+   "schedule": {
+    "record_date": "2024-09-03",
+    "rights_start": "2024-09-24",
+    "rights_end": "2024-09-30",
+    "subs_start": "2024-10-14",
+    "listing_date": "2024-11-01",
+    "issue_price": 556,
+    "alloc_ratio": 0.9833362435
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.9833,
+   "op_income": -1188403326,
+   "op_period": "2024 반기(3개월, CFS)",
+   "pos52": 0.013847675568743818,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-09-30",
+   "reason": "채무상환 0% · 희석 98% · 영업손실 -12억 (2024 반기(3개월, CFS)) → 패스 · 괴리 -44.1% · 원가할인 -10.9% → ⚪ 관찰 샘플",
+   "gap": -44.1,
+   "eval": {
+    "entry": 665,
+    "entry_date": "2024-09-30",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-11-01",
+      "price": 665,
+      "ret": 0.0,
+      "excess": 3.7
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-08",
+      "price": 903,
+      "ret": 35.8,
+      "excess": 38.5
+     },
+     {
+      "label": "+20일",
+      "date": "2024-11-29",
+      "price": 727,
+      "ret": 9.3,
+      "excess": 20.5
+     }
+    ]
+   },
+   "base": {
+    "entry": 665,
+    "entry_date": "2024-09-30",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-11-01",
+      "price": 665,
+      "ret": 0.0,
+      "excess": 3.7
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-08",
+      "price": 903,
+      "ret": 35.8,
+      "excess": 38.5
+     },
+     {
+      "label": "+20일",
+      "date": "2024-11-29",
+      "price": 727,
+      "ret": 9.3,
+      "excess": 20.5
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 33,
+   "corp_name": "이지스레지던스리츠",
+   "stock_code": "350520",
+   "market": "Y",
+   "first_rcept_dt": "20240807",
+   "rcept_nos": [
+    "20240807000283",
+    "20240807000482",
+    "20240820000110",
+    "20240904000297",
+    "20241002000177"
+   ],
+   "schedule": {
+    "record_date": "2024-08-22",
+    "rights_start": "2024-09-11",
+    "rights_end": "2024-09-20",
+    "subs_start": "2024-10-07",
+    "listing_date": "2024-10-30",
+    "issue_price": 3760,
+    "alloc_ratio": 0.2999999965
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 96.9,
+   "dilution": 0.3,
+   "op_income": 7042409000,
+   "op_period": "2024 반기(3개월, CFS)",
+   "pos52": 0.6524685382381413,
+   "gate": {
+    "debt": "fail",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-09-20",
+   "reason": "채무상환 97% · 희석 30% · 52주 위치 65% → 패스 · 괴리 -12.5% · 원가할인 -1.0% → ⚪ 관찰 샘플",
+   "gap": -12.5,
+   "eval": {
+    "entry": 4040,
+    "entry_date": "2024-09-20",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-10-30",
+      "price": 3950,
+      "ret": -2.2,
+      "excess": -2.8
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-06",
+      "price": 3940,
+      "ret": -2.5,
+      "excess": -1.3
+     },
+     {
+      "label": "+20일",
+      "date": "2024-11-27",
+      "price": 4020,
+      "ret": -0.5,
+      "excess": 3.0
+     }
+    ]
+   },
+   "base": {
+    "entry": 4040,
+    "entry_date": "2024-09-20",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-10-30",
+      "price": 3950,
+      "ret": -2.2,
+      "excess": -2.8
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-06",
+      "price": 3940,
+      "ret": -2.5,
+      "excess": -1.3
+     },
+     {
+      "label": "+20일",
+      "date": "2024-11-27",
+      "price": 4020,
+      "ret": -0.5,
+      "excess": 3.0
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 34,
+   "corp_name": "코람코라이프인프라리츠",
+   "stock_code": "357120",
+   "market": "Y",
+   "first_rcept_dt": "20240808",
+   "rcept_nos": [
+    "20240808000398",
+    "20240821000196",
+    "20240906000256",
+    "20241002000180"
+   ],
+   "schedule": {
+    "record_date": "2024-08-23",
+    "rights_start": "2024-09-12",
+    "rights_end": "2024-09-23",
+    "subs_start": "2024-10-07",
+    "listing_date": "2024-10-29",
+    "issue_price": 4495,
+    "alloc_ratio": 0.0994062494
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.0994,
+   "op_income": 11794505738,
+   "op_period": "2024 반기(3개월, OFS)",
+   "pos52": 0.3192923336141533,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": true,
+   "status": "scored",
+   "verdict": "blue",
+   "decided_on": "2024-09-23",
+   "reason": "채무상환 0% · 희석 10% → 관문1 통과(미확인 1) · 괴리 +84.6% · 원가할인 +3.5% → 🔵 인수권 매도 vs 청약",
+   "gap": 84.6,
+   "eval": {
+    "entry": 4855,
+    "entry_date": "2024-09-23",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-10-29",
+      "price": 4640,
+      "ret": -4.4,
+      "excess": -4.6
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-05",
+      "price": 4550,
+      "ret": -6.3,
+      "excess": -5.3
+     },
+     {
+      "label": "+20일",
+      "date": "2024-11-26",
+      "price": 4595,
+      "ret": -5.4,
+      "excess": -2.2
+     }
+    ]
+   },
+   "base": {
+    "entry": 4855,
+    "entry_date": "2024-09-23",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-10-29",
+      "price": 4640,
+      "ret": -4.4,
+      "excess": -4.6
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-05",
+      "price": 4550,
+      "ret": -6.3,
+      "excess": -5.3
+     },
+     {
+      "label": "+20일",
+      "date": "2024-11-26",
+      "price": 4595,
+      "ret": -5.4,
+      "excess": -2.2
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 35,
+   "corp_name": "진양화학",
+   "stock_code": "051630",
+   "market": "Y",
+   "first_rcept_dt": "20240814",
+   "rcept_nos": [
+    "20240814003743",
+    "20240829001346",
+    "20240913000314",
+    "20241024000191"
+   ],
+   "schedule": {
+    "record_date": "2024-09-20",
+    "rights_start": "2024-10-10",
+    "rights_end": "2024-10-16",
+    "subs_start": "2024-10-28",
+    "listing_date": "2024-11-18",
+    "issue_price": 2005,
+    "alloc_ratio": 0.3417721518
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 76.1,
+   "dilution": 0.3418,
+   "op_income": -663702647,
+   "op_period": "2024 반기(3개월, OFS)",
+   "pos52": 0.515778019586507,
+   "gate": {
+    "debt": "fail",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-10-16",
+   "reason": "채무상환 76% · 희석 34% · 영업손실 -7억 (2024 반기(3개월, OFS)) · 52주 위치 52% → 패스 · 괴리 -0.1% · 원가할인 -0.0% → ⚪ 관찰 샘플",
+   "gap": -0.1,
+   "eval": {
+    "entry": 2674,
+    "entry_date": "2024-10-16",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-11-18",
+      "price": 2625,
+      "ret": -1.8,
+      "excess": 4.7
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-25",
+      "price": 2410,
+      "ret": -9.9,
+      "excess": -7.0
+     },
+     {
+      "label": "+20일",
+      "date": "2024-12-16",
+      "price": 3660,
+      "ret": 36.9,
+      "excess": 41.5
+     }
+    ]
+   },
+   "base": {
+    "entry": 2674,
+    "entry_date": "2024-10-16",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-11-18",
+      "price": 2625,
+      "ret": -1.8,
+      "excess": 4.7
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-25",
+      "price": 2410,
+      "ret": -9.9,
+      "excess": -7.0
+     },
+     {
+      "label": "+20일",
+      "date": "2024-12-16",
+      "price": 3660,
+      "ret": 36.9,
+      "excess": 41.5
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 36,
+   "corp_name": "펩트론",
+   "stock_code": "087010",
+   "market": "K",
+   "first_rcept_dt": "20240816",
+   "rcept_nos": [
+    "20240816000225",
+    "20240913000745",
+    "20241007000049",
+    "20241022000339",
+    "20241111000136"
+   ],
+   "schedule": {
+    "record_date": "2024-10-10",
+    "rights_start": "2024-10-29",
+    "rights_end": "2024-11-04",
+    "subs_start": "2024-11-13",
+    "listing_date": "2024-12-04",
+    "issue_price": 52400,
+    "alloc_ratio": 0.1244109996
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.1278,
+   "op_income": -4277569588,
+   "op_period": "2024 반기(3개월, OFS)",
+   "pos52": 0.619775093453613,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-11-04",
+   "reason": "채무상환 0% · 희석 13% · 영업손실 -43억 (2024 반기(3개월, OFS)) · 52주 위치 62% → 패스 · 괴리 -34.0% · 원가할인 -19.8% → ⚪ 관찰 샘플",
+   "gap": -34.0,
+   "eval": {
+    "entry": 85850,
+    "entry_date": "2024-11-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-12-04",
+      "price": 90400,
+      "ret": 5.3,
+      "excess": 15.4
+     },
+     {
+      "label": "+5일",
+      "date": "2024-12-11",
+      "price": 81500,
+      "ret": -5.1,
+      "excess": 5.3
+     },
+     {
+      "label": "+20일",
+      "date": "2025-01-06",
+      "price": 101400,
+      "ret": 18.1,
+      "excess": 22.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 85850,
+    "entry_date": "2024-11-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-12-04",
+      "price": 90400,
+      "ret": 5.3,
+      "excess": 15.4
+     },
+     {
+      "label": "+5일",
+      "date": "2024-12-11",
+      "price": 81500,
+      "ret": -5.1,
+      "excess": 5.3
+     },
+     {
+      "label": "+20일",
+      "date": "2025-01-06",
+      "price": 101400,
+      "ret": 18.1,
+      "excess": 22.9
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 37,
+   "corp_name": "DH오토웨어",
+   "stock_code": "025440",
+   "market": "K",
+   "first_rcept_dt": "20240822",
+   "rcept_nos": [
+    "20240822000001",
+    "20240822000003",
+    "20241108000242",
+    "20241210000511",
+    "20250110000255",
+    "20250110000310",
+    "20250115000176",
+    "20250210000353"
+   ],
+   "schedule": {
+    "record_date": "2024-11-12",
+    "rights_start": "2024-11-29",
+    "rights_end": "2024-12-05",
+    "subs_start": "2025-02-12",
+    "listing_date": "2025-03-10",
+    "issue_price": 802,
+    "alloc_ratio": 0.58477209
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.5848,
+   "op_income": -1172704651,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.004743833017077799,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-12-05",
+   "reason": "채무상환 0% · 희석 58% · 영업손실 -12억 (2024 3분기(3개월, CFS)) → 패스 · 괴리 -51.2% · 원가할인 -2.6% → ⚪ 관찰 샘플",
+   "gap": -51.2,
+   "eval": {
+    "entry": 823,
+    "entry_date": "2024-12-05",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-03-10",
+      "price": 729,
+      "ret": -11.4,
+      "excess": -19.4
+     },
+     {
+      "label": "+5일",
+      "date": "2025-03-17",
+      "price": 673,
+      "ret": -18.2,
+      "excess": -29.0
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-07",
+      "price": 676,
+      "ret": -17.9,
+      "excess": -14.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 823,
+    "entry_date": "2024-12-05",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-03-10",
+      "price": 729,
+      "ret": -11.4,
+      "excess": -19.4
+     },
+     {
+      "label": "+5일",
+      "date": "2025-03-17",
+      "price": 673,
+      "ret": -18.2,
+      "excess": -29.0
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-07",
+      "price": 676,
+      "ret": -17.9,
+      "excess": -14.9
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 39,
+   "corp_name": "츌립앤사이언스",
+   "stock_code": "291650",
+   "market": "K",
+   "first_rcept_dt": "20240826",
+   "rcept_nos": [
+    "20240826000332",
+    "20240910000647",
+    "20240919000264",
+    "20241028000093",
+    "20241122000507",
+    "20241129001394"
+   ],
+   "schedule": {
+    "record_date": "2024-10-30",
+    "rights_start": "2024-11-18",
+    "rights_end": "2024-11-22",
+    "subs_start": "2024-12-03",
+    "listing_date": "2024-12-24",
+    "issue_price": 1395,
+    "alloc_ratio": 0.6871411642
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 49.0,
+   "dilution": 0.6871,
+   "op_income": -1483148298,
+   "op_period": "2024 3분기(3개월, OFS)",
+   "pos52": 0.26218646474207286,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-11-22",
+   "reason": "채무상환 49% · 희석 69% · 영업손실 -15억 (2024 3분기(3개월, OFS)) → 패스 · 괴리 -89.9% · 원가할인 -9.9% → ⚪ 관찰 샘플",
+   "gap": -89.9,
+   "eval": {
+    "entry": 1415,
+    "entry_date": "2024-11-22",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-12-24",
+      "price": 1152,
+      "ret": -18.6,
+      "excess": -19.5
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-03",
+      "price": 1152,
+      "ret": -18.6,
+      "excess": -22.8
+     },
+     {
+      "label": "+20일",
+      "date": "2025-01-24",
+      "price": 1072,
+      "ret": -24.2,
+      "excess": -31.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 1415,
+    "entry_date": "2024-11-22",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-12-24",
+      "price": 1152,
+      "ret": -18.6,
+      "excess": -19.5
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-03",
+      "price": 1152,
+      "ret": -18.6,
+      "excess": -22.8
+     },
+     {
+      "label": "+20일",
+      "date": "2025-01-24",
+      "price": 1072,
+      "ret": -24.2,
+      "excess": -31.9
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 40,
+   "corp_name": "신한알파리츠",
+   "stock_code": "293940",
+   "market": "Y",
+   "first_rcept_dt": "20240828",
+   "rcept_nos": [
+    "20240828000388",
+    "20240910000079",
+    "20241011000101",
+    "20241024000058"
+   ],
+   "schedule": {
+    "record_date": "2024-09-12",
+    "rights_start": "2024-10-11",
+    "rights_end": "2024-10-17",
+    "subs_start": "2024-10-28",
+    "listing_date": "2024-11-14",
+    "issue_price": 5660,
+    "alloc_ratio": 0.3565684705
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 38.5,
+   "dilution": 0.3566,
+   "op_income": 20230479829,
+   "op_period": "2024 반기(3개월, CFS)",
+   "pos52": 0.43648648648648647,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": true,
+   "status": "scored",
+   "verdict": "yellow_q",
+   "decided_on": "2024-10-17",
+   "reason": "채무상환 38% · 희석 36% → 관문1 통과(미확인 1) · 괴리 -58.8% · 원가할인 -1.7% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "gap": -58.8,
+   "eval": {
+    "entry": 5420,
+    "entry_date": "2024-11-14",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2024-11-21",
+      "price": 5710,
+      "ret": 5.4,
+      "excess": 2.8
+     },
+     {
+      "label": "+10일",
+      "date": "2024-11-28",
+      "price": 5720,
+      "ret": 5.5,
+      "excess": 2.0
+     },
+     {
+      "label": "+20일",
+      "date": "2024-12-12",
+      "price": 5600,
+      "ret": 3.3,
+      "excess": 0.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 5730,
+    "entry_date": "2024-10-17",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-11-14",
+      "price": 5450,
+      "ret": -4.9,
+      "excess": 2.0
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-21",
+      "price": 5710,
+      "ret": -0.3,
+      "excess": 4.6
+     },
+     {
+      "label": "+20일",
+      "date": "2024-12-12",
+      "price": 5600,
+      "ret": -2.3,
+      "excess": 2.6
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 42,
+   "corp_name": "에코프로에이치엔",
+   "stock_code": "383310",
+   "market": "K",
+   "first_rcept_dt": "20240904",
+   "rcept_nos": [
+    "20240904000400",
+    "20240924000272",
+    "20241010000491",
+    "20241115000315",
+    "20241202000397"
+   ],
+   "schedule": {
+    "record_date": "2024-10-14",
+    "rights_start": "2024-11-04",
+    "rights_end": "2024-11-08",
+    "subs_start": "2024-12-04",
+    "listing_date": "2024-12-26",
+    "issue_price": 30850,
+    "alloc_ratio": 0.297519178
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.3705,
+   "op_income": 3598582269,
+   "op_period": "2024 반기(3개월, CFS)",
+   "pos52": 0.09261355062622605,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": true,
+   "status": "scored",
+   "verdict": "blue",
+   "decided_on": "2024-11-08",
+   "reason": "채무상환 0% · 희석 37% → 관문1 통과(미확인 1) · 괴리 +89.8% · 원가할인 +5.9% → 🔵 인수권 매도 vs 청약",
+   "gap": 89.8,
+   "eval": {
+    "entry": 36450,
+    "entry_date": "2024-11-08",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-12-26",
+      "price": 32050,
+      "ret": -12.1,
+      "excess": -4.1
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-06",
+      "price": 33250,
+      "ret": -8.8,
+      "excess": -5.4
+     },
+     {
+      "label": "+20일",
+      "date": "2025-01-31",
+      "price": 30350,
+      "ret": -16.7,
+      "excess": -14.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 36450,
+    "entry_date": "2024-11-08",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-12-26",
+      "price": 32050,
+      "ret": -12.1,
+      "excess": -4.1
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-06",
+      "price": 33250,
+      "ret": -8.8,
+      "excess": -5.4
+     },
+     {
+      "label": "+20일",
+      "date": "2025-01-31",
+      "price": 30350,
+      "ret": -16.7,
+      "excess": -14.7
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 44,
+   "corp_name": "롯데리츠",
+   "stock_code": "330590",
+   "market": "Y",
+   "first_rcept_dt": "20240911",
+   "rcept_nos": [
+    "20240911000232",
+    "20240924000023",
+    "20240924000409",
+    "20241031000010"
+   ],
+   "schedule": {
+    "record_date": "2024-09-26",
+    "rights_start": "2024-10-18",
+    "rights_end": "2024-10-24",
+    "subs_start": "2024-11-04",
+    "listing_date": "2024-11-22",
+    "issue_price": 3200,
+    "alloc_ratio": 0.1893246544
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 100.0,
+   "dilution": 0.1893,
+   "op_income": 19529499209,
+   "op_period": "2024 반기(3개월, OFS)",
+   "pos52": 0.8530120481927711,
+   "gate": {
+    "debt": "fail",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "fail",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-10-24",
+   "reason": "채무상환 100% · 희석 19% · 52주 위치 85% → 패스 · 괴리 대기 → ⚪ 관찰 샘플",
+   "gap": null,
+   "eval": {
+    "entry": 3250,
+    "entry_date": "2024-10-24",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-11-22",
+      "price": 3210,
+      "ret": -1.2,
+      "excess": 2.2
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-29",
+      "price": 3080,
+      "ret": -5.2,
+      "excess": -0.4
+     },
+     {
+      "label": "+20일",
+      "date": "2024-12-20",
+      "price": 3140,
+      "ret": -3.4,
+      "excess": 3.5
+     }
+    ]
+   },
+   "base": {
+    "entry": 3250,
+    "entry_date": "2024-10-24",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-11-22",
+      "price": 3210,
+      "ret": -1.2,
+      "excess": 2.2
+     },
+     {
+      "label": "+5일",
+      "date": "2024-11-29",
+      "price": 3080,
+      "ret": -5.2,
+      "excess": -0.4
+     },
+     {
+      "label": "+20일",
+      "date": "2024-12-20",
+      "price": 3140,
+      "ret": -3.4,
+      "excess": 3.5
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 45,
+   "corp_name": "한화리츠",
+   "stock_code": "451800",
+   "market": "Y",
+   "first_rcept_dt": "20240913",
+   "rcept_nos": [
+    "20240913000603",
+    "20240926000161",
+    "20241107000069"
+   ],
+   "schedule": {
+    "record_date": "2024-09-30",
+    "rights_start": "2024-10-23",
+    "rights_end": "2024-10-29",
+    "subs_start": "2024-11-11",
+    "listing_date": "2024-11-29",
+    "issue_price": 3520,
+    "alloc_ratio": 1.5439093484
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 100.0,
+   "dilution": 1.5439,
+   "op_income": 6503332502,
+   "op_period": "2024 반기(3개월, OFS)",
+   "pos52": 0.2185929648241206,
+   "gate": {
+    "debt": "fail",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-10-29",
+   "reason": "채무상환 100% · 희석 154% → 패스 · 괴리 대기 → ⚪ 관찰 샘플",
+   "gap": null,
+   "eval": {
+    "entry": 3521,
+    "entry_date": "2024-10-29",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-11-29",
+      "price": 3495,
+      "ret": -0.7,
+      "excess": 3.9
+     },
+     {
+      "label": "+5일",
+      "date": "2024-12-06",
+      "price": 3435,
+      "ret": -2.4,
+      "excess": 4.8
+     },
+     {
+      "label": "+20일",
+      "date": "2024-12-30",
+      "price": 3480,
+      "ret": -1.2,
+      "excess": 7.2
+     }
+    ]
+   },
+   "base": {
+    "entry": 3521,
+    "entry_date": "2024-10-29",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-11-29",
+      "price": 3495,
+      "ret": -0.7,
+      "excess": 3.9
+     },
+     {
+      "label": "+5일",
+      "date": "2024-12-06",
+      "price": 3435,
+      "ret": -2.4,
+      "excess": 4.8
+     },
+     {
+      "label": "+20일",
+      "date": "2024-12-30",
+      "price": 3480,
+      "ret": -1.2,
+      "excess": 7.2
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 46,
+   "corp_name": "한국첨단소재",
+   "stock_code": "062970",
+   "market": "K",
+   "first_rcept_dt": "20240926",
+   "rcept_nos": [
+    "20240925000602",
+    "20241111000107",
+    "20241216000171"
+   ],
+   "schedule": {
+    "record_date": "2024-11-13",
+    "rights_start": "2024-12-03",
+    "rights_end": "2024-12-09",
+    "subs_start": "2024-12-18",
+    "listing_date": "2025-01-16",
+    "issue_price": 1204,
+    "alloc_ratio": 1.0
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 63.4,
+   "dilution": 1.0,
+   "op_income": -1270499675,
+   "op_period": "2024 3분기(3개월, OFS)",
+   "pos52": 0.3226330759853718,
+   "gate": {
+    "debt": "fail",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "unknown",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-12-09",
+   "reason": "채무상환 63% · 희석 100% · 영업손실 -13억 (2024 3분기(3개월, OFS)) → 패스 · 괴리 -95.1% · 원가할인 -29.7% → ⚪ 관찰 샘플",
+   "gap": -95.1,
+   "eval": {
+    "entry": 1231,
+    "entry_date": "2024-12-09",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-01-16",
+      "price": 6800,
+      "ret": 452.4,
+      "excess": 437.5
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-23",
+      "price": 6860,
+      "ret": 457.3,
+      "excess": 441.8
+     },
+     {
+      "label": "+20일",
+      "date": "2025-02-19",
+      "price": 5340,
+      "ret": 333.8,
+      "excess": 309.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 1231,
+    "entry_date": "2024-12-09",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-01-16",
+      "price": 6800,
+      "ret": 452.4,
+      "excess": 437.5
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-23",
+      "price": 6860,
+      "ret": 457.3,
+      "excess": 441.8
+     },
+     {
+      "label": "+20일",
+      "date": "2025-02-19",
+      "price": 5340,
+      "ret": 333.8,
+      "excess": 309.7
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 47,
+   "corp_name": "엔젠바이오",
+   "stock_code": "354200",
+   "market": "K",
+   "first_rcept_dt": "20240926",
+   "rcept_nos": [
+    "20240926000368",
+    "20241031000078",
+    "20241115000169",
+    "20241205000135"
+   ],
+   "schedule": {
+    "record_date": "2024-11-04",
+    "rights_start": "2024-11-21",
+    "rights_end": "2024-11-27",
+    "subs_start": "2024-12-09",
+    "listing_date": "2024-12-30",
+    "issue_price": 1840,
+    "alloc_ratio": 0.4367294
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 64.7,
+   "dilution": 0.4367,
+   "op_income": -4113178083,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.21456392887383574,
+   "gate": {
+    "debt": "fail",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-11-27",
+   "reason": "채무상환 65% · 희석 44% · 영업손실 -41억 (2024 3분기(3개월, CFS)) → 패스 · 괴리 -52.4% · 원가할인 -3.4% → ⚪ 관찰 샘플",
+   "gap": -52.4,
+   "eval": {
+    "entry": 1921,
+    "entry_date": "2024-11-27",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-12-30",
+      "price": 1585,
+      "ret": -17.5,
+      "excess": -13.3
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-08",
+      "price": 1762,
+      "ret": -8.3,
+      "excess": -12.3
+     },
+     {
+      "label": "+20일",
+      "date": "2025-02-04",
+      "price": 1662,
+      "ret": -13.5,
+      "excess": -17.5
+     }
+    ]
+   },
+   "base": {
+    "entry": 1921,
+    "entry_date": "2024-11-27",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-12-30",
+      "price": 1585,
+      "ret": -17.5,
+      "excess": -13.3
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-08",
+      "price": 1762,
+      "ret": -8.3,
+      "excess": -12.3
+     },
+     {
+      "label": "+20일",
+      "date": "2025-02-04",
+      "price": 1662,
+      "ret": -13.5,
+      "excess": -17.5
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 48,
+   "corp_name": "센서뷰",
+   "stock_code": "321370",
+   "market": "K",
+   "first_rcept_dt": "20240927",
+   "rcept_nos": [
+    "20240927000783",
+    "20241023000261",
+    "20241107000173",
+    "20241119000238",
+    "20241211000223"
+   ],
+   "schedule": {
+    "record_date": "2024-11-11",
+    "rights_start": "2024-11-28",
+    "rights_end": "2024-12-04",
+    "subs_start": "2024-12-13",
+    "listing_date": "2025-01-09",
+    "issue_price": 1240,
+    "alloc_ratio": 0.5651564726
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.5652,
+   "op_income": -3902440232,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.1546468401486989,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-12-04",
+   "reason": "채무상환 0% · 희석 57% · 영업손실 -39억 (2024 3분기(3개월, CFS)) → 패스 · 괴리 -90.8% · 원가할인 -22.8% → ⚪ 관찰 샘플",
+   "gap": -90.8,
+   "eval": {
+    "entry": 1284,
+    "entry_date": "2024-12-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-01-09",
+      "price": 1320,
+      "ret": 2.8,
+      "excess": -3.4
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-16",
+      "price": 1288,
+      "ret": 0.3,
+      "excess": -6.6
+     },
+     {
+      "label": "+20일",
+      "date": "2025-02-12",
+      "price": 1275,
+      "ret": -0.7,
+      "excess": -10.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 1284,
+    "entry_date": "2024-12-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-01-09",
+      "price": 1320,
+      "ret": 2.8,
+      "excess": -3.4
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-16",
+      "price": 1288,
+      "ret": 0.3,
+      "excess": -6.6
+     },
+     {
+      "label": "+20일",
+      "date": "2025-02-12",
+      "price": 1275,
+      "ret": -0.7,
+      "excess": -10.7
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 49,
+   "corp_name": "큐로홀딩스",
+   "stock_code": "051780",
+   "market": "K",
+   "first_rcept_dt": "20240927",
+   "rcept_nos": [
+    "20240927000820",
+    "20241213000188",
+    "20241213000650",
+    "20250102000145",
+    "20250110000338",
+    "20250117000180",
+    "20250225001933"
+   ],
+   "schedule": {
+    "record_date": "2025-01-21",
+    "rights_start": "2025-02-12",
+    "rights_end": "2025-02-18",
+    "subs_start": "2025-02-27",
+    "listing_date": "2025-03-20",
+    "issue_price": 580,
+    "alloc_ratio": 0.7071971676
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 100.0,
+   "dilution": 0.7037,
+   "op_income": -1957160229,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.06321839080459771,
+   "gate": {
+    "debt": "fail",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "blue",
+   "decided_on": "2025-02-18",
+   "reason": "채무상환 100% · 희석 70% · 영업손실 -20억 (2024 3분기(3개월, CFS)) → 패스 · 괴리 +186.8% · 원가할인 +12.3% → 🔵 인수권 매도 vs 청약",
+   "gap": 186.8,
+   "eval": {
+    "entry": 732,
+    "entry_date": "2025-02-18",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-03-20",
+      "price": 594,
+      "ret": -18.9,
+      "excess": -14.9
+     },
+     {
+      "label": "+5일",
+      "date": "2025-03-27",
+      "price": 568,
+      "ret": -22.4,
+      "excess": -13.9
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-17",
+      "price": 626,
+      "ret": -14.5,
+      "excess": -6.5
+     }
+    ]
+   },
+   "base": {
+    "entry": 732,
+    "entry_date": "2025-02-18",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-03-20",
+      "price": 594,
+      "ret": -18.9,
+      "excess": -14.9
+     },
+     {
+      "label": "+5일",
+      "date": "2025-03-27",
+      "price": 568,
+      "ret": -22.4,
+      "excess": -13.9
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-17",
+      "price": 626,
+      "ret": -14.5,
+      "excess": -6.5
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 50,
+   "corp_name": "디앤디플랫폼리츠",
+   "stock_code": "377190",
+   "market": "Y",
+   "first_rcept_dt": "20241010",
+   "rcept_nos": [
+    "20241010000387",
+    "20241023000036",
+    "20241126000033"
+   ],
+   "schedule": {
+    "record_date": "2024-10-25",
+    "rights_start": "2024-11-13",
+    "rights_end": "2024-11-19",
+    "subs_start": "2024-11-28",
+    "listing_date": "2024-12-18",
+    "issue_price": 2725,
+    "alloc_ratio": 0.3726708074
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.3727,
+   "op_income": 5638295057,
+   "op_period": "2024 반기(3개월, CFS)",
+   "pos52": 0.5954198473282443,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "fail",
+    "uw": "unknown",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-11-19",
+   "reason": "채무상환 0% · 희석 37% · 52주 위치 60% → 패스 · 괴리 대기 → ⚪ 관찰 샘플",
+   "gap": null,
+   "eval": {
+    "entry": 2775,
+    "entry_date": "2024-11-19",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-12-18",
+      "price": 2850,
+      "ret": 2.7,
+      "excess": 3.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-12-26",
+      "price": 2940,
+      "ret": 5.9,
+      "excess": 7.7
+     },
+     {
+      "label": "+20일",
+      "date": "2025-01-20",
+      "price": 3010,
+      "ret": 8.5,
+      "excess": 6.5
+     }
+    ]
+   },
+   "base": {
+    "entry": 2775,
+    "entry_date": "2024-11-19",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2024-12-18",
+      "price": 2850,
+      "ret": 2.7,
+      "excess": 3.1
+     },
+     {
+      "label": "+5일",
+      "date": "2024-12-26",
+      "price": 2940,
+      "ret": 5.9,
+      "excess": 7.7
+     },
+     {
+      "label": "+20일",
+      "date": "2025-01-20",
+      "price": 3010,
+      "ret": 8.5,
+      "excess": 6.5
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 51,
+   "corp_name": "전북은행",
+   "stock_code": "006350",
+   "market": "E",
+   "first_rcept_dt": "20241023",
+   "rcept_nos": [
+    "20241023000197",
+    "20241115000277"
+   ],
+   "schedule": {
+    "record_date": "2024-12-02",
+    "rights_start": null,
+    "rights_end": null,
+    "subs_start": "2024-12-18",
+    "listing_date": null,
+    "issue_price": 19317,
+    "alloc_ratio": 0.0841076
+   },
+   "missing": [
+    "rights_start",
+    "rights_end",
+    "listing_date"
+   ],
+   "status": "no_rights_listing"
+  },
+  {
+   "case_id": 52,
+   "corp_name": "와이엠",
+   "stock_code": "007530",
+   "market": "K",
+   "first_rcept_dt": "20241025",
+   "rcept_nos": [
+    "20241025000502",
+    "20241107000068",
+    "20241118000225",
+    "20241129001931",
+    "20241213000606",
+    "20241219000319"
+   ],
+   "schedule": {
+    "record_date": "2024-11-20",
+    "rights_start": "2024-12-06",
+    "rights_end": "2024-12-12",
+    "subs_start": "2024-12-23",
+    "listing_date": "2025-01-13",
+    "issue_price": 2420,
+    "alloc_ratio": 0.302373933
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 54.6,
+   "dilution": 0.3,
+   "op_income": 1252022673,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.28,
+   "gate": {
+    "debt": "fail",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "unknown",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2024-12-12",
+   "reason": "채무상환 55% · 희석 30% → 패스 · 괴리 대기 → ⚪ 관찰 샘플",
+   "gap": null,
+   "eval": {
+    "entry": 2430,
+    "entry_date": "2024-12-12",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-01-13",
+      "price": 2205,
+      "ret": -9.3,
+      "excess": -13.7
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-20",
+      "price": 2210,
+      "ret": -9.1,
+      "excess": -15.5
+     },
+     {
+      "label": "+20일",
+      "date": "2025-02-14",
+      "price": 2100,
+      "ret": -13.6,
+      "excess": -24.3
+     }
+    ]
+   },
+   "base": {
+    "entry": 2430,
+    "entry_date": "2024-12-12",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-01-13",
+      "price": 2205,
+      "ret": -9.3,
+      "excess": -13.7
+     },
+     {
+      "label": "+5일",
+      "date": "2025-01-20",
+      "price": 2210,
+      "ret": -9.1,
+      "excess": -15.5
+     },
+     {
+      "label": "+20일",
+      "date": "2025-02-14",
+      "price": 2100,
+      "ret": -13.6,
+      "excess": -24.3
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 53,
+   "corp_name": "아이엠뱅크",
+   "stock_code": "005270",
+   "market": "E",
+   "first_rcept_dt": "20241107",
+   "rcept_nos": [
+    "20241107000077"
+   ],
+   "schedule": {
+    "record_date": "2024-11-07",
+    "rights_start": null,
+    "rights_end": null,
+    "subs_start": "2024-11-11",
+    "listing_date": null,
+    "issue_price": 50000,
+    "alloc_ratio": 0.0140721
+   },
+   "missing": [
+    "rights_start",
+    "rights_end",
+    "listing_date"
+   ],
+   "status": "no_rights_listing"
+  },
+  {
+   "case_id": 54,
+   "corp_name": "이수페타시스",
+   "stock_code": "007660",
+   "market": "Y",
+   "first_rcept_dt": "20241108",
+   "rcept_nos": [
+    "20241108000542",
+    "20241114002239",
+    "20241211000343",
+    "20250115000405",
+    "20250123000376",
+    "20250206000523",
+    "20250221000023",
+    "20250404003522",
+    "20250407000884"
+   ],
+   "schedule": {
+    "record_date": "2025-02-25",
+    "rights_start": "2025-03-24",
+    "rights_end": "2025-03-28",
+    "subs_start": "2025-04-09",
+    "listing_date": "2025-05-02",
+    "issue_price": 27800,
+    "alloc_ratio": 0.1558652
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.1607,
+   "op_income": 25914194363,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.325544797418047,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": true,
+   "status": "scored",
+   "verdict": "yellow_q",
+   "decided_on": "2025-03-28",
+   "reason": "채무상환 0% · 희석 16% → 관문1 통과(미확인 1) · 괴리 +4.8% · 원가할인 +0.6% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "gap": 4.8,
+   "eval": {
+    "entry": 36700,
+    "entry_date": "2025-05-02",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-05-13",
+      "price": 41100,
+      "ret": 12.0,
+      "excess": 10.1
+     },
+     {
+      "label": "+10일",
+      "date": "2025-05-20",
+      "price": 40550,
+      "ret": 10.5,
+      "excess": 8.8
+     },
+     {
+      "label": "+20일",
+      "date": "2025-06-04",
+      "price": 40050,
+      "ret": 9.1,
+      "excess": 0.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 32570,
+    "entry_date": "2025-03-28",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-05-02",
+      "price": 33000,
+      "ret": 1.3,
+      "excess": 1.4
+     },
+     {
+      "label": "+5일",
+      "date": "2025-05-13",
+      "price": 41100,
+      "ret": 26.2,
+      "excess": 24.2
+     },
+     {
+      "label": "+20일",
+      "date": "2025-06-04",
+      "price": 40050,
+      "ret": 23.0,
+      "excess": 14.6
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 55,
+   "corp_name": "알체라",
+   "stock_code": "347860",
+   "market": "K",
+   "first_rcept_dt": "20241114",
+   "rcept_nos": [
+    "20241114001029",
+    "20241206000424",
+    "20241220000170",
+    "20250109000070",
+    "20250109000233",
+    "20250131000097"
+   ],
+   "schedule": {
+    "record_date": "2024-12-24",
+    "rights_start": "2025-01-14",
+    "rights_end": "2025-01-20",
+    "subs_start": "2025-02-04",
+    "listing_date": "2025-02-19",
+    "issue_price": 1040,
+    "alloc_ratio": 0.60643998
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.6064,
+   "op_income": -3379048819,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.021916565900846435,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "fail",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-01-20",
+   "reason": "채무상환 0% · 희석 61% · 영업손실 -34억 (2024 3분기(3개월, CFS)) · 실권주 미발행 — 인수단 책임 없음 → 패스 · 괴리 -50.6% · 원가할인 -18.0% → ⚪ 관찰 샘플",
+   "gap": -50.6,
+   "eval": {
+    "entry": 1349,
+    "entry_date": "2025-01-20",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-02-19",
+      "price": 1381,
+      "ret": 2.4,
+      "excess": -4.0
+     },
+     {
+      "label": "+5일",
+      "date": "2025-02-26",
+      "price": 1374,
+      "ret": 1.9,
+      "excess": -4.2
+     },
+     {
+      "label": "+20일",
+      "date": "2025-03-20",
+      "price": 1544,
+      "ret": 14.5,
+      "excess": 14.8
+     }
+    ]
+   },
+   "base": {
+    "entry": 1349,
+    "entry_date": "2025-01-20",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-02-19",
+      "price": 1381,
+      "ret": 2.4,
+      "excess": -4.0
+     },
+     {
+      "label": "+5일",
+      "date": "2025-02-26",
+      "price": 1374,
+      "ret": 1.9,
+      "excess": -4.2
+     },
+     {
+      "label": "+20일",
+      "date": "2025-03-20",
+      "price": 1544,
+      "ret": 14.5,
+      "excess": 14.8
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 56,
+   "corp_name": "대한광통신",
+   "stock_code": "010170",
+   "market": "K",
+   "first_rcept_dt": "20241114",
+   "rcept_nos": [
+    "20241114002667",
+    "20241210000402",
+    "20241226000133",
+    "20250109000268",
+    "20250109000293",
+    "20250206000163"
+   ],
+   "schedule": {
+    "record_date": "2024-12-30",
+    "rights_start": "2025-01-20",
+    "rights_end": "2025-01-24",
+    "subs_start": "2025-02-10",
+    "listing_date": "2025-03-05",
+    "issue_price": 629,
+    "alloc_ratio": 0.46972825
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.4697,
+   "op_income": -4439111282,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.062385321100917435,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-01-24",
+   "reason": "채무상환 0% · 희석 47% · 영업손실 -44억 (2024 3분기(3개월, CFS)) → 패스 · 괴리 -42.5% · 원가할인 -13.9% → ⚪ 관찰 샘플",
+   "gap": -42.5,
+   "eval": {
+    "entry": 786,
+    "entry_date": "2025-01-24",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-03-05",
+      "price": 644,
+      "ret": -18.1,
+      "excess": -20.1
+     },
+     {
+      "label": "+5일",
+      "date": "2025-03-12",
+      "price": 610,
+      "ret": -22.4,
+      "excess": -22.5
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-02",
+      "price": 510,
+      "ret": -35.1,
+      "excess": -29.1
+     }
+    ]
+   },
+   "base": {
+    "entry": 786,
+    "entry_date": "2025-01-24",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-03-05",
+      "price": 644,
+      "ret": -18.1,
+      "excess": -20.1
+     },
+     {
+      "label": "+5일",
+      "date": "2025-03-12",
+      "price": 610,
+      "ret": -22.4,
+      "excess": -22.5
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-02",
+      "price": 510,
+      "ret": -35.1,
+      "excess": -29.1
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 57,
+   "corp_name": "현대바이오",
+   "stock_code": "048410",
+   "market": "K",
+   "first_rcept_dt": "20241115",
+   "rcept_nos": [
+    "20241115000251",
+    "20241115000345",
+    "20241216000033",
+    "20250203000032"
+   ],
+   "schedule": {
+    "record_date": "2024-12-18",
+    "rights_start": "2025-01-13",
+    "rights_end": "2025-01-17",
+    "subs_start": "2025-02-05",
+    "listing_date": "2025-02-27",
+    "issue_price": 10470,
+    "alloc_ratio": 0.2059300211
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 30.3,
+   "dilution": 0.2059,
+   "op_income": -3315208693,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.07841498077244607,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-01-17",
+   "reason": "채무상환 30% · 희석 21% · 영업손실 -33억 (2024 3분기(3개월, CFS)) → 패스 · 괴리 -34.7% · 원가할인 -11.0% → ⚪ 관찰 샘플",
+   "gap": -34.7,
+   "eval": {
+    "entry": 13665,
+    "entry_date": "2025-01-17",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-02-27",
+      "price": 12270,
+      "ret": -10.2,
+      "excess": -17.0
+     },
+     {
+      "label": "+5일",
+      "date": "2025-03-07",
+      "price": 11920,
+      "ret": -12.8,
+      "excess": -13.2
+     },
+     {
+      "label": "+20일",
+      "date": "2025-03-28",
+      "price": 11350,
+      "ret": -16.9,
+      "excess": -12.7
+     }
+    ]
+   },
+   "base": {
+    "entry": 13665,
+    "entry_date": "2025-01-17",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-02-27",
+      "price": 12270,
+      "ret": -10.2,
+      "excess": -17.0
+     },
+     {
+      "label": "+5일",
+      "date": "2025-03-07",
+      "price": 11920,
+      "ret": -12.8,
+      "excess": -13.2
+     },
+     {
+      "label": "+20일",
+      "date": "2025-03-28",
+      "price": 11350,
+      "ret": -16.9,
+      "excess": -12.7
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 58,
+   "corp_name": "현대차증권",
+   "stock_code": "001500",
+   "market": "Y",
+   "first_rcept_dt": "20241126",
+   "rcept_nos": [
+    "20241126000726",
+    "20241127000105",
+    "20241127000497",
+    "20241127000811",
+    "20241224000481",
+    "20250109000340",
+    "20250113000329",
+    "20250224003532"
+   ],
+   "schedule": {
+    "record_date": "2025-01-15",
+    "rights_start": "2025-02-11",
+    "rights_end": "2025-02-17",
+    "subs_start": "2025-02-26",
+    "listing_date": "2025-03-19",
+    "issue_price": 5380,
+    "alloc_ratio": 0.6994770004
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 0.0,
+   "dilution": 0.7772,
+   "op_income": 14552000000,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.4074542008843967,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "pass",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-02-17",
+   "reason": "채무상환 0% · 희석 78% → 패스 · 괴리 -49.3% · 원가할인 -5.3% → ⚪ 관찰 샘플",
+   "gap": -49.3,
+   "eval": {
+    "entry": 5725,
+    "entry_date": "2025-02-17",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-03-19",
+      "price": 5800,
+      "ret": 1.3,
+      "excess": 1.2
+     },
+     {
+      "label": "+5일",
+      "date": "2025-03-26",
+      "price": 5850,
+      "ret": 2.2,
+      "excess": 0.9
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-16",
+      "price": 5500,
+      "ret": -3.9,
+      "excess": 2.3
+     }
+    ]
+   },
+   "base": {
+    "entry": 5725,
+    "entry_date": "2025-02-17",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-03-19",
+      "price": 5800,
+      "ret": 1.3,
+      "excess": 1.2
+     },
+     {
+      "label": "+5일",
+      "date": "2025-03-26",
+      "price": 5850,
+      "ret": 2.2,
+      "excess": 0.9
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-16",
+      "price": 5500,
+      "ret": -3.9,
+      "excess": 2.3
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 59,
+   "corp_name": "태성",
+   "stock_code": "323280",
+   "market": "K",
+   "first_rcept_dt": "20241129",
+   "rcept_nos": [
+    "20241129001601",
+    "20241213000385",
+    "20241231000079",
+    "20250109000018",
+    "20250213001009"
+   ],
+   "schedule": {
+    "record_date": "2025-01-06",
+    "rights_start": null,
+    "rights_end": null,
+    "subs_start": "2025-02-17",
+    "listing_date": "2025-03-11",
+    "issue_price": 19880,
+    "alloc_ratio": 0.1757385752
+   },
+   "missing": [
+    "rights_start",
+    "rights_end"
+   ],
+   "status": "parse_fail"
+  },
+  {
+   "case_id": 60,
+   "corp_name": "E8",
+   "stock_code": "418620",
+   "market": "K",
+   "first_rcept_dt": "20241213",
+   "rcept_nos": [
+    "20241213000422",
+    "20250114000375",
+    "20250124000780",
+    "20250204000264",
+    "20250311000712"
+   ],
+   "schedule": {
+    "record_date": "2025-02-06",
+    "rights_start": "2025-02-25",
+    "rights_end": "2025-03-04",
+    "subs_start": "2025-03-13",
+    "listing_date": "2025-04-02",
+    "issue_price": 2855,
+    "alloc_ratio": 0.3315898271
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 46.0,
+   "dilution": 0.3316,
+   "op_income": -2422241496,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.019497022341918597,
+   "gate": {
+    "debt": "pass",
+    "dilution": "pass",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-03-04",
+   "reason": "채무상환 46% · 희석 33% · 영업손실 -24억 (2024 3분기(3개월, CFS)) → 패스 · 괴리 -45.9% · 원가할인 -7.1% → ⚪ 관찰 샘플",
+   "gap": -45.9,
+   "eval": {
+    "entry": 3150,
+    "entry_date": "2025-03-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-04-02",
+      "price": 2710,
+      "ret": -14.0,
+      "excess": -8.2
+     },
+     {
+      "label": "+5일",
+      "date": "2025-04-09",
+      "price": 2470,
+      "ret": -21.6,
+      "excess": -8.8
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-30",
+      "price": 3215,
+      "ret": 2.1,
+      "excess": 4.9
+     }
+    ]
+   },
+   "base": {
+    "entry": 3150,
+    "entry_date": "2025-03-04",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-04-02",
+      "price": 2710,
+      "ret": -14.0,
+      "excess": -8.2
+     },
+     {
+      "label": "+5일",
+      "date": "2025-04-09",
+      "price": 2470,
+      "ret": -21.6,
+      "excess": -8.8
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-30",
+      "price": 3215,
+      "ret": 2.1,
+      "excess": 4.9
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 61,
+   "corp_name": "손오공",
+   "stock_code": "066910",
+   "market": "K",
+   "first_rcept_dt": "20241220",
+   "rcept_nos": [
+    "20241220000393",
+    "20250108000384",
+    "20250110000362",
+    "20250123000142",
+    "20250306000241"
+   ],
+   "schedule": {
+    "record_date": "2025-01-31",
+    "rights_start": "2025-02-20",
+    "rights_end": "2025-02-26",
+    "subs_start": "2025-03-10",
+    "listing_date": "2025-03-28",
+    "issue_price": 534,
+    "alloc_ratio": 0.5046867737
+   },
+   "missing": [],
+   "naver": true,
+   "financials": true,
+   "debt_pct": 41.1,
+   "dilution": 0.5032,
+   "op_income": -3373847449,
+   "op_period": "2024 3분기(3개월, CFS)",
+   "pos52": 0.04036050156739812,
+   "gate": {
+    "debt": "pass",
+    "dilution": "fail",
+    "major": "unknown",
+    "op": "fail",
+    "pos52": "pass",
+    "uw": "pass",
+    "rank": "manual",
+    "irreplaceable": "manual"
+   },
+   "gate_passed": false,
+   "status": "scored",
+   "verdict": "white",
+   "decided_on": "2025-02-26",
+   "reason": "채무상환 41% · 희석 50% · 영업손실 -34억 (2024 3분기(3개월, CFS)) → 패스 · 괴리 -20.0% · 원가할인 -1.7% → ⚪ 관찰 샘플",
+   "gap": -20.0,
+   "eval": {
+    "entry": 586,
+    "entry_date": "2025-02-26",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-03-28",
+      "price": 471,
+      "ret": -19.6,
+      "excess": -11.5
+     },
+     {
+      "label": "+5일",
+      "date": "2025-04-04",
+      "price": 481,
+      "ret": -17.9,
+      "excess": -7.0
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-25",
+      "price": 683,
+      "ret": 16.6,
+      "excess": 22.0
+     }
+    ]
+   },
+   "base": {
+    "entry": 586,
+    "entry_date": "2025-02-26",
+    "error": null,
+    "pending": null,
+    "issue_note": null,
+    "points": [
+     {
+      "label": "상장일 시가",
+      "date": "2025-03-28",
+      "price": 471,
+      "ret": -19.6,
+      "excess": -11.5
+     },
+     {
+      "label": "+5일",
+      "date": "2025-04-04",
+      "price": 481,
+      "ret": -17.9,
+      "excess": -7.0
+     },
+     {
+      "label": "+20일",
+      "date": "2025-04-25",
+      "price": 683,
+      "ret": 16.6,
+      "excess": 22.0
+     }
+    ]
+   }
+  },
+  {
+   "case_id": 62,
+   "corp_name": "위노바",
+   "stock_code": "039790",
+   "market": "E",
+   "first_rcept_dt": "20241226",
+   "rcept_nos": [
+    "20241226000319"
+   ],
+   "schedule": {
+    "record_date": "2025-01-13",
+    "rights_start": null,
+    "rights_end": null,
+    "subs_start": "2025-02-17",
+    "listing_date": null,
+    "issue_price": 500,
+    "alloc_ratio": 0.64186015
+   },
+   "missing": [
+    "rights_start",
+    "rights_end",
+    "listing_date"
+   ],
+   "status": "no_rights_listing"
+  }
+ ]
+}
