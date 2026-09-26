@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-26T18:43:33+09:00",
+ "generated_at": "2026-09-27T01:37:32+09:00",
  "logic_version": 3,
  "years": [
   {
@@ -108,7 +108,7 @@
   },
   {
    "year": 2024,
-   "generated_at": "2026-09-26T15:56:37+09:00",
+   "generated_at": "2026-09-27T01:33:01+09:00",
    "logic_version": 3,
    "stale": false,
    "cases": 49,
@@ -134,7 +134,7 @@
   },
   {
    "year": 2025,
-   "generated_at": "2026-09-26T15:53:27+09:00",
+   "generated_at": "2026-09-27T01:37:20+09:00",
    "logic_version": 3,
    "stale": false,
    "cases": 55,
@@ -160,7 +160,7 @@
   },
   {
    "year": 2026,
-   "generated_at": "2026-09-26T15:52:27+09:00",
+   "generated_at": "2026-09-27T01:28:57+09:00",
    "logic_version": 3,
    "stale": false,
    "cases": 29,
@@ -230,51 +230,47 @@
    "n_measured": 31
   },
   "s2": {
-   "n": 8,
+   "n": 14,
    "point": "+10일",
-   "missing_years": [
-    2024,
-    2025,
-    2026
-   ],
+   "missing_years": [],
    "points": {
     "+5일": {
-     "n": 8,
-     "win_rate": 50,
-     "mean": 4.5,
-     "median": 0.7,
-     "p25": -2.1,
-     "p75": 4.2,
+     "n": 14,
+     "win_rate": 57,
+     "mean": 4.7,
+     "median": 2.5,
+     "p25": -1.8,
+     "p75": 8.2,
      "worst": -4.7,
-     "excess_mean": 3.7,
-     "excess_median": -0.7
+     "excess_mean": 4.4,
+     "excess_median": 0.6
     },
     "+10일": {
-     "n": 8,
-     "win_rate": 62,
-     "mean": 5.6,
-     "median": 3.3,
-     "p25": -2.0,
-     "p75": 9.6,
+     "n": 14,
+     "win_rate": 71,
+     "mean": 5.0,
+     "median": 5.0,
+     "p25": -1.1,
+     "p75": 9.3,
      "worst": -9.9,
-     "excess_mean": 4.0,
-     "excess_median": 0.2
+     "excess_mean": 4.2,
+     "excess_median": 0.6
     }
    },
    "gate_pass": {
     "+10일": {
-     "n": 5,
-     "win_rate": 60,
-     "mean": 8.2,
-     "median": 5.9,
-     "p25": -1.6,
-     "p75": 20.7,
+     "n": 8,
+     "win_rate": 75,
+     "mean": 7.2,
+     "median": 5.7,
+     "p25": -0.1,
+     "p75": 13.3,
      "worst": -9.9,
-     "excess_mean": 7.9,
-     "excess_median": 0.5
+     "excess_mean": 7.4,
+     "excess_median": 1.2
     }
    },
-   "stopped": 1
+   "stopped": 2
   },
   "s3": {
    "n": 31,
@@ -1264,12 +1260,12 @@
        "label": "+20일",
        "n": 21,
        "win_rate": 43,
-       "mean": -3.0,
+       "mean": -2.9,
        "median": -2.3,
        "p25": -28.0,
        "p75": 8.5,
        "worst": -51.6,
-       "excess_mean": -3.4,
+       "excess_mean": -3.3,
        "excess_median": 3.5
       }
      ]
@@ -4759,7 +4755,7 @@
    "reason": "채무상환 0% · 희석 21% · 52주 위치 65% → 패스 · 괴리 대기 → ⚪ 관찰 샘플",
    "gap": null,
    "decided_on": "2026-07-16",
-   "ret20": 42.3,
+   "ret20": 43.7,
    "base_open": 46.0
   },
   {
