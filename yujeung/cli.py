@@ -175,6 +175,30 @@ def cmd_backtest(args, cfg: Config) -> int:
     return 0
 
 
+def cmd_doc_grep(args, cfg: Config) -> int:
+    """원문 여러 건에서 키워드 앞뒤 문맥 + 파싱 결과 — 옛 공시 양식 차이 점검용."""
+    import re
+    from .dart import DartClient, DartError
+    from .schedule_parser import clean, parse_document
+    dart = DartClient(cfg.dart_api_key)
+    for rno in args.rcept_no:
+        try:
+            files = dart.document(rno)
+        except DartError as e:
+            print(f"===== {rno}: {e}")
+            continue
+        for name, doc in files.items():
+            text = clean(doc)
+            s = parse_document(doc)
+            print(f"===== {rno} / {name}: {len(text):,}자 · 일정 {json.dumps({k: v for k, v in s.as_row().items() if v}, ensure_ascii=False)}")
+            print(f"  경고: {s.warnings}")
+            for kw in args.kw:
+                hits = [m.start() for m in re.finditer(re.escape(kw), text)][: args.n]
+                for i in hits:
+                    print(f"  [{kw}@{i}] {text[max(0, i - 120): i + 220]!r}")
+    return 0
+
+
 def cmd_parse_doc(args, cfg: Config) -> int:
     from .dart import DartClient
     from .schedule_parser import body_start, clean, parse_document, split_corrections, table_rows
@@ -350,6 +374,10 @@ def main(argv=None) -> int:
     p.add_argument("--end", required=True)
     p = sub.add_parser("import-rights")
     p.add_argument("csv")
+    p = sub.add_parser("doc-grep")
+    p.add_argument("rcept_no", nargs="+")
+    p.add_argument("--kw", nargs="+", default=["인수권증서", "배정기준일"])
+    p.add_argument("--n", type=int, default=4)
     p = sub.add_parser("parse-doc")
     p.add_argument("rcept_no")
     p = sub.add_parser("backtest")
@@ -365,4 +393,4 @@ def main(argv=None) -> int:
     cfg = Config.load()
     return {"daily": cmd_daily, "backfill-cases": cmd_backfill_cases, "report-case": cmd_report_case,
             "backfill-rights": cmd_backfill, "import-rights": cmd_import,
-            "backtest": cmd_backtest, "parse-doc": cmd_parse_doc, "export": cmd_export, "verify": cmd_verify}[args.cmd](args, cfg)
+            "backtest": cmd_backtest, "parse-doc": cmd_parse_doc, "doc-grep": cmd_doc_grep, "export": cmd_export, "verify": cmd_verify}[args.cmd](args, cfg)
