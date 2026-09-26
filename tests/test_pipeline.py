@@ -244,3 +244,41 @@ def test_latest_facts_keeps_false():
     save_schedule(conn, "r1", 1, Schedule(record_date="2020-03-18", extras={"facts": {"rights_listed": False, "major_holder": {}}}))
     f = latest_facts(conn, 1)
     assert f["rights_listed"] is False and "major_holder" not in f
+
+
+def test_dart_quota_stops_instead_of_silently_degrading():
+    """DART 한도 초과(020)는 DartError 가 아니라 DartQuotaError — 공시 하나 실패로 삼켜지면 결과가 조용히 틀어진다
+    (09-26 백테스트 3회차: 2025 파싱 20/54, 2024·2026 재무 전부 미확인). daily 는 공시 단계만 건너뛰고 계속."""
+    import pytest
+
+    from yujeung.dart import DartClient, DartError, DartQuotaError
+
+    class R:
+        status_code = 200
+
+        def __init__(self, body: bytes):
+            self.content = body
+
+        def raise_for_status(self):
+            pass
+
+        def json(self):
+            return json.loads(self.content)
+
+    quota_json = R(json.dumps({"status": "020", "message": "사용한도를 초과하였습니다."}).encode())
+    d = DartClient("k", http_get=lambda *a, **kw: quota_json, min_interval=0)
+    with pytest.raises(DartQuotaError):
+        d.search("20260901", "20260926")
+    assert not issubclass(DartQuotaError, DartError)
+    d2 = DartClient("k", http_get=lambda *a, **kw: R(b"<result><status>020</status><message>x</message></result>"),
+                    min_interval=0)
+    with pytest.raises(DartQuotaError):
+        d2.document("20260923000500")
+
+    class QuotaDart(FakeDart):
+        def search(self, *a, **kw):
+            raise DartQuotaError("DART 020")
+
+    conn = db.connect(":memory:")
+    report = run(conn, date(2026, 9, 24), QuotaDart([], [], {}))
+    assert report["dart"].startswith("한도 초과") and "prices" in report

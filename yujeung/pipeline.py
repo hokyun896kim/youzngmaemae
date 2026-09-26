@@ -9,7 +9,7 @@ import json
 from . import db, notify, paper, strategy
 from .calendar_kr import is_business_day, prev_business_day
 from .config import Config
-from .dart import DartClient, DartError, to_int
+from .dart import DartClient, DartError, DartQuotaError, to_int
 from .detect import (DetectEvent, detect, drop_case, merge_duplicate_cases, purge_unlisted,
                      summarize_fields)
 from .krx import KrxClient, KrxError
@@ -509,22 +509,28 @@ def run_daily(cfg: Config, conn, today: date, lookback_days: int = 7, price_days
     alerts = backfill_months == 0
     if dart or cfg.dart_api_key:
         dart = dart or DartClient(cfg.dart_api_key, conn)
-        detected = []
-        if backfill_months:
-            # 공시검색은 corp_code 없이 3개월 제한 → 월 단위(30일)로 쪼갠다
-            windows = [(today - timedelta(days=30 * i + 29), today - timedelta(days=30 * i))
-                       for i in range(backfill_months)]
-            detected = step_detect(dart, conn, today, windows[-1][0], alerts=False, windows=windows)
-        else:
-            detected = step_detect(dart, conn, today, today - timedelta(days=lookback_days))
-        report["detected"] = len(detected)
-        merge_duplicate_cases(conn)
-        _log(f"감지 {len(detected)}건 → 원문 일정 파싱")
-        step_schedules(dart, conn, alerts)
-        _log("증권신고서 보강")
-        step_estk(dart, conn, today, alerts)
-        report["cleanup"] = step_cleanup(conn, today)
-        _log(f"정리 {report['cleanup']}")
+        try:
+            detected = []
+            if backfill_months:
+                # 공시검색은 corp_code 없이 3개월 제한 → 월 단위(30일)로 쪼갠다
+                windows = [(today - timedelta(days=30 * i + 29), today - timedelta(days=30 * i))
+                           for i in range(backfill_months)]
+                detected = step_detect(dart, conn, today, windows[-1][0], alerts=False, windows=windows)
+            else:
+                detected = step_detect(dart, conn, today, today - timedelta(days=lookback_days))
+            report["detected"] = len(detected)
+            merge_duplicate_cases(conn)
+            _log(f"감지 {len(detected)}건 → 원문 일정 파싱")
+            step_schedules(dart, conn, alerts)
+            _log("증권신고서 보강")
+            step_estk(dart, conn, today, alerts)
+            report["cleanup"] = step_cleanup(conn, today)
+            _log(f"정리 {report['cleanup']}")
+        except DartQuotaError as e:
+            # 한도 초과(백테스트 등으로 소진) — 공시 단계는 건너뛰고 시세·판정은 계속. 다음 실행 때 다시
+            report["dart"] = f"한도 초과 — 건너뜀 ({e})"
+            _log(report["dart"])
+            dart = None
     else:
         report["dart"] = "DART_API_KEY 없음 — 건너뜀"
     if krx or cfg.krx_api_key:
@@ -541,7 +547,10 @@ def run_daily(cfg: Config, conn, today: date, lookback_days: int = 7, price_days
     report["market"] = step_market(naver, conn, today)
     if dart:
         _log("DART 재무")
-        report["financials"] = step_financials(dart, conn, today)
+        try:
+            report["financials"] = step_financials(dart, conn, today)
+        except DartQuotaError as e:
+            report["financials"] = f"한도 초과 — 건너뜀 ({e})"
     report["paper_recorded"] = step_verdicts(conn, cfg, backfilled=bool(backfill_months))
     _log(f"판정·가상성과 {report['paper_recorded']}건 기록")
     if alerts:
