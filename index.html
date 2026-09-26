@@ -623,12 +623,13 @@ function renderExam(B){
   <h4 style="margin:14px 0 0;font-size:13px;color:var(--gold2)">필터 하나씩 떼어 보기</h4><div class="meta">${esc(B.base_note||'')}</div>${filt}
   <div class="meta" style="margin-top:8px">표본 수는 정보로만 표시합니다. 파싱 실패·인수권 시세 없음은 채점에서 빠집니다 — 한계는 docs/backtest.md.</div>`;
 }
-// 🟢 가격 조건 두 숫자 나란히: 괴리율 ≤ −20% AND 신주원가 할인율 ≤ −10%(임시값, 백테스트로 조정 예정)
+// 🟢 가격 조건 두 숫자 나란히: 괴리율 ≤ −20% AND 신주원가 할인율 > −20%(너무 깊은 할인 = 부실 신호, 기출 근거)
 function greenCheck(q){
   const g=q.green_check; if(!g||(g.gap==null&&g.disc==null)) return '';
-  const it=(lab,v,lim,ok,note)=>`<span class="gc ${v==null?'na':ok?'ok':'no'}">${lab} <b>${v==null?'—':pct(v)}</b> <small>(기준 ≤ ${lim}%${note||''}) ${v==null?'대기':ok?'✅ 충족':'❌ 미달'}</small></span>`;
-  return `<div class="ql"><span>🟢 가격 조건</span><div class="gcs">${it('괴리율',g.gap,g.cheap,g.gap_ok)}${it('신주원가 할인율',g.disc,g.disc_max,g.disc_ok,' · 임시값')}
-    <small class="mut">신주원가 할인율 = (인수권 + 발행가) ÷ 본주 − 1 · KRX 정규장 종가 기준 (포털 통합가와 다를 수 있음)</small></div></div>`;
+  const it=(lab,v,rule,ok)=>`<span class="gc ${v==null?'na':ok?'ok':'no'}">${lab} <b>${v==null?'—':pct(v)}</b> <small>(기준 ${rule}) ${v==null?'대기':ok?'✅ 충족':'❌ 미달'}</small></span>`;
+  const floor=g.disc_floor??g.disc_max;
+  return `<div class="ql"><span>🟢 가격 조건</span><div class="gcs">${it('괴리율',g.gap,`≤ ${g.cheap}%`,g.gap_ok)}${it('신주원가 할인율',g.disc,`> ${floor}% · 너무 깊으면 부실 신호`,g.disc_ok)}
+    <small class="mut">신주원가 할인율 = (인수권 + 발행가) ÷ 본주 − 1 · KRX 정규장 종가 기준 (포털 통합가와 다를 수 있음) · 기출: 할인 −20% 이하는 +20일 중앙값 −12%</small></div></div>`;
 }
 function quickBox(c){
   const q=c.quick; if(!q) return '';

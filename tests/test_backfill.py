@@ -233,9 +233,10 @@ def test_gate_and_verdicts():
     facts = {"major_holder": {"level": "full"}, "underwriting": "총액인수"}
     g = gate1(good, facts, 1_000_000_000, "2026 반기", 0.3, "좋은회사")
     assert g["passed"] and g["n_pass"] == 6
-    assert decide(g, -35.0, disc=-15.0) == "green"
-    # [17] 괴리율만 싸고 실제 신주원가 할인율이 −10% 보다 얕으면 🟢 아님 (할인율 모르면 🟢 아님)
-    assert decide(g, -35.0, disc=-5.0) == "yellow" and decide(g, -35.0) == "yellow"
+    assert decide(g, -35.0, disc=-15.0) == "green" and decide(g, -35.0, disc=-5.0) == "green"
+    # v4: 원가할인이 −20% 이하로 너무 깊으면 🟢 아님 (부실 신호, 기출) · 할인율 모르면 🟢 아님
+    assert decide(g, -35.0, disc=-20.0) == "yellow" and decide(g, -35.0, disc=-27.0) == "yellow"
+    assert decide(g, -35.0) == "yellow"
     assert decide(g, -5.0, disc=-30.0) == "yellow"
     assert decide(g, None) == "yellow"
     assert decide(g, 25.0) == "blue"
@@ -289,10 +290,10 @@ def test_unconfirmed_makes_check_needed():
 
 
 def test_review_17_underwriting_and_discount():
-    """[17] 아이에이 검수: '실권주 미발행' + 잔액·총액인수 없음 → 인수방식 탈락, 🟢 = 괴리 ≤ −20% AND 원가할인 ≤ −10%."""
+    """[17] 아이에이 검수: '실권주 미발행' + 잔액·총액인수 없음 → 인수방식 탈락, 🟢 = 괴리 ≤ −20% AND 원가할인 > −20% (v4)."""
     from yujeung.prices import compute_gap
     from yujeung.schedule_parser import extract_underwriting
-    from yujeung.verdict import DISC_MAX, reason_line
+    from yujeung.verdict import DISC_FLOOR, reason_line
     txt = "청약 결과 발생한 실권주는 발행하지 아니하며, 대표주관회사는 모집주선 방식으로 참여합니다."
     assert extract_underwriting([], [], txt) == "실권주미발행"
     assert extract_underwriting([], [], "실권주 미발행") == "실권주미발행"
@@ -311,7 +312,7 @@ def test_review_17_underwriting_and_discount():
     assert not g["passed"] and decide(g, -35.0, disc=-20.0) == "white"
     # 실제 할인율 = (인수권 + 발행가) ÷ 본주 − 1: 인수권 636 + 발행가 2,260 = 2,896 / 3,335 − 1 = −13.2%
     gp = compute_gap(636, 3335, 2260)
-    assert gp.gap_pct == -40.8 and gp.discount_pct == -13.2 and DISC_MAX == -10.0
+    assert gp.gap_pct == -40.8 and gp.discount_pct == -13.2 and DISC_FLOOR == -20.0
     ok = gate1({"purpose_pct": {"운영": 100.0}, "dilution_ratio": 0.3},
                {"underwriting": "총액인수", "major_holder": {"level": "full"}}, 1, "2026 반기", 0.3, "X")
     assert decide(ok, gp.gap_pct, disc=gp.discount_pct) == "green"

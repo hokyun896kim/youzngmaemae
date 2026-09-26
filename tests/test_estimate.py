@@ -75,7 +75,7 @@ def test_conclusion_and_recheck():
     g2 = gate1(ok, {}, -1, "2026 반기(3개월, CFS)", 0.3, "X")
     assert estimate.recheck("white", g2, None, "2026 반기(3개월, CFS)", -20, 20) == "3Q 영업흑자 전환 시"
     g3 = gate1(ok, {"major_holder": {"level": "full"}, "underwriting": "총액인수"}, 10, "", 0.3, "X")
-    assert estimate.recheck("yellow", g3, -5, None, -20, 20) == "괴리율 -20% 이하 + 신주원가 할인율 -10% 이하 시 🟢 인수권 매수+청약 검토"
+    assert estimate.recheck("yellow", g3, -5, None, -20, 20) == "괴리율 -20% 이하 + 신주원가 할인율 -20% 초과(너무 깊지 않게) 시 🟢 인수권 매수+청약 검토"
     assert estimate.conclusion("yellow", g3, -5.0)["reason"] == "괴리율 -5.0%"
 
 
@@ -131,5 +131,5 @@ def test_review_17_dilution_ratio_denominator():
                        0.30, None, date(2026, 8, 20), False, disc=-12.0)
     assert q["issue"]["r"] == 0.30                                     # alloc_ratio 2.4014 가 아니라 증자비율 0.30
     assert q["issue"]["value"] == round(3000 * 0.8 / (1 + 0.30 * 0.2)) and "증자비율 30.0%" in q["issue"]["text"]
-    assert q["green_check"] == {"gap": None, "disc": -12.0, "cheap": -20, "disc_max": -10.0,
+    assert q["green_check"] == {"gap": None, "disc": -12.0, "cheap": -20, "disc_floor": -20.0,
                                 "gap_ok": False, "disc_ok": True, "ok": False}
