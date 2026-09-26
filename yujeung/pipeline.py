@@ -15,8 +15,8 @@ from .detect import (DetectEvent, detect, drop_case, merge_duplicate_cases, purg
 from .krx import KrxClient, KrxError
 from .naver import INDEX_SYMBOL, NaverClient, NaverError
 from .prices import collect_day, compute_gap, gaps_for_day, relink_rights
-from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount, find_dates, issue_kind,
-                              parse_documents, validate_schedule)
+from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount, extract_rights_period, find_dates,
+                              issue_kind, parse_documents, validate_schedule)
 from .verdict import decide, gate1, reason_line
 
 SCHEDULE_LABELS = {
@@ -67,10 +67,18 @@ def latest_schedule(conn: sqlite3.Connection, case_id: int, exclude: str | None 
     if merged.get("record_date"):
         from .calendar_kr import ex_rights_date
         merged["ex_rights_date"] = ex_rights_date(merged["record_date"])
-    if base is not None:
-        tbd = json.loads(base["extras_json"] or "{}").get("tbd") or []
-        if tbd:
-            merged["tbd"] = tbd
+    tbd = (json.loads(base["extras_json"] or "{}").get("tbd") or []) if base is not None else []
+    if tbd:
+        merged["tbd"] = tbd
+    # 옛 양식(2020 무렵): 유상증자결정엔 인수권 기간이 없고 증권신고서 본문에만 있다. 그 증권신고서가 마지막 정정보다
+    # 먼저 나왔으면 위 덮어쓰기에서 빠지므로, 인수권 기간만은 지금 일정(기준일 뒤·청약 전)에 맞는 것을 가져온다
+    if not merged.get("rights_start") and "rights_start" not in tbd:
+        rec, subs = merged.get("record_date"), merged.get("subs_start")
+        for r in reversed(rows):
+            a_, b_ = r["rights_start"], r["rights_end"]
+            if r["kind"] == "estk" and a_ and b_ and (not rec or a_ > rec) and (not subs or b_ < subs):
+                merged["rights_start"], merged["rights_end"] = a_, b_
+                break
     if price_row is not None:
         # 발행가 구분: 라벨(확정발행가/1차/예정발행가) 우선, 없으면 그 값을 낸 공시의 날짜로
         label_kind = json.loads(price_row["extras_json"] or "{}").get("issue_label_kind")
@@ -216,12 +224,21 @@ def step_estk(dart: DartClient, conn, today: date, alerts: bool = True, discount
             before = latest_schedule(conn, c["case_id"])
             sch = estk_schedule(g, [t for t in types if t.get("rcept_no") == rcept_no],
                                 [u for u in uws if u.get("rcept_no") == rcept_no])
-            # 발행가 산식의 할인율은 증권신고서 본문에 있다 (어림 손익표의 발행가 추정용)
+            # 발행가 산식의 할인율, 옛 양식(2020 무렵)의 인수권 상장기간은 증권신고서 본문에만 있다
+            #  ("2020년 06월 19일 ~ 2020년 06월 25일 신주인수권증서 상장 거래기간") → 인수권 기간이 비었을 때도 원문을 읽는다
+            need_rights = not (before or {}).get("rights_start") and not sch.rights_start
             try:
-                d = next((v for v in (extract_discount(clean(b)) for b in dart.document(rcept_no).values()) if v),
-                         None) if discount else None
+                texts = [clean(b) for b in dart.document(rcept_no).values()] if (discount or need_rights) else []
             except DartError:
-                d = None
+                texts = []
+            d = next((v for v in map(extract_discount, texts) if v), None) if discount else None
+            if need_rights:
+                rec = sch.record_date or (before or {}).get("record_date")
+                subs = sch.subs_start or (before or {}).get("subs_start")
+                period = next((p for p in (extract_rights_period(t, rec, subs) for t in texts) if p), None)
+                if period:
+                    sch.rights_start, sch.rights_end = period
+                    sch.extras.setdefault("evidence", {})["rights_start"] = "증권신고서 본문 인수권 상장기간"
             if d:
                 sch.extras["facts"]["discount"] = d
             sch.extras["discount_checked"] = discount

@@ -17,7 +17,7 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'daily / verify / backfill-cases / backfill-rights / backtest / backtest-compare'
+        description: 'daily / verify / backfill-cases / backfill-rights / backtest / backtest-compare / doc-grep'
         default: daily
       year:
         description: 'backtest 연도 (2020~2026, 2026은 6월까지). 비우면 합산만'
@@ -31,13 +31,16 @@ on:
       end:
         description: 'backfill 종료일 YYYYMMDD'
         default: ''
+      args:
+        description: 'doc-grep 접수번호 목록 (공백 구분)'
+        default: ''
 
 permissions:
   contents: write
 
 concurrency:
-  # PR 시험 실행(push)은 데이터를 커밋하지 않으므로 별도 줄 — 대기 중인 backtest·daily 를 밀어내지 않게
-  group: ${{ github.event_name == 'push' && format('yujeung-trial-{0}', github.ref) || 'yujeung-collect' }}
+  # PR 시험 실행(push)·원문 점검(doc-grep)은 데이터를 커밋하지 않으므로 별도 줄 — 대기 중인 backtest·daily 를 밀어내지 않게
+  group: ${{ (github.event_name == 'push' || github.event.inputs.command == 'doc-grep') && format('yujeung-trial-{0}-{1}', github.ref, github.event.inputs.command || 'push') || 'yujeung-collect' }}
   cancel-in-progress: false
 
 jobs:
@@ -71,14 +74,6 @@ jobs:
             python -m yujeung parse-doc 20260923000500 || true
             python -m yujeung parse-doc 20260918000349 || true
             python -m yujeung backfill-cases --months 1 --dry-run --report all   # 진행 중 주주배정 전부 재파싱 결과
-            # 2020 파싱 실패(인수권 기간 누락 등) 원문 점검 — 옛 양식 차이 확인용
-            python -m yujeung doc-grep 20200414001890 20200526000292 20200528000233 20200702000080 \
-              20200611000307 20200724000601 20200917000460 20201016000445 20201112000086 \
-              20201013000204 20201117000269 20201103000246 20201202000247 \
-              20200908000071 20201007000488 20201223000466 20210203000472 20200611000393 20201008000494 \
-              20200318000546 20201103000044 --kw 인수권증서 배정기준일 상장예정 || true
-            # 백테스트 꼬리 기간 상세 조회 생략: 2020 감지 결과가 생략 전과 같은지 (다르면 실패)
-            python -m yujeung backtest --year 2020 --compare-tail
             exit 0
           fi
           case "$CMD" in
@@ -87,8 +82,11 @@ jobs:
             backfill-cases) python -m yujeung backfill-cases --months "${{ github.event.inputs.months || 5 }}" --report 210980 290650 009730 ;;
             backfill-rights) python -m yujeung backfill-rights --start "${{ github.event.inputs.start }}" --end "${{ github.event.inputs.end }}" ;;
             backtest)
-              if [ -n "${{ github.event.inputs.year }}" ]; then python -m yujeung backtest --year "${{ github.event.inputs.year }}"
+              # PR 브랜치에서 돌리면 백테스트 결과만 커밋(site.json·DB 는 main 의 정기 수집 몫 — 머지 충돌 방지)
+              NOEXP=""; [ "${{ github.ref }}" != "refs/heads/main" ] && NOEXP="--no-export"
+              if [ -n "${{ github.event.inputs.year }}" ]; then python -m yujeung backtest --year "${{ github.event.inputs.year }}" $NOEXP
               else python -m yujeung backtest --aggregate-only; fi ;;
+            doc-grep) python -m yujeung doc-grep ${{ github.event.inputs.args }} --kw 인수권증서 배정기준일 상장예정 ;;
             backtest-compare) python -m yujeung backtest --year "${{ github.event.inputs.year }}" --compare-tail ;;
             *) echo "unknown command $CMD"; exit 1 ;;
           esac

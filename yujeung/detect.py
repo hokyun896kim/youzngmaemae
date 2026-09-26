@@ -54,13 +54,19 @@ def _shift(yyyymmdd: str, days: int) -> str:
 def _find_piic_fields(client: DartClient, corp_code: str, rcept_no: str, rcept_dt: str,
                      cache: dict | None = None) -> dict:
     # piicDecsn 의 기간은 "최초접수일" 기준 → 정정 공시는 원공시 날짜로 잡힌다. 넉넉히 1년 전부터.
-    # 같은 회사 공시가 여러 건이면 한 번만 조회 (cache: corp_code → items)
-    if cache is not None and corp_code in cache:
-        items = cache[corp_code]
+    # 같은 회사 공시가 여러 건이면 한 번만 조회 (cache: corp_code → (조회 끝, items)).
+    # 단 이 공시가 앞서 조회한 구간(끝) 밖이면 다시 조회해 합친다 — 안 그러면 같은 해 두 번째 유증(예: 심텍 9/08
+    # 제3자배정)이 목록에 없어 아래 '가장 최근 것'으로 첫 유증(3월 주주배정) 필드를 받아 주주배정으로 잘못 잡힌다.
+    hit = cache.get(corp_code) if cache is not None else None
+    if hit and rcept_dt <= hit[0]:
+        items = hit[1]
     else:
         items = client.piic_decisions(corp_code, _shift(rcept_dt, -365), _shift(rcept_dt, 30))
+        if hit:
+            seen = {it.get("rcept_no") for it in items}
+            items = items + [it for it in hit[1] if it.get("rcept_no") not in seen]
         if cache is not None:
-            cache[corp_code] = items
+            cache[corp_code] = (_shift(rcept_dt, 30), items)
     for it in items:
         if it.get("rcept_no") == rcept_no:
             return it
