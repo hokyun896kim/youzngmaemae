@@ -131,6 +131,9 @@ def estk_schedule(general: dict, types: list[dict], underwriters: list[dict] | N
         if uw and k in uw.replace(" ", ""):
             facts["underwriting"] = k
             break
+    else:
+        if uw and uw.strip() == "주선":        # 증권신고서 '인수방법: 주선' (실측 아이에이 — 모집주선 방식)
+            facts["underwriting"] = "모집주선"
     s.extras = {"source": "estkRs", "general": general, "facts": facts}
     return s
 

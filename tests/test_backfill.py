@@ -296,6 +296,13 @@ def test_review_17_underwriting_and_discount():
     txt = "청약 결과 발생한 실권주는 발행하지 아니하며, 대표주관회사는 모집주선 방식으로 참여합니다."
     assert extract_underwriting([], [], txt) == "실권주미발행"
     assert extract_underwriting([], [], "실권주 미발행") == "실권주미발행"
+    # 실측 아이에이 원문 문구
+    assert extract_underwriting([], [], "3) 구주주 청약 및 초과청약 후 배정결과, 총 청약주식수가 구주주 배정분에 미달하는 경우 "
+                                        "최종적으로 발생하는 실권주 및 단수주는 미발행 처리합니다.") == "실권주미발행"
+    assert extract_underwriting([], [], "이후 미청약된 주식(실권주 및 단수주)은 미발행 처리합니다.") == "실권주미발행"
+    assert extract_underwriting([], [], "실권주는 대표주관회사가 잔액인수합니다.") == "잔액인수"
+    from yujeung.pipeline import estk_schedule
+    assert estk_schedule({}, [], [{"udtmth": "주선"}]).extras["facts"]["underwriting"] == "모집주선"
     assert extract_underwriting([], [["인수방법", "잔액인수"]], "실권주 미발행") == "잔액인수"   # 잔액인수 계약이면 그대로
     g = gate1({"purpose_pct": {"운영": 100.0}, "dilution_ratio": 0.3},
               {"underwriting": "실권주미발행", "major_holder": {"level": "full"}}, 1, "2026 반기", 0.3, "아이에이")

@@ -334,7 +334,8 @@ def extract_major_holder(text: str) -> dict | None:
     return best
 
 
-_NO_FORFEIT_RE = re.compile(r"실권주\s*(?:는|를|은)?\s*(?:미발행|발행\s*하?지\s*(?:아니|않))")
+# 실측 아이에이: "미청약된 주식(실권주 및 단수주)은 미발행 처리합니다" / "실권주 및 단수주는 미발행 처리할 예정"
+_NO_FORFEIT_RE = re.compile(r"실권주[^.。]{0,25}?(?:미발행|발행\s*하?지\s*(?:아니|않))")
 
 
 def extract_underwriting(rows: list[tuple[str, list[str]]], raw_rows: list[list[str]], text: str) -> str | None:
