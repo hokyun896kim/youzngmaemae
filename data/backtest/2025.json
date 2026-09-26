@@ -1,8 +1,9 @@
 {
  "year": 2025,
  "months": 12,
- "generated_at": "2026-09-26T13:20:11+09:00",
+ "generated_at": "2026-09-26T15:53:27+09:00",
  "logic_version": 3,
+ "strategy_version": 1,
  "range": [
   "2025-01-01",
   "2025-12-31"
@@ -77,6 +78,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 575,
+    "entry_date": "2025-06-25",
+    "rsi": 31.9,
+    "atr": 55.4,
+    "stop": 464,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-07-02",
+      "price": 561,
+      "ret": -2.4,
+      "excess": -0.4
+     },
+     {
+      "label": "+10일",
+      "date": "2025-07-09",
+      "price": 573,
+      "ret": -0.3,
+      "excess": 0.7
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-05-23",
@@ -185,6 +210,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 172100,
+    "entry_date": "2025-06-13",
+    "rsi": 49.8,
+    "atr": 6318.3,
+    "stop": 159463,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-06-20",
+      "price": 176300,
+      "ret": 2.4,
+      "excess": -2.0
+     },
+     {
+      "label": "+10일",
+      "date": "2025-06-27",
+      "price": 169700,
+      "ret": -1.4,
+      "excess": -7.0
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-05-12",
@@ -293,6 +342,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 884,
+    "entry_date": "2025-07-29",
+    "rsi": 21.5,
+    "atr": 729.9,
+    "stop": -576,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-08-05",
+      "price": 880,
+      "ret": -0.5,
+      "excess": 0.2
+     },
+     {
+      "label": "+10일",
+      "date": "2025-08-12",
+      "price": 879,
+      "ret": -0.6,
+      "excess": -0.9
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-06-30",
@@ -400,6 +473,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 4325,
+    "entry_date": "2025-07-07",
+    "rsi": 35.8,
+    "atr": 618.1,
+    "stop": 3089,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-07-14",
+      "price": 4050,
+      "ret": -6.4,
+      "excess": -9.1
+     },
+     {
+      "label": "+10일",
+      "date": "2025-07-21",
+      "price": 3980,
+      "ret": -8.0,
+      "excess": -13.6
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-06-04",
@@ -513,6 +610,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 919000,
+    "entry_date": "2025-07-21",
+    "rsi": 60.4,
+    "atr": 41297.8,
+    "stop": 836404,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-07-28",
+      "price": 953000,
+      "ret": 3.7,
+      "excess": 3.7
+     },
+     {
+      "label": "+10일",
+      "date": "2025-08-04",
+      "price": 938000,
+      "ret": 2.1,
+      "excess": 4.1
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-06-20",
@@ -620,6 +741,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 957,
+    "entry_date": "2025-06-11",
+    "rsi": 30.2,
+    "atr": 3973.7,
+    "stop": -6990,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-06-18",
+      "price": 911,
+      "ret": -4.8,
+      "excess": -4.0
+     },
+     {
+      "label": "+10일",
+      "date": "2025-06-25",
+      "price": 831,
+      "ret": -13.2,
+      "excess": -14.7
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-05-15",
@@ -729,6 +874,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 6030,
+    "entry_date": "2025-06-27",
+    "rsi": 44.8,
+    "atr": 567.1,
+    "stop": 4896,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-07-04",
+      "price": 5480,
+      "ret": -9.1,
+      "excess": -8.4
+     },
+     {
+      "label": "+10일",
+      "date": "2025-07-11",
+      "price": 5430,
+      "ret": -10.0,
+      "excess": -12.4
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-05-23",
@@ -835,6 +1004,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": true,
+   "s2": {
+    "entry": 3380,
+    "entry_date": "2025-07-28",
+    "rsi": 35.1,
+    "atr": 111.1,
+    "stop": 3158,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-08-04",
+      "price": 3290,
+      "ret": -2.7,
+      "excess": -0.8
+     },
+     {
+      "label": "+10일",
+      "date": "2025-08-11",
+      "price": 3395,
+      "ret": 0.4,
+      "excess": 0.5
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "yellow_q",
    "decided_on": "2025-06-27",
@@ -942,6 +1135,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 3380,
+    "entry_date": "2025-07-11",
+    "rsi": 64.1,
+    "atr": 269.2,
+    "stop": 2842,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-07-18",
+      "price": 4380,
+      "ret": 29.6,
+      "excess": 27.1
+     },
+     {
+      "label": "+10일",
+      "date": "2025-07-25",
+      "price": 3770,
+      "ret": 11.5,
+      "excess": 10.7
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-06-10",
@@ -1078,6 +1295,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1877,
+    "entry_date": "2025-08-26",
+    "rsi": 30.6,
+    "atr": 101.9,
+    "stop": 1673,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-09-02",
+      "price": 1869,
+      "ret": -0.4,
+      "excess": 0.6
+     },
+     {
+      "label": "+10일",
+      "date": "2025-09-09",
+      "price": 1909,
+      "ret": 1.7,
+      "excess": -1.2
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-07-23",
@@ -1184,6 +1425,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1595,
+    "entry_date": "2025-07-29",
+    "rsi": 27.5,
+    "atr": 121.8,
+    "stop": 1351,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-08-05",
+      "price": 1547,
+      "ret": -3.0,
+      "excess": -2.3
+     },
+     {
+      "label": "+10일",
+      "date": "2025-08-12",
+      "price": 1637,
+      "ret": 2.6,
+      "excess": 2.3
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-06-30",
@@ -1289,6 +1554,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 4220,
+    "entry_date": "2025-07-24",
+    "rsi": 41.3,
+    "atr": 91.5,
+    "stop": 4037,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-07-31",
+      "price": 4250,
+      "ret": 0.7,
+      "excess": -1.0
+     },
+     {
+      "label": "+10일",
+      "date": "2025-08-07",
+      "price": 4465,
+      "ret": 5.8,
+      "excess": 4.6
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-06-24",
@@ -1397,6 +1686,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 919,
+    "entry_date": "2025-08-21",
+    "rsi": 35.7,
+    "atr": 361.9,
+    "stop": 195,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-08-28",
+      "price": 1196,
+      "ret": 30.1,
+      "excess": 27.4
+     },
+     {
+      "label": "+10일",
+      "date": "2025-09-04",
+      "price": 1659,
+      "ret": 80.5,
+      "excess": 76.9
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-07-24",
@@ -1504,6 +1817,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": true,
+   "s2": {
+    "entry": 150400,
+    "entry_date": "2025-08-08",
+    "rsi": 59.5,
+    "atr": 7363.6,
+    "stop": 135673,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-08-18",
+      "price": 155300,
+      "ret": 3.3,
+      "excess": 4.3
+     },
+     {
+      "label": "+10일",
+      "date": "2025-08-25",
+      "price": 158000,
+      "ret": 5.1,
+      "excess": 5.1
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "yellow_q",
    "decided_on": "2025-07-10",
@@ -1612,6 +1949,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 5160,
+    "entry_date": "2025-08-29",
+    "rsi": 31.7,
+    "atr": 492.1,
+    "stop": 4176,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-09-05",
+      "price": 4955,
+      "ret": -4.0,
+      "excess": -5.8
+     },
+     {
+      "label": "+10일",
+      "date": "2025-09-12",
+      "price": 5160,
+      "ret": 0.0,
+      "excess": -6.3
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-07-25",
@@ -1719,6 +2080,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1684,
+    "entry_date": "2025-08-13",
+    "rsi": 23.6,
+    "atr": 189.6,
+    "stop": 1305,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-08-21",
+      "price": 1665,
+      "ret": -1.1,
+      "excess": 3.4
+     },
+     {
+      "label": "+10일",
+      "date": "2025-08-28",
+      "price": 1730,
+      "ret": 2.7,
+      "excess": 4.6
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-07-11",
@@ -1828,6 +2213,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 6030,
+    "entry_date": "2025-09-22",
+    "rsi": 61.0,
+    "atr": 589.0,
+    "stop": 4852,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-09-29",
+      "price": 6290,
+      "ret": 4.3,
+      "excess": 7.5
+     },
+     {
+      "label": "+10일",
+      "date": "2025-10-13",
+      "price": 7320,
+      "ret": 21.4,
+      "excess": 23.0
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-07-31",
@@ -1935,6 +2344,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 871,
+    "entry_date": "2025-08-25",
+    "rsi": 21.4,
+    "atr": 243.3,
+    "stop": 384,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-09-01",
+      "price": 825,
+      "ret": -5.3,
+      "excess": -3.7
+     },
+     {
+      "label": "+10일",
+      "date": "2025-09-08",
+      "price": 832,
+      "ret": -4.5,
+      "excess": -7.1
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-07-24",
@@ -2041,6 +2474,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 23550,
+    "entry_date": "2025-08-28",
+    "rsi": 30.6,
+    "atr": 1136.0,
+    "stop": 21278,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-09-04",
+      "price": 22950,
+      "ret": -2.5,
+      "excess": -3.4
+     },
+     {
+      "label": "+10일",
+      "date": "2025-09-11",
+      "price": 24250,
+      "ret": 3.0,
+      "excess": -1.6
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-07-24",
@@ -2199,6 +2656,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1310,
+    "entry_date": "2025-09-04",
+    "rsi": 51.9,
+    "atr": 86.5,
+    "stop": 1137,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-09-11",
+      "price": 1372,
+      "ret": 4.7,
+      "excess": 1.1
+     },
+     {
+      "label": "+10일",
+      "date": "2025-09-18",
+      "price": 1596,
+      "ret": 21.8,
+      "excess": 15.4
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-08-05",
@@ -2305,6 +2786,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 450,
+    "entry_date": "2025-09-24",
+    "rsi": 30.5,
+    "atr": 2762.4,
+    "stop": -5075,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-10-01",
+      "price": 397,
+      "ret": -11.8,
+      "excess": -10.0
+     },
+     {
+      "label": "+10일",
+      "date": "2025-10-15",
+      "price": 365,
+      "ret": -18.9,
+      "excess": -19.3
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-08-26",
@@ -2410,6 +2915,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 3335,
+    "entry_date": "2025-09-22",
+    "rsi": 64.4,
+    "atr": 46.9,
+    "stop": 3241,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-09-29",
+      "price": 3370,
+      "ret": 1.0,
+      "excess": 2.1
+     },
+     {
+      "label": "+10일",
+      "date": "2025-10-13",
+      "price": 3395,
+      "ret": 1.8,
+      "excess": -1.5
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "blue",
    "decided_on": "2025-08-21",
@@ -2517,6 +3046,31 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 24900,
+    "entry_date": "2025-11-07",
+    "rsi": 44.3,
+    "atr": 1532.5,
+    "stop": 21835,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-11-14",
+      "price": 24200,
+      "ret": -2.8,
+      "excess": -5.2
+     },
+     {
+      "label": "+10일",
+      "date": "2025-11-21",
+      "price": 21835,
+      "ret": -12.3,
+      "stopped": "2025-11-18",
+      "excess": -12.5
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "blue",
    "decided_on": "2025-09-29",
@@ -2648,6 +3202,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1599,
+    "entry_date": "2025-12-04",
+    "rsi": 30.9,
+    "atr": 146.0,
+    "stop": 1307,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-12-11",
+      "price": 1638,
+      "ret": 2.4,
+      "excess": 1.9
+     },
+     {
+      "label": "+10일",
+      "date": "2025-12-18",
+      "price": 1770,
+      "ret": 10.7,
+      "excess": 13.8
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-11-03",
@@ -2754,6 +3332,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1093,
+    "entry_date": "2025-11-24",
+    "rsi": 25.7,
+    "atr": 114.8,
+    "stop": 863,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-12-01",
+      "price": 1415,
+      "ret": 29.5,
+      "excess": 21.8
+     },
+     {
+      "label": "+10일",
+      "date": "2025-12-08",
+      "price": 1798,
+      "ret": 64.5,
+      "excess": 56.2
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-10-20",
@@ -2860,6 +3462,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1733,
+    "entry_date": "2025-11-21",
+    "rsi": 34.7,
+    "atr": 170.9,
+    "stop": 1391,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-11-28",
+      "price": 1866,
+      "ret": 7.7,
+      "excess": 2.1
+     },
+     {
+      "label": "+10일",
+      "date": "2025-12-05",
+      "price": 1943,
+      "ret": 12.1,
+      "excess": 5.1
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-10-20",
@@ -2966,6 +3592,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 4265,
+    "entry_date": "2025-11-13",
+    "rsi": 46.2,
+    "atr": 94.9,
+    "stop": 4075,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-11-20",
+      "price": 4350,
+      "ret": 2.0,
+      "excess": 6.0
+     },
+     {
+      "label": "+10일",
+      "date": "2025-11-27",
+      "price": 4465,
+      "ret": 4.7,
+      "excess": 9.1
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-09-26",
@@ -3073,6 +3723,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1198,
+    "entry_date": "2025-12-02",
+    "rsi": 33.7,
+    "atr": 117.7,
+    "stop": 963,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-12-09",
+      "price": 1208,
+      "ret": 0.8,
+      "excess": 0.5
+     },
+     {
+      "label": "+10일",
+      "date": "2025-12-16",
+      "price": 1226,
+      "ret": 2.3,
+      "excess": 3.6
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-10-30",
@@ -3179,6 +3853,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 231000,
+    "entry_date": "2025-12-01",
+    "rsi": 58.7,
+    "atr": 20778.7,
+    "stop": 189443,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-12-08",
+      "price": 287500,
+      "ret": 24.5,
+      "excess": 23.9
+     },
+     {
+      "label": "+10일",
+      "date": "2025-12-15",
+      "price": 313000,
+      "ret": 35.5,
+      "excess": 33.7
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-10-29",
@@ -3285,6 +3983,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 17190,
+    "entry_date": "2025-12-24",
+    "rsi": 65.6,
+    "atr": 1439.8,
+    "stop": 14310,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-05",
+      "price": 16550,
+      "ret": -3.7,
+      "excess": -8.3
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-12",
+      "price": 17650,
+      "ret": 2.7,
+      "excess": -1.1
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-11-03",
@@ -3391,6 +4113,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 3665,
+    "entry_date": "2025-12-24",
+    "rsi": 54.5,
+    "atr": 520.5,
+    "stop": 2624,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-05",
+      "price": 4010,
+      "ret": 9.4,
+      "excess": 4.8
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-12",
+      "price": 3260,
+      "ret": -11.1,
+      "excess": -14.9
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-11-17",
@@ -3499,6 +4245,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 6820,
+    "entry_date": "2026-01-06",
+    "rsi": 30.1,
+    "atr": 385.2,
+    "stop": 6050,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-13",
+      "price": 6680,
+      "ret": -2.1,
+      "excess": -1.4
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-20",
+      "price": 8970,
+      "ret": 31.5,
+      "excess": 29.4
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-11-28",
@@ -3606,6 +4376,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 3245,
+    "entry_date": "2025-12-30",
+    "rsi": 35.6,
+    "atr": 213.3,
+    "stop": 2818,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-08",
+      "price": 3185,
+      "ret": -1.8,
+      "excess": -3.8
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-15",
+      "price": 3310,
+      "ret": 2.0,
+      "excess": -0.8
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-11-24",
@@ -3712,6 +4506,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 3700,
+    "entry_date": "2026-01-07",
+    "rsi": 39.8,
+    "atr": 337.7,
+    "stop": 3025,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-14",
+      "price": 3895,
+      "ret": 5.3,
+      "excess": 5.8
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-21",
+      "price": 3415,
+      "ret": -7.7,
+      "excess": -8.1
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-12-02",
@@ -3818,6 +4636,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1630,
+    "entry_date": "2025-12-22",
+    "rsi": 43.9,
+    "atr": 182.0,
+    "stop": 1266,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2025-12-30",
+      "price": 1739,
+      "ret": 6.7,
+      "excess": 7.1
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-08",
+      "price": 1704,
+      "ret": 4.5,
+      "excess": 2.9
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-11-19",
@@ -3925,6 +4767,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1680,
+    "entry_date": "2025-12-26",
+    "rsi": 31.6,
+    "atr": 87.0,
+    "stop": 1506,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-06",
+      "price": 1730,
+      "ret": 3.0,
+      "excess": -6.6
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-13",
+      "price": 1685,
+      "ret": 0.3,
+      "excess": -13.3
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "blue",
    "decided_on": "2025-11-24",
@@ -4032,6 +4898,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1703,
+    "entry_date": "2026-01-09",
+    "rsi": 34.3,
+    "atr": 131.3,
+    "stop": 1440,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-16",
+      "price": 1766,
+      "ret": 3.7,
+      "excess": 3.0
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-23",
+      "price": 2030,
+      "ret": 19.2,
+      "excess": 14.3
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-12-04",
@@ -4140,6 +5030,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1478,
+    "entry_date": "2026-02-23",
+    "rsi": 24.8,
+    "atr": 390.8,
+    "stop": 696,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-03-03",
+      "price": 1322,
+      "ret": -10.6,
+      "excess": -9.4
+     },
+     {
+      "label": "+10일",
+      "date": "2026-03-10",
+      "price": 1098,
+      "ret": -25.7,
+      "excess": -24.5
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2026-01-23",
@@ -4247,6 +5161,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 2845,
+    "entry_date": "2026-01-12",
+    "rsi": 30.2,
+    "atr": 139.0,
+    "stop": 2567,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-19",
+      "price": 3180,
+      "ret": 11.8,
+      "excess": 5.7
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-26",
+      "price": 3305,
+      "ret": 16.2,
+      "excess": 9.2
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-12-10",
@@ -4353,6 +5291,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1965,
+    "entry_date": "2025-12-30",
+    "rsi": 20.6,
+    "atr": 1308.8,
+    "stop": -653,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-08",
+      "price": 1883,
+      "ret": -4.2,
+      "excess": -6.2
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-15",
+      "price": 1975,
+      "ret": 0.5,
+      "excess": -2.3
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-11-25",
@@ -4459,6 +5421,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1316,
+    "entry_date": "2026-01-08",
+    "rsi": 27.8,
+    "atr": 116.9,
+    "stop": 1082,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-15",
+      "price": 1255,
+      "ret": -4.6,
+      "excess": -5.4
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-22",
+      "price": 1305,
+      "ret": -0.8,
+      "excess": -3.6
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-12-04",
@@ -4569,6 +5555,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 3445,
+    "entry_date": "2026-03-19",
+    "rsi": 39.1,
+    "atr": 311.9,
+    "stop": 2821,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-03-26",
+      "price": 3430,
+      "ret": -0.4,
+      "excess": 0.2
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-02",
+      "price": 3080,
+      "ret": -10.6,
+      "excess": -3.0
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2026-02-09",
@@ -4676,6 +5686,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 3940,
+    "entry_date": "2026-01-08",
+    "rsi": 34.8,
+    "atr": 343.8,
+    "stop": 3252,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-01-15",
+      "price": 4070,
+      "ret": 3.3,
+      "excess": 2.5
+     },
+     {
+      "label": "+10일",
+      "date": "2026-01-22",
+      "price": 3995,
+      "ret": 1.4,
+      "excess": -1.4
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2025-12-09",
@@ -4782,6 +5816,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1229,
+    "entry_date": "2026-02-13",
+    "rsi": 38.1,
+    "atr": 129.9,
+    "stop": 969,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-02-25",
+      "price": 1312,
+      "ret": 6.8,
+      "excess": -3.7
+     },
+     {
+      "label": "+10일",
+      "date": "2026-03-05",
+      "price": 1085,
+      "ret": -11.7,
+      "excess": -13.1
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2026-01-13",
@@ -4889,6 +5947,32 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 897,
+    "entry_date": "2026-02-25",
+    "rsi": 35.2,
+    "atr": 115.0,
+    "stop": 667,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-03-05",
+      "price": 667,
+      "ret": -25.6,
+      "stopped": "2026-03-04",
+      "excess": -9.6
+     },
+     {
+      "label": "+10일",
+      "date": "2026-03-12",
+      "price": 667,
+      "ret": -25.6,
+      "stopped": "2026-03-04",
+      "excess": -9.6
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2026-01-21",
@@ -4995,6 +6079,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 2160,
+    "entry_date": "2026-04-06",
+    "rsi": 31.3,
+    "atr": 128.6,
+    "stop": 1903,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-04-13",
+      "price": 2325,
+      "ret": 7.6,
+      "excess": 1.0
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-20",
+      "price": 2390,
+      "ret": 10.6,
+      "excess": -3.5
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2026-02-06",
@@ -5103,6 +6211,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 1617,
+    "entry_date": "2026-03-25",
+    "rsi": 49.6,
+    "atr": 263.9,
+    "stop": 1089,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-04-01",
+      "price": 1530,
+      "ret": -5.4,
+      "excess": -1.7
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-08",
+      "price": 1811,
+      "ret": 12.0,
+      "excess": 18.0
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2026-02-20",
@@ -5210,6 +6342,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 3005,
+    "entry_date": "2026-03-25",
+    "rsi": 45.4,
+    "atr": 66.9,
+    "stop": 2871,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-04-01",
+      "price": 2980,
+      "ret": -0.8,
+      "excess": 2.1
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-08",
+      "price": 3030,
+      "ret": 0.8,
+      "excess": -3.3
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2026-02-13",
@@ -5316,6 +6472,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 7390,
+    "entry_date": "2026-03-19",
+    "rsi": 70.7,
+    "atr": 819.5,
+    "stop": 5751,
+    "gate": false,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-03-26",
+      "price": 9300,
+      "ret": 25.8,
+      "excess": 26.4
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-02",
+      "price": 10120,
+      "ret": 36.9,
+      "excess": 44.5
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2026-02-10",
@@ -5425,6 +6605,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 830,
+    "entry_date": "2026-04-02",
+    "rsi": 23.3,
+    "atr": 710.9,
+    "stop": -592,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-04-09",
+      "price": 922,
+      "ret": 11.1,
+      "excess": 0.7
+     },
+     {
+      "label": "+10일",
+      "date": "2026-04-16",
+      "price": 1003,
+      "ret": 20.8,
+      "excess": 1.8
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2026-02-26",
@@ -5536,6 +6740,30 @@
     "irreplaceable": "manual"
    },
    "gate_passed": false,
+   "s2": {
+    "entry": 4200,
+    "entry_date": "2026-05-18",
+    "rsi": 33.9,
+    "atr": 486.2,
+    "stop": 3228,
+    "gate": true,
+    "points": [
+     {
+      "label": "+5일",
+      "date": "2026-05-26",
+      "price": 4500,
+      "ret": 7.1,
+      "excess": 1.6
+     },
+     {
+      "label": "+10일",
+      "date": "2026-06-02",
+      "price": 4130,
+      "ret": -1.7,
+      "excess": 6.0
+     }
+    ]
+   },
    "status": "scored",
    "verdict": "white",
    "decided_on": "2026-04-13",

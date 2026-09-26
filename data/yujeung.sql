@@ -4163,6 +4163,15 @@ INSERT INTO "stock_daily" VALUES('2026-09-22','210980','SK디앤디',3385,3395,3
 INSERT INTO "stock_daily" VALUES('2026-09-22','012200','계양전기',3820,3845,4300,3780,825968,103991206780,27222829);
 INSERT INTO "stock_daily" VALUES('2026-09-22','448730','삼성FN리츠',4795,5000,5080,4795,314468,436584750000,91050000);
 INSERT INTO "stock_daily" VALUES('2026-09-22','207940','삼성바이오로직스',1391000,1407000,1408000,1389000,30116,64390712841000,46290951);
+CREATE TABLE strategy_trades (
+    case_id          INTEGER NOT NULL REFERENCES cases(case_id),
+    strategy         TEXT NOT NULL,    -- s1 / s2 / s3
+    decided_on       TEXT NOT NULL,
+    strategy_version INTEGER NOT NULL,
+    snapshot_json    TEXT NOT NULL,
+    created_at       TEXT NOT NULL,
+    PRIMARY KEY (case_id, strategy)
+);
 DELETE FROM "sqlite_sequence";
 INSERT INTO "sqlite_sequence" VALUES('cases',72);
 INSERT INTO "sqlite_sequence" VALUES('notifications',42);
