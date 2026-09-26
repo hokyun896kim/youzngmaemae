@@ -85,8 +85,10 @@ def store_stock_rows(conn: sqlite3.Connection, rows: list[dict], codes: set[str]
         if code not in codes:
             continue
         conn.execute(
-            "INSERT OR REPLACE INTO stock_daily (bas_dd, code, name, close, open, high, low, volume, mktcap,"
-            " list_shrs) VALUES (?,?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO stock_daily (bas_dd, code, name, close, open, high, low, volume, mktcap, list_shrs)"
+            " VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(bas_dd, code) DO UPDATE SET name=excluded.name,"
+            " close=excluded.close, open=excluded.open, high=excluded.high, low=excluded.low, volume=excluded.volume,"
+            " mktcap=excluded.mktcap, list_shrs=excluded.list_shrs",   # 네이버 원값(n_*)은 남긴다
             (iso(r["BAS_DD"]), code, r.get("ISU_NM"), to_int(r.get("TDD_CLSPRC")), to_int(r.get("TDD_OPNPRC")),
              to_int(r.get("TDD_HGPRC")), to_int(r.get("TDD_LWPRC")), to_int(r.get("ACC_TRDVOL")),
              to_int(r.get("MKTCAP")), to_int(r.get("LIST_SHRS"))),

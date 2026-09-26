@@ -180,9 +180,11 @@ def naver_fill(naver: NaverClient, conn, c: sqlite3.Row, trading_days: list[str]
         return False     # 상장폐지 종목은 네이버에 없다 → 52주 위치 미확인
     for r in rows:
         conn.execute(
-            "INSERT INTO stock_daily (bas_dd, code, close, open, high, low, volume) VALUES (?,?,?,?,?,?,?) "
-            "ON CONFLICT(bas_dd, code) DO NOTHING",   # KRX 값이 있으면 KRX 우선
-            (r["date"], c["stock_code"], int(r["close"]), int(r["open"]), int(r["high"]), int(r["low"]), r["volume"]))
+            "INSERT INTO stock_daily (bas_dd, code, close, open, high, low, volume, n_close, n_high, n_low) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(bas_dd, code) DO UPDATE SET "   # 가격은 KRX 우선, 네이버 원값만 보관
+            "n_close=excluded.n_close, n_high=excluded.n_high, n_low=excluded.n_low",
+            (r["date"], c["stock_code"], int(r["close"]), int(r["open"]), int(r["high"]), int(r["low"]), r["volume"],
+             r["close"], r["high"], r["low"]))
     return save_pos52(conn, c["case_id"], rows, disc.isoformat())
 
 
@@ -357,7 +359,8 @@ def run_year(year: int, cfg: Config, dart: DartClient, krx: KrxClient, naver: Na
         })
         # 전략 2 (상장일 종가 → +10거래일, ATR 손절) — 조건은 합산 때 strategy.conditions 로 거른다
         s2 = strategy.eval_s2(conn, c["stock_code"], c["corp_cls"], sch["listing_date"])
-        rec["s2"] = {k: s2.get(k) for k in ("entry", "entry_date", "rsi", "atr", "stop", "gate", "points")} if s2 else None
+        rec["s2"] = {k: s2.get(k) for k in ("entry", "entry_date", "rsi", "atr", "atr_pct", "ind_src", "stop",
+                                                      "gate", "points")} if s2 else None
         if not trade:
             rec["status"] = "no_rights_price"
             records.append(rec)
@@ -494,8 +497,9 @@ def aggregate(out_dir: Path = BACKTEST_DIR) -> dict:
             stale.append(y["year"])
             continue
         recs += [dict(r, year=y["year"]) for r in y["cases"] if r.get("status") == "scored"]
-        # 전략 2 는 인수권 시세가 없어도(no_rights_price) 상장일 본주 시세만 있으면 잴 수 있다
-        if y.get("strategy_version"):
+        # 전략 2 는 인수권 시세가 없어도(no_rights_price) 상장일 본주 시세만 있으면 잴 수 있다.
+        # 전략 버전이 지금과 다른 해는 빼고 '재실행 필요'로 (v1 = ATR 출처 혼합 버그)
+        if y.get("strategy_version") == strategy.STRATEGY_VERSION:
             s2_recs += [dict(r, year=y["year"]) for r in y["cases"] if r.get("s2")]
         else:
             s2_missing.append(y["year"])

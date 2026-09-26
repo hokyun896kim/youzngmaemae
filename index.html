@@ -482,7 +482,7 @@ function stratBox(c){
       const gate=it.rsi==null?'<b class="mut">RSI 계산 불가</b>':`<b class="${it.gate?'gok':'gno'}">RSI ${it.rsi} → ${it.gate?'진입 가능':'게이트 미통과'}</b>`;
       act=box('진입 = 상장일 종가',it.listing?`<b>${it.entry!=null?fmt(it.entry)+'원':md(it.listing)}</b>${it.entry!=null?' ('+md(it.listing)+')':''}`:'<b class="mut">상장일 미정</b>')
         +box(`청산 = +${R.s2_hold_days}거래일`,it.exit_on?`<b>${md(it.exit_on)}</b>`:'—')
-        +box(`손절 = 진입가 − ATR×${R.s2_atr_mult}`,it.stop!=null?`<b>${fmt(it.stop)}원</b> <small class="mut">ATR ${fmt(Math.round(it.atr))} · ${esc(it.stop_basis)}</small>`:'<b class="mut">ATR 계산 불가</b>')
+        +box(`손절 = 진입가 − ATR×${R.s2_atr_mult}`,it.stop!=null?`<b>${fmt(it.stop)}원</b> <small class="mut">ATR ${fmt(Math.round(it.atr))}원(${it.atr_pct}%) · ${esc(it.stop_basis)}</small>`:'<b class="mut">ATR 계산 불가</b>')
         +box('비중','<b>평소의 절반</b>')
         +box(`진입 게이트 (RSI ≤ ${R.rsi_max})`,`${gate}${it.confirmed?'':' <small class="mut">'+(it.ind_asof?md(it.ind_asof)+' 기준 미리보기 · 상장일 종가로 확정':'')+'</small>'}`);}
     return `<div class="sitem ${it.state}"><div class="sh"><span class="sb">${D.medal} ${SNUM[it.key]} · ${esc(D.title)}</span><span class="st ${it.state}">${stTxt(it)}</span><span class="mut" style="font-size:11px">증거 ${D.evidence}</span></div>
