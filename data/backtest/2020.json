@@ -1,9 +1,9 @@
 {
  "year": 2020,
  "months": 12,
- "generated_at": "2026-09-26T15:39:15+09:00",
+ "generated_at": "2026-09-26T18:01:14+09:00",
  "logic_version": 3,
- "strategy_version": 1,
+ "strategy_version": 3,
  "range": [
   "2020-01-01",
   "2020-12-31"
@@ -80,8 +80,10 @@
     "entry": 15350,
     "entry_date": "2020-03-26",
     "rsi": 44.7,
-    "atr": 1279.0,
-    "stop": 12792,
+    "atr": 1278.7,
+    "atr_pct": 8.33,
+    "ind_src": "naver",
+    "stop": 12793,
     "gate": true,
     "points": [
      {
@@ -210,8 +212,10 @@
     "entry": 11750,
     "entry_date": "2020-05-20",
     "rsi": 71.7,
-    "atr": 687.2,
-    "stop": 10376,
+    "atr": 687.4,
+    "atr_pct": 5.85,
+    "ind_src": "naver",
+    "stop": 10375,
     "gate": false,
     "points": [
      {
@@ -339,9 +343,11 @@
    "s2": {
     "entry": 6870,
     "entry_date": "2020-06-09",
-    "rsi": 62.5,
-    "atr": 206.8,
-    "stop": 6456,
+    "rsi": 56.4,
+    "atr": 196.5,
+    "atr_pct": 2.86,
+    "ind_src": "naver",
+    "stop": 6477,
     "gate": false,
     "points": [
      {
@@ -498,6 +504,8 @@
     "entry_date": "2020-07-08",
     "rsi": 35.4,
     "atr": 388.6,
+    "atr_pct": 7.25,
+    "ind_src": "naver",
     "stop": 4583,
     "gate": true,
     "points": [
@@ -627,9 +635,11 @@
    "s2": {
     "entry": 1590,
     "entry_date": "2020-07-24",
-    "rsi": 20.9,
-    "atr": 1360.8,
-    "stop": -1132,
+    "rsi": 25.0,
+    "atr": 151.4,
+    "atr_pct": 9.52,
+    "ind_src": "naver",
+    "stop": 1287,
     "gate": true,
     "points": [
      {
@@ -758,8 +768,10 @@
     "entry": 29000,
     "entry_date": "2020-07-24",
     "rsi": 55.4,
-    "atr": 1523.3,
-    "stop": 25953,
+    "atr": 1522.5,
+    "atr_pct": 5.25,
+    "ind_src": "naver",
+    "stop": 25955,
     "gate": false,
     "points": [
      {
@@ -889,9 +901,11 @@
    "s2": {
     "entry": 8700,
     "entry_date": "2020-07-16",
-    "rsi": 22.8,
-    "atr": 4095.7,
-    "stop": 509,
+    "rsi": 41.8,
+    "atr": 721.2,
+    "atr_pct": 8.29,
+    "ind_src": "naver",
+    "stop": 7258,
     "gate": true,
     "points": [
      {
@@ -1019,9 +1033,11 @@
    "s2": {
     "entry": 979,
     "entry_date": "2020-07-28",
-    "rsi": 21.0,
-    "atr": 5209.1,
-    "stop": -9439,
+    "rsi": 32.1,
+    "atr": 71.8,
+    "atr_pct": 7.33,
+    "ind_src": "naver",
+    "stop": 835,
     "gate": true,
     "points": [
      {
@@ -1158,10 +1174,12 @@
    "s2": {
     "entry": 3340,
     "entry_date": "2020-10-22",
-    "rsi": 63.4,
-    "atr": 296.5,
-    "stop": 2747,
-    "gate": false,
+    "rsi": 42.2,
+    "atr": 289.9,
+    "atr_pct": 8.68,
+    "ind_src": "naver",
+    "stop": 2760,
+    "gate": true,
     "points": [
      {
       "label": "+5일",
@@ -1226,10 +1244,12 @@
    "s2": {
     "entry": 18800,
     "entry_date": "2020-08-07",
-    "rsi": 70.6,
-    "atr": 1037.8,
-    "stop": 16724,
-    "gate": false,
+    "rsi": 39.2,
+    "atr": 673.0,
+    "atr_pct": 3.58,
+    "ind_src": "naver",
+    "stop": 17454,
+    "gate": true,
     "points": [
      {
       "label": "+5일",
@@ -1357,10 +1377,12 @@
    "s2": {
     "entry": 17500,
     "entry_date": "2020-07-29",
-    "rsi": 67.7,
-    "atr": 1000.9,
-    "stop": 15498,
-    "gate": false,
+    "rsi": 45.6,
+    "atr": 841.8,
+    "atr_pct": 4.81,
+    "ind_src": "naver",
+    "stop": 15816,
+    "gate": true,
     "points": [
      {
       "label": "+5일",
@@ -1490,9 +1512,11 @@
    "s2": {
     "entry": 1475,
     "entry_date": "2020-08-21",
-    "rsi": 21.1,
-    "atr": 3200.0,
-    "stop": -4925,
+    "rsi": 38.6,
+    "atr": 86.0,
+    "atr_pct": 5.83,
+    "ind_src": "naver",
+    "stop": 1303,
     "gate": true,
     "points": [
      {
@@ -1623,10 +1647,12 @@
    "s2": {
     "entry": 12950,
     "entry_date": "2020-09-03",
-    "rsi": 55.0,
-    "atr": 669.4,
-    "stop": 11611,
-    "gate": false,
+    "rsi": 22.4,
+    "atr": 585.3,
+    "atr_pct": 4.52,
+    "ind_src": "naver",
+    "stop": 11779,
+    "gate": true,
     "points": [
      {
       "label": "+5일",
@@ -1814,7 +1840,9 @@
     "entry": 7690,
     "entry_date": "2020-10-15",
     "rsi": 29.0,
-    "atr": 427.1,
+    "atr": 426.8,
+    "atr_pct": 5.55,
+    "ind_src": "naver",
     "stop": 6836,
     "gate": true,
     "points": [
@@ -1944,9 +1972,11 @@
    "s2": {
     "entry": 1350,
     "entry_date": "2020-08-14",
-    "rsi": 20.4,
-    "atr": 997.3,
-    "stop": -645,
+    "rsi": 30.1,
+    "atr": 96.0,
+    "atr_pct": 7.11,
+    "ind_src": "naver",
+    "stop": 1158,
     "gate": true,
     "points": [
      {
@@ -2076,9 +2106,11 @@
    "s2": {
     "entry": 668,
     "entry_date": "2020-08-28",
-    "rsi": 21.0,
-    "atr": 991.2,
-    "stop": -1314,
+    "rsi": 31.2,
+    "atr": 41.8,
+    "atr_pct": 6.26,
+    "ind_src": "naver",
+    "stop": 584,
     "gate": true,
     "points": [
      {
@@ -2233,8 +2265,10 @@
     "entry": 40395,
     "entry_date": "2020-08-31",
     "rsi": 53.1,
-    "atr": 2551.8,
-    "stop": 35291,
+    "atr": 2553.0,
+    "atr_pct": 6.32,
+    "ind_src": "naver",
+    "stop": 35289,
     "gate": false,
     "points": [
      {
@@ -2365,7 +2399,9 @@
     "entry": 7160,
     "entry_date": "2020-10-07",
     "rsi": 48.5,
-    "atr": 561.7,
+    "atr": 561.3,
+    "atr_pct": 7.84,
+    "ind_src": "naver",
     "stop": 6037,
     "gate": true,
     "points": [
@@ -2495,9 +2531,11 @@
    "s2": {
     "entry": 14600,
     "entry_date": "2020-09-23",
-    "rsi": 48.8,
-    "atr": 1682.8,
-    "stop": 11234,
+    "rsi": 41.4,
+    "atr": 1746.2,
+    "atr_pct": 11.96,
+    "ind_src": "naver",
+    "stop": 11108,
     "gate": true,
     "points": [
      {
@@ -2629,9 +2667,11 @@
    "s2": {
     "entry": 566,
     "entry_date": "2020-11-26",
-    "rsi": 19.8,
-    "atr": 14661.8,
-    "stop": -28758,
+    "rsi": 25.9,
+    "atr": 45.5,
+    "atr_pct": 8.04,
+    "ind_src": "naver",
+    "stop": 475,
     "gate": true,
     "points": [
      {
@@ -2759,9 +2799,11 @@
    "s2": {
     "entry": 1160,
     "entry_date": "2020-10-07",
-    "rsi": 27.4,
-    "atr": 782.4,
-    "stop": -405,
+    "rsi": 42.4,
+    "atr": 115.4,
+    "atr_pct": 9.95,
+    "ind_src": "naver",
+    "stop": 929,
     "gate": true,
     "points": [
      {
@@ -2890,10 +2932,12 @@
    "s2": {
     "entry": 719,
     "entry_date": "2020-10-12",
-    "rsi": 21.2,
-    "atr": 789.4,
-    "stop": -860,
-    "gate": true,
+    "rsi": 57.1,
+    "atr": 24.2,
+    "atr_pct": 3.36,
+    "ind_src": "naver",
+    "stop": 671,
+    "gate": false,
     "points": [
      {
       "label": "+5일",
@@ -2905,9 +2949,10 @@
      {
       "label": "+10일",
       "date": "2020-10-26",
-      "price": 678,
-      "ret": -5.7,
-      "excess": -3.2
+      "price": 671,
+      "ret": -6.7,
+      "stopped": "2020-10-20",
+      "excess": -4.8
      }
     ]
    },
@@ -3020,9 +3065,11 @@
    "s2": {
     "entry": 11450,
     "entry_date": "2020-11-16",
-    "rsi": 75.1,
-    "atr": 653.6,
-    "stop": 10143,
+    "rsi": 73.5,
+    "atr": 657.2,
+    "atr_pct": 5.74,
+    "ind_src": "naver",
+    "stop": 10136,
     "gate": false,
     "points": [
      {
@@ -3187,9 +3234,11 @@
    "s2": {
     "entry": 3465,
     "entry_date": "2021-04-01",
-    "rsi": 20.9,
-    "atr": 6345.8,
-    "stop": -9227,
+    "rsi": 30.4,
+    "atr": 223.1,
+    "atr_pct": 6.44,
+    "ind_src": "naver",
+    "stop": 3019,
     "gate": true,
     "points": [
      {
@@ -3320,8 +3369,10 @@
     "entry": 49250,
     "entry_date": "2020-11-18",
     "rsi": 49.2,
-    "atr": 3020.4,
-    "stop": 43209,
+    "atr": 3019.0,
+    "atr_pct": 6.13,
+    "ind_src": "naver",
+    "stop": 43212,
     "gate": true,
     "points": [
      {
@@ -3450,9 +3501,11 @@
    "s2": {
     "entry": 810,
     "entry_date": "2020-11-18",
-    "rsi": 19.8,
-    "atr": 2408.5,
-    "stop": -4007,
+    "rsi": 47.2,
+    "atr": 34.8,
+    "atr_pct": 4.3,
+    "ind_src": "naver",
+    "stop": 740,
     "gate": true,
     "points": [
      {
@@ -3582,7 +3635,9 @@
     "entry": 2300,
     "entry_date": "2020-11-02",
     "rsi": 47.3,
-    "atr": 141.1,
+    "atr": 141.0,
+    "atr_pct": 6.13,
+    "ind_src": "naver",
     "stop": 2018,
     "gate": true,
     "points": [
@@ -3713,9 +3768,11 @@
    "s2": {
     "entry": 535,
     "entry_date": "2021-01-12",
-    "rsi": 21.7,
-    "atr": 796.4,
-    "stop": -1058,
+    "rsi": 40.2,
+    "atr": 36.7,
+    "atr_pct": 6.86,
+    "ind_src": "naver",
+    "stop": 462,
     "gate": true,
     "points": [
      {
@@ -3843,9 +3900,11 @@
    "s2": {
     "entry": 5470,
     "entry_date": "2020-11-26",
-    "rsi": 25.9,
-    "atr": 1156.9,
-    "stop": 3156,
+    "rsi": 47.0,
+    "atr": 346.3,
+    "atr_pct": 6.33,
+    "ind_src": "naver",
+    "stop": 4777,
     "gate": true,
     "points": [
      {
@@ -3975,6 +4034,8 @@
     "entry_date": "2020-11-17",
     "rsi": 54.2,
     "atr": 11.3,
+    "atr_pct": 2.13,
+    "ind_src": "naver",
     "stop": 507,
     "gate": false,
     "points": [
@@ -4105,9 +4166,11 @@
    "s2": {
     "entry": 270,
     "entry_date": "2021-01-07",
-    "rsi": 16.7,
-    "atr": 2334.2,
-    "stop": -4398,
+    "rsi": 38.0,
+    "atr": 28.2,
+    "atr_pct": 10.46,
+    "ind_src": "naver",
+    "stop": 214,
     "gate": true,
     "points": [
      {
@@ -4173,9 +4236,11 @@
    "s2": {
     "entry": 13350,
     "entry_date": "2020-12-24",
-    "rsi": 43.7,
-    "atr": 751.3,
-    "stop": 11847,
+    "rsi": 38.1,
+    "atr": 771.6,
+    "atr_pct": 5.78,
+    "ind_src": "naver",
+    "stop": 11807,
     "gate": true,
     "points": [
      {
@@ -4306,8 +4371,10 @@
     "entry": 52800,
     "entry_date": "2020-12-29",
     "rsi": 55.1,
-    "atr": 3298.4,
-    "stop": 46203,
+    "atr": 3300.0,
+    "atr_pct": 6.25,
+    "ind_src": "naver",
+    "stop": 46200,
     "gate": false,
     "points": [
      {
@@ -4436,9 +4503,11 @@
    "s2": {
     "entry": 2815,
     "entry_date": "2020-12-23",
-    "rsi": 16.4,
-    "atr": 1661.0,
-    "stop": -507,
+    "rsi": 35.1,
+    "atr": 148.6,
+    "atr_pct": 5.28,
+    "ind_src": "naver",
+    "stop": 2518,
     "gate": true,
     "points": [
      {
@@ -4567,8 +4636,10 @@
     "entry": 8170,
     "entry_date": "2020-12-18",
     "rsi": 24.0,
-    "atr": 806.0,
-    "stop": 6558,
+    "atr": 806.4,
+    "atr_pct": 9.87,
+    "ind_src": "naver",
+    "stop": 6557,
     "gate": true,
     "points": [
      {
@@ -4699,10 +4770,12 @@
    "s2": {
     "entry": 30000,
     "entry_date": "2021-01-12",
-    "rsi": 56.7,
-    "atr": 2322.9,
-    "stop": 25354,
-    "gate": false,
+    "rsi": 47.0,
+    "atr": 2349.0,
+    "atr_pct": 7.83,
+    "ind_src": "naver",
+    "stop": 25302,
+    "gate": true,
     "points": [
      {
       "label": "+5일",
@@ -4831,7 +4904,9 @@
     "entry": 8080,
     "entry_date": "2020-12-28",
     "rsi": 23.2,
-    "atr": 1088.5,
+    "atr": 1088.4,
+    "atr_pct": 13.47,
+    "ind_src": "naver",
     "stop": 5903,
     "gate": true,
     "points": [
@@ -4960,9 +5035,11 @@
    "s2": {
     "entry": 3275,
     "entry_date": "2020-12-30",
-    "rsi": 17.6,
-    "atr": 750.2,
-    "stop": 1775,
+    "rsi": 33.3,
+    "atr": 203.7,
+    "atr_pct": 6.22,
+    "ind_src": "naver",
+    "stop": 2868,
     "gate": true,
     "points": [
      {
@@ -5091,7 +5168,9 @@
     "entry": 10900,
     "entry_date": "2020-12-28",
     "rsi": 35.6,
-    "atr": 677.1,
+    "atr": 676.9,
+    "atr_pct": 6.21,
+    "ind_src": "naver",
     "stop": 9546,
     "gate": true,
     "points": [
@@ -5221,7 +5300,9 @@
     "entry": 22200,
     "entry_date": "2021-01-11",
     "rsi": 57.0,
-    "atr": 2028.8,
+    "atr": 2029.1,
+    "atr_pct": 9.14,
+    "ind_src": "naver",
     "stop": 18142,
     "gate": false,
     "points": [
@@ -5351,8 +5432,10 @@
     "entry": 29650,
     "entry_date": "2021-01-12",
     "rsi": 44.3,
-    "atr": 1053.6,
-    "stop": 27543,
+    "atr": 1052.6,
+    "atr_pct": 3.55,
+    "ind_src": "naver",
+    "stop": 27545,
     "gate": true,
     "points": [
      {
@@ -5482,8 +5565,10 @@
     "entry": 40000,
     "entry_date": "2021-01-11",
     "rsi": 61.0,
-    "atr": 1816.8,
-    "stop": 36366,
+    "atr": 1816.0,
+    "atr_pct": 4.54,
+    "ind_src": "naver",
+    "stop": 36368,
     "gate": false,
     "points": [
      {
@@ -5636,9 +5721,11 @@
    "s2": {
     "entry": 1665,
     "entry_date": "2021-02-02",
-    "rsi": 22.4,
-    "atr": 1189.6,
-    "stop": -714,
+    "rsi": 33.4,
+    "atr": 110.6,
+    "atr_pct": 6.64,
+    "ind_src": "naver",
+    "stop": 1444,
     "gate": true,
     "points": [
      {
@@ -5767,9 +5854,11 @@
    "s2": {
     "entry": 140000,
     "entry_date": "2021-02-03",
-    "rsi": 70.1,
-    "atr": 6687.4,
-    "stop": 126625,
+    "rsi": 66.8,
+    "atr": 6552.0,
+    "atr_pct": 4.68,
+    "ind_src": "naver",
+    "stop": 126896,
     "gate": false,
     "points": [
      {
@@ -5899,8 +5988,10 @@
     "entry": 26750,
     "entry_date": "2021-03-24",
     "rsi": 39.7,
-    "atr": 937.4,
-    "stop": 24875,
+    "atr": 936.2,
+    "atr_pct": 3.5,
+    "ind_src": "naver",
+    "stop": 24878,
     "gate": true,
     "points": [
      {
@@ -6028,9 +6119,11 @@
    "s2": {
     "entry": 4435,
     "entry_date": "2021-03-05",
-    "rsi": 49.6,
-    "atr": 295.4,
-    "stop": 3844,
+    "rsi": 31.4,
+    "atr": 287.8,
+    "atr_pct": 6.49,
+    "ind_src": "naver",
+    "stop": 3859,
     "gate": true,
     "points": [
      {
@@ -6158,9 +6251,11 @@
    "s2": {
     "entry": 933,
     "entry_date": "2021-03-19",
-    "rsi": 18.2,
-    "atr": 580.0,
-    "stop": -227,
+    "rsi": 39.0,
+    "atr": 27.3,
+    "atr_pct": 2.93,
+    "ind_src": "naver",
+    "stop": 878,
     "gate": true,
     "points": [
      {
@@ -6289,9 +6384,11 @@
    "s2": {
     "entry": 45500,
     "entry_date": "2021-03-18",
-    "rsi": 33.0,
-    "atr": 2964.8,
-    "stop": 39570,
+    "rsi": 46.4,
+    "atr": 1961.0,
+    "atr_pct": 4.31,
+    "ind_src": "naver",
+    "stop": 41578,
     "gate": true,
     "points": [
      {
@@ -6425,9 +6522,11 @@
    "s2": {
     "entry": 1225,
     "entry_date": "2021-05-24",
-    "rsi": 22.3,
-    "atr": 15720.5,
-    "stop": -30216,
+    "rsi": 35.5,
+    "atr": 89.8,
+    "atr_pct": 7.33,
+    "ind_src": "naver",
+    "stop": 1045,
     "gate": true,
     "points": [
      {
