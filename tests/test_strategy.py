@@ -13,13 +13,17 @@ def test_conditions_cards_to_check():
     # SK디앤디: 희석 240% → ⛔ (다른 조건과 무관하게 전부 끔)
     c = strategy.conditions(2.4, 100.0, -42_817_140_616, 25.0)
     assert not any(c["ok"].values()) and c["bans"][0] == "dilution"
-    # 아이에이: 흑자 15억 · 희석 49.2% · 채무상환 없음 → 🥈
-    c = strategy.conditions(0.4924, None, 1_543_828_572, None)
+    # 아이에이: 🟡? · 흑자 15억 · 희석 49.2% · 채무상환 없음 → 🥈
+    c = strategy.conditions(0.4924, None, 1_543_828_572, None, "yellow_q")
     assert c["ok"]["s2"] and not c["bans"]
+    # B안: 판정이 🟡/🟡? 가 아니면 전략2 아님 (🟢?·⚪·🔵·판정 없음)
+    for v in ("green_q", "green", "white", "blue", None):
+        assert not strategy.conditions(0.4924, None, 1_543_828_572, None, v)["ok"]["s2"]
+    assert strategy.conditions(0.4924, None, 1_543_828_572, None, "yellow")["ok"]["s2"]
     # 희석 50% 이상·채무상환 50% 이상·영업이익 미확인 → 전략2 아님
-    assert not strategy.conditions(0.5, 0, 1, None)["ok"]["s2"]
-    assert not strategy.conditions(0.2, 50.0, 1, None)["ok"]["s2"]
-    assert not strategy.conditions(0.2, 0, None, None)["ok"]["s2"]
+    assert not strategy.conditions(0.5, 0, 1, None, "yellow")["ok"]["s2"]
+    assert not strategy.conditions(0.2, 50.0, 1, None, "yellow")["ok"]["s2"]
+    assert not strategy.conditions(0.2, 0, None, None, "yellow")["ok"]["s2"]
 
 
 def test_s3_range_and_too_cheap():
@@ -27,7 +31,7 @@ def test_s3_range_and_too_cheap():
     assert ok(-19.9) and ok(-0.1)
     assert not ok(-20.0) and not ok(0.0)            # 경계: −20% 이하는 기출 '−40~−20%' 구간, 0 이상은 고평가 쪽
     assert not ok(-10, dil=1.0) and not ok(-10, op=-1)
-    c = strategy.conditions(0.3, 0, 1, -40.0)
+    c = strategy.conditions(0.3, 0, 1, -40.0, "yellow_q")
     assert c["bans"] == ["too_cheap"] and not c["ok"]["s3"] and c["ok"]["s2"]   # 너무 싸도 전략2는 가능
 
 
@@ -99,24 +103,24 @@ def test_card_states_and_ban():
     sch = {"rights_start": days[5], "rights_end": days[9], "listing_date": days[30]}
     sm = {"dilution_ratio": 0.3, "purpose_pct": {"운영": 100.0}}
     # 상장 D-4 → 대기, D-3 → 지금 해당, +10일 지나면 종료
-    k = strategy.card(conn, c, sch, sm, 10, None, date.fromisoformat(days[26]))
+    k = strategy.card(conn, c, sch, sm, 10, None, date.fromisoformat(days[26]), "yellow_q")
     assert [(i["key"], i["state"]) for i in k["items"]] == [("s2", "wait")] and k["rank"] == 1
-    k = strategy.card(conn, c, sch, sm, 10, None, date.fromisoformat(days[27]))
+    k = strategy.card(conn, c, sch, sm, 10, None, date.fromisoformat(days[27]), "yellow_q")
     assert k["items"][0]["state"] == "live" and k["rank"] == 0 and k["items"][0]["exit_on"] == days[40]
-    s2 = strategy.card(conn, c, sch, sm, 10, None, date.fromisoformat(days[31]))["items"][0]
+    s2 = strategy.card(conn, c, sch, sm, 10, None, date.fromisoformat(days[31]), "yellow_q")["items"][0]
     assert s2["confirmed"] and s2["entry"] == 1000 and s2["stop"] == 800 and s2["stop_basis"] == "상장일 종가"
-    assert strategy.card(conn, c, sch, sm, 10, None, date.fromisoformat(days[41]))["items"][0]["state"] == "past"
+    assert strategy.card(conn, c, sch, sm, 10, None, date.fromisoformat(days[41]), "yellow_q")["items"][0]["state"] == "past"
     # 희석 100% 이상 → ⛔ 만 (전략 배지 없음)
-    k = strategy.card(conn, c, sch, dict(sm, dilution_ratio=1.2), 10, 30.0, date.fromisoformat(days[7]))
+    k = strategy.card(conn, c, sch, dict(sm, dilution_ratio=1.2), 10, 30.0, date.fromisoformat(days[7]), "yellow_q")
     assert k["items"] == [] and k["ban"][0] == "dilution" and k["rank"] == 2
     # 적자 + 괴리 +30% → 🥇 은 살아 있고 금지 규칙은 참고로만
-    k = strategy.card(conn, c, sch, sm, -1, 30.0, date.fromisoformat(days[7]))
+    k = strategy.card(conn, c, sch, sm, -1, 30.0, date.fromisoformat(days[7]), "yellow_q")
     assert [i["key"] for i in k["items"]] == ["s1"] and k["ban"] is None and k["bans"] == ["loss"]
     # 적자 + 괴리 −10% → 남는 전략 없음 → ⛔
-    k = strategy.card(conn, c, sch, sm, -1, -10.0, date.fromisoformat(days[7]))
+    k = strategy.card(conn, c, sch, sm, -1, -10.0, date.fromisoformat(days[7]), "yellow_q")
     assert k["items"] == [] and k["ban"] == ["loss"]
     # 조건 없음(흑자·희석 70%·괴리 +5%) → 해당 전략 없음
-    k = strategy.card(conn, c, sch, dict(sm, dilution_ratio=0.7), 10, 5.0, date.fromisoformat(days[7]))
+    k = strategy.card(conn, c, sch, dict(sm, dilution_ratio=0.7), 10, 5.0, date.fromisoformat(days[7]), "yellow_q")
     assert k["items"] == [] and k["ban"] is None and k["rank"] == 3
 
 
@@ -129,7 +133,7 @@ def test_record_and_scorecard():
                      (d, "1111101G", "테스트 1R", 150, 800))
     sch = {"rights_start": days[5], "rights_end": days[9], "listing_date": days[30], "issue_price": 800}
     live = {"summary": {"dilution_ratio": 0.3, "purpose_pct": {}}, "gap_on": {days[9]: -25.0 + 15},
-            "stock_on": {days[9]: 1000}}
+            "stock_on": {days[9]: 1000}, "verdict": "yellow_q"}
     assert strategy.record_if_due(conn, c, sch, live, 10, False) == 2        # 🥉(괴리 −10%) + 🥈(상장일 종가)
     assert strategy.record_if_due(conn, c, sch, live, 10, False) == 0        # 불변: 두 번 기록 안 함
     trades = conn.execute("SELECT * FROM strategy_trades ORDER BY strategy").fetchall()
