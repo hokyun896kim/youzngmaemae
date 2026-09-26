@@ -210,3 +210,34 @@ def test_tail_skip_keeps_cases_identical():
            keep=lambda _c, r: r["rcept_dt"] <= "20211231" or is_correction(r["report_nm"]))
     first = conn.execute("SELECT case_id FROM cases WHERE first_rcept_no=?", (B["rcept_no"],)).fetchone()[0]
     assert conn.execute("SELECT 1 FROM disclosures WHERE rcept_no='20220115000100' AND case_id=?", (first,)).fetchone()
+
+
+def test_returns_never_below_minus_100():
+    """수익률 분모 = 투입 원금 → 어떤 판정도 −100% 밑이 나올 수 없다.
+    예전 🔵 (가격−발행가)÷인수권−1: 인수권 100 · 발행가 1,000 · 상장 후 785 → −315% (2020 실측 최악 −214.9%)."""
+    import sqlite3
+    from yujeung import db, paper
+    conn = db.connect(":memory:")
+    conn.execute("INSERT INTO cases (corp_code, corp_name, stock_code, corp_cls, first_rcept_no, first_rcept_dt, "
+                 "ic_mthn, is_rights, created_at) VALUES ('c','폭락','111110','K','r','20200301','주주배정',1,'x')")
+    case = conn.execute("SELECT * FROM cases").fetchone()
+    days = [d.isoformat() for d in trading_days(date(2020, 5, 4), date(2020, 7, 31))]
+    for i, d in enumerate(days):                       # 상장 후 발행가 밑으로, 끝내 0원 근처까지
+        p = max(1000 - i * 60, 0)
+        conn.execute("INSERT INTO stock_daily (bas_dd, code, close, open, high, low) VALUES (?,?,?,?,?,?)",
+                     (d, "111110", p, p, p, p))
+        conn.execute("INSERT INTO index_daily (bas_dd, idx, open, high, low, close) VALUES (?,?,?,?,?,?)",
+                     (d, "KOSDAQ", 1000, 1000, 1000, 1000))
+    sch = {"listing_date": days[0], "issue_price": 1000, "subs_start": "2020-04-20"}
+    for verdict in ("green", "yellow", "blue", "white"):
+        snap = {"rights_close": 100, "issue_price": 1000, "listing_date": days[0], "reason": "x"}
+        trade = {"verdict": verdict, "decided_on": "2020-04-10", "snapshot_json": json.dumps(snap)}
+        ev = paper.evaluate(conn, case, trade, sch, TODAY)
+        rets = [p["ret"] for p in ev["points"] if "ret" in p]
+        assert rets and min(rets) >= -100, (verdict, rets)
+        if verdict != "yellow":
+            assert ev["entry"] == 1100                  # 🔵도 투입 원금(인수권+발행가)
+    blue = paper.evaluate(conn, case, {"verdict": "blue", "decided_on": "2020-04-10", "snapshot_json": json.dumps(
+        {"rights_close": 100, "issue_price": 1000, "listing_date": days[0], "reason": "x"})}, sch, TODAY)
+    assert blue["points"][1]["ret"] == round((700 / 1100 - 1) * 100, 1)   # +5일 700원
+    assert isinstance(conn, sqlite3.Connection)
