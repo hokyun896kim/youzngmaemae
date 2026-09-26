@@ -36,7 +36,8 @@ permissions:
   contents: write
 
 concurrency:
-  group: yujeung-collect
+  # PR 시험 실행(push)은 데이터를 커밋하지 않으므로 별도 줄 — 대기 중인 backtest·daily 를 밀어내지 않게
+  group: ${{ github.event_name == 'push' && format('yujeung-trial-{0}', github.ref) || 'yujeung-collect' }}
   cancel-in-progress: false
 
 jobs:

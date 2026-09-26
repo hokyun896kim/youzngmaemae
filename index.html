@@ -5,11 +5,12 @@
 <style>
 :root{--bg:#080c16;--panel:#0e1626;--panel2:#131f35;--line:#1c2942;--gold:#d4af37;--gold2:#f0d27a;--txt:#e8edf6;--mut:#7d8aa3;--red:#c2544d;--grn:#4a9d7f;--blu:#5b8def}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Pretendard Variable",sans-serif;background:radial-gradient(1100px 560px at 82% -10%,#13203a 0%,transparent 55%),var(--bg);color:var(--txt);min-height:100vh;padding:clamp(14px,3.5vw,38px);letter-spacing:-.01em;font-size:14px}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:"Pretendard Variable",sans-serif;background:radial-gradient(1100px 560px at 82% -10%,#13203a 0%,transparent 55%),var(--bg);color:var(--txt);min-height:100vh;padding:clamp(14px,3.5vw,38px);letter-spacing:-.01em;font-size:14px;word-break:keep-all;overflow-wrap:break-word}
 .wrap{max-width:1040px;margin:0 auto}
 .kicker{font-size:11px;letter-spacing:.3em;color:var(--gold);font-weight:700;text-transform:uppercase}
 h1{font-size:clamp(26px,5.6vw,42px);font-weight:800;line-height:1.05;margin:8px 0 4px;background:linear-gradient(92deg,#fff 32%,var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
-h2{font-size:15px;font-weight:800;margin:30px 0 10px;display:flex;align-items:center;gap:8px}
+h2{font-size:15px;font-weight:800;margin:30px 0 10px;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px}
 h2 small{font-weight:500;color:var(--mut);font-size:12px}
 .def{color:var(--mut);font-size:13px;margin-top:10px;line-height:1.65;border-left:2px solid var(--gold);padding-left:12px}
 .def b{color:var(--gold2)}
@@ -27,10 +28,11 @@ tr:last-child td{border-bottom:none}
 .bar{width:60px;height:6px;background:#1a2640;border-radius:3px;position:relative;overflow:hidden}
 .bar i{position:absolute;top:0;bottom:0}
 .neg{color:var(--grn)}.pos{color:var(--red)}.mut{color:var(--mut)}
-.cards{display:grid;gap:14px}
+.cards{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.card,.vbar,.quick,.result{min-width:0}
 .card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:16px}
 .card.rights{border-color:#2b3a22;box-shadow:inset 3px 0 0 var(--gold)}
-.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;gap:6px 10px;flex-wrap:wrap;margin-bottom:12px}
 .cn{font-size:18px;font-weight:800}
 .cn a{color:inherit;text-decoration:none}
 .meta{color:var(--mut);font-size:12px;margin-top:3px}
@@ -104,7 +106,7 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .vbadge{font-size:14px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);white-space:nowrap}
 .vbadge.green{border-color:#2f6b55;color:#8fe0bf}.vbadge.yellow{border-color:#7a6420;color:var(--gold2)}
 .vbadge.blue{border-color:#2d4f8f;color:#9dbcff}.vbadge.white{color:#d8dde7}
-.vreason{font-size:12px;color:var(--txt);flex:1;min-width:200px}
+.vreason{font-size:12px;color:var(--txt);flex:1 1 220px;min-width:0;line-height:1.5}
 .vreason small{display:block;color:var(--mut);margin-top:2px}
 .crit{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
 .cr{font-size:11px;padding:3px 8px;border-radius:8px;border:1px solid var(--line);background:#0b1322;color:var(--mut)}
@@ -113,16 +115,56 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .result{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#0b1322}
 .result h4{font-size:12px;margin-bottom:6px;color:var(--gold2)}
 .result table{min-width:0}
-.result td,.result th{padding:5px 8px;font-size:12px}
+.result td,.result th{padding:5px 8px;font-size:12px;white-space:normal}
+.result .sx,.quick .sx{overflow-x:auto}
 .warnbox{margin:8px 0;font-size:12px;color:#e8c46a}
 .quick{margin:0 0 12px;border:1px solid rgba(212,175,55,.45);border-radius:12px;padding:10px 12px;background:rgba(212,175,55,.06)}
-.quick .qw{font-size:17px;font-weight:800;color:var(--gold2)}
-.quick .ql{font-size:12.5px;margin-top:4px;line-height:1.55}
-.quick .ql span{color:var(--mut);display:inline-block;min-width:64px}
-.quick table{min-width:0;margin-top:8px}
+.quick .qw{font-size:17px;font-weight:800;color:var(--gold2);line-height:1.35}
+.quick .qs{font-size:11.5px;color:var(--mut);font-weight:600;margin:1px 0 4px}
+.quick .ql{font-size:12.5px;margin-top:5px;line-height:1.55;display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px}
+.quick .ql>span{color:var(--mut)}
+.quick .ql>div{overflow-wrap:anywhere}
+.quick table{min-width:0;margin-top:8px;max-width:560px}
 .quick td,.quick th{padding:4px 8px;font-size:12px}
 .quick .fn{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5}
 .quick .red{color:#f0a8a2;font-weight:700}
+.rcards,.tlist{display:none}
+.rc{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+.rc .rh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.rc .rh b{font-size:15px}
+.rc .rg{font-size:19px;font-weight:800;margin:6px 0 8px}
+.rc .rg small{font-size:11px;color:var(--mut);font-weight:500;margin-left:6px}
+.rc dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 8px;font-size:12px}
+.rc dt{color:var(--mut);font-size:10.5px}.rc dd{font-variant-numeric:tabular-nums;font-weight:700}
+.tlist{list-style:none;margin:12px 0 4px;border-left:2px solid var(--line);padding-left:12px}
+.tlist li{position:relative;display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:8px;padding:5px 0;font-size:12.5px;align-items:baseline}
+.tlist li::before{content:"";position:absolute;left:-20px;top:10px;width:10px;height:10px;border-radius:50%;background:var(--panel2);border:2px solid var(--gold)}
+.tlist li.done{color:var(--mut)}.tlist li.done::before{background:var(--gold)}
+.tlist li.now{color:var(--red);font-weight:700}.tlist li.now::before{background:var(--red);border-color:var(--red)}
+.tlist .dd{font-variant-numeric:tabular-nums;color:var(--gold2)}.tlist li.done .dd{color:var(--mut)}
+.tlist .dl{font-size:11px;color:var(--mut);white-space:nowrap}
+@media (max-width:600px){
+ body{font-size:13.5px}
+ .def{font-size:12.5px}
+ .chips{gap:6px;margin:12px 0}
+ .chip{padding:6px 10px;font-size:11px}.chip b{font-size:13px}
+ .topbar .btn{flex:1 1 auto;padding:10px 12px}
+ .tabs{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+ .tab{white-space:nowrap;padding:8px 12px}
+ .card{padding:13px}
+ .cn{font-size:17px}
+ .vbar{padding:9px 10px}
+ .quick .ql{grid-template-columns:70px minmax(0,1fr);gap:6px}
+ th,td{padding:8px 8px}
+ .tblw th:first-child,.tblw td:first-child{position:sticky;left:0;z-index:1;background:var(--panel)}
+ .tblw th:first-child{z-index:2;background:var(--panel2)}
+ .tblw td:first-child{white-space:normal;min-width:84px;max-width:112px;line-height:1.35}
+ .rtable{display:none}.rcards{display:grid;gap:8px}
+ .tl{display:none}.tlist{display:block}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .links{grid-template-columns:minmax(0,1fr)}
+ .mbox{padding:16px}
+}
 footer{color:var(--mut);font-size:11px;margin:34px 0 10px;line-height:1.7}
 a{color:var(--gold2)}
 </style></head><body><div class="wrap">
@@ -197,7 +239,11 @@ function renderRights(){
   const rows=[...DATA.rights_today].sort((a,b)=>(a.gap??999)-(b.gap??999));
   $('#rdate').textContent=DATA.last_rights_date?`${DATA.last_rights_date} 종가`:'';
   if(!rows.length){$('#rights').innerHTML='<div class="empty">아직 수집된 인수권 시세가 없습니다.<br>KRX_API_KEY 설정 후 Actions가 돌면 채워집니다.</div>';return;}
-  $('#rights').innerHTML=`<div class="tblw"><table><thead><tr><th>인수권</th><th>종가</th><th>본주</th><th>발행가</th><th>이론가</th><th>괴리율</th><th>인수권+청약 원가</th><th>거래량</th><th>상장폐지</th></tr></thead><tbody>${
+  const card=r=>`<div class="rc"><div class="rh"><b>${esc(r.name)}</b>${r.case_id?'<span class="badge gold">추적</span>':''}</div>
+    <div class="rg">${gapCell(r.gap)}<small>괴리율</small></div>
+    <dl><div><dt>인수권 종가</dt><dd>${fmt(r.close)}</dd></div><div><dt>이론가</dt><dd>${fmt(r.fair)}</dd></div><div><dt>인수권+청약 원가</dt><dd>${fmt(r.cost)}</dd></div>
+    <div><dt>본주</dt><dd>${fmt(r.stock)}</dd></div><div><dt>발행가</dt><dd>${fmt(r.issue)}</dd></div><div><dt>거래량 · 상장폐지</dt><dd>${fmt(r.volume)} · ${esc((r.delist??'—').slice(5))}</dd></div></dl></div>`;
+  $('#rights').innerHTML=`<div class="rcards">${rows.map(card).join('')}</div><div class="tblw rtable"><table><thead><tr><th>인수권</th><th>종가</th><th>본주</th><th>발행가</th><th>이론가</th><th>괴리율</th><th>인수권+청약 원가</th><th>거래량</th><th>상장폐지</th></tr></thead><tbody>${
     rows.map(r=>`<tr><td><b>${esc(r.name)}</b>${r.case_id?' <span class="badge gold">추적</span>':''}</td><td>${fmt(r.close)}</td><td>${fmt(r.stock)}</td><td>${fmt(r.issue)}</td><td>${fmt(r.fair)}</td><td>${gapCell(r.gap)}</td><td>${fmt(r.cost)}</td><td>${fmt(r.volume)}</td><td class="mut">${esc(r.delist??'—')}</td></tr>`).join('')
   }</tbody></table></div>`;
 }
@@ -219,7 +265,16 @@ function timeline(s){
     h+=`<div class="dot ${p.t<=now?'done':''}" style="left:${px}%" title="${p.l} ${p.d}"></div><div class="ev ${side}" style="left:${px}%">${p.l}<br>${p.d.slice(5)}</div>`;
   });
   if(now>=min&&now<=max) h+=`<div class="today" style="left:${x(now)}%"><b>오늘</b></div>`;
-  return h+'</div>';
+  return h+'</div>'+tlist(s);
+}
+
+function tlist(s){ // 모바일 세로 일정표: 인수권 시작·끝은 한 줄로
+  const t=kstToday(), md=d=>d.slice(5).replace('-','/');
+  const ev=TL.filter(([k])=>s[k]&&k!=='rights_end').map(([k,l])=>k==='rights_start'&&s.rights_end
+    ?{d:s[k],e:s.rights_end,l:'인수권 거래'}:{d:s[k],l:k==='subs_start'&&s.subs_end&&s.subs_end!==s[k]?'청약':l,e:k==='subs_start'&&s.subs_end!==s[k]?s.subs_end:null}).sort((a,b)=>a.d<b.d?-1:1);
+  const dday=a=>{const n=Math.round((new Date(a)-new Date(t))/864e5);return n===0?'오늘':n>0?'D-'+n:'';};
+  return `<ol class="tlist">${ev.map(x=>{const end=x.e||x.d, st=end<t?'done':(x.d<=t&&t<=end?'now':'');
+    return `<li class="${st}"><span class="dd">${md(x.d)}</span><span>${x.l}${x.e?` ~${md(x.e)}`:''}</span><span class="dl">${st==='now'?'진행 중':st==='done'?'지남':dday(x.d)}</span></li>`;}).join('')}</ol>`;
 }
 
 const SPARKS=[];
@@ -262,11 +317,11 @@ function caseCard(c){
   const quick=quickBox(c);
   const swarn=(c.schedule_warnings||[]).length?`<div class="warnbox">⚠ ${(c.schedule_warnings).map(esc).join(' · ')}</div>`:'';
   return `<div class="card ${c.is_rights?'rights':''}" id="case${c.case_id}">
-  ${vbar}${quick}${crit}
   <div class="ch"><div><div class="cn"><a href="${dartUrl(c.first_rcept_no)}" target="_blank" rel="noopener">${esc(c.corp_name)}</a> <span class="mut" style="font-size:13px">${esc(c.stock_code||'')} · ${esc(c.market||'')}</span></div>
   <div class="meta">최초 공시 ${c.first_rcept_dt} · ${esc(c.ic_mthn||'증자방식 미상')}</div>
   ${c.is_rights&&c.status==='open'?`<span class="stage">${esc(caseStage(s))}</span>`:''}</div>
   <div>${c.is_rights?'<span class="badge gold">주주배정 · 인수권</span>':'<span class="badge">관찰</span>'} ${debt?'<span class="badge red">채무상환형</span>':''} ${big?'<span class="badge red">초대형 희석</span>':''} ${fssReq?'<span class="badge red">금감원 정정요구</span>':''}</div></div>
+  ${vbar}${quick}${crit}
   <div class="grid">${kv('발행가'+(s.issue_kind?` <span class="mut">(${esc(s.issue_kind)})</span>`:''),fmt(s.issue_price)+'원')}${kv('배정비율',s.alloc_ratio!=null?Number(s.alloc_ratio).toFixed(4):'—')}${kv('신주÷기존주',sm.dilution_ratio!=null?(sm.dilution_ratio*100).toFixed(0)+'%':'—')}${kv('모집 규모',sm.total_amount?Math.round(sm.total_amount/1e8).toLocaleString()+'억':'—')}</div>
   ${purp?`<div class="meta">자금 목적</div><div class="purp">${purp}</div><div class="legend">${leg}</div>`:''}
   ${c.is_rights?timeline(s):''}${swarn}
@@ -351,25 +406,25 @@ function renderExam(B){
 function quickBox(c){
   const q=c.quick; if(!q) return '';
   const v=c.verdict||{}, be=q.breakeven, is=q.issue||{}, o=q.overhang;
-  const rows=(q.table||[]).map(t=>`<tr><td>${t.name} ${(t.pct>0?'+':'')+t.pct}%</td><td>상장일 주가 <b>${fmt(t.price)}</b>원</td><td>→ 수익률 <b class="${t.pct>=0?'pos':'neg'}">${(t.pct>0?'+':'')+t.pct}%</b></td></tr>`).join('');
-  return `<div class="quick"><div class="qw">${v.emoji||''} ${esc(q.word)} <span class="mut" style="font-size:12px;font-weight:600">· 30초 결론 · ${esc(q.stage_name)}</span></div>
-  <div class="ql"><span>이유</span>${esc(q.reason)}</div>
-  <div class="ql"><span>다시 볼 조건</span>${esc(q.recheck)}</div>
-  <div class="ql"><span>발행가</span>${esc(is.text||'—')}</div>
-  ${be?`<div class="ql"><span>본전선</span><b>${fmt(be.value)}원</b> — ${esc(be.how)} (${esc(be.text)})</div>`:`<div class="ql"><span>본전선</span><span class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</span></div>`}
-  ${o?`<div class="ql"><span>매물 소화</span><b class="${o.red?'red':''}">평소 거래량 ${o.days.toLocaleString()}일치</b> <span class="mut" style="min-width:0">(신주 ${fmt(o.new_shares)}주 ÷ 최근 ${o.n}일 평균 ${fmt(o.avg_volume)}주)</span></div>`:''}
-  ${rows?`<table><thead><tr><th>시나리오(본전선 대비)</th><th>상장일 주가</th><th>수익률</th></tr></thead><tbody>${rows}</tbody></table><div class="fn">${esc(q.table_note)}<br>2차 발행가는 반드시 권리락 <b>후</b> 주가로 계산합니다.</div>`:''}
+  const rows=(q.table||[]).map(t=>`<tr><td>${t.name}</td><td><b>${fmt(t.price)}</b>원</td><td><b class="${t.pct>=0?'pos':'neg'}">${(t.pct>0?'+':'')+t.pct}%</b></td></tr>`).join('');
+  return `<div class="quick"><div class="qw">${v.emoji||''} ${esc(q.word)}</div><div class="qs">30초 결론 · ${esc(q.stage_name)}</div>
+  <div class="ql"><span>이유</span><div>${esc(q.reason)}</div></div>
+  <div class="ql"><span>다시 볼 조건</span><div>${esc(q.recheck)}</div></div>
+  <div class="ql"><span>발행가</span><div>${esc(is.text||'—')}</div></div>
+  ${be?`<div class="ql"><span>본전선</span><div><b>${fmt(be.value)}원</b> — ${esc(be.how)} <span class="mut">(${esc(be.text)})</span></div></div>`:`<div class="ql"><span>본전선</span><div class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</div></div>`}
+  ${o?`<div class="ql"><span>매물 소화</span><div><b class="${o.red?'red':''}">평소 거래량 ${o.days.toLocaleString()}일치</b> <span class="mut">(신주 ${fmt(o.new_shares)}주 ÷ 최근 ${o.n}일 평균 ${fmt(o.avg_volume)}주)</span></div></div>`:''}
+  ${rows?`<table><thead><tr><th>시나리오 (본전선 대비)</th><th>상장일 주가</th><th>수익률</th></tr></thead><tbody>${rows}</tbody></table><div class="fn">${esc(q.table_note)}<br>2차 발행가는 반드시 권리락 <b>후</b> 주가로 계산합니다.</div>`:''}
   </div>`;
 }
 function resultBlock(c){
   const p=c.paper; if(!p) return c.is_rights?`<div class="result"><h4>들어갔다면?</h4><div class="meta">인수권 마지막 거래일 종가가 들어오면 판정을 확정하고 가상 진입을 기록합니다.</div></div>`:'';
   const e=p.eval, V=(DATA.verdicts||{})[p.verdict]||{emoji:'',name:p.verdict};
-  const rows=(e.points||[]).map(pt=>`<tr><td>${pt.label}</td><td>${pt.date||'—'}</td><td>${fmt(pt.price)}</td><td>${pt.ret!=null?`<b class="${pt.ret>=0?'pos':'neg'}">${(pt.ret>0?'+':'')+pt.ret.toFixed(1)}%</b>`:`<span class="mut">${esc(pt.pending||'—')}</span>`}</td><td>${pt.excess!=null?(pt.excess>0?'+':'')+pt.excess.toFixed(1)+'%p':'—'}</td></tr>`).join('');
+  const rows=(e.points||[]).map(pt=>`<tr><td style="white-space:nowrap">${pt.label}</td><td>${pt.date?pt.date.slice(5):'—'}</td><td>${fmt(pt.price)}</td><td>${pt.ret!=null?`<b class="${pt.ret>=0?'pos':'neg'}">${(pt.ret>0?'+':'')+pt.ret.toFixed(1)}%</b>`:`<span class="mut">${esc(pt.pending||'—')}</span>`}</td><td>${pt.excess!=null?(pt.excess>0?'+':'')+pt.excess.toFixed(1)+'%p':'—'}</td></tr>`).join('');
   const snap=p.snapshot;
   return `<div class="result"><h4>들어갔다면? — ${V.emoji} ${V.name} (판정일 ${p.decided_on}${snap.backfilled?', 백필':''})</h4>
   <div class="meta">판정 근거(스냅샷, 불변): ${esc(snap.reason)}</div>
   <div class="meta">진입: ${esc(e.entry_label||'')} ${e.entry!=null?fmt(e.entry)+'원':esc(e.pending||e.error||'—')}${e.entry_date?' ('+e.entry_date+')':''}${e.issue_note?' · '+esc(e.issue_note):''}</div>
-  <table style="margin-top:6px"><thead><tr><th>시점</th><th>날짜</th><th>가격</th><th>수익률</th><th>지수 대비</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  <div class="sx"><table style="margin-top:6px"><thead><tr><th>시점</th><th>날짜</th><th>가격</th><th>수익률</th><th>지수 대비</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
 }
 
 function openGuide(){$('#guide').classList.add('show');}
