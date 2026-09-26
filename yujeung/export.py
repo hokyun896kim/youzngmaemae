@@ -77,7 +77,9 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         next((x["rights"] for x in reversed(series) if x["d"] <= today.isoformat()), None), live["summary"].get("new_shares"),
         live["summary"].get("dilution_ratio"), f["op_period"] if f else None, today, confirmed,
         -cfg.gap_alert_pct, cfg.gap_alert_pct, load_card_scenarios(), live.get("disc"))
-    strat = strategy.card(conn, c, sch, live["summary"], f["op_income"] if f else None, live["gap"], today)
+    trade_v = conn.execute("SELECT verdict FROM paper_trades WHERE case_id=?", (c["case_id"],)).fetchone()
+    strat = strategy.card(conn, c, sch, live["summary"], f["op_income"] if f else None, live["gap"], today,
+                          trade_v[0] if trade_v else live["verdict"])
     strat["paper"] = [{"strategy": t["strategy"], "decided_on": t["decided_on"], "version": t["strategy_version"],
                        "snapshot": json.loads(t["snapshot_json"]), "eval": strategy.evaluate(conn, c, t, sch, today)}
                       for t in conn.execute("SELECT * FROM strategy_trades WHERE case_id=? ORDER BY strategy",

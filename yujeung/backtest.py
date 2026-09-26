@@ -449,7 +449,8 @@ BASE_POINTS = ("상장일 시가", "+5일", "+20일")
 
 
 def _cond(r: dict, gap: bool = True) -> dict:
-    return strategy.conditions(r.get("dilution"), r.get("debt_pct"), r.get("op_income"), r.get("gap") if gap else None)
+    return strategy.conditions(r.get("dilution"), r.get("debt_pct"), r.get("op_income"), r.get("gap") if gap else None,
+                               r.get("verdict"))
 
 
 def strategy_stats(recs: list[dict], s2_recs: list[dict], s2_missing: list[int]) -> dict:
@@ -499,7 +500,7 @@ def aggregate(out_dir: Path = BACKTEST_DIR) -> dict:
         recs += [dict(r, year=y["year"]) for r in y["cases"] if r.get("status") == "scored"]
         # 전략 2 는 인수권 시세가 없어도(no_rights_price) 상장일 본주 시세만 있으면 잴 수 있다.
         # 전략 버전이 지금과 다른 해는 빼고 '재실행 필요'로 (v1 = ATR 출처 혼합 버그)
-        if y.get("strategy_version") == strategy.STRATEGY_VERSION:
+        if (y.get("strategy_version") or 0) >= strategy.S2_DATA_MIN:   # 조건은 여기서 거르므로 평가 데이터만 맞으면 됨
             s2_recs += [dict(r, year=y["year"]) for r in y["cases"] if r.get("s2")]
         else:
             s2_missing.append(y["year"])

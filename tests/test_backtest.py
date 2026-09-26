@@ -183,15 +183,17 @@ def test_backtest_year(tmp_path):
     gap_rows = {r["bucket"]: r for r in next(f for f in agg["filters"] if f["key"] == "gap")["rows"]}
     assert gap_rows["괴리 −40% 이하"]["n"] == 1
     assert agg["card_scenarios"]["green_q"]["n"] == 1 and agg["card_scenarios"]["green_q"]["use"] is False
-    # [18] 전략 근거: 흑자·희석 30%·채무상환 0 → 전략2 1건 / 괴리 −50% → 전략3 불가(너무 싼 인수권) 1건
+    # [18] 전략 근거: 흑자·희석 30%·채무상환 0 이지만 판정 🟢? → 전략2 아님(B안: 🟡/🟡? 만) / 괴리 −50% → 전략3 불가 1건
     st = agg["strategies"]
-    assert st["s2"]["n"] == 1 and st["s2"]["points"]["+10일"]["median"] == 1.5 and st["s2"]["missing_years"] == []
+    assert st["s2"]["n"] == 0 and st["s2"]["missing_years"] == []
+    yq = [dict(r, year=2021, verdict="yellow_q") for r in old["cases"] if r.get("s2")]
+    assert backtest.strategy_stats([], yq, [])["s2"]["points"]["+10일"]["median"] == 1.5   # 🟡? 였다면 1건
     assert st["s1"]["n"] == 0 and st["s3"]["n"] == 0 and st["bans"]["too_cheap"]["n"] == 1
     # 전략 버전이 옛날(v1: ATR 출처 혼합 버그)인 해는 전략2 근거에서 빼고 '재실행 필요'로
     (tmp_path / "2022.json").write_text(json.dumps(dict(old, year=2022, strategy_version=1), ensure_ascii=False),
                                         encoding="utf-8")
     st = backtest.aggregate(tmp_path)["strategies"]
-    assert st["s2"]["n"] == 1 and st["s2"]["missing_years"] == [2022]
+    assert st["s2"]["missing_years"] == [2022]
     json.dumps(agg, ensure_ascii=False)
 
 

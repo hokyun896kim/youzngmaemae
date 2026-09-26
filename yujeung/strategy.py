@@ -30,7 +30,8 @@ from statistics import median
 from . import db
 from .calendar_kr import shift_business_days
 
-STRATEGY_VERSION = 2   # 2: ATR·RSI 를 한 출처(네이버 수정주가)로만 계산, ATR 은 % 로 진입가에 적용
+STRATEGY_VERSION = 3   # 3: 전략2에 '판정 🟡/🟡?' 조건 추가 (형님 B안 — 기출 조건 전체 70건 +0.5% vs 🟡? 14건 +5.0%)
+#                        2: ATR·RSI 를 한 출처(네이버 수정주가)로만 계산, ATR 은 % 로 진입가에 적용
 #                        1: KRX 원주가와 네이버 수정주가가 섞여 ATR 이 부풀었음 (손절선이 음수가 되기도)
 
 # ---- 금지 규칙 ----
@@ -41,6 +42,8 @@ TOO_CHEAP_GAP = -40.0         # 괴리 ≤ −40% → 전략 3 불가
 S1_GAP_MIN = 20.0
 
 # ---- 전략 2: 신주 상장일 매수 → 10거래일 보유 ----
+S2_VERDICTS = ("yellow",)     # 판정(verdict.base) 🟡 · 🟡? 일 때만 = 관문1 통과 + 괴리 신호 없음
+S2_DATA_MIN = 2               # 백테스트 연도 결과의 전략2 평가가 쓸 만한 최소 전략 버전 (v1 = ATR 출처 혼합 버그)
 S2_DILUTION_MAX = 0.5
 S2_DEBT_MAX = 50.0
 S2_SHOW_BEFORE = 3            # 상장 D-3(거래일)부터 표시
@@ -67,7 +70,7 @@ STRATEGIES = {
            "title": f"신주 상장일 매수 → {S2_HOLD_DAYS}거래일 보유",
            "action": f"상장일 종가 진입 · +{S2_HOLD_DAYS}거래일 청산 · 손절 진입가 − ATR({S2_ATR_N})×{S2_ATR_MULT:g} · "
                      f"비중 {S2_SIZE}",
-           "cond": f"직전 분기 흑자 + 희석 < {S2_DILUTION_MAX * 100:.0f}% + 채무상환 < {S2_DEBT_MAX:.0f}%",
+           "cond": f"판정 🟡/🟡? + 직전 분기 흑자 + 희석 < {S2_DILUTION_MAX * 100:.0f}% + 채무상환 < {S2_DEBT_MAX:.0f}%",
            "point": f"+{S2_HOLD_DAYS}일", "win": "up"},
     "s3": {"medal": "🥉", "name": "적당히 싼 인수권 매수 + 청약", "evidence": "약~중",
            "title": "적당히 싼 인수권 매수 + 청약",
@@ -90,8 +93,11 @@ def rules() -> dict:
 
 
 # ---- 조건 ----
-def conditions(dilution: float | None, debt_pct: float | None, op_income: int | None, gap: float | None) -> dict:
-    """전략별 조건 충족 여부 + 걸린 금지 규칙. 미확인 값은 '충족 아님'(보수적)."""
+def conditions(dilution: float | None, debt_pct: float | None, op_income: int | None, gap: float | None,
+               verdict: str | None = None) -> dict:
+    """전략별 조건 충족 여부 + 걸린 금지 규칙. 미확인 값은 '충족 아님'(보수적).
+    verdict = 판정 코드(green/yellow_q/…) — 전략2는 🟡/🟡? 일 때만."""
+    from .verdict import base
     debt = debt_pct or 0.0                           # 자금 목적에 채무상환이 없으면 0% (관문1과 같음)
     profit = op_income is not None and op_income > 0
     bans = []
@@ -104,7 +110,8 @@ def conditions(dilution: float | None, debt_pct: float | None, op_income: int | 
     blocked = {s for b in bans for s in BANS[b]["blocks"]}
     ok = {
         "s1": gap is not None and gap >= S1_GAP_MIN,
-        "s2": profit and dilution is not None and dilution < S2_DILUTION_MAX and debt < S2_DEBT_MAX,
+        "s2": (profit and dilution is not None and dilution < S2_DILUTION_MAX and debt < S2_DEBT_MAX
+               and verdict is not None and base(verdict) in S2_VERDICTS),
         "s3": (profit and dilution is not None and dilution < S3_DILUTION_MAX
                and gap is not None and S3_GAP_LO < gap < S3_GAP_HI),
     }
@@ -221,11 +228,11 @@ def _state(today: str, a: str | None, b: str | None) -> str:
 
 
 def card(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, summary: dict, op_income: int | None,
-         gap: float | None, today: date) -> dict:
+         gap: float | None, today: date, verdict: str | None = None) -> dict:
     """카드 최상단 전략 배지. state: live(지금 해당) / wait(조건 충족, 시점 전) / past(시점 지남)."""
     t = today.isoformat()
     debt = (summary.get("purpose_pct") or {}).get("채무상환", 0.0)
-    cond = conditions(summary.get("dilution_ratio"), debt, op_income, gap)
+    cond = conditions(summary.get("dilution_ratio"), debt, op_income, gap, verdict)
     items = []
     rs, re_ = sch.get("rights_start"), sch.get("rights_end") or sch.get("rights_start")
     listing = sch.get("listing_date")
@@ -299,11 +306,15 @@ def record_if_due(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, live: dic
                 n += 1
     listing = sch.get("listing_date")
     if listing and not _has(conn, c["case_id"], "s2"):
-        ok = conditions(sm.get("dilution_ratio"), debt, op_income, None)["ok"]
+        # 판정 = 인수권 마지막 날 확정 스냅샷(있으면), 없으면 현재 판정
+        pt = conn.execute("SELECT verdict FROM paper_trades WHERE case_id=?", (c["case_id"],)).fetchone()
+        verdict = pt[0] if pt else live.get("verdict")
+        ok = conditions(sm.get("dilution_ratio"), debt, op_income, None, verdict)["ok"]
         ev = eval_s2(conn, c["stock_code"], c["corp_cls"], listing) if ok["s2"] else None
         if ev:
             _insert(conn, c["case_id"], "s2", listing, {
                 "entry": ev["entry"], "rsi": ev["rsi"], "atr": ev["atr"], "stop": ev["stop"], "gate": ev["gate"],
+                "verdict": verdict,
                 "listing_date": listing, "dilution": sm.get("dilution_ratio"), "debt_pct": debt,
                 "op_income": op_income, "market": c["corp_cls"], "backfilled": backfilled})
             n += 1
