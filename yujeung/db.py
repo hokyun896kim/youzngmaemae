@@ -90,6 +90,9 @@ CREATE TABLE IF NOT EXISTS stock_daily (
     name    TEXT,
     close   INTEGER, open INTEGER, high INTEGER, low INTEGER,
     volume  INTEGER, mktcap INTEGER, list_shrs INTEGER,
+    -- 네이버 일봉 원값 (KRX 값이 있는 날도 따로 보관). 네이버는 이후 액면분할·유증 등을 반영한 수정주가라
+    -- KRX 원주가와 섞으면 날짜 사이에 가짜 급등락이 생긴다 → ATR·RSI 는 이 한 출처로만 계산 (strategy.indicators)
+    n_close REAL, n_high REAL, n_low REAL,
     PRIMARY KEY (bas_dd, code)
 );
 
@@ -173,6 +176,12 @@ def _migrate(conn: sqlite3.Connection) -> None:
     if "delivered" in cols:
         conn.execute("ALTER TABLE notifications DROP COLUMN delivered")
         conn.commit()
+    # [18] 전략2 지표: 네이버 원값 컬럼 (다음 네이버 수집 때 채워짐)
+    cols = [r[1] for r in conn.execute("PRAGMA table_info(stock_daily)")]
+    for col in ("n_close", "n_high", "n_low"):
+        if col not in cols:
+            conn.execute(f"ALTER TABLE stock_daily ADD COLUMN {col} REAL")
+    conn.commit()
 
 
 def connect(path: Path | str) -> sqlite3.Connection:

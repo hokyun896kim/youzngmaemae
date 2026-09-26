@@ -187,6 +187,11 @@ def test_backtest_year(tmp_path):
     st = agg["strategies"]
     assert st["s2"]["n"] == 1 and st["s2"]["points"]["+10일"]["median"] == 1.5 and st["s2"]["missing_years"] == []
     assert st["s1"]["n"] == 0 and st["s3"]["n"] == 0 and st["bans"]["too_cheap"]["n"] == 1
+    # 전략 버전이 옛날(v1: ATR 출처 혼합 버그)인 해는 전략2 근거에서 빼고 '재실행 필요'로
+    (tmp_path / "2022.json").write_text(json.dumps(dict(old, year=2022, strategy_version=1), ensure_ascii=False),
+                                        encoding="utf-8")
+    st = backtest.aggregate(tmp_path)["strategies"]
+    assert st["s2"]["n"] == 1 and st["s2"]["missing_years"] == [2022]
     json.dumps(agg, ensure_ascii=False)
 
 

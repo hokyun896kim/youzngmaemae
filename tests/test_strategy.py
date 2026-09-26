@@ -154,3 +154,43 @@ def test_strategy_stats_sell_rate():
     assert st["s3"]["n"] == 1 and st["s3"]["points"]["+5일"]["median"] == 4
     assert st["bans"]["dilution"]["n"] == 1 and st["bans"]["too_cheap"]["n"] == 1 and st["bans"]["loss"]["n"] == 1
     assert st["s2"]["n"] == 0 and st["s2"]["missing_years"] == [2020]
+
+
+def test_indicators_use_one_source():
+    """v1 버그: 네이버 수정주가(이후 액면분할 반영 → 원주가의 1/5)와 KRX 원주가가 섞여 ATR 이 부풀고 손절선이 음수.
+    v2: 네이버 원값(n_*)이 있으면 그것만으로 ATR%·RSI, 손절선 = 진입가(KRX) × (1 − 2 × ATR%)."""
+    conn = db.connect(":memory:")
+    days = _seed(conn, [5000] * 40, 0)
+    for i, d in enumerate(days):
+        naver = 1000.0                                        # 같은 날 네이버 수정주가 = 원주가 ÷ 5
+        conn.execute("UPDATE stock_daily SET n_close=?, n_high=?, n_low=? WHERE bas_dd=?",
+                     (naver, naver + 10, naver - 10, d))
+        if i % 3:                                             # KRX 가 없는 날은 저장값도 네이버 값 (섞임)
+            conn.execute("UPDATE stock_daily SET close=1000, high=1010, low=990, open=1000 WHERE bas_dd=?", (d,))
+    rows = strategy._stock(conn, "111110")
+    mixed = strategy.atr(rows[:36])
+    assert mixed > 1000                                       # 섞으면 ATR 이 가격보다 커진다 (v1 증상)
+    ind = strategy.indicators(rows, days[35])
+    assert ind["src"] == "naver" and ind["atr_pct"] == 2.0 and ind["rsi"] == 50.0
+    assert strategy.stop_price(5000, ind["atr_pct"]) == 4800  # KRX 진입가 5,000 × (1 − 2 × 2%)
+    # 네이버가 없으면(상장폐지) 저장값으로
+    assert strategy.indicators([dict(r, n_close=None) for r in rows], days[35])["src"] == "stored"
+
+
+def test_krx_upsert_keeps_naver_columns_and_migration(tmp_path):
+    import sqlite3
+
+    from yujeung.prices import store_stock_rows
+    path = tmp_path / "old.db"
+    raw = sqlite3.connect(path)                               # n_* 컬럼 없는 옛 DB
+    raw.execute("CREATE TABLE stock_daily (bas_dd TEXT NOT NULL, code TEXT NOT NULL, name TEXT, close INTEGER, "
+                "open INTEGER, high INTEGER, low INTEGER, volume INTEGER, mktcap INTEGER, list_shrs INTEGER, "
+                "PRIMARY KEY (bas_dd, code))")
+    raw.commit()
+    raw.close()
+    conn = db.connect(path)
+    conn.execute("INSERT INTO stock_daily (bas_dd, code, close, n_close) VALUES ('2026-09-23', '111110', 3395, 3395)")
+    store_stock_rows(conn, [{"BAS_DD": "20260923", "ISU_CD": "111110", "ISU_NM": "x", "TDD_CLSPRC": "3,335"}],
+                     {"111110"})
+    r = conn.execute("SELECT close, n_close FROM stock_daily").fetchone()
+    assert (r["close"], r["n_close"]) == (3335, 3395)          # 가격은 KRX, 네이버 원값은 남음

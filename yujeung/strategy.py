@@ -30,7 +30,8 @@ from statistics import median
 from . import db
 from .calendar_kr import shift_business_days
 
-STRATEGY_VERSION = 1
+STRATEGY_VERSION = 2   # 2: ATR·RSI 를 한 출처(네이버 수정주가)로만 계산, ATR 은 % 로 진입가에 적용
+#                        1: KRX 원주가와 네이버 수정주가가 섞여 ATR 이 부풀었음 (손절선이 음수가 되기도)
 
 # ---- 금지 규칙 ----
 BAN_DILUTION = 1.0            # 희석(신주 ÷ 기존주) ≥ 100% → ⛔
@@ -140,15 +141,30 @@ def atr(rows: list[dict], n: int = S2_ATR_N) -> float | None:
 
 def _stock(conn: sqlite3.Connection, code: str) -> list[dict]:
     return [dict(r) for r in conn.execute(
-        "SELECT bas_dd, open, high, low, close FROM stock_daily WHERE code=? AND close IS NOT NULL ORDER BY bas_dd",
+        "SELECT bas_dd, open, high, low, close, n_close, n_high, n_low FROM stock_daily WHERE code=? AND close IS NOT NULL "
+        "ORDER BY bas_dd",
         (code,))]
 
 
 def indicators(rows: list[dict], upto: str) -> dict:
-    """upto(포함)까지의 RSI·ATR. 최근 120거래일만 써서 계산 (Wilder 초기값 영향 줄이기)."""
+    """upto(포함)까지의 RSI·ATR(% of 종가). 최근 120거래일, **한 출처로만** 계산한다.
+    네이버 일봉은 이후 액면분할·유증까지 반영한 수정주가라 KRX 원주가와 섞으면 날짜 사이에 가짜 급등락이 생긴다
+    (백테스트 v1 실측: 이렘 2024 ATR 3,184원 vs 종가 1,483원 → 손절선 음수). 네이버 원값(n_*)이 충분하면 그것만,
+    아니면(상장폐지 등) 저장된 가격만. ATR 은 % 로 돌려 진입가(KRX 원주가)에 곱한다 — 출처 간 배율 차이와 무관."""
     hist = [r for r in rows if r["bas_dd"] <= upto][-120:]
-    return {"asof": hist[-1]["bas_dd"] if hist else None, "rsi": rsi([r["close"] for r in hist]),
-            "atr": atr(hist), "close": hist[-1]["close"] if hist else None}
+    nav = [{"bas_dd": r["bas_dd"], "close": r["n_close"], "high": r["n_high"], "low": r["n_low"]}
+           for r in hist if r.get("n_close")]
+    src, ser = ("naver", nav) if len(nav) >= S2_ATR_N + 1 else ("stored", hist)
+    a = atr(ser)
+    last = ser[-1]["close"] if ser else None
+    return {"asof": ser[-1]["bas_dd"] if ser else None, "src": src, "rsi": rsi([r["close"] for r in ser]),
+            "atr_pct": round(a / last * 100, 2) if a and last else None,
+            "close": hist[-1]["close"] if hist else None}
+
+
+def stop_price(entry: float | None, atr_pct: float | None) -> int | None:
+    """손절선 = 진입가 − ATR × 2 (ATR 은 % → 진입가 기준 원화)."""
+    return round(entry * (1 - S2_ATR_MULT * atr_pct / 100)) if entry and atr_pct else None
 
 
 # ---- 전략 2 평가 (가상 성과·백테스트 공통) ----
@@ -166,10 +182,11 @@ def eval_s2(conn: sqlite3.Connection, code: str, market: str | None, listing: st
         return None
     ind = indicators(rows, listing)
     entry = rows[i]["close"]
-    stop = round(entry - S2_ATR_MULT * ind["atr"]) if ind["atr"] else None
+    stop = stop_price(entry, ind["atr_pct"])
     idx = {r["bas_dd"]: r["close"] for r in conn.execute(
         "SELECT bas_dd, close FROM index_daily WHERE idx=?", (INDEX_OF.get(market or "", "KOSPI"),))}
-    out = {"entry": entry, "entry_date": listing, "rsi": ind["rsi"], "atr": ind["atr"], "stop": stop,
+    out = {"entry": entry, "entry_date": listing, "rsi": ind["rsi"], "atr_pct": ind["atr_pct"], "ind_src": ind["src"],
+           "atr": round(entry * ind["atr_pct"] / 100, 1) if ind["atr_pct"] else None, "stop": stop,
            "gate": None if ind["rsi"] is None else ind["rsi"] <= S2_RSI_MAX, "points": []}
     stopped = None
     for n in range(1, S2_HOLD_DAYS + 1):
@@ -230,8 +247,9 @@ def card(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, summary: dict, op_
             ind = indicators(rows, listing if on_listing else t)
             entry = on_listing["close"] if on_listing else None
             base_px = entry or ind["close"]
-            it.update(entry=entry, rsi=ind["rsi"], atr=ind["atr"], ind_asof=ind["asof"], confirmed=bool(on_listing),
-                      stop=round(base_px - S2_ATR_MULT * ind["atr"]) if base_px and ind["atr"] else None,
+            it.update(entry=entry, rsi=ind["rsi"], atr_pct=ind["atr_pct"], ind_asof=ind["asof"], ind_src=ind["src"],
+                      atr=round(base_px * ind["atr_pct"] / 100, 1) if base_px and ind["atr_pct"] else None,
+                      confirmed=bool(on_listing), stop=stop_price(base_px, ind["atr_pct"]),
                       stop_basis="상장일 종가" if on_listing else "최근 종가(미리보기)",
                       gate=None if ind["rsi"] is None else ind["rsi"] <= S2_RSI_MAX)
         else:

@@ -401,9 +401,12 @@ def step_market(naver: NaverClient, conn, today: date) -> dict:
             conn.execute(
                 # KRX 정규장 종가가 이미 있으면 덮지 않는다. 실측: SK디앤디 9/23 KRX 3,335 vs 네이버 3,395
                 # (네이버는 NXT 포함 통합시세로 추정). 인수권은 KRX 에서만 거래 → 괴리율은 KRX 종가 기준.
-                "INSERT INTO stock_daily (bas_dd, code, close, open, high, low, volume) VALUES (?,?,?,?,?,?,?) "
-                "ON CONFLICT(bas_dd, code) DO NOTHING",
-                (r["date"], c["stock_code"], int(r["close"]), int(r["open"]), int(r["high"]), int(r["low"]), r["volume"]))
+                # 네이버 원값(n_*)은 KRX 가 있는 날도 따로 보관 — 전략2 ATR·RSI 를 한 출처로 계산 (strategy.indicators)
+                "INSERT INTO stock_daily (bas_dd, code, close, open, high, low, volume, n_close, n_high, n_low) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?) ON CONFLICT(bas_dd, code) DO UPDATE SET "
+                "n_close=excluded.n_close, n_high=excluded.n_high, n_low=excluded.n_low",
+                (r["date"], c["stock_code"], int(r["close"]), int(r["open"]), int(r["high"]), int(r["low"]), r["volume"],
+                 r["close"], r["high"], r["low"]))
         save_pos52(conn, c["case_id"], rows, disc)
         out["stocks"] += 1
     conn.commit()
