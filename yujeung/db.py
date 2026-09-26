@@ -147,6 +147,18 @@ CREATE TABLE IF NOT EXISTS paper_trades (
     snapshot_json TEXT NOT NULL,    -- 관문 점수·괴리율·이유·진입 규칙·발행가 등
     created_at    TEXT NOT NULL
 );
+
+-- 전략별 가상 성과 ([18], strategy.py). 전략 조건을 충족한 순간의 스냅샷 — 이후 불변.
+-- s1·s3 = 인수권 마지막 거래일, s2 = 신주 상장일 종가
+CREATE TABLE IF NOT EXISTS strategy_trades (
+    case_id          INTEGER NOT NULL REFERENCES cases(case_id),
+    strategy         TEXT NOT NULL,    -- s1 / s2 / s3
+    decided_on       TEXT NOT NULL,
+    strategy_version INTEGER NOT NULL,
+    snapshot_json    TEXT NOT NULL,
+    created_at       TEXT NOT NULL,
+    PRIMARY KEY (case_id, strategy)
+);
 """
 
 

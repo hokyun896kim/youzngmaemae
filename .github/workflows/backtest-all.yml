@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
     inputs:
       years:
-        description: '돌릴 연도 (JSON 배열, 2020~2026). 2026은 6월까지. 2020은 v3로 이미 채점됨'
-        default: '[2021, 2022, 2023, 2024, 2025, 2026]'
+        description: '돌릴 연도 (JSON 배열, 2020~2026). 2026은 6월까지'
+        default: '[2020, 2021, 2022, 2023, 2024, 2025, 2026]'
 
 permissions:
   contents: write

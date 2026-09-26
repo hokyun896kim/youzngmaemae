@@ -6,7 +6,7 @@ from datetime import date, timedelta
 
 import json
 
-from . import db, notify, paper
+from . import db, notify, paper, strategy
 from .calendar_kr import is_business_day, prev_business_day
 from .config import Config
 from .dart import DartClient, DartError, to_int
@@ -290,7 +290,8 @@ def step_cleanup(conn, today: date) -> dict:
             continue
         ld = sch.get("listing_date")
         if ld and date.fromisoformat(ld) + timedelta(days=RETENTION_DAYS) < today:
-            if conn.execute("SELECT 1 FROM paper_trades WHERE case_id=?", (c["case_id"],)).fetchone():
+            if conn.execute("SELECT 1 FROM paper_trades WHERE case_id=? UNION SELECT 1 FROM strategy_trades "
+                            "WHERE case_id=?", (c["case_id"], c["case_id"])).fetchone():
                 conn.execute("UPDATE cases SET status='closed' WHERE case_id=?", (c["case_id"],))
                 out["closed"] += 1
             else:
@@ -376,7 +377,8 @@ def step_market(naver: NaverClient, conn, today: date) -> dict:
     """주주배정 케이스 본주·지수 일봉 (네이버) → stock_daily / index_daily, 공시일 기준 52주 위치."""
     out = {"stocks": 0, "errors": []}
     cases = conn.execute(
-        "SELECT * FROM cases WHERE is_rights=1 AND (status='open' OR case_id IN (SELECT case_id FROM paper_trades))"
+        "SELECT * FROM cases WHERE is_rights=1 AND (status='open' OR case_id IN (SELECT case_id FROM paper_trades) "
+        "OR case_id IN (SELECT case_id FROM strategy_trades))"
     ).fetchall()
     for mkt in {c["corp_cls"] for c in cases if c["corp_cls"] in INDEX_SYMBOL}:
         try:
@@ -470,7 +472,10 @@ def step_verdicts(conn, cfg: Config, backfilled: bool = False) -> int:
     n = 0
     for c in conn.execute("SELECT * FROM cases WHERE is_rights=1").fetchall():
         sch, _ = checked_schedule(conn, c["case_id"])
-        n += paper.record_if_due(conn, c, sch, live_verdict(conn, c, cfg), backfilled)
+        live = live_verdict(conn, c, cfg)
+        n += paper.record_if_due(conn, c, sch, live, backfilled)
+        f = conn.execute("SELECT op_income FROM case_facts WHERE case_id=?", (c["case_id"],)).fetchone()
+        strategy.record_if_due(conn, c, sch, live, f[0] if f else None, backfilled)
     return n
 
 

@@ -210,7 +210,7 @@ def drop_case(conn: sqlite3.Connection, case_id: int, reason: str) -> None:
     for (rn,) in conn.execute("SELECT rcept_no FROM disclosures WHERE case_id=?", (case_id,)).fetchall():
         exclude(conn, rn, case["corp_code"], case["corp_name"], reason, case["stock_code"])
         conn.execute("DELETE FROM notifications WHERE dedup_key IN (?, ?)", (f"new:{rn}", f"chg:{rn}"))
-    for t in ("schedule_versions", "disclosures", "case_facts", "paper_trades"):
+    for t in ("schedule_versions", "disclosures", "case_facts", "paper_trades", "strategy_trades"):
         conn.execute(f"DELETE FROM {t} WHERE case_id=?", (case_id,))
     conn.execute("UPDATE rights_daily SET case_id=NULL WHERE case_id=?", (case_id,))
     conn.execute("DELETE FROM cases WHERE case_id=?", (case_id,))
@@ -241,7 +241,7 @@ def merge_duplicate_cases(conn: sqlite3.Connection) -> int:
             if _case_share_counts(conn, a["case_id"]) & _case_share_counts(conn, b["case_id"]):
                 for t in ("disclosures", "schedule_versions", "rights_daily"):
                     conn.execute(f"UPDATE {t} SET case_id=? WHERE case_id=?", (a["case_id"], b["case_id"]))
-                for t in ("case_facts", "paper_trades"):
+                for t in ("case_facts", "paper_trades", "strategy_trades"):
                     conn.execute(f"DELETE FROM {t} WHERE case_id=?", (b["case_id"],))
                 conn.execute("DELETE FROM cases WHERE case_id=?", (b["case_id"],))
                 merged += 1

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-26T13:20:25+09:00",
+ "generated_at": "2026-09-26T14:21:32+09:00",
  "logic_version": 3,
  "years": [
   {
@@ -186,6 +186,154 @@
   }
  ],
  "n_scored": 287,
+ "strategies": {
+  "version": 1,
+  "s1": {
+   "n": 32,
+   "point": "+20일",
+   "points": {
+    "상장일 시가": {
+     "n": 31,
+     "win_rate": 32,
+     "mean": -5.8,
+     "median": -5.6,
+     "p25": -15.6,
+     "p75": 3.0,
+     "worst": -34.2,
+     "excess_mean": -4.5,
+     "excess_median": -4.5
+    },
+    "+5일": {
+     "n": 31,
+     "win_rate": 39,
+     "mean": -3.1,
+     "median": -4.3,
+     "p25": -14.6,
+     "p75": 5.8,
+     "worst": -30.7,
+     "excess_mean": -1.8,
+     "excess_median": -4.3
+    },
+    "+20일": {
+     "n": 31,
+     "win_rate": 35,
+     "mean": -2.2,
+     "median": -6.6,
+     "p25": -16.2,
+     "p75": 8.2,
+     "worst": -30.8,
+     "excess_mean": -2.1,
+     "excess_median": -6.5
+    }
+   },
+   "sell_rate": 65,
+   "n_measured": 31
+  },
+  "s2": {
+   "n": 0,
+   "point": "+10일",
+   "missing_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+   ],
+   "points": {
+    "+5일": {
+     "n": 0
+    },
+    "+10일": {
+     "n": 0
+    }
+   },
+   "gate_pass": {
+    "+10일": {
+     "n": 0
+    }
+   },
+   "stopped": 0
+  },
+  "s3": {
+   "n": 31,
+   "point": "+5일",
+   "points": {
+    "상장일 시가": {
+     "n": 31,
+     "win_rate": 58,
+     "mean": 2.8,
+     "median": 3.1,
+     "p25": -6.0,
+     "p75": 9.6,
+     "worst": -34.5,
+     "excess_mean": 0.4,
+     "excess_median": -0.2
+    },
+    "+5일": {
+     "n": 31,
+     "win_rate": 61,
+     "mean": 5.0,
+     "median": 4.5,
+     "p25": -4.0,
+     "p75": 14.2,
+     "worst": -36.3,
+     "excess_mean": 2.0,
+     "excess_median": 2.2
+    },
+    "+20일": {
+     "n": 31,
+     "win_rate": 68,
+     "mean": 6.5,
+     "median": 4.6,
+     "p25": -2.1,
+     "p75": 16.1,
+     "worst": -32.5,
+     "excess_mean": 1.4,
+     "excess_median": 3.8
+    }
+   }
+  },
+  "bans": {
+   "dilution": {
+    "n": 10,
+    "win_rate": 20,
+    "mean": 20.6,
+    "median": -11.4,
+    "p25": -22.7,
+    "p75": -1.5,
+    "worst": -39.1,
+    "excess_mean": 17.2,
+    "excess_median": -12.8,
+    "point": "+20일"
+   },
+   "loss": {
+    "n": 164,
+    "win_rate": 43,
+    "mean": 8.4,
+    "median": -2.5,
+    "p25": -17.1,
+    "p75": 16.6,
+    "worst": -58.5,
+    "excess_mean": 5.6,
+    "excess_median": -6.0,
+    "point": "+20일"
+   },
+   "too_cheap": {
+    "n": 95,
+    "win_rate": 43,
+    "mean": 6.6,
+    "median": -2.3,
+    "p25": -16.2,
+    "p75": 10.2,
+    "worst": -51.7,
+    "excess_mean": 3.3,
+    "excess_median": -3.4,
+    "point": "+20일"
+   }
+  }
+ },
  "stale_years": [],
  "by_verdict": [
   {

@@ -6,7 +6,7 @@ import sqlite3
 from datetime import date, datetime
 from pathlib import Path
 
-from . import db, estimate, paper
+from . import db, estimate, paper, strategy
 from .backtest import load_card_scenarios
 from .calendar_kr import KRX_HOLIDAYS
 from .config import Config
@@ -77,7 +77,13 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         next((x["rights"] for x in reversed(series) if x["d"] <= today.isoformat()), None), live["summary"].get("new_shares"),
         live["summary"].get("dilution_ratio"), f["op_period"] if f else None, today, confirmed,
         -cfg.gap_alert_pct, cfg.gap_alert_pct, load_card_scenarios(), live.get("disc"))
+    strat = strategy.card(conn, c, sch, live["summary"], f["op_income"] if f else None, live["gap"], today)
+    strat["paper"] = [{"strategy": t["strategy"], "decided_on": t["decided_on"], "version": t["strategy_version"],
+                       "snapshot": json.loads(t["snapshot_json"]), "eval": strategy.evaluate(conn, c, t, sch, today)}
+                      for t in conn.execute("SELECT * FROM strategy_trades WHERE case_id=? ORDER BY strategy",
+                                            (c["case_id"],))]
     base.update({
+        "strategy": strat,
         "summary": live["summary"], "gate1": live["gate1"], "rights_series": series, "stock_series": stock_series,
         "facts": {"op_income": f["op_income"] if f else None, "op_period": f["op_period"] if f else None,
                   "pos52": f["pos52"] if f else None, "pos52_basis": f["pos52_basis"] if f else None},
@@ -114,15 +120,18 @@ def build_site(conn: sqlite3.Connection, cfg: Config | None = None, today: date 
     cases = [_case_json(conn, c, cfg, today) for c in conn.execute(
         "SELECT * FROM cases ORDER BY status='open' DESC, is_rights DESC, first_rcept_dt DESC LIMIT 300")]
     results = [{"verdict": c["paper"]["verdict"], "eval": c["paper"]["eval"]} for c in cases if c.get("paper")]
+    s_results = [p for c in cases for p in (c.get("strategy") or {}).get("paper", [])]
     notes = [dict(r) for r in conn.execute(
         "SELECT seq, topic, text, sent_at FROM notifications ORDER BY seq DESC LIMIT 40")]
     counts = {t: conn.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
-              for t in ("cases", "disclosures", "rights_daily", "stock_daily", "excluded_disclosures", "paper_trades")}
+              for t in ("cases", "disclosures", "rights_daily", "stock_daily", "excluded_disclosures", "paper_trades",
+                                                                             "strategy_trades")}
     first_rights = conn.execute("SELECT MIN(bas_dd) FROM rights_daily").fetchone()[0]
     return {"generated_at": db.now(), "last_rights_date": last, "first_rights_date": first_rights,
             "counts": counts, "holidays": sorted(KRX_HOLIDAYS), "gap_threshold": cfg.gap_alert_pct,
             "verdicts": {k: {"emoji": e, "name": n} for k, (e, n) in VERDICTS.items()},
             "rights_today": rights_today, "cases": cases, "scorecard": paper.scorecard(results),
+            "strategy_rules": strategy.rules(), "strategy_scorecard": strategy.scorecard(s_results),
             "notifications": notes}
 
 
