@@ -58,11 +58,13 @@ def test_retrying_on_connect_timeout():
 
     def dead(*a, **kw):
         raise requests.ConnectTimeout("x")
+    dead_slept = []
     try:
-        retrying(dead, sleep=lambda s: None)("u")
+        retrying(dead, sleep=dead_slept.append)("u")
         raise AssertionError("재시도 후에도 실패면 예외를 올려야 함")
     except requests.ConnectTimeout:
         pass
+    assert dead_slept == [5, 20, 60]          # 4번 시도 (09-26 opendart 연결 시간 초과 3연속 실측)
 
 
 def test_krx_non_json_body_retried_then_krx_error():
