@@ -128,6 +128,32 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .quick td,.quick th{padding:4px 8px;font-size:12px}
 .quick .fn{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5}
 .quick .red{color:#f0a8a2;font-weight:700}
+/* 유증 진행 레이스 바 */
+.race{margin:0 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#0b1322}
+.race .rrow{display:flex;align-items:center;gap:10px}
+.race .rbar{flex:1;min-width:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px}
+.race .seg{position:relative;height:12px;border-radius:3px;background:#243149;border:0;padding:0;cursor:pointer;font:inherit}
+.race .seg .f{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--vc)}
+.race .seg.tbd{background:transparent;border:1.5px dashed var(--mut)}
+.race .seg.sel{outline:2px solid var(--txt);outline-offset:1px}
+.race .seg .dot{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--vc);border:2px solid var(--txt);animation:blink 1.1s ease-in-out infinite}
+@keyframes blink{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.race .seg .dot{animation:none}}
+.race .rlab{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;margin-top:4px;font-size:10px;color:var(--mut);text-align:center;line-height:1.2}
+.race .rlab .now{color:var(--txt);font-weight:700}.race .rlab .tbd{font-style:italic}
+.race .cd{font-size:12px;font-weight:800;white-space:nowrap;text-align:right;line-height:1.2}
+.race .cd small{display:block;font-size:10px;font-weight:500;color:var(--mut)}
+.race .cap{font-size:11px;color:var(--mut);margin-top:6px;min-height:14px}
+/* 괴리율 온도계 */
+.gauge{margin:12px 0 4px;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center}
+.gauge svg.g{width:100%;max-width:230px;height:auto;display:block}
+.gauge .gv{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+.gauge .gz{font-size:12px;font-weight:700;margin-left:6px}
+.gauge .gs{font-size:11px;color:var(--mut);margin-top:2px}
+.gauge .gleg{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:10.5px;color:var(--mut);margin-top:6px}
+.gauge .gleg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:3px;vertical-align:-1px}
+.gauge svg.gt{width:100%;max-width:230px;height:40px;display:block;margin-top:6px}
+.gauge .gside{flex:1;min-width:170px}
 .rcards,.tlist{display:none}
 .rc{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:12px;padding:11px 13px}
 .rc .rh{display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -268,6 +294,89 @@ function timeline(s){
   return h+'</div>'+tlist(s);
 }
 
+// ---- 유증 진행 레이스 바: 공시 → 권리락 → 인수권 → 청약 → 상장 → +20일 ----
+const VCOL={green:'var(--grn)',yellow:'var(--gold)',blue:'var(--blu)',white:'#c9d1de'};
+const isoOf=d8=>`${d8.slice(0,4)}-${d8.slice(4,6)}-${d8.slice(6)}`;
+const md=d=>d?d.slice(5).replace('-','/'):'';
+const dayDiff=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
+function shiftBiz(iso,n){let d=iso;for(let i=0;i<n;){d=addDays(d,1);if(isBiz(d))i++;}return d;}
+function bizCount(a,b){let n=0,d=a;while(d<=b){if(isBiz(d))n++;d=addDays(d,1);}return n;}
+function raceCells(c){
+  const s=c.schedule||{}, fd=isoOf(c.first_rcept_dt);
+  const ok=d=>d&&d>=fd?d:null;            // 공시일보다 이른 날짜 = 다른 문장 날짜를 잘못 읽은 것 → 미정으로
+  let rs=ok(s.rights_start), re=ok(s.rights_end)||rs; if(rs&&re<rs) rs=re=null;
+  const ss=ok(s.subs_start), se=ok(s.subs_end)&&s.subs_end>=ss?s.subs_end:ss, ls=ok(s.listing_date);
+  return [{k:'공시',a:fd,b:fd,ev:'공시'},{k:'권리락',a:ok(s.ex_rights_date),ev:'권리락'},
+    {k:'인수권',a:rs,b:re,ev:'인수권 시작',evEnd:'인수권 마감',period:true},{k:'청약',a:ss,b:se,ev:'청약 시작',evEnd:'청약 마감'},
+    {k:'상장',a:ls,ev:'신주 상장'},{k:'+20일',a:ls?shiftBiz(ls,20):null,ev:'상장 +20일'}].map(x=>({...x,b:x.b||x.a}));
+}
+function raceBar(c){
+  const t=kstToday(), cells=raceCells(c), v=(c.verdict||{}).code||'white';
+  let cur=-1;
+  cells.forEach(x=>{
+    if(!x.a){x.st='tbd';return;}
+    if(t>x.b) x.st='done';
+    else if(t>=x.a){x.st='now';
+      x.p=x.period?Math.min(.97,Math.max(.03,(bizCount(x.a,t)-.5)/Math.max(bizCount(x.a,x.b),1))):.5;}
+    else x.st='todo';
+  });
+  cur=cells.findIndex(x=>x.st!=='done');
+  const cap=x=>`${x.k} ${x.a?md(x.a)+(x.b!==x.a?'~'+md(x.b):''):'미정'}${x.st==='done'?' · 지남':x.st==='now'?' · 진행 중':''}`;
+  // 다음 이벤트 카운트다운
+  let cd='완료', cdSub='+20거래일까지 지남';
+  if(cur>=0){const x=cells[cur];
+    if(x.st==='tbd'){cd=`${x.k} 미정`;cdSub='일정 정정 대기';}
+    else{const [d,ev]=x.st==='now'&&x.period?[x.b,x.evEnd]:x.st==='now'&&x.evEnd&&t>x.a?[x.b,x.evEnd]:[x.a,x.ev];
+      const n=dayDiff(t,d); cd=`${n===0?'D-DAY':'D-'+n} ${ev}`; cdSub=md(d);}}
+  const segs=cells.map((x,i)=>{
+    const fill=x.st==='done'?1:x.st==='now'?x.p:0;
+    const dot=i===cur&&x.st!=='tbd'?`<span class="dot" style="left:${(x.st==='now'?x.p:0)*100}%"></span>`:'';
+    const dotTbd=i===cur&&x.st==='tbd'?`<span class="dot" style="left:0%"></span>`:'';
+    return `<button type="button" class="seg ${x.st}" aria-label="${esc(cap(x))}" data-cap="${esc(cap(x))}" onclick="raceTap(this)">${fill?`<span class="f" style="width:${fill*100}%"></span>`:''}${dot||dotTbd}</button>`;}).join('');
+  const labs=cells.map((x,i)=>`<span class="${x.st==='tbd'?'tbd':i===cur?'now':''}">${x.st==='tbd'?x.k+'<br>미정':x.k}</span>`).join('');
+  return `<div class="race" style="--vc:${VCOL[v]||VCOL.white}"><div class="rrow"><div class="rbar">${segs}</div>
+  <div class="cd">${esc(cd)}<small>${esc(cdSub)}</small></div></div><div class="rlab">${labs}</div>
+  <div class="cap">${cur>=0?esc(cap(cells[cur])):'신주 상장 +20거래일까지 지남'} <span style="opacity:.7">· 칸을 누르면 날짜</span></div></div>`;
+}
+function raceTap(b){const r=b.closest('.race');r.querySelectorAll('.seg').forEach(x=>x.classList.toggle('sel',x===b));r.querySelector('.cap').textContent=b.dataset.cap;}
+
+// ---- 괴리율 온도계: −60% ~ +60%, 경계 = 괴리 판정 기준(±gap_threshold, 관문 2) ----
+function gauge(c){
+  const T=DATA.gap_threshold||20, R=60, t=kstToday(), cells=raceCells(c), rc=cells[2];
+  const pts=(c.rights_series||[]).filter(p=>p.gap!=null);
+  const cx=115,cy=124,r=88,w=16, cl=v=>Math.max(-R,Math.min(R,v));
+  const P=(v,rr=r)=>{const a=Math.PI*(1-(cl(v)+R)/(2*R));return [(cx+rr*Math.cos(a)).toFixed(1),(cy-rr*Math.sin(a)).toFixed(1)];};
+  const arc=(a,b,col,op=1)=>{const[x1,y1]=P(a),[x2,y2]=P(b);return `<path d="M${x1} ${y1}A${r} ${r} 0 0 1 ${x2} ${y2}" fill="none" stroke="${col}" stroke-width="${w}" opacity="${op}"/>`;};
+  const pre=!pts.length, grey='#3a4660';
+  const zones=pre?arc(-R,R,grey,.6):arc(-R,-T,'var(--blu)')+arc(-T,T,grey)+arc(T,R,'var(--red)');
+  const tick=v=>{const[x1,y1]=P(v,r-w/2-2),[x2,y2]=P(v,r+w/2+2),[tx,ty]=Math.abs(v)>=R?[P(v)[0],cy+12]:P(v,r-w/2-12);
+    return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--bg)" stroke-width="2"/><text x="${tx}" y="${ty}" font-size="9.5" fill="var(--mut)" text-anchor="middle">${v>0?'+':''}${v}%</text>`;};
+  const zl=(v,txt,col)=>{const[x,y]=P(v,r+w/2+13);return `<text x="${x}" y="${y}" font-size="10.5" font-weight="700" fill="${col}" text-anchor="middle">${txt}</text>`;};
+  let needle='', big='', sub='', zone='';
+  if(pre){
+    sub=!rc.a?'인수권 일정 미정':t<rc.a?`인수권 거래 전 (${md(rc.a)}~)`:'인수권 시세 대기';
+  }else{
+    const last=pts.at(-1), g=last.gap, ended=(rc.b&&t>rc.b)||(rc.b&&last.d>=rc.b);
+    const[nx,ny]=P(g,r-w-4);
+    needle=`<line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="var(--txt)" stroke-width="3" stroke-linecap="round"/><circle cx="${cx}" cy="${cy}" r="6" fill="var(--txt)"/>`;
+    zone=g<=-T?['저평가','var(--blu)']:g>=T?['고평가','var(--red)']:['적정','#aab4c6'];
+    big=`<div class="gv" style="color:${zone[1]}">${pct(g)}<span class="gz">${zone[0]}</span></div>`;
+    sub=`${ended?'최종 · 인수권 마지막 날':'최근 거래일'} ${md(last.d)} · 인수권 ${fmt(last.rights)} / 이론가 ${fmt(last.fair)}${Math.abs(g)>R?' · 게이지 범위 밖':''}`;
+  }
+  const svg=`<svg class="g" viewBox="-12 0 254 136" role="img" aria-label="괴리율 온도계 ${pre?esc(sub):pct(pts.at(-1).gap)}">${zones}${pre?'':tick(-T)+tick(T)}${tick(-R)}${tick(R)}
+    ${pre?`<text x="${cx}" y="${cy-22}" font-size="12" fill="var(--mut)" text-anchor="middle">${esc(sub)}</text>`:zl(-(R+T)/2,'저평가','var(--blu)')+zl(0,'적정','#aab4c6')+zl((R+T)/2,'고평가','var(--red)')}${needle}</svg>`;
+  // 인수권 거래일별 괴리율 미니 추이선
+  let trend='';
+  if(pts.length>=2){const W=230,H=40,gs=pts.map(p=>p.gap),lo=Math.min(...gs,-T)-3,hi=Math.max(...gs,T)+3;
+    const X=i=>6+i/(pts.length-1)*(W-12),Y=v=>4+(hi-v)/(hi-lo)*(H-14);
+    const band=`<line x1="0" x2="${W}" y1="${Y(-T)}" y2="${Y(-T)}" stroke="var(--blu)" stroke-dasharray="3 3" opacity=".6"/><line x1="0" x2="${W}" y1="${Y(T)}" y2="${Y(T)}" stroke="var(--red)" stroke-dasharray="3 3" opacity=".6"/>`;
+    trend=`<svg class="gt" viewBox="0 0 ${W} ${H}" aria-label="괴리율 추이">${band}<polyline fill="none" stroke="var(--gold)" stroke-width="2" points="${pts.map((p,i)=>X(i).toFixed(1)+','+Y(p.gap).toFixed(1)).join(' ')}"/>
+      ${pts.map((p,i)=>`<circle cx="${X(i).toFixed(1)}" cy="${Y(p.gap).toFixed(1)}" r="2.5" fill="var(--txt)"><title>${p.d} ${pct(p.gap)}</title></circle>`).join('')}
+      <text x="2" y="${H-1}" font-size="9" fill="var(--mut)">${md(pts[0].d)}</text><text x="${W-2}" y="${H-1}" font-size="9" fill="var(--mut)" text-anchor="end">${md(pts.at(-1).d)} · ${pts.length}거래일</text></svg>`;}
+  const leg=`<div class="gleg"><span><i style="background:var(--blu)"></i>저평가 ≤ −${T}%</span><span><i style="background:${grey}"></i>적정</span><span><i style="background:var(--red)"></i>고평가 ≥ +${T}%</span></div>`;
+  return `<div class="meta" style="margin-top:12px">인수권 괴리율 온도계</div><div class="gauge">${svg}<div class="gside">${big}${pre?'':`<div class="gs">${esc(sub)}</div>`}${trend}${leg}</div></div>`;
+}
+
 function tlist(s){ // 모바일 세로 일정표: 인수권 시작·끝은 한 줄로
   const t=kstToday(), md=d=>d.slice(5).replace('-','/');
   const ev=TL.filter(([k])=>s[k]&&k!=='rights_end').map(([k,l])=>k==='rights_start'&&s.rights_end
@@ -321,11 +430,11 @@ function caseCard(c){
   <div class="meta">최초 공시 ${c.first_rcept_dt} · ${esc(c.ic_mthn||'증자방식 미상')}</div>
   ${c.is_rights&&c.status==='open'?`<span class="stage">${esc(caseStage(s))}</span>`:''}</div>
   <div>${c.is_rights?'<span class="badge gold">주주배정 · 인수권</span>':'<span class="badge">관찰</span>'} ${debt?'<span class="badge red">채무상환형</span>':''} ${big?'<span class="badge red">초대형 희석</span>':''} ${fssReq?'<span class="badge red">금감원 정정요구</span>':''}</div></div>
-  ${vbar}${quick}${crit}
+  ${vbar}${quick}${c.is_rights?raceBar(c):''}${crit}
   <div class="grid">${kv('발행가'+(s.issue_kind?` <span class="mut">(${esc(s.issue_kind)})</span>`:''),fmt(s.issue_price)+'원')}${kv('배정비율',s.alloc_ratio!=null?Number(s.alloc_ratio).toFixed(4):'—')}${kv('신주÷기존주',sm.dilution_ratio!=null?(sm.dilution_ratio*100).toFixed(0)+'%':'—')}${kv('모집 규모',sm.total_amount?Math.round(sm.total_amount/1e8).toLocaleString()+'억':'—')}</div>
   ${purp?`<div class="meta">자금 목적</div><div class="purp">${purp}</div><div class="legend">${leg}</div>`:''}
   ${c.is_rights?timeline(s):''}${swarn}
-  ${spark(c.rights_series||[])}
+  ${c.is_rights?gauge(c):spark(c.rights_series||[])}
   ${resultBlock(c)}
   <details><summary>공시·정정 이력 ${c.history.length}건</summary><div class="hist">${hist}</div></details>
   <details><summary>1차·2차 자료 링크</summary><div class="links">${caseLinks(c).map(([i,n,t,u,d])=>`<a class="lnk" href="${u}" target="_blank" rel="noopener"><span>${i}</span><span>${n}<span class="${t==='1차'?'t1':'t2'}">${t}</span><small>${d}</small></span></a>`).join('')}</div></details>
