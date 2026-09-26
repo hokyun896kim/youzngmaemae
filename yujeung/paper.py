@@ -56,14 +56,14 @@ def record_if_due(conn: sqlite3.Connection, case: sqlite3.Row, schedule: dict, l
         return False
     snap = {
         "verdict": live["verdict"], "reason": live["reason"], "gate1": live["gate1"],
-        "gap": live["gap_on"].get(last), "rights_close": row["close"],
+        "gap": live["gap_on"].get(last), "disc": live.get("disc_on", {}).get(last), "rights_close": row["close"],
         "issue_price": schedule.get("issue_price") or row["issue_price"],
         "stock_close": live["stock_on"].get(last), "listing_date": schedule.get("listing_date"),
         "market": case["corp_cls"], "backfilled": backfilled,
     }
     # 마지막 날 괴리로 판정을 다시 확정 (라이브 판정은 최신 괴리 기준이라 다를 수 있음)
-    snap["verdict"] = live["decide"](snap["gap"])
-    snap["reason"] = live["reason_for"](snap["gap"], snap["verdict"])
+    snap["verdict"] = live["decide"](snap["gap"], snap["disc"])
+    snap["reason"] = live["reason_for"](snap["gap"], snap["verdict"], snap["disc"])
     conn.execute(
         "INSERT INTO paper_trades (case_id, verdict, decided_on, logic_version, snapshot_json, created_at)"
         " VALUES (?,?,?,?,?,?)",

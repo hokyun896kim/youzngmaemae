@@ -17,7 +17,13 @@
 """
 from __future__ import annotations
 
-LOGIC_VERSION = 2   # 2: 관문1 자동 항목 미확인 → 🟢?/🟡? 확인 필요
+LOGIC_VERSION = 3   # 3: 🟢 에 신주원가 할인율 ≤ −10% 추가, '실권주 미발행' = 인수방식 탈락 ([17] 아이에이 검수)
+#                   2: 관문1 자동 항목 미확인 → 🟢?/🟡? 확인 필요
+
+# 🟢 두 번째 조건: 실제 신주원가 할인율 = (인수권 + 발행가) ÷ 본주 − 1 ≤ DISC_MAX.
+# 괴리율만 싸도 발행가가 본주에 붙어 있으면 실제로 싸게 사는 게 아니다.
+# −10% 는 임시값 — 백테스트(기출문제)로 조정 예정
+DISC_MAX = -10.0
 
 # 순서 = 화면 정렬·집계 순서 (확인 필요는 🟢/🟡 바로 다음)
 VERDICTS = {
@@ -94,6 +100,8 @@ def gate1(summary: dict, facts: dict, op_income: int | None, op_period: str | No
         crit.append(_c("uw", "총액인수", "pass", uw))
     elif uw == "모집주선":
         crit.append(_c("uw", "총액인수", "fail", "모집주선(인수단 책임 없음)"))
+    elif uw == "실권주미발행":
+        crit.append(_c("uw", "총액인수", "fail", "실권주 미발행 — 인수단 책임 없음"))
     else:
         crit.append(_c("uw", "총액인수", "unknown", "인수방식 미확인"))
 
@@ -115,16 +123,22 @@ def gate1(summary: dict, facts: dict, op_income: int | None, op_period: str | No
     }
 
 
-def decide(g1: dict, gap: float | None, cheap: float = -20.0, rich: float = 20.0) -> str:
+def green_price(gap: float | None, disc: float | None, cheap: float = -20.0, disc_max: float = DISC_MAX) -> bool:
+    """🟢 가격 조건: 괴리율 ≤ cheap AND 신주원가 할인율 ≤ disc_max (할인율 모르면 🟢 아님)."""
+    return gap is not None and gap <= cheap and disc is not None and disc <= disc_max
+
+
+def decide(g1: dict, gap: float | None, cheap: float = -20.0, rich: float = 20.0,
+           disc: float | None = None, disc_max: float = DISC_MAX) -> str:
     if gap is not None and gap >= rich:
         return "blue"
     if g1["passed"]:
-        v = "green" if gap is not None and gap <= cheap else "yellow"
+        v = "green" if green_price(gap, disc, cheap, disc_max) else "yellow"
         return v + "_q" if g1.get("n_unknown") else v
     return "white"
 
 
-def reason_line(g1: dict, gap: float | None, verdict: str) -> str:
+def reason_line(g1: dict, gap: float | None, verdict: str, disc: float | None = None) -> str:
     """예: '채무상환 100% · 희석 240% → 패스 · 괴리 -40.8% → ⚪ 관찰 샘플'"""
     crit = {c["key"]: c for c in g1["criteria"]}
     items = [crit["debt"]["text"], crit["dilution"]["text"].replace(" (100% 이상 즉시 탈락)", "")]
@@ -133,5 +147,7 @@ def reason_line(g1: dict, gap: float | None, verdict: str) -> str:
     if g1["passed"] and g1["n_unknown"]:
         head += f"(미확인 {g1['n_unknown']})"
     tail = f" · 괴리 {gap:+.1f}%" if gap is not None else " · 괴리 대기"
+    if disc is not None:
+        tail += f" · 원가할인 {disc:+.1f}%"
     emoji, name = VERDICTS[verdict]
     return f"{head}{tail} → {emoji} {name}"

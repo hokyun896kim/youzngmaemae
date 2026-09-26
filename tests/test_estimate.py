@@ -75,7 +75,7 @@ def test_conclusion_and_recheck():
     g2 = gate1(ok, {}, -1, "2026 반기(3개월, CFS)", 0.3, "X")
     assert estimate.recheck("white", g2, None, "2026 반기(3개월, CFS)", -20, 20) == "3Q 영업흑자 전환 시"
     g3 = gate1(ok, {"major_holder": {"level": "full"}, "underwriting": "총액인수"}, 10, "", 0.3, "X")
-    assert estimate.recheck("yellow", g3, -5, None, -20, 20) == "괴리율 -20% 이하 시 🟢 인수권 매수+청약 검토"
+    assert estimate.recheck("yellow", g3, -5, None, -20, 20) == "괴리율 -20% 이하 + 신주원가 할인율 -10% 이하 시 🟢 인수권 매수+청약 검토"
     assert estimate.conclusion("yellow", g3, -5.0)["reason"] == "괴리율 -5.0%"
 
 
@@ -121,3 +121,15 @@ def test_review_11_fixes():
     assert paper.final_issue_price(1064, sg, date(2026, 9, 26)) == (911, "확정발행가 911 반영 (판정 당시 1,064)")
     assert paper.final_issue_price(1064, sg, date(2026, 8, 25)) == (1064, None)          # 청약 전·1차면 판정 당시
     assert paper.final_issue_price(900, dict(sg, issue_kind="확정"), date(2026, 8, 30))[0] == 911
+
+
+def test_review_17_dilution_ratio_denominator():
+    """[17] 1차 발행가·Px 분모 = 증자비율(신주 ÷ 증자 전 발행주식총수), 배정비율이 아니라."""
+    sch = dict(SCH, issue_kind="예정")
+    ok = gate1({"purpose_pct": {"운영": 100.0}, "dilution_ratio": 0.3}, {}, -1, "2026 반기", 0.3, "X")
+    q = estimate.quick("white", ok, None, sch, {"discount": 0.2}, [("2026-08-20", 3000)], [1] * 20, None, 1,
+                       0.30, None, date(2026, 8, 20), False, disc=-12.0)
+    assert q["issue"]["r"] == 0.30                                     # alloc_ratio 2.4014 가 아니라 증자비율 0.30
+    assert q["issue"]["value"] == round(3000 * 0.8 / (1 + 0.30 * 0.2)) and "증자비율 30.0%" in q["issue"]["text"]
+    assert q["green_check"] == {"gap": None, "disc": -12.0, "cheap": -20, "disc_max": -10.0,
+                                "gap_ok": False, "disc_ok": True, "ok": False}

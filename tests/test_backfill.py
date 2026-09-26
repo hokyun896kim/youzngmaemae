@@ -233,8 +233,10 @@ def test_gate_and_verdicts():
     facts = {"major_holder": {"level": "full"}, "underwriting": "총액인수"}
     g = gate1(good, facts, 1_000_000_000, "2026 반기", 0.3, "좋은회사")
     assert g["passed"] and g["n_pass"] == 6
-    assert decide(g, -35.0) == "green"
-    assert decide(g, -5.0) == "yellow"
+    assert decide(g, -35.0, disc=-15.0) == "green"
+    # [17] 괴리율만 싸고 실제 신주원가 할인율이 −10% 보다 얕으면 🟢 아님 (할인율 모르면 🟢 아님)
+    assert decide(g, -35.0, disc=-5.0) == "yellow" and decide(g, -35.0) == "yellow"
+    assert decide(g, -5.0, disc=-30.0) == "yellow"
     assert decide(g, None) == "yellow"
     assert decide(g, 25.0) == "blue"
     bad = gate1({"purpose_pct": {"채무상환": 100.0}, "dilution_ratio": 2.4}, {}, None, None, None, "SK디앤디")
@@ -271,7 +273,7 @@ def test_unconfirmed_makes_check_needed():
     good = {"purpose_pct": {"시설": 80.0}, "dilution_ratio": 0.3}
     g = gate1(good, {"underwriting": "총액인수"}, 1_000_000_000, "2026 반기", 0.3, "X")   # 최대주주 청약 미확인
     assert g["passed"] and g["n_unknown"] == 1
-    assert decide(g, -35.0) == "green_q" and decide(g, -5.0) == "yellow_q" and decide(g, 25.0) == "blue"
+    assert decide(g, -35.0, disc=-15.0) == "green_q" and decide(g, -5.0) == "yellow_q" and decide(g, 25.0) == "blue"
     assert [u["label"] for u in unconfirmed(g)] == ["최대주주 청약 여부 미확인"]
     assert base("green_q") == "green" and base("blue") == "blue" and LOGIC_VERSION >= 2
     assert list(VERDICTS)[:4] == ["green", "yellow", "green_q", "yellow_q"]          # 정렬: 🟢/🟡 다음
@@ -280,7 +282,30 @@ def test_unconfirmed_makes_check_needed():
     assert recheck("green_q", g, -35.0, "2026 반기", -20, 20).startswith("최대주주 청약 여부 미확인 → GPT로 확인되면 🟢 확정")
     # 수동 2개(업계 1~3위·대체 불가)만 남은 경우는 그대로 🟢
     full = gate1(good, {"underwriting": "총액인수", "major_holder": {"level": "full"}}, 1, "2026 반기", 0.3, "X")
-    assert decide(full, -35.0) == "green"
+    assert decide(full, -35.0, disc=-15.0) == "green"
     # 관문1 탈락이면 미확인이 있어도 ⚪
     bad = gate1({"purpose_pct": {"채무상환": 90.0}, "dilution_ratio": 0.3}, {}, None, None, None, "Y")
     assert decide(bad, -35.0) == "white"
+
+
+def test_review_17_underwriting_and_discount():
+    """[17] 아이에이 검수: '실권주 미발행' + 잔액·총액인수 없음 → 인수방식 탈락, 🟢 = 괴리 ≤ −20% AND 원가할인 ≤ −10%."""
+    from yujeung.prices import compute_gap
+    from yujeung.schedule_parser import extract_underwriting
+    from yujeung.verdict import DISC_MAX, reason_line
+    txt = "청약 결과 발생한 실권주는 발행하지 아니하며, 대표주관회사는 모집주선 방식으로 참여합니다."
+    assert extract_underwriting([], [], txt) == "실권주미발행"
+    assert extract_underwriting([], [], "실권주 미발행") == "실권주미발행"
+    assert extract_underwriting([], [["인수방법", "잔액인수"]], "실권주 미발행") == "잔액인수"   # 잔액인수 계약이면 그대로
+    g = gate1({"purpose_pct": {"운영": 100.0}, "dilution_ratio": 0.3},
+              {"underwriting": "실권주미발행", "major_holder": {"level": "full"}}, 1, "2026 반기", 0.3, "아이에이")
+    uw = next(c for c in g["criteria"] if c["key"] == "uw")
+    assert uw["status"] == "fail" and uw["text"] == "실권주 미발행 — 인수단 책임 없음"
+    assert not g["passed"] and decide(g, -35.0, disc=-20.0) == "white"
+    # 실제 할인율 = (인수권 + 발행가) ÷ 본주 − 1: 인수권 636 + 발행가 2,260 = 2,896 / 3,335 − 1 = −13.2%
+    gp = compute_gap(636, 3335, 2260)
+    assert gp.gap_pct == -40.8 and gp.discount_pct == -13.2 and DISC_MAX == -10.0
+    ok = gate1({"purpose_pct": {"운영": 100.0}, "dilution_ratio": 0.3},
+               {"underwriting": "총액인수", "major_holder": {"level": "full"}}, 1, "2026 반기", 0.3, "X")
+    assert decide(ok, gp.gap_pct, disc=gp.discount_pct) == "green"
+    assert reason_line(ok, -40.8, "green", -13.2).endswith("· 괴리 -40.8% · 원가할인 -13.2% → 🟢 인수권 매수+청약")

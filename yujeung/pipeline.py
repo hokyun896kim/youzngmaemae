@@ -442,7 +442,7 @@ def live_verdict(conn, c: sqlite3.Row, cfg: Config) -> dict:
     g1 = gate1(sm, latest_facts(conn, c["case_id"]), f["op_income"] if f else None,
                f["op_period"] if f else None, f["pos52"] if f else None, c["corp_name"])
     sch, _ = checked_schedule(conn, c["case_id"])
-    gap_on, stock_on = {}, {}
+    gap_on, stock_on, disc_on = {}, {}, {}
     for r in paper.rights_rows(conn, c):
         s_row = conn.execute("SELECT close FROM stock_daily WHERE bas_dd=? AND code=?",
                              (r["bas_dd"], c["stock_code"])).fetchone()
@@ -451,13 +451,15 @@ def live_verdict(conn, c: sqlite3.Row, cfg: Config) -> dict:
         stock_on[r["bas_dd"]] = stock
         if g:
             gap_on[r["bas_dd"]] = g.gap_pct
+            disc_on[r["bas_dd"]] = g.discount_pct
     gap = gap_on[max(gap_on)] if gap_on else None
+    disc = disc_on[max(disc_on)] if disc_on else None
     cheap, rich = -cfg.gap_alert_pct, cfg.gap_alert_pct
-    v = decide(g1, gap, cheap, rich)
-    return {"gate1": g1, "gap": gap, "verdict": v, "reason": reason_line(g1, gap, v), "summary": sm,
-            "gap_on": gap_on, "stock_on": stock_on,
-            "decide": lambda gp: decide(g1, gp, cheap, rich),
-            "reason_for": lambda gp, vv: reason_line(g1, gp, vv)}
+    v = decide(g1, gap, cheap, rich, disc)
+    return {"gate1": g1, "gap": gap, "disc": disc, "verdict": v, "reason": reason_line(g1, gap, v, disc),
+            "summary": sm, "gap_on": gap_on, "stock_on": stock_on, "disc_on": disc_on,
+            "decide": lambda gp, dc=None: decide(g1, gp, cheap, rich, dc),
+            "reason_for": lambda gp, vv, dc=None: reason_line(g1, gp, vv, dc)}
 
 
 def step_verdicts(conn, cfg: Config, backfilled: bool = False) -> int:

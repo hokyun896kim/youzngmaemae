@@ -166,8 +166,12 @@ def test_backtest_year(tmp_path):
     assert next(r for r in out["cases"] if r["corp_name"] == "파싱실패")["status"] == "parse_fail"
     assert (tmp_path / "2021.json").exists()
 
+    # 옛 판정 로직으로 채점된 해는 합산에서 빠지고 '재채점 필요'로만 (버전 구분)
+    old = json.loads((tmp_path / "2021.json").read_text(encoding="utf-8"))
+    (tmp_path / "2020.json").write_text(json.dumps(dict(old, year=2020, logic_version=1), ensure_ascii=False), encoding="utf-8")
     agg = backtest.aggregate(tmp_path)
-    assert agg["n_scored"] == 1 and agg["years"][0]["parse_rate"] == 50.0
+    assert agg["stale_years"] == [2020] and agg["years"][0]["stale"] and not agg["years"][1]["stale"]
+    assert agg["n_scored"] == 1 and agg["years"][1]["parse_rate"] == 50.0
     assert next(v for v in agg["by_verdict"] if v["verdict"] == "green")["n"] == 0   # 확인 필요는 따로 집계
     green = next(v for v in agg["by_verdict"] if v["verdict"] == "green_q")
     assert green["n"] == 1 and green["points"][-1]["median"] == 20.0 and green["points"][-1]["win_rate"] == 100

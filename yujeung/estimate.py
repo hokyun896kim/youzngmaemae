@@ -1,6 +1,8 @@
 """카드 맨 위 '30초 결론' + 발행가 추정 + 본전선 + 어림 손익표 (사이트 자동 계산).
 
-발행가 추정 (d = 증권신고서의 할인율, r = 1주당 배정주식수)
+발행가 추정 (d = 증권신고서의 할인율, r = 증자비율 = 신주 ÷ 증자 전 발행주식총수)
+  ※ [17] 아이에이 검수: 분모는 1주당 배정주식수(alloc_ratio)가 아니라 증자비율(dilution_ratio).
+     배정비율은 자기주식 등을 뺀 주주 기준이라 발행주식총수 기준 증자비율과 다를 수 있다. Px 도 같은 r
   권리락 전  1차 추정 I1 = 현재가 × (1−d) / (1 + r×d),  권리락 이론가 Px = 현재가 / (1 + r×d)
   권리락 후  2차 추정 I2 = 현재가 × (1−d)   ← 반드시 권리락 '후' 주가
              I1 = 공시된 1차 발행가 (없으면 권리락 직전 종가로 계산),  최종 추정 = min(I1, I2)
@@ -16,7 +18,7 @@ from __future__ import annotations
 import re
 from datetime import date
 
-from .verdict import base, unconfirmed
+from .verdict import DISC_MAX, base, green_price, unconfirmed
 
 SCENARIOS = [("좋음", 0.15), ("보통", 0.0), ("나쁨", -0.15), ("최악", -0.30)]
 SCENARIO_NOTE = ("기본값 시나리오 — Phase 1 백테스트 완료 시 실제 상장일 수익률 분포(25/50/75 퍼센타일)로 "
@@ -70,14 +72,14 @@ def issue_estimate(sch: dict, d: float | None, r: float | None, closes: list[tup
         return {"value": disclosed, "kind": "확정", "issue_kind": kind,
                 "text": f"확정발행가 {disclosed:,}원 (청약 시작 후 — 재추정 안 함, 공시 구분 '{kind}')"}
     if not d or not r or not closes:
-        why = "할인율 미확인" if not d else "배정비율 미확인" if not r else "주가 없음"
+        why = "할인율 미확인" if not d else "증자비율 미확인" if not r else "주가 없음"
         return {"value": disclosed, "kind": "공시", "issue_kind": kind, "d": d, "r": r,
                 "text": f"공시 {kind}발행가 {disclosed:,}원 ({why} — 추정 불가)" if disclosed else f"발행가 미확인 ({why})"}
     ex = sch.get("ex_rights_date")
     p_now = closes[-1][1]
     out = {"d": d, "r": r, "disclosed": disclosed, "issue_kind": kind}
     use_disclosed = kind == "1차" and bool(disclosed)
-    formula = f"× (1−{d:.0%}) ÷ (1 + {r:g}×{d:.0%})"
+    formula = f"× (1−{d:.0%}) ÷ (1 + 증자비율 {r:.1%}×{d:.0%})"
     if not ex or today.isoformat() < ex:
         px = round(p_now / (1 + r * d))
         if use_disclosed:
@@ -116,7 +118,7 @@ def breakeven(stg: str, sch: dict, issue: dict, closes: list[tuple[str, int]], r
         if not d or not r:
             return None
         return {"stage": stg, "how": "본주 매수 + 청약", "value": round(p_now / (1 + r * d)),
-                "text": f"권리락 이론가 Px = {p_now:,} ÷ (1 + {r:g}×{d:.0%})"}
+                "text": f"권리락 이론가 Px = {p_now:,} ÷ (1 + 증자비율 {r:.1%}×{d:.0%})"}
     if stg == "3":
         if rights_close is None or not issue.get("value"):
             return None
@@ -167,7 +169,7 @@ def recheck(verdict: str, g1: dict, gap: float | None, op_period: str | None, ch
     if verdict == "green":
         return f"괴리율 {cheap:.0f}% 위로 오르면(할인 축소) 🟡 재판정"
     if verdict == "yellow":
-        return f"괴리율 {cheap:.0f}% 이하 시 🟢 인수권 매수+청약 검토"
+        return f"괴리율 {cheap:.0f}% 이하 + 신주원가 할인율 {DISC_MAX:.0f}% 이하 시 🟢 인수권 매수+청약 검토"
     if g1.get("hard_fail"):
         return "희석 100% 이상 — 조건이 정정되지 않는 한 재검토 없음 (상장일까지 관찰 샘플)"
     conds = []
@@ -189,12 +191,14 @@ def recheck(verdict: str, g1: dict, gap: float | None, op_period: str | None, ch
     return " · ".join(conds) or "상장일까지 관찰 (가설 검증 샘플)"
 
 
-def conclusion(verdict: str, g1: dict, gap: float | None, stg: str | None = None) -> dict:
+def conclusion(verdict: str, g1: dict, gap: float | None, stg: str | None = None, disc: float | None = None) -> dict:
     if not g1["passed"]:
         fails = [c["text"].replace(" (100% 이상 즉시 탈락)", "") for c in g1["criteria"] if c["status"] == "fail"]
         reason = "관문1 탈락: " + " · ".join(fails[:3])
     else:
         reason = f"괴리율 {gap:+.1f}%" if gap is not None else "관문1 통과 · 괴리율 대기"
+        if disc is not None:
+            reason += f" · 신주원가 할인율 {disc:+.1f}%"
         if g1.get("n_unknown"):
             reason += f" (관문1 미확인 {g1['n_unknown']}개 — GPT 확인)"
     if verdict == "blue" and not g1["passed"]:
@@ -208,15 +212,19 @@ def conclusion(verdict: str, g1: dict, gap: float | None, stg: str | None = None
 def quick(verdict: str, g1: dict, gap: float | None, sch: dict, facts: dict, closes: list[tuple[str, int]],
           volumes: list[int], rights_close: int | None, new_shares: int | None, dilution: float | None,
           op_period: str | None, today: date, confirmed: bool, cheap: float = -20, rich: float = 20,
-          card: dict | None = None) -> dict:
+          card: dict | None = None, disc: float | None = None) -> dict:
     stg = stage(sch, today)
-    r = sch.get("alloc_ratio") or dilution
+    r = dilution or sch.get("alloc_ratio")    # 증자비율 우선 ([17]) — 없을 때만 배정비율
     issue = issue_estimate(sch, facts.get("discount"), r, closes, today, confirmed)
     be = breakeven(stg, sch, issue, closes, rights_close)
     scen, note = scenarios_for(verdict, card)
     tracking = base(verdict) in ("green", "blue") and stg in ("4", "5", "listed")
     return {
-        **conclusion(verdict, g1, gap, stg),
+        **conclusion(verdict, g1, gap, stg, disc),
+        # 🟢 가격 조건 두 숫자 나란히 (카드 표시용)
+        "green_check": {"gap": gap, "disc": disc, "cheap": cheap, "disc_max": DISC_MAX,
+                        "gap_ok": gap is not None and gap <= cheap, "disc_ok": disc is not None and disc <= DISC_MAX,
+                        "ok": green_price(gap, disc, cheap)},
         "recheck": ("신주 상장일 시가 · +5 · +20거래일 가상 성과로 판정 검증" if tracking
                     else recheck(verdict, g1, gap, op_period, cheap, rich)),
         "stage": stg, "stage_name": STAGES[stg],

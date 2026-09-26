@@ -96,6 +96,8 @@ def print_case(conn, cfg: Config, code: str, today) -> None:
             continue
         print("  판정:", j["verdict"]["emoji"], j["verdict"]["name"], "|", j["verdict"]["reason"],
               "(잠정)" if j["verdict"]["provisional"] else f"(확정 {j['verdict']['decided_on']})")
+        if j["verdict"]["live_reason"] != j["verdict"]["reason"]:
+            print("  현재 기준(판정 로직 최신):", j["verdict"]["live_reason"])
         print("  관문1:", "; ".join(f"{x['label']}={x['status']}({x['text']})" for x in j["gate1"]["criteria"]))
         print("  재무/52주:", json.dumps(j["facts"], ensure_ascii=False))
         q = j.get("quick") or {}
