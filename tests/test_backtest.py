@@ -163,6 +163,11 @@ def test_backtest_year(tmp_path):
     assert rec["base"]["entry"] == 6000
     assert base["상장일 시가"]["ret"] == round((6500 / 6000 - 1) * 100, 1)
     assert base["+20일"]["ret"] == 20.0 and base["+20일"]["excess"] == 20.0 - 2.0
+    # [18] 전략2: 상장일 종가 6,600 → +5일 6,800 / +10일 6,700
+    # (상장폐지라 네이버 없음 → 상장 전 시세가 인수권 기간 5일뿐 → ATR·RSI 계산 불가 → 손절 없음, 게이트 미확인)
+    s2 = {p["label"]: p for p in rec["s2"]["points"]}
+    assert rec["s2"]["atr"] is None and rec["s2"]["stop"] is None and rec["s2"]["gate"] is None
+    assert rec["s2"]["entry"] == 6600 and s2["+5일"]["ret"] == 3.0 and s2["+10일"]["ret"] == 1.5
     assert next(r for r in out["cases"] if r["corp_name"] == "파싱실패")["status"] == "parse_fail"
     assert (tmp_path / "2021.json").exists()
 
@@ -178,6 +183,10 @@ def test_backtest_year(tmp_path):
     gap_rows = {r["bucket"]: r for r in next(f for f in agg["filters"] if f["key"] == "gap")["rows"]}
     assert gap_rows["괴리 −40% 이하"]["n"] == 1
     assert agg["card_scenarios"]["green_q"]["n"] == 1 and agg["card_scenarios"]["green_q"]["use"] is False
+    # [18] 전략 근거: 흑자·희석 30%·채무상환 0 → 전략2 1건 / 괴리 −50% → 전략3 불가(너무 싼 인수권) 1건
+    st = agg["strategies"]
+    assert st["s2"]["n"] == 1 and st["s2"]["points"]["+10일"]["median"] == 1.5 and st["s2"]["missing_years"] == []
+    assert st["s1"]["n"] == 0 and st["s3"]["n"] == 0 and st["bans"]["too_cheap"]["n"] == 1
     json.dumps(agg, ensure_ascii=False)
 
 

@@ -130,6 +130,7 @@ ${CHART_RULE}
 - 발행가(최신 공시 기준): ${P_N(s.issue_price)}원${s.issue_kind ? ` [${s.issue_kind}${s.issue_kind === '예정' ? ' — 이사회 당시 예정발행가, 1차 아님' : ''}]` : ''}
 - 현재 사이클 위치: ${caseStage(s)}
 - 자동 판정: ${c.verdict ? `${c.verdict.emoji} ${c.verdict.name}${c.verdict.provisional ? '(잠정)' : ''} — ${c.verdict.reason}` : '데이터없음'}
+- 전략 배지(자동, 기출 백테스트 기반 행동 카드): ${strategyText(c, siteData)}
 - 관문1 항목: ${c.gate1 ? c.gate1.criteria.map(x => `${x.label}=${{pass: '통과', fail: '탈락', unknown: '미확인', manual: 'GPT 확인 필요'}[x.status]}(${x.text})`).join(' / ') : '데이터없음'}${c.gate1 && c.gate1.reit_note ? `\n- 참고: ${c.gate1.reit_note}` : ''}
 - 최근 본주 종가: ${stockLast ? `${stockLast.d} ${P_N(stockLast.close)}원` : '데이터없음'}
 
@@ -169,6 +170,21 @@ ${links}
 7. 베어 케이스(steelman): 이 케이스에 들어가면 안 되는 가장 강력한 반대 논거를 일부러 세게 만들어라(추가 증자, 감사의견, 채무불이행, 정정신고서 요구, 최대주주 불참 등).
 8. 반증 조건: 이 판단이 틀렸음을 보여줄 단 하나의 관찰값 또는 이벤트를 명시해라.
 9. 결론: [B 본업 후보(청약·보유) / A만(인수권 매매) / 관찰(가설 검증 샘플) / 제외] 중 하나를 고르고, 이유 + 진입 전 체크리스트 + 다음에 확인할 일정 1~2개 + 확신도(상/중/하)를 제시해라.`;
+}
+
+// [18] 전략 배지 한 줄 (site.json strategy_rules 문구 그대로)
+function strategyText(c, d) {
+  const S = c.strategy, R = d && d.strategy_rules;
+  if (!S || !R) return '데이터없음';
+  if (S.ban) return S.ban.map(b => `⛔ ${R.bans[b].label} — ${R.bans[b].effect}`).join(' / ');
+  if (!S.items.length) return '해당 전략 없음';
+  const st = {live: '지금 해당', wait: '대기', past: '기간 종료'};
+  return S.items.map(it => {
+    const D = R.strategies[it.key];
+    let x = `${D.medal} ${D.title} [${st[it.state]}] (조건: ${D.cond})`;
+    if (it.key === 's2') x += ` 청산일 ${P_NA(it.exit_on)} · 손절 ${P_N(it.stop)}원(${it.stop_basis || '-'}) · RSI ${it.rsi ?? '-'}`;
+    return x;
+  }).join(' / ') + (S.bans.length ? ` · 참고: ${S.bans.map(b => R.bans[b].label).join(', ')}` : '');
 }
 
 function quickText(q) {

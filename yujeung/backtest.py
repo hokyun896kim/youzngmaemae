@@ -21,7 +21,7 @@ import sqlite3
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
-from . import db, paper
+from . import db, paper, strategy
 from .calendar_kr import is_business_day, register_trading_days, shift_business_days
 from .config import Config
 from .dart import DartClient, DartError
@@ -95,7 +95,7 @@ def scope_cases(conn, bgn: date, end: date) -> dict:
             reason = "starts_with_correction"
         if reason:
             out[reason] += 1
-            for t in ("schedule_versions", "disclosures", "case_facts", "paper_trades"):
+            for t in ("schedule_versions", "disclosures", "case_facts", "paper_trades", "strategy_trades"):
                 conn.execute(f"DELETE FROM {t} WHERE case_id=?", (c["case_id"],))
             conn.execute("DELETE FROM cases WHERE case_id=?", (c["case_id"],))
     conn.commit()
@@ -355,6 +355,9 @@ def run_year(year: int, cfg: Config, dart: DartClient, krx: KrxClient, naver: Na
             "pos52": f["pos52"] if f else None,
             "gate": {x["key"]: x["status"] for x in live["gate1"]["criteria"]}, "gate_passed": live["gate1"]["passed"],
         })
+        # 전략 2 (상장일 종가 → +10거래일, ATR 손절) — 조건은 합산 때 strategy.conditions 로 거른다
+        s2 = strategy.eval_s2(conn, c["stock_code"], c["corp_cls"], sch["listing_date"])
+        rec["s2"] = {k: s2.get(k) for k in ("entry", "entry_date", "rsi", "atr", "stop", "gate", "points")} if s2 else None
         if not trade:
             rec["status"] = "no_rights_price"
             records.append(rec)
@@ -370,7 +373,8 @@ def run_year(year: int, cfg: Config, dart: DartClient, krx: KrxClient, naver: Na
         records.append(rec)
 
     summary = {
-        "year": year, "months": months, "generated_at": db.now(), "logic_version": LOGIC_VERSION, "range": [bgn.isoformat(), end.isoformat()],
+        "year": year, "months": months, "generated_at": db.now(), "logic_version": LOGIC_VERSION,
+        "strategy_version": strategy.STRATEGY_VERSION, "range": [bgn.isoformat(), end.isoformat()],
         "counts": {
             "cases": len(cases), "no_rights_listing": len(unlisted), "parse_target": n_target, "parse_ok": n_ok,
             "parse_rate": round(n_ok / n_target * 100, 1) if n_target else None,
@@ -441,10 +445,46 @@ FILTERS = [("gate", "관문1 전체"), ("debt", "채무상환 비중"), ("diluti
 BASE_POINTS = ("상장일 시가", "+5일", "+20일")
 
 
+def _cond(r: dict, gap: bool = True) -> dict:
+    return strategy.conditions(r.get("dilution"), r.get("debt_pct"), r.get("op_income"), r.get("gap") if gap else None)
+
+
+def strategy_stats(recs: list[dict], s2_recs: list[dict], s2_missing: list[int]) -> dict:
+    """[18] 전략·금지 규칙의 기출 근거 (카드 근거 줄이 이 숫자를 읽는다 — 하드코딩 금지).
+    s1·s3 = 비교 기준(인수권 마지막 날 인수권 매수+청약)과 같은 진입. s1 은 "팔지 않았다면" → sell_rate = ret<0 비율.
+    s2 = 상장일 종가 진입, 손절 포함 (+10일 = 청산). 금지 규칙은 +20일 비교 기준."""
+    def pts(rs, key, labels):
+        return {lb: stats([_point(r[key], lb) for r in rs]) for lb in labels}
+
+    s1 = [r for r in recs if _cond(r)["ok"]["s1"]]
+    s3 = [r for r in recs if _cond(r)["ok"]["s3"]]
+    s2 = [r for r in s2_recs if _cond(r, gap=False)["ok"]["s2"]]
+    s1_rets = [p["ret"] for p in (_point(r["base"], "+20일") for r in s1) if p.get("ret") is not None]
+    out = {
+        "version": strategy.STRATEGY_VERSION,
+        "s1": {"n": len(s1), "point": "+20일", "points": pts(s1, "base", BASE_POINTS),
+               "sell_rate": round(sum(x < 0 for x in s1_rets) / len(s1_rets) * 100) if s1_rets else None,
+               "n_measured": len(s1_rets)},
+        "s2": {"n": len(s2), "point": f"+{strategy.S2_HOLD_DAYS}일", "missing_years": s2_missing,
+               "points": pts(s2, "s2", ("+5일", f"+{strategy.S2_HOLD_DAYS}일")),
+               "gate_pass": pts([r for r in s2 if r["s2"].get("gate")], "s2", (f"+{strategy.S2_HOLD_DAYS}일",)),
+               "stopped": sum(any(p.get("stopped") for p in r["s2"]["points"]) for r in s2)},
+        "s3": {"n": len(s3), "point": f"+{strategy.S3_EXIT_DAYS}일", "points": pts(s3, "base", BASE_POINTS)},
+        "bans": {
+            "dilution": {**stats([_point(r["base"], "+20일") for r in recs if "dilution" in _cond(r)["bans"]]),
+                         "point": "+20일"},
+            "loss": {**stats([_point(r["base"], "+20일") for r in recs if "loss" in _cond(r)["bans"]]), "point": "+20일"},
+            "too_cheap": {**stats([_point(r["base"], "+20일") for r in recs if "too_cheap" in _cond(r)["bans"]]),
+                          "point": "+20일"},
+        },
+    }
+    return out
+
+
 def aggregate(out_dir: Path = BACKTEST_DIR) -> dict:
     """연도 결과 합산. 판정 로직이 지금(LOGIC_VERSION)과 다른 해는 채점에서 빼고 '재채점 필요'로만 표시 —
     판정 기준이 바뀌면 옛 채점과 섞이지 않게 (버전 구분)."""
-    years, recs, stale = [], [], []
+    years, recs, stale, s2_recs, s2_missing = [], [], [], [], []
     for f in sorted(out_dir.glob("*.json")):
         y = json.loads(f.read_text(encoding="utf-8"))
         lv = y.get("logic_version", 1)
@@ -454,6 +494,11 @@ def aggregate(out_dir: Path = BACKTEST_DIR) -> dict:
             stale.append(y["year"])
             continue
         recs += [dict(r, year=y["year"]) for r in y["cases"] if r.get("status") == "scored"]
+        # 전략 2 는 인수권 시세가 없어도(no_rights_price) 상장일 본주 시세만 있으면 잴 수 있다
+        if y.get("strategy_version"):
+            s2_recs += [dict(r, year=y["year"]) for r in y["cases"] if r.get("s2")]
+        else:
+            s2_missing.append(y["year"])
 
     by_verdict = []
     for v, (emoji, name) in VERDICTS.items():
@@ -479,6 +524,7 @@ def aggregate(out_dir: Path = BACKTEST_DIR) -> dict:
                    "p25": percentile(rets, 0.25), "min": min(rets) if rets else None,
                    "use": len(rets) >= MIN_CARD_N}
     out = {"generated_at": db.now(), "logic_version": LOGIC_VERSION, "years": years, "n_scored": len(recs),
+           "strategies": strategy_stats(recs, s2_recs, s2_missing),
            "stale_years": stale,
            "by_verdict": by_verdict, "filters": filters, "card_scenarios": card, "min_card_n": MIN_CARD_N,
            "base_note": "필터별 결과는 판정과 무관하게 모든 케이스를 '인수권 마지막 날 인수권 매수 + 청약'으로 "

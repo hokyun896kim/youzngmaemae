@@ -175,6 +175,27 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .tlist li.now{color:var(--red);font-weight:700}.tlist li.now::before{background:var(--red);border-color:var(--red)}
 .tlist .dd{font-variant-numeric:tabular-nums;color:var(--gold2)}.tlist li.done .dd{color:var(--mut)}
 .tlist .dl{font-size:11px;color:var(--mut);white-space:nowrap}
+/* [18] 전략 배지 */
+.ssum{margin:6px 0 4px;padding:9px 12px;border:1px solid rgba(212,175,55,.45);border-radius:12px;background:rgba(212,175,55,.06);font-size:13px;font-weight:700;line-height:1.6}
+.ssum small{display:block;font-weight:500;color:var(--mut);font-size:11px}
+.strat{margin:-2px 0 12px;display:grid;gap:8px}
+.sitem{border:1px solid rgba(212,175,55,.55);border-radius:12px;padding:10px 12px;background:rgba(212,175,55,.08)}
+.sitem.wait,.sitem.past{border-style:dashed;background:#0b1322}
+.sitem .sh{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.sitem .sb{font-size:15px;font-weight:800;color:var(--gold2)}
+.sitem .st{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+.sitem .st.live{background:var(--gold);color:#1a1405;border-color:var(--gold)}
+.sitem .sa{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin-top:8px}
+.sitem .sa div{background:#0b1322;border:1px solid var(--line);border-radius:9px;padding:6px 8px;font-size:12px;line-height:1.4}
+.sitem .sa span{display:block;color:var(--mut);font-size:10.5px}
+.sitem .sa b{font-variant-numeric:tabular-nums}
+.sitem .ev{font-size:11.5px;color:var(--mut);margin-top:7px;line-height:1.5}
+.sitem .ev b{color:var(--txt)}
+.sban{border:1px solid #8a3530;border-radius:12px;padding:10px 12px;background:#2a1414;color:#f0a8a2;font-size:13px;font-weight:700;line-height:1.55}
+.sban small{display:block;font-weight:500;color:#c99;font-size:11px}
+.snone{font-size:12px;color:var(--mut);padding:6px 10px;border:1px dashed var(--line);border-radius:10px}
+.snote{font-size:11.5px;color:#e8c46a}
+.gok{color:#8fe0bf}.gno{color:#f0a8a2}
 @media (max-width:600px){
  body{font-size:13.5px}
  .def{font-size:12.5px}
@@ -212,6 +233,7 @@ a{color:var(--gold2)}
  <button class="btn gold" id="briefBtn" onclick="copyBriefing(this)">🤖 전체 브리핑 프롬프트 복사</button>
 </div>
 <div id="briefPreview" class="preview"></div>
+<div class="ssum" id="ssum" hidden></div>
 
 <h2>오늘 볼 것 <small id="todayDate"></small></h2>
 <div class="today" id="today"></div>
@@ -223,6 +245,8 @@ a{color:var(--gold2)}
 <div class="tabs" id="tabs"></div>
 <div class="cards" id="cases"></div>
 
+<h2>전략별 성적표 <small>기출(백테스트) vs 실전 이후 가상 성과 · 청산 시점 기준</small></h2>
+<div id="sscore"></div>
 <h2>판정별 성적표 <small>가상 진입 기준 · 신주 상장 +20거래일</small></h2>
 <div id="score"></div>
 <h2>기출문제 성적표 <small>2020~2026.06 과거 주주배정 유증 백테스트 · 판정 로직 그대로 · 미래 정보 금지</small></h2>
@@ -231,11 +255,17 @@ a{color:var(--gold2)}
 <div class="modal" id="guide" onclick="if(event.target===this)closeGuide()"><div class="mbox">
 <button class="btn x" onclick="closeGuide()">닫기 ✕</button>
 <h3>📘 이 사이트를 읽는 법</h3>
-<p>유증 레이더는 <b>"어느 유증 케이스를 깊게 팔지"</b> 골라주는 발견 도구입니다. 매수·매도 신호를 주지 않습니다.</p>
+<p>유증 레이더는 <b>"어느 유증 케이스를 깊게 팔지"</b> 골라주는 발견 도구입니다. 카드 맨 위 <b>전략 배지</b>(🥇🥈🥉·⛔)는 과거 유증 백테스트(기출문제)에서 나온 행동 카드일 뿐, 확정 신호가 아닙니다.</p>
 <div class="uc"><b class="t">1단계 · 증자방식부터 거른다</b>주주배정 계열(주주배정증자, 주주배정후 실권주 일반공모)만 신주인수권증서가 나옵니다. 나머지(제3자배정·일반공모)는 <b>관찰</b> 탭으로 빠집니다.</div>
 <div class="uc"><b class="t">2단계 · 회사부터 본다 (B = 본업)</b>자금 목적 막대가 <b style="color:var(--red)">채무상환</b> 위주거나, 신주÷기존주가 100%를 넘는 <b>초대형 희석</b>이면 빨간 배지가 붙습니다. 필터 5개(업계 1~3위 / 안 망할 회사 / 대체 불가 / 영업흑자 / 52주 중간 이하)를 통과해야 B 후보입니다.</div>
 <div class="uc"><b class="t">3단계 · 사이클 위치를 본다</b>카드의 금색 라벨이 지금 구간입니다: ① 권리 확보 → ② 권리락 후 → ③ <b>인수권 거래 중</b> → ④ 청약 → ⑤ 상장 대기 → ⑥ 상장 후 매물 소화. 타임라인의 빨간 선이 오늘입니다.</div>
 <div class="uc"><b class="t">4단계 · 인수권 괴리를 본다 (A = 보너스)</b>괴리율 = 인수권 ÷ (본주 − 발행가) − 1.<br><b class="neg">음수(초록)</b> = 인수권이 싸다 → "인수권 매수 + 청약"으로 본주보다 싸게 신주 확보 검토.<br><b class="pos">양수(빨강)</b> = 인수권이 비싸다 → 보유 인수권 매도 검토.<br>예) SK디앤디 12R: 인수권 636 / 이론가 1,135(3,395 − 2,260) → <b class="neg">−44%</b>, 인수권+청약 원가 2,896원.</div>
+<h3>🥇🥈🥉 전략 배지 (기존 판정 🟢🟡🔵⚪ 위에 얹음)</h3>
+<div class="uc"><b class="t">⛔ 금지 규칙이 먼저</b>희석 100% 이상이면 전략 전부 끔(패스). 직전 분기 적자면 전략 2·3 불가(전략 1은 가능). 괴리 −40% 이하면 전략 3 불가(너무 싼 인수권). 남는 전략이 없으면 ⛔.</div>
+<div class="uc"><b class="t">🥇 전략1 · 비싼 인수권 팔기</b>인수권 괴리율 +20% 이상 → 인수권 보유자는 매도, 신규 매수 금지.</div>
+<div class="uc"><b class="t">🥈 전략2 · 신주 상장일 매수 → 10거래일 보유</b>흑자 + 희석 &lt; 50% + 채무상환 &lt; 50%. 상장 D-3부터 표시. 상장일 종가 진입 · +10거래일 청산 · 손절 = 진입가 − ATR(14)×2 · 비중 평소의 절반 · 상장일 종가 RSI(14) ≤ 50 이면 진입 가능.</div>
+<div class="uc"><b class="t">🥉 전략3 · 적당히 싼 인수권 매수 + 청약</b>흑자 + 희석 &lt; 100% + 괴리율 −20~0%. 인수권 매수 → 청약 → 상장 후 +5거래일 안에 청산 · 소액.</div>
+<p>근거 줄의 숫자는 <code>data/backtest.json</code> 에서 읽습니다 — 백테스트를 다시 돌리면 자동으로 바뀝니다. 전략별 가상 성과는 아래 "전략별 성적표"에 기출과 나란히 쌓입니다.</p>
 <h3>⚖️ 이미 결론 난 것 (재논의 금지)</h3>
 <p>할인율은 수익이 아닙니다. 권리락 이론가 <code>P_x = (P + r·I) / (1 + r)</code>로 이론상 제로섬이고, 인수권 매도 대금은 깎인 보유주 가치의 보상입니다. 초과청약은 배정주식의 20% 한도이고 실권주가 있어야만 배정됩니다. 진짜 엣지는 <b>회복(B)·수급 타이밍·인수권 괴리(A)·레버리지</b>입니다.</p>
 <h3>🤖 GPT 분석지침 — 프롬프트 두 종류</h3>
@@ -243,7 +273,7 @@ a{color:var(--gold2)}
 <div class="uc"><b class="t">개별기업 분석 프롬프트 (각 카드 하단)</b>한 케이스의 공시·일정·정정 이력·괴리율 추이와 1차 자료 링크를 채워 넘깁니다. 자금 목적의 실체 → 필터 5개 판정 → 발행가 산식·보험 구간 → 최대주주 청약 → A 판정 → 수급 사이클 → 베어 케이스 → 반증 조건 → 결론 순서로 깊게 분석합니다.</div>
 <p>두 프롬프트 모두 위 결론을 <b>전제</b>로, 이 수집기의 맹점(파서 미검증·권리락일 추정·발행가 산식 미확인)을 <b>검증 지침</b>으로 담고 있습니다. <b>1차 자료(DART 원문·증권신고서)를 같이 읽힐수록</b> 품질이 올라갑니다.</p>
 <h3>⛔ 이 도구가 하지 않는 것</h3>
-<p>매수·매도 신호, 목표가는 주지 않습니다. MACD·볼린저는 쓰지 않습니다(타이밍은 일목·RSI 50 게이트·ATR로만). 최종 판단은 1차 자료와 미래에셋 화면으로 직접 확인한 뒤 형님이 내립니다.</p>
+<p>목표가는 주지 않습니다. 전략 배지도 기출 통계일 뿐 확정 신호가 아닙니다. MACD·볼린저는 쓰지 않습니다(타이밍은 일목·RSI 50 게이트·ATR로만). 최종 판단은 1차 자료와 미래에셋 화면으로 직접 확인한 뒤 형님이 내립니다.</p>
 </div></div>
 
 <footer>데이터: OpenDART(유상증자결정·증권신고서·원문), KRX Open API(sr_bydd_trd·stk/ksq_bydd_trd).
@@ -416,6 +446,71 @@ function drawSpark(pts,W){
   <text x="${W-R}" y="${H-6}" fill="#7d8aa3" font-size="10" text-anchor="end">${pts.at(-1).d.slice(5)} · ${pct(pts.at(-1).gap)}</text></svg>`;
 }
 
+// ---- [18] 전략 배지: 규칙·상수 = site.json strategy_rules(strategy.py), 근거 숫자 = backtest.json strategies ----
+let BT=null;
+const SNUM={s1:'전략1',s2:'전략2',s3:'전략3'};
+const spct=v=>v==null?'—':(v>0?'+':'')+Number(v).toFixed(1)+'%';
+function stratEvidence(k){
+  const S=BT&&BT.strategies; if(!S||!S[k]) return '기출 근거 없음 — 백테스트 합산 후 표시';
+  const x=S[k], p=(x.points||{})[x.point]||{};
+  if(k==='s1'){const p20=(x.points||{})['+20일']||{};
+    return x.sell_rate==null?'기출 표본 없음':`기출: 괴리 +${DATA.strategy_rules.s1_gap_min}%↑ <b>${x.n_measured}건 중 ${x.sell_rate}%</b>에서 매도가 유리 <span>(+20일 · 팔지 않고 청약했다면 중앙값 ${spct(p20.median)})</span>`;}
+  if(k==='s2'){
+    if(!x.n) return (x.missing_years||[]).length?`기출 근거 대기 — 백테스트 재실행 후 표시 (상장일 이후 시세를 새로 기록해야 함)`:'기출 표본 없음';
+    const g=(x.gate_pass||{})[x.point]||{};
+    return `기출: <b>${x.n}건 · ${x.point} 중앙값 ${spct(p.median)} · 승률 ${p.win_rate}% · 최악 ${spct(p.worst)}</b>${g.n?` <span>(RSI 게이트 통과 ${g.n}건 중앙값 ${spct(g.median)} · 손절 청산 ${x.stopped}건)</span>`:''}`;}
+  const p20=(x.points||{})['+20일']||{};
+  return x.n?`기출: 괴리 −20~0% · 흑자 · 희석 &lt; 100% <b>${x.n}건 · ${x.point}(청산) 중앙값 ${spct(p.median)} · 승률 ${p.win_rate}%</b> <span>(+20일 중앙값 ${spct(p20.median)} · 승률 ${p20.win_rate}%)</span>`:'기출 표본 없음';
+}
+function banLine(b){
+  const R=DATA.strategy_rules.bans[b], x=BT&&BT.strategies&&BT.strategies.bans[b];
+  const med=x&&x.n?` — 과거 중앙값 ${spct(x.median)}`:'';
+  const lab=b==='too_cheap'?`${R.label}(괴리 ≤ ${DATA.strategy_rules.too_cheap_gap}%)`:R.label;
+  return `⛔ ${esc(lab)}${med}, ${esc(R.effect)}`;
+}
+function stratBox(c){
+  const S=c.strategy, R=DATA.strategy_rules; if(!S||!R) return '';
+  if(S.ban) return `<div class="strat"><div class="sban">${S.ban.map(banLine).join('<br>')}<small>금지 규칙 (최우선) · +20일 비교 기준 = 인수권 마지막 날 인수권 매수+청약</small></div></div>`;
+  if(!S.items.length) return `<div class="strat"><div class="snone">해당 전략 없음${S.gap==null?' · 인수권 괴리 대기':''}</div></div>`;
+  const stTxt=it=>it.state==='live'?'지금 해당':it.state==='wait'?(it.window&&it.window[0]?`대기 · ${md(it.window[0])}부터`:'대기 · 상장일 미정'):'기간 종료';
+  const box=(l,v)=>`<div><span>${l}</span>${v}</div>`;
+  const items=S.items.map(it=>{
+    const D=R.strategies[it.key]; let act='';
+    if(it.key==='s1') act=box('인수권 거래',it.window[0]?`<b>${md(it.window[0])}~${md(it.window[1])}</b>`:'—')+box('괴리율',`<b class="pos">${spct(S.gap)}</b>`)+box('행동','<b>보유분 매도 · 신규 매수 금지</b>');
+    else if(it.key==='s3') act=box('인수권 매수',it.window[0]?`<b>${md(it.window[0])}~${md(it.window[1])}</b>`:'—')+box('청약','<b>인수권분 청약</b>')+box('청산',`<b>상장 후 +${R.s3_exit_days}거래일 안</b>${it.exit_by?' ('+md(it.exit_by)+'까지)':''}`)+box('비중','<b>소액</b>');
+    else{
+      const gate=it.rsi==null?'<b class="mut">RSI 계산 불가</b>':`<b class="${it.gate?'gok':'gno'}">RSI ${it.rsi} → ${it.gate?'진입 가능':'게이트 미통과'}</b>`;
+      act=box('진입 = 상장일 종가',it.listing?`<b>${it.entry!=null?fmt(it.entry)+'원':md(it.listing)}</b>${it.entry!=null?' ('+md(it.listing)+')':''}`:'<b class="mut">상장일 미정</b>')
+        +box(`청산 = +${R.s2_hold_days}거래일`,it.exit_on?`<b>${md(it.exit_on)}</b>`:'—')
+        +box(`손절 = 진입가 − ATR×${R.s2_atr_mult}`,it.stop!=null?`<b>${fmt(it.stop)}원</b> <small class="mut">ATR ${fmt(Math.round(it.atr))} · ${esc(it.stop_basis)}</small>`:'<b class="mut">ATR 계산 불가</b>')
+        +box('비중','<b>평소의 절반</b>')
+        +box(`진입 게이트 (RSI ≤ ${R.rsi_max})`,`${gate}${it.confirmed?'':' <small class="mut">'+(it.ind_asof?md(it.ind_asof)+' 기준 미리보기 · 상장일 종가로 확정':'')+'</small>'}`);}
+    return `<div class="sitem ${it.state}"><div class="sh"><span class="sb">${D.medal} ${SNUM[it.key]} · ${esc(D.title)}</span><span class="st ${it.state}">${stTxt(it)}</span><span class="mut" style="font-size:11px">증거 ${D.evidence}</span></div>
+      <div class="sa">${act}</div><div class="ev">${stratEvidence(it.key)}<br><span>조건: ${esc(D.cond)}</span></div></div>`;}).join('');
+  const notes=S.bans.length?`<div class="snote">⚠ ${S.bans.map(b=>esc(R.bans[b].label+' — '+R.bans[b].effect)).join(' · ')}</div>`:'';
+  return `<div class="strat">${items}${notes}</div>`;
+}
+function stratSummary(){
+  const R=DATA.strategy_rules; if(!R) return;
+  const open=DATA.cases.filter(c=>c.is_rights&&c.status==='open'&&c.strategy);
+  const cnt=st=>Object.fromEntries(Object.keys(R.strategies).map(k=>[k,open.filter(c=>c.strategy.items.some(i=>i.key===k&&i.state===st)).length]));
+  const live=cnt('live'), wait=cnt('wait'), ban=open.filter(c=>c.strategy.ban).length;
+  const el=$('#ssum'); el.hidden=false;
+  el.innerHTML=`지금 해당 전략 ${Object.keys(R.strategies).map(k=>`${R.strategies[k].medal}${live[k]}`).join(' · ')}<small>대기 ${Object.keys(R.strategies).map(k=>`${R.strategies[k].medal}${wait[k]}`).join(' · ')} · ⛔ ${ban}건 · 주주배정 진행 ${open.length}건 기준 · 전략 배지는 기존 판정(🟢🟡🔵⚪) 위에 얹는 행동 카드</small>`;
+}
+function renderSScore(){
+  const R=DATA.strategy_rules, rows=DATA.strategy_scorecard||[]; if(!R){$('#sscore').innerHTML='<div class="empty">다음 수집부터 표시됩니다.</div>';return;}
+  const S=(BT&&BT.strategies)||{};
+  const exam=k=>{const x=S[k]; if(!x) return ['—','—','—','—'];
+    if(k==='s1'){const p=(x.points||{})['+20일']||{};return [x.n_measured??x.n,spct(p.median),x.sell_rate==null?'—':x.sell_rate+'% (매도 유리)',spct(p.p75)];}
+    const p=(x.points||{})[x.point]||{}; if(!x.n) return [(x.missing_years||[]).length?'재실행 필요':'0','—','—','—'];
+    return [x.n,spct(p.median),p.win_rate==null?'—':p.win_rate+'%',spct(p.worst)];};
+  $('#sscore').innerHTML=`<div class="tblw"><table><thead><tr><th>전략</th><th>청산 시점</th><th>기출 건수</th><th>기출 중앙값</th><th>기출 승률</th><th>기출 최악</th><th>실전 기록</th><th>실전 완료</th><th>실전 중앙값</th><th>실전 승률</th><th>실전 최악</th></tr></thead><tbody>${
+    rows.map(r=>{const D=R.strategies[r.strategy], e=exam(r.strategy);
+      return `<tr><td><b>${D.medal} ${SNUM[r.strategy]}</b><br><small class="mut">${esc(D.name)}</small></td><td>${r.point}</td><td>${e[0]}</td><td>${e[1]}</td><td>${e[2]}</td><td>${e[3]}</td><td>${r.n}건</td><td>${r.done}건</td><td>${spct(r.median)}</td><td>${r.win_rate==null?'—':r.win_rate+'%'+(r.strategy==='s1'?' (매도 유리)':'')}</td><td>${spct(r.worst)}</td></tr>`;}).join('')
+  }</tbody></table></div><div class="meta" style="margin-top:6px">🥇 수익률은 "팔지 않고 청약했다면"(원금 = 인수권 종가 + 발행가) — 낮을수록 매도 적중, 승률 = 매도가 유리했던 비율, 최악 = 매도로 가장 손해 본 경우(기출은 75% 지점). 🥈 상장일 종가 진입 · ATR×2 손절 포함 · +10거래일 청산. 🥉 인수권 매수+청약 → +5거래일. 실전 기록은 전략 조건을 충족한 순간의 스냅샷(불변) — 🥇🥉 인수권 마지막 날, 🥈 신주 상장일 종가.</div>`;
+}
+
 function caseCard(c){
   const s=c.schedule||{}, sm=c.summary||{}, pp=sm.purpose_pct||{};
   const purp=Object.entries(pp).map(([k,v])=>`<i style="width:${v}%;background:${PURP_COL[k]||'#555'}" title="${k} ${v}%"></i>`).join('');
@@ -437,7 +532,7 @@ function caseCard(c){
   <div class="meta">최초 공시 ${c.first_rcept_dt} · ${esc(c.ic_mthn||'증자방식 미상')}</div>
   ${c.is_rights&&c.status==='open'?`<span class="stage">${esc(caseStage(s))}</span>`:''}</div>
   <div>${c.is_rights?'<span class="badge gold">주주배정 · 인수권</span>':'<span class="badge">관찰</span>'} ${debt?'<span class="badge red">채무상환형</span>':''} ${big?'<span class="badge red">초대형 희석</span>':''} ${fssReq?'<span class="badge red">금감원 정정요구</span>':''}</div></div>
-  ${vbar}${quick}${c.is_rights?raceBar(c):''}${crit}
+  ${c.is_rights?stratBox(c):''}${vbar}${quick}${c.is_rights?raceBar(c):''}${crit}
   <div class="grid">${kv('발행가'+(s.issue_kind?` <span class="mut">(${esc(s.issue_kind)})</span>`:''),fmt(s.issue_price)+'원')}${kv('배정비율',s.alloc_ratio!=null?Number(s.alloc_ratio).toFixed(4):'—')}${kv('신주÷기존주',sm.dilution_ratio!=null?(sm.dilution_ratio*100).toFixed(0)+'%':'—')}${kv('모집 규모',sm.total_amount?Math.round(sm.total_amount/1e8).toLocaleString()+'억':'—')}</div>
   ${purp?`<div class="meta">자금 목적</div><div class="purp">${purp}</div><div class="legend">${leg}</div>`:''}
   ${c.is_rights?timeline(s):''}${swarn}
@@ -457,7 +552,9 @@ function renderCases(){
   $('#tabs').innerHTML=Object.keys(groups).map(k=>`<button class="tab ${k===TAB?'on':''}" data-k="${k}">${names[k]} ${DATA.cases.filter(groups[k]).length}</button>`).join('');
   document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{TAB=b.dataset.k;renderCases();});
   const rank=Object.keys(DATA.verdicts||{}), rk=c=>{const i=rank.indexOf((c.verdict||{}).code);return i<0?99:i;};
-  const list=DATA.cases.filter(groups[TAB]).map((c,i)=>[c,i]).sort((a,b)=>rk(a[0])-rk(b[0])||a[1]-b[1]).map(x=>x[0]);
+  // [15] 정렬: 전략 배지(지금 해당 → 대기·종료) → ⛔ → 나머지, 그 안에서 판정 순
+  const sk=c=>(c.strategy||{}).rank??3;
+  const list=DATA.cases.filter(groups[TAB]).map((c,i)=>[c,i]).sort((a,b)=>sk(a[0])-sk(b[0])||rk(a[0])-rk(b[0])||a[1]-b[1]).map(x=>x[0]);
   SPARKS.length=0;
   $('#cases').innerHTML=list.length?list.map(caseCard).join(''):'<div class="empty">해당 케이스가 없습니다.</div>';
   drawSparks();
@@ -484,6 +581,11 @@ function renderToday(){
       if(left<=2) items.push({o:0,dot:'🔴',c,text:`${c.corp_name} 인수권 거래 마감 ${left===0?'오늘':'D-'+left} (${s.rights_end})`,sub:c.verdict?`${c.verdict.emoji} ${c.verdict.reason}`:''});}
     for(const [k,l] of [['ex_rights_date','권리락'],['price_fix_date','확정발행가 산정'],['subs_start','청약 시작'],['listing_date','신주 상장']]){
       if(s[k]===tomorrow) items.push({o:1,dot:'🟡',c,text:`${c.corp_name} ${l} D-1 (${s[k]})`,sub:c.verdict?`${c.verdict.emoji} ${c.verdict.name}`:''});}
+    for(const it of ((c.strategy||{}).items||[])){
+      if(it.key==='s2'&&it.listing===t) items.push({o:0,dot:'🥈',c,text:`${c.corp_name} 전략2 진입일 — 상장일 종가 매수 판단`,sub:it.rsi!=null?`RSI ${it.rsi} → ${it.gate?'진입 가능':'게이트 미통과'} (종가로 확정)`:''});
+      if(it.key==='s2'&&it.exit_on===t) items.push({o:0,dot:'🥈',c,text:`${c.corp_name} 전략2 청산일 (+10거래일)`,sub:''});
+      if(it.key==='s3'&&it.exit_by===t) items.push({o:0,dot:'🥉',c,text:`${c.corp_name} 전략3 청산 마감 (상장 +5거래일)`,sub:''});
+    }
     const fd=`${c.first_rcept_dt.slice(0,4)}-${c.first_rcept_dt.slice(4,6)}-${c.first_rcept_dt.slice(6)}`;
     if(fd>=addDays(t,-3)) items.push({o:2,dot:'🟢',c,text:`${c.corp_name} 신규 주주배정 공시 (${fd})`,sub:`${esc(c.ic_mthn||'')} · ${c.verdict?c.verdict.emoji+' '+c.verdict.reason:''}`});
   }
@@ -562,13 +664,13 @@ addEventListener('keydown',e=>{if(e.key==='Escape')closeGuide();});
 function copyCheck(id,btn){const c=DATA.cases.find(x=>x.case_id===id);copyText(buildCheckPrompt(c),btn,$('#pq'+id),btn.dataset.label);}
 function copyCase(id,btn){const c=DATA.cases.find(x=>x.case_id===id);copyText(buildCasePrompt(c,DATA),btn,$('#pv'+id),btn.dataset.label);}
 function copyBriefing(btn){if(!DATA)return;copyText(buildBriefingPrompt(DATA),btn,$('#briefPreview'),'🤖 전체 브리핑 프롬프트 복사');}
-fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{
-  DATA=d;
+Promise.all([fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()),
+  fetch('./data/backtest.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]).then(([d,bt])=>{
+  DATA=d; BT=bt;
   const c=d.counts;
   const age=(Date.now()-new Date(d.generated_at).getTime())/3600e3, stale=!(age<24);
   const rc=d.cases.filter(x=>x.is_rights&&x.status==='open').length;
   $('#chips').innerHTML=[['갱신',d.generated_at.replace('T',' ').slice(0,16)+(stale?` · ${Math.floor(age)}시간 전`:''),stale],['인수권 시세',d.last_rights_date||'—'],['주주배정 진행',rc+'건'],['가상 기록',(c.paper_trades??0)+'건'],['제외 공시',(c.excluded_disclosures??0)+'건']].map(([l,v,st])=>`<div class="chip${st?' stale':''}">${l}<b>${v}</b></div>`).join('');
-  renderToday();renderRights();renderCases();renderScore();
-  fetch('./data/backtest.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(renderExam).catch(()=>{});
+  stratSummary();renderToday();renderRights();renderCases();renderSScore();renderScore();renderExam(BT);
 }).catch(e=>{$('#chips').innerHTML=`<div class="empty">data/site.json 을 읽지 못했습니다 (${esc(e.message)}). 로컬에선 python -m http.server 로 여세요.</div>`});
 </script></body></html>
