@@ -1,0 +1,79 @@
+name: 백테스트 전체 (연도 병렬)
+
+# Actions → "백테스트 전체 (연도 병렬)" → Run workflow 한 번이면 여러 해를 동시에 돌리고
+# 끝나면 한 번에 합산·커밋한다. 해마다 따로 누를 필요 없음.
+#  - 연도 job 은 결과 파일(data/backtest/<연도>.json)만 만들어 올리고 커밋하지 않는다
+#  - 마지막 job 이 전부 모아 data/backtest.json 합산 + site.json(카드 손익표) 갱신 후 한 번 커밋
+#  - 한 해가 실패해도 나머지 해는 계속 (fail-fast 끔), 실패한 해만 다시 돌리면 된다
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: '돌릴 연도 (JSON 배열, 2020~2026). 2026은 6월까지. 2020은 v3로 이미 채점됨'
+        default: '[2021, 2022, 2023, 2024, 2025, 2026]'
+
+permissions:
+  contents: write
+
+jobs:
+  year:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 4        # DART·KRX 에 한꺼번에 몰리지 않게 동시 4개까지
+      matrix:
+        year: ${{ fromJSON(github.event.inputs.years) }}
+    env:
+      PYTHONUNBUFFERED: '1'
+      DART_API_KEY: ${{ secrets.DART_API_KEY }}
+      KRX_API_KEY: ${{ secrets.KRX_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install --quiet -r requirements.txt
+      - name: Backtest ${{ matrix.year }}
+        run: python -m yujeung backtest --year ${{ matrix.year }} --no-export
+      - uses: actions/upload-artifact@v4
+        with:
+          name: backtest-${{ matrix.year }}
+          path: data/backtest/${{ matrix.year }}.json
+
+  aggregate:
+    needs: year
+    if: always()             # 일부 연도가 실패해도 성공한 해는 합산·커밋
+    runs-on: ubuntu-latest
+    concurrency:
+      group: yujeung-collect # 정기 수집·단일 backtest 와 같은 줄 — 커밋이 겹치지 않게
+      cancel-in-progress: false
+    env:
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install --quiet -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: backtest-*
+          path: data/backtest
+          merge-multiple: true
+      - name: 합산 + 사이트 갱신
+        run: |
+          ls -l data/backtest
+          python -m yujeung backtest --aggregate-only
+      - name: Commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/backtest.json data/backtest data/site.json data/yujeung.sql
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 생략"
+          else
+            git commit -m "chore: 백테스트 전체 합산 ($(TZ=Asia/Seoul date +%Y-%m-%d\ %H:%M) KST)"
+            git pull --rebase origin "${GITHUB_REF_NAME}" || { git rebase --abort; exit 1; }
+            git push
+          fi
