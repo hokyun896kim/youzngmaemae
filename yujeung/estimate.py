@@ -18,7 +18,7 @@ from __future__ import annotations
 import re
 from datetime import date
 
-from .verdict import DISC_MAX, base, green_price, unconfirmed
+from .verdict import DISC_FLOOR, base, green_price, unconfirmed
 
 SCENARIOS = [("좋음", 0.15), ("보통", 0.0), ("나쁨", -0.15), ("최악", -0.30)]
 SCENARIO_NOTE = ("기본값 시나리오 — Phase 1 백테스트 완료 시 실제 상장일 수익률 분포(25/50/75 퍼센타일)로 "
@@ -169,7 +169,7 @@ def recheck(verdict: str, g1: dict, gap: float | None, op_period: str | None, ch
     if verdict == "green":
         return f"괴리율 {cheap:.0f}% 위로 오르면(할인 축소) 🟡 재판정"
     if verdict == "yellow":
-        return f"괴리율 {cheap:.0f}% 이하 + 신주원가 할인율 {DISC_MAX:.0f}% 이하 시 🟢 인수권 매수+청약 검토"
+        return f"괴리율 {cheap:.0f}% 이하 + 신주원가 할인율 {DISC_FLOOR:.0f}% 초과(너무 깊지 않게) 시 🟢 인수권 매수+청약 검토"
     if g1.get("hard_fail"):
         return "희석 100% 이상 — 조건이 정정되지 않는 한 재검토 없음 (상장일까지 관찰 샘플)"
     conds = []
@@ -222,8 +222,8 @@ def quick(verdict: str, g1: dict, gap: float | None, sch: dict, facts: dict, clo
     return {
         **conclusion(verdict, g1, gap, stg, disc),
         # 🟢 가격 조건 두 숫자 나란히 (카드 표시용)
-        "green_check": {"gap": gap, "disc": disc, "cheap": cheap, "disc_max": DISC_MAX,
-                        "gap_ok": gap is not None and gap <= cheap, "disc_ok": disc is not None and disc <= DISC_MAX,
+        "green_check": {"gap": gap, "disc": disc, "cheap": cheap, "disc_floor": DISC_FLOOR,
+                        "gap_ok": gap is not None and gap <= cheap, "disc_ok": disc is not None and disc > DISC_FLOOR,
                         "ok": green_price(gap, disc, cheap)},
         "recheck": ("신주 상장일 시가 · +5 · +20거래일 가상 성과로 판정 검증" if tracking
                     else recheck(verdict, g1, gap, op_period, cheap, rich)),

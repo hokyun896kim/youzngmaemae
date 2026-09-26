@@ -17,13 +17,15 @@
 """
 from __future__ import annotations
 
-LOGIC_VERSION = 3   # 3: 🟢 에 신주원가 할인율 ≤ −10% 추가, '실권주 미발행' = 인수방식 탈락 ([17] 아이에이 검수)
+LOGIC_VERSION = 4   # 4: 🟢 원가할인 조건을 '≤ −10% 필수' → '−20% 초과'로 뒤집음 (기출: 깊은 할인 = 부실 신호)
+#                   3: 🟢 에 신주원가 할인율 ≤ −10% 추가, '실권주 미발행' = 인수방식 탈락 ([17] 아이에이 검수)
 #                   2: 관문1 자동 항목 미확인 → 🟢?/🟡? 확인 필요
 
-# 🟢 두 번째 조건: 실제 신주원가 할인율 = (인수권 + 발행가) ÷ 본주 − 1 ≤ DISC_MAX.
-# 괴리율만 싸도 발행가가 본주에 붙어 있으면 실제로 싸게 사는 게 아니다.
-# −10% 는 임시값 — 백테스트(기출문제)로 조정 예정
-DISC_MAX = -10.0
+# 🟢 두 번째 조건: 실제 신주원가 할인율 = (인수권 + 발행가) ÷ 본주 − 1 > DISC_FLOOR.
+# v3 는 '≤ −10% 필수'(실제로 싸게 사야 🟢)였지만 기출 287건에서 방향이 반대였다 —
+# 괴리 ≤ −20% 143건 중 원가할인 ≤ −20%: +20일 중앙값 −12.2% · 승률 21%(33건, 매년 같은 방향),
+# −20% 초과: +0.7% · 50%(110건). 너무 깊은 할인은 시장이 매긴 부실 신호 → 🟢 에서 뺀다 (결정 60)
+DISC_FLOOR = -20.0
 
 # 순서 = 화면 정렬·집계 순서 (확인 필요는 🟢/🟡 바로 다음)
 VERDICTS = {
@@ -123,17 +125,17 @@ def gate1(summary: dict, facts: dict, op_income: int | None, op_period: str | No
     }
 
 
-def green_price(gap: float | None, disc: float | None, cheap: float = -20.0, disc_max: float = DISC_MAX) -> bool:
-    """🟢 가격 조건: 괴리율 ≤ cheap AND 신주원가 할인율 ≤ disc_max (할인율 모르면 🟢 아님)."""
-    return gap is not None and gap <= cheap and disc is not None and disc <= disc_max
+def green_price(gap: float | None, disc: float | None, cheap: float = -20.0, disc_floor: float = DISC_FLOOR) -> bool:
+    """🟢 가격 조건: 괴리율 ≤ cheap AND 신주원가 할인율 > disc_floor (할인율 모르면 🟢 아님)."""
+    return gap is not None and gap <= cheap and disc is not None and disc > disc_floor
 
 
 def decide(g1: dict, gap: float | None, cheap: float = -20.0, rich: float = 20.0,
-           disc: float | None = None, disc_max: float = DISC_MAX) -> str:
+           disc: float | None = None, disc_floor: float = DISC_FLOOR) -> str:
     if gap is not None and gap >= rich:
         return "blue"
     if g1["passed"]:
-        v = "green" if green_price(gap, disc, cheap, disc_max) else "yellow"
+        v = "green" if green_price(gap, disc, cheap, disc_floor) else "yellow"
         return v + "_q" if g1.get("n_unknown") else v
     return "white"
 
