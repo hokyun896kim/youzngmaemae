@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-27T01:37:32+09:00",
+ "generated_at": "2026-09-27T09:59:25+09:00",
  "last_rights_date": "2026-09-23",
  "first_rights_date": "2026-07-21",
  "counts": {
@@ -571,7 +571,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -1021,7 +1021,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -1370,7 +1370,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -1792,7 +1792,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -2140,7 +2140,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -2508,7 +2508,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -2536,18 +2536,18 @@
     "table": [
      {
       "name": "좋음(상위 25%)",
-      "pct": 11.2,
-      "price": 1515636
+      "pct": 14.4,
+      "price": 1559251
      },
      {
       "name": "보통(중앙값)",
-      "pct": 1.5,
-      "price": 1383427
+      "pct": 5.5,
+      "price": 1437946
      },
      {
       "name": "나쁨(하위 25%)",
-      "pct": -2.3,
-      "price": 1331633
+      "pct": -0.5,
+      "price": 1356167
      },
      {
       "name": "최악",
@@ -2555,7 +2555,7 @@
       "price": 1199424
      }
     ],
-    "table_note": "기출 15건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
+    "table_note": "기출 13건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
      "days": 56.6,
      "avg_volume": 40133,
@@ -2858,7 +2858,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -3255,7 +3255,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -3283,18 +3283,18 @@
     "table": [
      {
       "name": "좋음(상위 25%)",
-      "pct": 11.2,
-      "price": 3089
+      "pct": 14.4,
+      "price": 3178
      },
      {
       "name": "보통(중앙값)",
-      "pct": 1.5,
-      "price": 2820
+      "pct": 5.5,
+      "price": 2931
      },
      {
       "name": "나쁨(하위 25%)",
-      "pct": -2.3,
-      "price": 2714
+      "pct": -0.5,
+      "price": 2764
      },
      {
       "name": "최악",
@@ -3302,7 +3302,7 @@
       "price": 2445
      }
     ],
-    "table_note": "기출 15건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
+    "table_note": "기출 13건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
      "days": 216.3,
      "avg_volume": 17108,
@@ -3665,7 +3665,7 @@
      "gap": -40.8,
      "disc": -13.2,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": true,
      "disc_ok": true,
      "ok": true
@@ -4059,7 +4059,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -4087,18 +4087,18 @@
     "table": [
      {
       "name": "좋음(상위 25%)",
-      "pct": 11.2,
-      "price": 117316
+      "pct": 14.4,
+      "price": 120692
      },
      {
       "name": "보통(중앙값)",
-      "pct": 1.5,
-      "price": 107082
+      "pct": 5.5,
+      "price": 111302
      },
      {
       "name": "나쁨(하위 25%)",
-      "pct": -2.3,
-      "price": 103074
+      "pct": -0.5,
+      "price": 104972
      },
      {
       "name": "최악",
@@ -4106,7 +4106,7 @@
       "price": 92840
      }
     ],
-    "table_note": "기출 15건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
+    "table_note": "기출 13건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
      "days": 27.3,
      "avg_volume": 363028,
@@ -4495,7 +4495,7 @@
     "reason": "채무상환 1% · 희석 37% → 관문1 통과(미확인 1) · 괴리 -38.8% → 🟢 인수권 매수+청약",
     "provisional": false,
     "decided_on": "2026-08-25",
-    "live_reason": "채무상환 1% · 희석 37% → 관문1 통과(미확인 1) · 괴리 -38.8% · 원가할인 -4.9% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+    "live_reason": "채무상환 1% · 희석 37% → 관문1 통과(미확인 1) · 괴리 -38.8% · 원가할인 -4.9% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
     "unconfirmed": []
    },
    "paper": {
@@ -4600,10 +4600,10 @@
      "gap": -38.8,
      "disc": -4.9,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": true,
-     "disc_ok": false,
-     "ok": false
+     "disc_ok": true,
+     "ok": true
     },
     "recheck": "신주 상장일 시가 · +5 · +20거래일 가상 성과로 판정 검증",
     "stage": "5",
@@ -5192,9 +5192,9 @@
      "gap": 66.2,
      "disc": 7.3,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
-     "disc_ok": false,
+     "disc_ok": true,
      "ok": false
     },
     "recheck": "신주 상장일 시가 · +5 · +20거래일 가상 성과로 판정 검증",
@@ -5708,7 +5708,7 @@
      "gap": -61.5,
      "disc": -16.8,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": true,
      "disc_ok": true,
      "ok": true
@@ -6273,9 +6273,9 @@
      "gap": -9.4,
      "disc": -1.7,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
-     "disc_ok": false,
+     "disc_ok": true,
      "ok": false
     },
     "recheck": "자금목적 정정(채무상환 50% 미만) 시 · 3Q 영업흑자 전환 시",
@@ -6865,9 +6865,9 @@
      "gap": -9.7,
      "disc": -1.5,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
-     "disc_ok": false,
+     "disc_ok": true,
      "ok": false
     },
     "recheck": "3Q 영업흑자 전환 시 · 주가가 52주 범위 중간 아래로 내려오면",
@@ -7457,7 +7457,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -7965,7 +7965,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -8497,7 +8497,7 @@
      "gap": null,
      "disc": null,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": false,
      "disc_ok": false,
      "ok": false
@@ -9069,7 +9069,7 @@
      "gap": -57.1,
      "disc": -13.4,
      "cheap": -20.0,
-     "disc_max": -10.0,
+     "disc_floor": -20.0,
      "gap_ok": true,
      "disc_ok": true,
      "ok": true

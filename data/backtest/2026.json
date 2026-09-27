@@ -1,8 +1,8 @@
 {
  "year": 2026,
  "months": 12,
- "generated_at": "2026-09-27T01:28:57+09:00",
- "logic_version": 3,
+ "generated_at": "2026-09-27T09:40:25+09:00",
+ "logic_version": 4,
  "strategy_version": 3,
  "range": [
   "2026-01-01",
@@ -2467,9 +2467,9 @@
      {
       "label": "+20일",
       "date": "2026-09-23",
-      "price": 4445,
-      "ret": 43.7,
-      "excess": 37.1
+      "price": 4400,
+      "ret": 42.3,
+      "excess": 35.6
      }
     ]
    },
@@ -2497,9 +2497,9 @@
      {
       "label": "+20일",
       "date": "2026-09-23",
-      "price": 4445,
-      "ret": 43.7,
-      "excess": 37.1
+      "price": 4400,
+      "ret": 42.3,
+      "excess": 35.6
      }
     ]
    }
@@ -2604,24 +2604,24 @@
    "gate_passed": true,
    "s2": null,
    "status": "scored",
-   "verdict": "yellow_q",
+   "verdict": "green_q",
    "decided_on": "2026-08-25",
-   "reason": "채무상환 1% · 희석 37% → 관문1 통과(미확인 1) · 괴리 -38.8% · 원가할인 -4.9% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "reason": "채무상환 1% · 희석 37% → 관문1 통과(미확인 1) · 괴리 -38.8% · 원가할인 -4.9% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
    "gap": -38.8,
    "eval": {
-    "entry": null,
-    "entry_date": null,
+    "entry": 1004,
+    "entry_date": "2026-08-25",
     "error": null,
-    "pending": "대기 중 (2026-09-29)",
+    "pending": null,
     "issue_note": null,
     "points": [
      {
-      "label": "+5일",
-      "pending": "대기 중 (2026-10-07)"
+      "label": "상장일 시가",
+      "pending": "대기 중 (2026-09-29)"
      },
      {
-      "label": "+10일",
-      "pending": "대기 중 (2026-10-15)"
+      "label": "+5일",
+      "pending": "대기 중 (2026-10-07)"
      },
      {
       "label": "+20일",

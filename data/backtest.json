@@ -1,11 +1,11 @@
 {
- "generated_at": "2026-09-27T01:37:32+09:00",
- "logic_version": 3,
+ "generated_at": "2026-09-27T09:59:25+09:00",
+ "logic_version": 4,
  "years": [
   {
    "year": 2020,
-   "generated_at": "2026-09-26T18:01:14+09:00",
-   "logic_version": 3,
+   "generated_at": "2026-09-27T09:13:58+09:00",
+   "logic_version": 4,
    "stale": false,
    "cases": 56,
    "no_rights_listing": 6,
@@ -30,8 +30,8 @@
   },
   {
    "year": 2021,
-   "generated_at": "2026-09-26T17:49:11+09:00",
-   "logic_version": 3,
+   "generated_at": "2026-09-27T09:17:47+09:00",
+   "logic_version": 4,
    "stale": false,
    "cases": 62,
    "no_rights_listing": 5,
@@ -56,8 +56,8 @@
   },
   {
    "year": 2022,
-   "generated_at": "2026-09-26T17:52:30+09:00",
-   "logic_version": 3,
+   "generated_at": "2026-09-27T09:22:24+09:00",
+   "logic_version": 4,
    "stale": false,
    "cases": 36,
    "no_rights_listing": 3,
@@ -82,8 +82,8 @@
   },
   {
    "year": 2023,
-   "generated_at": "2026-09-26T17:46:07+09:00",
-   "logic_version": 3,
+   "generated_at": "2026-09-27T09:14:40+09:00",
+   "logic_version": 4,
    "stale": false,
    "cases": 45,
    "no_rights_listing": 3,
@@ -108,8 +108,8 @@
   },
   {
    "year": 2024,
-   "generated_at": "2026-09-27T01:33:01+09:00",
-   "logic_version": 3,
+   "generated_at": "2026-09-27T09:54:18+09:00",
+   "logic_version": 4,
    "stale": false,
    "cases": 49,
    "no_rights_listing": 6,
@@ -134,8 +134,8 @@
   },
   {
    "year": 2025,
-   "generated_at": "2026-09-27T01:37:20+09:00",
-   "logic_version": 3,
+   "generated_at": "2026-09-27T09:59:14+09:00",
+   "logic_version": 4,
    "stale": false,
    "cases": 55,
    "no_rights_listing": 2,
@@ -160,8 +160,8 @@
   },
   {
    "year": 2026,
-   "generated_at": "2026-09-27T01:28:57+09:00",
-   "logic_version": 3,
+   "generated_at": "2026-09-27T09:40:25+09:00",
+   "logic_version": 4,
    "stale": false,
    "cases": 29,
    "no_rights_listing": 3,
@@ -230,44 +230,44 @@
    "n_measured": 31
   },
   "s2": {
-   "n": 14,
+   "n": 12,
    "point": "+10일",
    "missing_years": [],
    "points": {
     "+5일": {
-     "n": 14,
-     "win_rate": 57,
-     "mean": 4.7,
-     "median": 2.5,
-     "p25": -1.8,
-     "p75": 8.2,
-     "worst": -4.7,
-     "excess_mean": 4.4,
-     "excess_median": 0.6
+     "n": 12,
+     "win_rate": 50,
+     "mean": 1.8,
+     "median": 0.6,
+     "p25": -2.5,
+     "p75": 4.8,
+     "worst": -8.9,
+     "excess_mean": 1.8,
+     "excess_median": -0.7
     },
     "+10일": {
-     "n": 14,
-     "win_rate": 71,
-     "mean": 5.0,
-     "median": 5.0,
-     "p25": -1.1,
-     "p75": 9.3,
-     "worst": -9.9,
-     "excess_mean": 4.2,
-     "excess_median": 0.6
+     "n": 12,
+     "win_rate": 67,
+     "mean": 2.1,
+     "median": 3.3,
+     "p25": -4.2,
+     "p75": 7.1,
+     "worst": -14.4,
+     "excess_mean": 1.6,
+     "excess_median": 0.5
     }
    },
    "gate_pass": {
     "+10일": {
-     "n": 8,
-     "win_rate": 75,
-     "mean": 7.2,
-     "median": 5.7,
-     "p25": -0.1,
-     "p75": 13.3,
-     "worst": -9.9,
-     "excess_mean": 7.4,
-     "excess_median": 1.2
+     "n": 6,
+     "win_rate": 67,
+     "mean": 2.2,
+     "median": 3.1,
+     "p25": -7.3,
+     "p75": 9.6,
+     "worst": -14.4,
+     "excess_mean": 3.2,
+     "excess_median": 0.5
     }
    },
    "stopped": 2
@@ -396,43 +396,43 @@
    "verdict": "green_q",
    "emoji": "🟢?",
    "name": "확인 필요 · 인수권 매수+청약 후보",
-   "n": 2,
+   "n": 5,
    "points": [
     {
      "label": "상장일 시가",
-     "n": 2,
-     "win_rate": 50,
-     "mean": 2.7,
-     "median": 2.7,
-     "p25": -3.5,
-     "p75": 8.8,
+     "n": 4,
+     "win_rate": 25,
+     "mean": -2.9,
+     "median": -2.9,
+     "p25": -6.1,
+     "p75": 0.3,
      "worst": -9.7,
-     "excess_mean": 10.6,
-     "excess_median": 10.6
+     "excess_mean": -0.1,
+     "excess_median": 0.4
     },
     {
      "label": "+5일",
-     "n": 2,
-     "win_rate": 50,
-     "mean": 2.2,
-     "median": 2.2,
-     "p25": -2.2,
-     "p75": 6.7,
+     "n": 4,
+     "win_rate": 25,
+     "mean": 7.7,
+     "median": -1.1,
+     "p25": -3.0,
+     "p75": 9.6,
      "worst": -6.6,
-     "excess_mean": 11.2,
-     "excess_median": 11.2
+     "excess_mean": 10.2,
+     "excess_median": 3.4
     },
     {
      "label": "+20일",
-     "n": 2,
-     "win_rate": 0,
-     "mean": -10.1,
-     "median": -10.1,
-     "p25": -10.5,
-     "p75": -9.6,
-     "worst": -11.0,
-     "excess_mean": 0.2,
-     "excess_median": 0.2
+     "n": 4,
+     "win_rate": 25,
+     "mean": 3.0,
+     "median": -4.8,
+     "p25": -7.8,
+     "p75": 5.9,
+     "worst": -9.1,
+     "excess_mean": 10.3,
+     "excess_median": 4.8
     }
    ]
   },
@@ -440,43 +440,43 @@
    "verdict": "yellow_q",
    "emoji": "🟡?",
    "name": "확인 필요 · 상장일 후 본주 매수 후보",
-   "n": 16,
+   "n": 13,
    "points": [
     {
      "label": "+5일",
-     "n": 15,
-     "win_rate": 60,
-     "mean": 4.5,
-     "median": 2.3,
-     "p25": -1.6,
-     "p75": 7.2,
-     "worst": -4.7,
-     "excess_mean": 4.0,
-     "excess_median": -0.2
+     "n": 13,
+     "win_rate": 54,
+     "mean": 1.8,
+     "median": 1.8,
+     "p25": -2.4,
+     "p75": 3.3,
+     "worst": -8.9,
+     "excess_mean": 1.5,
+     "excess_median": -0.7
     },
     {
      "label": "+10일",
-     "n": 15,
-     "win_rate": 67,
-     "mean": 4.6,
-     "median": 5.0,
-     "p25": -1.6,
-     "p75": 8.2,
-     "worst": -8.3,
-     "excess_mean": 3.3,
+     "n": 13,
+     "win_rate": 62,
+     "mean": 1.9,
+     "median": 1.7,
+     "p25": -3.3,
+     "p75": 5.9,
+     "worst": -14.4,
+     "excess_mean": 0.7,
      "excess_median": 0.5
     },
     {
      "label": "+20일",
-     "n": 15,
-     "win_rate": 47,
-     "mean": 0.8,
-     "median": -1.6,
-     "p25": -6.2,
-     "p75": 6.5,
-     "worst": -11.7,
-     "excess_mean": 0.4,
-     "excess_median": -0.7
+     "n": 13,
+     "win_rate": 38,
+     "mean": -2.7,
+     "median": -2.3,
+     "p25": -7.5,
+     "p75": 4.0,
+     "worst": -27.0,
+     "excess_mean": -4.2,
+     "excess_median": -4.8
     }
    ]
   },
@@ -1260,12 +1260,12 @@
        "label": "+20일",
        "n": 21,
        "win_rate": 43,
-       "mean": -2.9,
+       "mean": -3.0,
        "median": -2.3,
        "p25": -28.0,
        "p75": 8.5,
        "worst": -51.6,
-       "excess_mean": -3.3,
+       "excess_mean": -3.4,
        "excess_median": 3.5
       }
      ]
@@ -1291,18 +1291,18 @@
    "use": false
   },
   "green_q": {
-   "n": 2,
-   "p75": 8.8,
-   "p50": 2.7,
-   "p25": -3.5,
+   "n": 4,
+   "p75": 0.3,
+   "p50": -2.9,
+   "p25": -6.1,
    "min": -9.7,
    "use": false
   },
   "yellow_q": {
-   "n": 15,
-   "p75": 11.2,
-   "p50": 1.5,
-   "p25": -2.3,
+   "n": 13,
+   "p75": 14.4,
+   "p50": 5.5,
+   "p25": -0.5,
    "min": -12.0,
    "use": true
   },
@@ -2447,11 +2447,11 @@
    "corp_name": "ESR켄달스퀘어리츠",
    "stock_code": "365550",
    "first_rcept_dt": "20211018",
-   "verdict": "yellow_q",
-   "reason": "채무상환 4% · 희석 49% → 관문1 통과(미확인 1) · 괴리 -46.4% · 원가할인 -1.0% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "verdict": "green_q",
+   "reason": "채무상환 4% · 희석 49% → 관문1 통과(미확인 1) · 괴리 -46.4% · 원가할인 -1.0% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
    "gap": -46.4,
    "decided_on": "2021-11-26",
-   "ret20": -6.3,
+   "ret20": -7.3,
    "base_open": -0.9
   },
   {
@@ -2531,11 +2531,11 @@
    "corp_name": "대한전선",
    "stock_code": "001440",
    "first_rcept_dt": "20211222",
-   "verdict": "yellow_q",
-   "reason": "채무상환 41% · 희석 45% → 관문1 통과(미확인 1) · 괴리 -37.8% · 원가할인 -3.6% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "verdict": "green_q",
+   "reason": "채무상환 41% · 희석 45% → 관문1 통과(미확인 1) · 괴리 -37.8% · 원가할인 -3.6% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
    "gap": -37.8,
    "decided_on": "2022-02-24",
-   "ret20": 23.2,
+   "ret20": 30.6,
    "base_open": 3.8
   },
   {
@@ -3551,11 +3551,11 @@
    "corp_name": "이렘",
    "stock_code": "009730",
    "first_rcept_dt": "20240419",
-   "verdict": "green_q",
-   "reason": "채무상환 42% · 희석 49% → 관문1 통과(미확인 1) · 괴리 -91.7% · 원가할인 -24.9% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
+   "verdict": "yellow_q",
+   "reason": "채무상환 42% · 희석 49% → 관문1 통과(미확인 1) · 괴리 -91.7% · 원가할인 -24.9% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
    "gap": -91.7,
    "decided_on": "2024-07-26",
-   "ret20": -11.0,
+   "ret20": -27.0,
    "base_open": 15.0
   },
   {
@@ -3731,11 +3731,11 @@
    "corp_name": "신한알파리츠",
    "stock_code": "293940",
    "first_rcept_dt": "20240828",
-   "verdict": "yellow_q",
-   "reason": "채무상환 38% · 희석 36% → 관문1 통과(미확인 1) · 괴리 -58.8% · 원가할인 -1.7% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "verdict": "green_q",
+   "reason": "채무상환 38% · 희석 36% → 관문1 통과(미확인 1) · 괴리 -58.8% · 원가할인 -1.7% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
    "gap": -58.8,
    "decided_on": "2024-10-17",
-   "ret20": 3.3,
+   "ret20": -2.3,
    "base_open": -4.9
   },
   {
@@ -4755,7 +4755,7 @@
    "reason": "채무상환 0% · 희석 21% · 52주 위치 65% → 패스 · 괴리 대기 → ⚪ 관찰 샘플",
    "gap": null,
    "decided_on": "2026-07-16",
-   "ret20": 43.7,
+   "ret20": 42.3,
    "base_open": 46.0
   },
   {
@@ -4763,8 +4763,8 @@
    "corp_name": "SG",
    "stock_code": "255220",
    "first_rcept_dt": "20260618",
-   "verdict": "yellow_q",
-   "reason": "채무상환 1% · 희석 37% → 관문1 통과(미확인 1) · 괴리 -38.8% · 원가할인 -4.9% → 🟡? 확인 필요 · 상장일 후 본주 매수 후보",
+   "verdict": "green_q",
+   "reason": "채무상환 1% · 희석 37% → 관문1 통과(미확인 1) · 괴리 -38.8% · 원가할인 -4.9% → 🟢? 확인 필요 · 인수권 매수+청약 후보",
    "gap": -38.8,
    "decided_on": "2026-08-25",
    "ret20": null,
