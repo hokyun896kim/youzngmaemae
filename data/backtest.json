@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-27T09:59:25+09:00",
+ "generated_at": "2026-09-27T11:33:35+09:00",
  "logic_version": 4,
  "years": [
   {
@@ -187,7 +187,7 @@
  ],
  "n_scored": 287,
  "strategies": {
-  "version": 3,
+  "version": 4,
   "s1": {
    "n": 32,
    "point": "+20일",
@@ -230,43 +230,43 @@
    "n_measured": 31
   },
   "s2": {
-   "n": 12,
+   "n": 16,
    "point": "+10일",
    "missing_years": [],
    "points": {
     "+5일": {
-     "n": 12,
-     "win_rate": 50,
-     "mean": 1.8,
-     "median": 0.6,
-     "p25": -2.5,
-     "p75": 4.8,
+     "n": 16,
+     "win_rate": 56,
+     "mean": 3.7,
+     "median": 1.8,
+     "p25": -2.1,
+     "p75": 6.3,
      "worst": -8.9,
-     "excess_mean": 1.8,
-     "excess_median": -0.7
+     "excess_mean": 3.6,
+     "excess_median": -0.3
     },
     "+10일": {
-     "n": 12,
-     "win_rate": 67,
-     "mean": 2.1,
+     "n": 16,
+     "win_rate": 62,
+     "mean": 3.3,
      "median": 3.3,
-     "p25": -4.2,
+     "p25": -2.5,
      "p75": 7.1,
      "worst": -14.4,
-     "excess_mean": 1.6,
+     "excess_mean": 2.8,
      "excess_median": 0.5
     }
    },
    "gate_pass": {
     "+10일": {
-     "n": 6,
-     "win_rate": 67,
-     "mean": 2.2,
-     "median": 3.1,
-     "p25": -7.3,
+     "n": 10,
+     "win_rate": 60,
+     "mean": 4.1,
+     "median": 2.9,
+     "p25": -2.1,
      "p75": 9.6,
      "worst": -14.4,
-     "excess_mean": 3.2,
+     "excess_mean": 4.6,
      "excess_median": 0.5
     }
    },
