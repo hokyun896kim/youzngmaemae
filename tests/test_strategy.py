@@ -16,10 +16,11 @@ def test_conditions_cards_to_check():
     # 아이에이: 🟡? · 흑자 15억 · 희석 49.2% · 채무상환 없음 → 🥈
     c = strategy.conditions(0.4924, None, 1_543_828_572, None, "yellow_q")
     assert c["ok"]["s2"] and not c["bans"]
-    # B안: 판정이 🟡/🟡? 가 아니면 전략2 아님 (🟢?·⚪·🔵·판정 없음)
-    for v in ("green_q", "green", "white", "blue", None):
+    # 판정이 관문1 통과(🟢/🟡, ? 포함)가 아니면 전략2 아님 (⚪·🔵·판정 없음)
+    for v in ("white", "blue", None):
         assert not strategy.conditions(0.4924, None, 1_543_828_572, None, v)["ok"]["s2"]
-    assert strategy.conditions(0.4924, None, 1_543_828_572, None, "yellow")["ok"]["s2"]
+    for v in ("yellow", "green", "green_q"):
+        assert strategy.conditions(0.4924, None, 1_543_828_572, None, v)["ok"]["s2"]
     # 희석 50% 이상·채무상환 50% 이상·영업이익 미확인 → 전략2 아님
     assert not strategy.conditions(0.5, 0, 1, None, "yellow")["ok"]["s2"]
     assert not strategy.conditions(0.2, 50.0, 1, None, "yellow")["ok"]["s2"]

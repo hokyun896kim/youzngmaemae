@@ -30,7 +30,8 @@ from statistics import median
 from . import db
 from .calendar_kr import shift_business_days
 
-STRATEGY_VERSION = 3   # 3: 전략2에 '판정 🟡/🟡?' 조건 추가 (형님 B안 — 기출 조건 전체 70건 +0.5% vs 🟡? 14건 +5.0%)
+STRATEGY_VERSION = 4   # 4: 전략2 판정 조건을 관문1 통과 전체(🟢/🟡 · ? 포함)로 넓힘 (형님 09-27 — v4 판정에서 🟡?→🟢? 로 옮긴 2건이 빠지던 문제)
+#                        3: 전략2에 '판정 🟡/🟡?' 조건 추가 (형님 B안 — 기출 조건 전체 70건 +0.5% vs 🟡? 14건 +5.0%)
 #                        2: ATR·RSI 를 한 출처(네이버 수정주가)로만 계산, ATR 은 % 로 진입가에 적용
 #                        1: KRX 원주가와 네이버 수정주가가 섞여 ATR 이 부풀었음 (손절선이 음수가 되기도)
 
@@ -42,7 +43,7 @@ TOO_CHEAP_GAP = -40.0         # 괴리 ≤ −40% → 전략 3 불가
 S1_GAP_MIN = 20.0
 
 # ---- 전략 2: 신주 상장일 매수 → 10거래일 보유 ----
-S2_VERDICTS = ("yellow",)     # 판정(verdict.base) 🟡 · 🟡? 일 때만 = 관문1 통과 + 괴리 신호 없음
+S2_VERDICTS = ("green", "yellow")   # 판정(verdict.base) 🟢·🟢?·🟡·🟡? = 관문1 통과 전체 (🔵·⚪ 제외)
 S2_DATA_MIN = 2               # 백테스트 연도 결과의 전략2 평가가 쓸 만한 최소 전략 버전 (v1 = ATR 출처 혼합 버그)
 S2_DILUTION_MAX = 0.5
 S2_DEBT_MAX = 50.0
@@ -70,7 +71,7 @@ STRATEGIES = {
            "title": f"신주 상장일 매수 → {S2_HOLD_DAYS}거래일 보유",
            "action": f"상장일 종가 진입 · +{S2_HOLD_DAYS}거래일 청산 · 손절 진입가 − ATR({S2_ATR_N})×{S2_ATR_MULT:g} · "
                      f"비중 {S2_SIZE}",
-           "cond": f"판정 🟡/🟡? + 직전 분기 흑자 + 희석 < {S2_DILUTION_MAX * 100:.0f}% + 채무상환 < {S2_DEBT_MAX:.0f}%",
+           "cond": f"판정 🟢/🟡(관문1 통과) + 직전 분기 흑자 + 희석 < {S2_DILUTION_MAX * 100:.0f}% + 채무상환 < {S2_DEBT_MAX:.0f}%",
            "point": f"+{S2_HOLD_DAYS}일", "win": "up"},
     "s3": {"medal": "🥉", "name": "적당히 싼 인수권 매수 + 청약", "evidence": "약~중",
            "title": "적당히 싼 인수권 매수 + 청약",
@@ -96,7 +97,7 @@ def rules() -> dict:
 def conditions(dilution: float | None, debt_pct: float | None, op_income: int | None, gap: float | None,
                verdict: str | None = None) -> dict:
     """전략별 조건 충족 여부 + 걸린 금지 규칙. 미확인 값은 '충족 아님'(보수적).
-    verdict = 판정 코드(green/yellow_q/…) — 전략2는 🟡/🟡? 일 때만."""
+    verdict = 판정 코드(green/yellow_q/…) — 전략2는 🟢/🟡(? 포함) = 관문1 통과일 때만."""
     from .verdict import base
     debt = debt_pct or 0.0                           # 자금 목적에 채무상환이 없으면 0% (관문1과 같음)
     profit = op_income is not None and op_income > 0
