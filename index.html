@@ -657,10 +657,9 @@ function greenCheck(q){
 // A = 인수권 할인 포착: 괴리 → 총원가 쿠션 → ATR 쿠션 → 신주 공급압력. 본주를 공매도로 고정할 수 없어 무위험 차익이 아니다.
 // 쿠션÷ATR 합격선은 두지 않음 — H1 데이터가 쌓일 때까지 연속형으로 기록만
 function aBox(c){
-  const a=c.a_margin, s=c.supply; if(!a||!(a.rows||[]).length) return '';
+  const a=c.a_margin, s=c.supply, f=a&&a.final; if(!a||!(a.rows||[]).length) return '';
   const na='<span class="mut">미확인</span>', w=v=>v==null?na:fmt(v);
-  const KIND={'확정':'확정발행가','1차':'1차 발행가 (공시)','1차 추정':'1차 발행가 (추정 · 공시는 예정가)','2차 시나리오':'2차 발행가 시나리오 (현재 주가로 추정)'};
-  const rows=a.rows.map(r=>`<div class="ar"><b>${esc(KIND[r.kind]||r.label)}</b>${r.note?`<div class="mut" style="font-size:11px">${esc(r.note)}</div>`:''}<dl>
+  const rows=a.rows.map(r=>r.issue==null?`<div class="ar"><b>${esc(r.label)}</b> <span class="mut">${esc(r.note||'')}</span></div>`:`<div class="ar"><b>${esc(r.label)}</b>${r.note?`<div class="mut" style="font-size:11px">${esc(r.note)}</div>`:''}<dl>
     <div><dt>발행가 I</dt><dd>${fmt(r.issue)}</dd></div><div><dt>괴리율 (연구지표)</dt><dd>${r.gap==null?'—':pct(r.gap)}</dd></div><div><dt>R+I 총원가</dt><dd>${w(r.cost)}</dd></div>
     <div><dt>총원가 할인율</dt><dd>${r.cost_disc==null?'—':`<b class="${r.cost_disc>0?'neg':'pos'}">${r.cost_disc.toFixed(1)}%</b>`}</dd></div><div><dt>쿠션 P−(R+I)</dt><dd>${w(r.cushion)}</dd></div>
     <div><dt>쿠션 ÷ ATR</dt><dd>${r.cushion_atr!=null?r.cushion_atr+'배':a.r==null&&r.r_for_1atr?`<span class="mut">R ≤ ${fmt(r.r_for_1atr)}이면 1배↑</span>`:'—'}</dd></div></dl></div>`).join('');
@@ -671,8 +670,10 @@ function aBox(c){
     <div>본주 P <b>${fmt(a.p)}</b> <span class="mut">(${esc(a.p_date||'')})</span> · 인수권 R ${a.r==null?'<span class="mut">시세 대기</span>':`<b>${fmt(a.r)}</b> <span class="mut">(${esc(a.r_date)})</span>`}
     · ATR(${a.atr_n}) ${a.atr==null?na:`<b>${fmt(a.atr)}원</b> <span class="mut">(${a.atr_pct}%)</span>`}${a.confirmed?'':' · <b class="red">확정발행가 미정</b>'}</div>
     ${rows}
+    ${a.gap_shift!=null?`<div>① → ② 괴리 차이 <b>${a.gap_shift>0?'+':''}${a.gap_shift}%p</b> <span class="mut">— ①은 비싸 보이는데 ②로 싸지면 시장이 발행가 인하를 먼저 반영한 것, ②에서도 비싸면 권리 자체가 비싼 것</span></div>`:''}
+    ${f?`<div class="mut">예상 최종가 입력: 1차 ${w(f.i1)} · 2차 추정 ${w(f.i2)} = min(1주 VWAP ${w(f.vwap)}, ${f.projected?'최근':'기산일'} 종가 ${w(f.close_base)}${f.base_date?` · ${esc(f.base_date)}`:''}) × (1−${f.d!=null?Math.round(f.d*100)+'%':'할인율 미확인'}) · 최저발행가 제한 미확인 · 산정일 ${esc(f.fix_date||'미확인')}${f.projected?' (산정일 전 — 오늘 기준 예상)':''}${f.vwap_src?` · VWAP: ${esc(f.vwap_src)}`:''}</div>`:''}
     ${days?`<div class="mut">남은 거래일(오늘 포함): ${days}</div>`:''}
-    ${a.end_check?`<div class="${a.end_check.status==='mismatch'?'red':'mut'}">마지막 매매일: 공시 ${esc(a.end_check.disclosed||'—')} · KRX 상장폐지일 ${esc(a.end_check.delist||'—')}의 전 영업일 ${esc(a.end_check.krx_last||'—')} — ${esc(a.end_check.text)}</div>`:''}
+    ${a.end_check?`<div class="${a.end_check.status==='mismatch'?'red':'mut'}">마지막 매매일: ${a.end_check.delist?`공시 ${esc(a.end_check.disclosed||'—')} · KRX 상장폐지일 ${esc(a.end_check.delist)}의 전 영업일 ${esc(a.end_check.krx_last)} — ${esc(a.end_check.text)}`:`공시 ${esc(a.end_check.disclosed||'—')} (KRX 상장폐지일은 인수권 시세가 들어오면 대조)`}</div>`:''}
     ${sp?`<div class="mut">공급압력: ${sp}</div>`:''}
     <small class="mut">총원가 할인율 = 1 − (R+I)/P. 괴리율보다 이 값과 원화 쿠션을 먼저 봅니다 — 본주를 공매도로 묶을 수 없어 상장일까지 본주가 빠지면 손실. 쿠션÷ATR 합격선은 H1 데이터가 쌓일 때까지 두지 않습니다.</small>
   </div>`;

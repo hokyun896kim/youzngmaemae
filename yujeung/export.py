@@ -68,7 +68,7 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
                       "eval": paper.evaluate(conn, c, trade, sch, today)}
     v = trade["verdict"] if trade else live["verdict"]
     emoji, name = VERDICTS[v]
-    daily = conn.execute("SELECT bas_dd, close, volume FROM stock_daily WHERE code=? AND close IS NOT NULL "
+    daily = conn.execute("SELECT bas_dd, close, volume, value FROM stock_daily WHERE code=? AND close IS NOT NULL "
                          "AND bas_dd <= ? ORDER BY bas_dd DESC LIMIT 300",
                          (c["stock_code"], today.isoformat())).fetchall()[::-1]
     confirmed = sch.get("issue_kind") == "확정"   # 확정발행가 라벨 또는 확정 산정일 이후 공시
@@ -77,7 +77,20 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         [(r["bas_dd"], r["close"]) for r in daily], [r["volume"] for r in daily],
         next((x["rights"] for x in reversed(series) if x["d"] <= today.isoformat()), None), live["summary"].get("new_shares"),
         live["summary"].get("dilution_ratio"), f["op_period"] if f else None, today, confirmed,
-        -cfg.gap_alert_pct, cfg.gap_alert_pct, load_card_scenarios(), live.get("disc"))
+        -cfg.gap_alert_pct, cfg.gap_alert_pct, load_card_scenarios(), live.get("disc"), [dict(r) for r in daily])
+    # A 3층 분석 추이: 인수권 거래일마다 그날까지의 시세로 ① 1차가 기준 · ② 예상 최종가 기준 괴리를 다시 계산
+    if not confirmed:
+        facts_now = latest_facts(conn, c["case_id"])
+        r_ = live["summary"].get("dilution_ratio") or sch.get("alloc_ratio")
+        for x in series:
+            if not x["rights"] or not x["stock"]:
+                continue
+            upto = [r for r in daily if r["bas_dd"] <= x["d"]]
+            est = estimate.issue_estimate(sch, facts_now.get("discount"), r_, [(r["bas_dd"], r["close"]) for r in upto],
+                                          date.fromisoformat(x["d"]), False, [dict(r) for r in upto])
+            if est.get("kind") == "최종 추정" and est.get("value") and x["stock"] > est["value"]:
+                x["i_hat"] = est["value"]
+                x["gap_hat"] = round((x["rights"] / (x["stock"] - est["value"]) - 1) * 100, 1)
     # A = 인수권 할인 포착: 같은 날의 인수권·본주 KRX 종가로 총원가 쿠션 · ATR(10) 쿠션 (인수권 시세 전이면 최근 본주 종가만)
     last_r = next((x for x in reversed(series) if x["rights"] and x["d"] <= today.isoformat()), None)
     p_now, p_date = (last_r["stock"], last_r["d"]) if last_r else \

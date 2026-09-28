@@ -22,6 +22,45 @@ const PREMISES = `[전제 — 이미 검증된 결론이다. 재논의하지 말
 const FILTERS = `[회사 필터 5개 — 전부 충족해야 B(본업) 후보]
 ① 업계 1~3위  ② 절대 안 망할 회사(지금은 힘들어도 성장성)  ③ 대체 불가 사업  ④ 직전 분기 영업흑자 + 다음 분기 흑자 예상  ⑤ 주가가 52주 고저 범위의 중간 이하`;
 
+// 형님 규칙 (09-28, 원문 그대로) — A 발행가 3층 분석
+const FINAL_PRICE_RULE = `[A 전략 — 예상 최종발행가 3층 분석]
+
+예상 최종발행가를 매일 계산해야 합니다.
+
+기존에는:
+
+현재 본주 - 1차 발행가
+
+만 봤습니다.
+
+이건 에코프로비엠처럼 1차·2차 중 낮은 가격을 최종 발행가로 쓰는 유증에서는 틀릴 수 있습니다.
+
+따라서 A 분석을 앞으로 세 층으로 나눕니다.
+
+① 1차가 기준
+
+R/(P-I_1)-1
+
+② 현재 시점 예상 최종가 기준
+
+R/(P-\\hat I_{final})-1
+
+③ 실제 확정가 기준
+
+R/(P-I_{final})-1
+
+그리고 ②를 만들기 위해 매일
+
+* 산정기간 VWAP
+* 기준일 종가
+* 할인율
+* 1차가
+* 최저발행가 제한
+
+을 업데이트해야 합니다.
+
+이렇게 해야 “권리가 비싼 건지, 시장이 미래 발행가 인하를 먼저 반영한 건지” 구분할 수 있습니다.`;
+
 // 형님 판단 규칙 (09-28, 원문 그대로 — 고칠 때는 형님 확인)
 const DECISION_RULES = `[최우선 판단 규칙 — 실전 후보 선별]
 
@@ -269,6 +308,8 @@ ${FILTERS}
 ${CHART_RULE}
 
 ${DECISION_RULES}
+
+${FINAL_PRICE_RULE}
 (개별기업 분석에서는 [최종 출력 — 승부 후보] 네 줄을 이 회사 기준으로 답해라 — 해당 없으면 "해당 없음".)
 
 ${snapshotText(siteData)}
@@ -351,9 +392,15 @@ function aMarginText(c) {
   const out = [
     `- 본주 현재가 P: ${P_N(a.p)}원 (${P_NA(a.p_date)} 종가) / 인수권 가격 R: ${a.r == null ? '미확인(아직 인수권 시세 없음)' : `${P_N(a.r)}원 (${a.r_date})`}`,
     `- ATR(${a.atr_n}): ${a.atr == null ? '미확인' : `${P_N(a.atr)}원 (${a.atr_pct}%)`} · 확정발행가: ${a.confirmed ? '확정' : '미정'}`,
-    ...a.rows.map(r => `- [${r.label}] I ${P_N(r.issue)} / P-I ${P_N(r.p_minus_i)} / 괴리율 ${P_PCT(r.gap)} / R+I ${P_N(r.cost)} / 총원가 할인율 ${r.cost_disc == null ? '데이터없음' : r.cost_disc.toFixed(1) + '%'} / 원화 쿠션 ${P_N(r.cushion)} / 쿠션÷ATR ${r.cushion_atr ?? '데이터없음'}${a.r == null && r.r_for_1atr ? ` / 쿠션이 ATR 1배 남는 R 상한 ${P_N(r.r_for_1atr)}` : ''}${r.note ? ` (${r.note})` : ''}`),
+    ...a.rows.map(r => r.issue == null ? `- [${r.label}] ${r.note || '데이터없음'}` : `- [${r.label}] I ${P_N(r.issue)} / P-I ${P_N(r.p_minus_i)} / 괴리율 ${P_PCT(r.gap)} / R+I ${P_N(r.cost)} / 총원가 할인율 ${r.cost_disc == null ? '데이터없음' : r.cost_disc.toFixed(1) + '%'} / 원화 쿠션 ${P_N(r.cushion)} / 쿠션÷ATR ${r.cushion_atr ?? '데이터없음'}${a.r == null && r.r_for_1atr ? ` / 쿠션이 ATR 1배 남는 R 상한 ${P_N(r.r_for_1atr)}` : ''}${r.note ? ` (${r.note})` : ''}`),
     `- 잔여 거래일(오늘 포함, 사이트 갱신일 기준): ${a.days.map(d => `${d.label} ${d.left == null ? '지남/미정' : d.left + '일'}(${P_NA(d.date)})`).join(' · ')}`,
   ];
+  if (a.gap_shift != null) out.push(`- ① → ② 괴리 차이: ${a.gap_shift > 0 ? '+' : ''}${a.gap_shift}%p`);
+  const f = a.final;
+  if (f && f.i2 == null) out.push('- 예상 최종가(②): 권리락 전 — 2차 발행가 미산정이라 ② = 1차가. 권리락 후부터 매일 갱신');
+  else if (f) out.push(`- 예상 최종가(②) 입력: 1차가 ${P_N(f.i1)} / 2차 추정 ${P_N(f.i2)} = min(산정기간 1주 VWAP ${P_N(f.vwap)}, ${f.projected ? '최근' : '기준일'} 종가 ${P_N(f.close_base)}${f.base_date ? ` [${f.base_date}]` : ''}) × (1 − 할인율 ${f.d != null ? Math.round(f.d * 100) + '%' : '미확인'}) / 산정기간 ${(f.window || []).join(', ') || '데이터없음'} / VWAP 출처 ${P_NA(f.vwap_src)} / 최저발행가 제한 미확인(증권신고서 확인) / 확정발행가 산정일 ${P_NA(f.fix_date)}${f.projected ? ' — 산정일 전이라 오늘을 기준일로 본 예상' : ''} / 규칙 ${f.rule}`);
+  const hs = (c.rights_series || []).filter(x => x.gap != null).slice(-10);
+  if (hs.length) out.push(`- 일별 ①·② 괴리 추이: ${hs.map(x => `${x.d.slice(5)} ①${P_PCT(x.gap)}${x.gap_hat != null ? ` ②${P_PCT(x.gap_hat)}(Î ${P_N(x.i_hat)})` : ''}`).join(' · ')}`);
   const e = a.end_check;
   if (e) out.push(`- 인수권 마지막 매매일 검증: 공시 매매종료일 ${P_NA(e.disclosed)} / KRX 상장폐지일 ${P_NA(e.delist)} → 그 전 영업일 ${P_NA(e.krx_last)} — ${e.text}`);
   if (s) out.push(`- 공급충격: 신주 ÷ 증자 전 주식 ${s.dilution == null ? '데이터없음' : s.dilution + '%'} / 신주 ÷ 유통주식 미확인 / 신주 시가총액 ÷ 최근 ${s.n}일 평균 거래대금(종가×거래량 근사) ${s.value_days ?? '데이터없음'}일 / 신주 ÷ 최근 ${s.n}일 평균 거래량 ${s.volume_days ?? '데이터없음'}일 / 상장일 거래량 ÷ 신주 ${s.listing_turnover ?? '상장 전 또는 데이터없음'}`);
@@ -407,6 +454,8 @@ ${FILTERS}
 ${CHART_RULE}
 
 ${DECISION_RULES}
+
+${FINAL_PRICE_RULE}
 
 ${snapshotText(d)}
 

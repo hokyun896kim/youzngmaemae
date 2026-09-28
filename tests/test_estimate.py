@@ -135,31 +135,57 @@ def test_review_17_dilution_ratio_denominator():
                                 "gap_ok": False, "disc_ok": True, "ok": False}
 
 
-def test_a_margin_total_cost_cushion_and_atr():
-    """A = 인수권 할인 포착: SK디앤디 12R(9/23) 실측값 — 괴리율 −41% 이어도 총원가 할인율 13.2% · 쿠션 439원 = ATR 1.25배.
-    확정 전이면 1차(공시)와 2차 시나리오를 따로, 2차가 1차보다 높으면 min 규칙 안내."""
+def test_a_margin_three_layers():
+    """A = 인수권 할인 포착, 발행가 3층: ① 1차가 기준 · ② 예상 최종가 기준 · ③ 확정가 기준.
+    SK디앤디 12R(9/23) 실측: 괴리율 −41% 이어도 총원가 할인율 13.2% · 쿠션 439원 = ATR 1.25배.
+    2차 추정(2,816)이 1차(2,260)보다 높으면 min 규칙으로 예상 최종 = 1차."""
     sch = {"rights_start": "2026-09-17", "rights_end": "2026-09-29", "subs_start": "2026-10-08",
-           "listing_date": "2026-10-28", "issue_price": 2260, "issue_kind": "1차"}
-    issue = {"kind": "최종 추정", "issue_kind": "1차", "i1": 2260, "i2": 2816, "value": 2260}
+           "listing_date": "2026-10-28", "issue_price": 2260, "issue_kind": "1차", "price_fix_date": "2026-10-02"}
+    issue = {"kind": "최종 추정", "issue_kind": "1차", "i1": 2260, "i2": 2816, "value": 2260, "d": 0.25,
+             "second": {"vwap": 3760, "close_base": 3335, "projected": True, "vwap_src": "x", "window": ["2026-09-23"]}}
     a = estimate.a_margin(sch, issue, 3335, "2026-09-23", 636, "2026-09-23", 351 / 3335 * 100, date(2026, 9, 28))
-    r1, r2 = a["rows"]
+    r1, r2, r3 = a["rows"]
     assert (r1["kind"], r1["p_minus_i"], r1["gap"], r1["cost"], r1["cost_disc"], r1["cushion"], r1["cushion_atr"]) == \
            ("1차", 1075, -40.8, 2896, 13.2, 439, 1.25)
-    assert r2["kind"] == "2차 시나리오" and r2["cushion"] == -117 and "min(1차, 2차)" in r2["note"]
-    assert not a["confirmed"] and a["atr"] == 351
+    assert (r2["kind"], r2["issue"], r2["gap"]) == ("예상 최종", 2260, -40.8) and a["gap_shift"] == 0.0
+    assert r3["kind"] == "확정" and r3["issue"] is None and "10-02" in r3["note"]
+    assert not a["confirmed"] and a["atr"] == 351 and a["final"]["i2"] == 2816 and a["final"]["floor"] is None
     # 남은 거래일(오늘 포함): 9/28(월)·9/29(화) = 2 / 청약 10/8 = 8 (10/5 휴장) / 상장 10/28 = 21 (10/9 휴장)
     assert [d["left"] for d in a["days"]] == [2, 8, 21]
+    # 2차가 1차보다 낮으면(에코프로비엠형) ② 가 더 낮은 발행가 → P−Î 가 커져 같은 인수권 가격의 괴리가 더 싸 보인다
+    lo = estimate.a_margin(sch, dict(issue, i2=2000, value=2000), 3335, "d", 636, "d", 351 / 3335 * 100, date(2026, 9, 28))
+    assert lo["rows"][1]["issue"] == 2000 and lo["rows"][1]["gap"] == -52.4 and lo["gap_shift"] == -11.6
     # 인수권 시세 전: 쿠션이 ATR 1배 남는 R 상한 = P − I − ATR
     b = estimate.a_margin(sch, issue, 3335, "2026-09-23", None, None, 351 / 3335 * 100, date(2026, 9, 28))
     assert b["rows"][0]["cost"] is None and b["rows"][0]["r_for_1atr"] == 3335 - 2260 - 351
-    # 확정이면 한 줄, 예정발행가는 1차로 쓰지 않음
+    # 확정이면 ③ 한 줄, 예정발행가는 1차로 쓰지 않음, 권리락 전이면 ② = 1차
     c = estimate.a_margin(sch, {"kind": "확정", "value": 2300}, 3335, "d", 636, "d", None, date(2026, 9, 28))
-    assert [r["kind"] for r in c["rows"]] == ["확정"] and c["rows"][0]["cushion_atr"] is None
+    assert [r["kind"] for r in c["rows"]] == ["확정"] and c["rows"][0]["cushion_atr"] is None and c["final"] is None
     d = estimate.a_margin(dict(sch, issue_kind="예정"), {"kind": "1차 추정", "issue_kind": "예정", "i1": 2100},
                           3335, "d", None, None, None, date(2026, 9, 28))
-    assert [r["kind"] for r in d["rows"]] == ["1차 추정"] and d["rows"][0]["issue"] == 2100
+    assert [(r["kind"], r["issue"]) for r in d["rows"]] == [("1차", 2100), ("예상 최종", 2100), ("확정", None)]
+    assert "권리락 전" in d["rows"][1]["note"]
     assert estimate.a_margin({}, issue, 3335, "d", 636, "d", 5, date(2026, 9, 28)) is None   # 인수권 없는 케이스
     assert estimate.trading_days_left(date(2026, 9, 28), "2026-09-27") is None
+
+
+def test_second_price_vwap_and_projection():
+    """2차 = min(1주 VWAP, 기산일 종가) × (1−d). 권리락 후 시세만, 기산일(산정일) 이후 시세는 안 씀."""
+    sch = {"ex_rights_date": "2026-09-03", "price_fix_date": "2026-09-10"}
+    bars = [{"bas_dd": f"2026-09-{d:02d}", "close": c, "volume": 100, "value": v} for d, c, v in
+            [(2, 200, 20000), (3, 100, 10000), (4, 110, 11000), (7, 120, 12000), (8, 130, 13000), (9, 140, 14000),
+             (10, 150, 15000), (11, 90, 9000)]]
+    sp = estimate.second_price(sch, 0.2, bars, date(2026, 9, 11))
+    assert sp["window"] == ["2026-09-04", "2026-09-07", "2026-09-08", "2026-09-09", "2026-09-10"]
+    assert (sp["vwap"], sp["close_base"], sp["base"], sp["i2"], sp["projected"]) == (130, 150, 130, 104, False)
+    assert sp["vwap_src"].startswith("KRX")
+    # 기산일 전: 오늘까지의 최근 5거래일로 '오늘이 기산일이라면' — 9/3(권리락일)부터만
+    pj = estimate.second_price(sch, 0.2, bars, date(2026, 9, 7))
+    assert pj["projected"] and pj["window"] == ["2026-09-03", "2026-09-04", "2026-09-07"] and pj["close_base"] == 120
+    # 거래대금이 빠진 날이 섞이면 종가×거래량 근사
+    mix = estimate.second_price(sch, 0.2, [dict(b, value=None) if b["bas_dd"] == "2026-09-08" else b for b in bars],
+                                date(2026, 9, 11))
+    assert mix["vwap"] == 130 and "근사" in mix["vwap_src"]
 
 
 def test_supply_shock():
