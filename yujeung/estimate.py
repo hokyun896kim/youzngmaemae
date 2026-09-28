@@ -160,7 +160,7 @@ def overhang(new_shares: int | None, volumes: list[int]) -> dict | None:
 # 그래서 "−60% 괴리"가 실제로 몇 %의 안전마진(총원가 쿠션)이고, 그 쿠션이 평소 하루 변동(ATR)의 몇 배인지를 본다.
 # 쿠션÷ATR 의 합격선은 두지 않는다 — H1 데이터가 쌓일 때까지 연속형으로 기록만.
 A_ATR_N = 10
-A_DAY_KEYS = (("rights_end", "인수권 거래 종료"), ("subs_start", "청약 시작"), ("listing_date", "신주 상장"))
+A_DAY_KEYS = (("rights_end", "인수권 매매종료"),("subs_start", "청약 시작"), ("listing_date", "신주 상장"))
 
 
 def trading_days_left(today: date, target: str | None) -> int | None:
@@ -173,6 +173,23 @@ def trading_days_left(today: date, target: str | None) -> int | None:
         n += is_business_day(d)
         d = date.fromordinal(d.toordinal() + 1)
     return n
+
+
+def rights_end_check(disclosed: str | None, delist: str | None) -> dict | None:
+    """인수권 '매매종료일'(마지막 실제 매매가능일)과 KRX '상장폐지일'은 다르다 — 상장폐지일은 매매종료 다음 영업일.
+    발행회사 공시(일정의 인수권 종료일)와 KRX(상장폐지일 전 영업일)를 대조한다. 증권사 화면의 종료일은 쓰지 않는다."""
+    if not disclosed and not delist:
+        return None
+    from .calendar_kr import prev_business_day
+    krx_last = prev_business_day(date.fromisoformat(delist)).isoformat() if delist else None
+    if disclosed and krx_last:
+        status = "ok" if disclosed == krx_last else "mismatch"
+    else:
+        status = "disclosed_only" if disclosed else "krx_only"
+    text = {"ok": "공시·KRX 일치", "mismatch": "⚠ 공시와 KRX 불일치 — 원문·KRX 확인",
+            "disclosed_only": "공시만 (KRX 인수권 시세 전 — 상장폐지일 미수집)", "krx_only": "KRX만 (공시 일정 미파싱)"}[status]
+    return {"last": disclosed or krx_last, "disclosed": disclosed, "delist": delist, "krx_last": krx_last,
+            "status": status, "text": text}
 
 
 def _a_row(label: str, kind: str, p: int, i: int, r: int | None, atr: float | None) -> dict:
@@ -188,7 +205,7 @@ def _a_row(label: str, kind: str, p: int, i: int, r: int | None, atr: float | No
 
 
 def a_margin(sch: dict, issue: dict, p: int | None, p_date: str | None, r: int | None, r_date: str | None,
-             atr_pct: float | None, today: date) -> dict | None:
+             atr_pct: float | None, today: date, end_check: dict | None = None) -> dict | None:
     """발행가 단계는 섞지 않는다: 확정이면 한 줄, 아니면 1차(공시 또는 추정) + 2차 시나리오를 따로."""
     if not p or not sch.get("rights_start"):
         return None
@@ -210,7 +227,7 @@ def a_margin(sch: dict, issue: dict, p: int | None, p_date: str | None, r: int |
                 row["note"] = "2차가 1차보다 높음 — 확정가가 min(1차, 2차)인 회사면 1차 유지 (증권신고서 산식 확인)"
             rows.append(row)
     return {"p": p, "p_date": p_date, "r": r, "r_date": r_date, "atr": atr, "atr_n": A_ATR_N, "atr_pct": atr_pct,
-            "confirmed": confirmed, "rows": rows,
+            "confirmed": confirmed, "rows": rows, "end_check": end_check,
             "days": [{"key": k, "label": lab, "date": sch.get(k), "left": trading_days_left(today, sch.get(k))}
                      for k, lab in A_DAY_KEYS]}
 

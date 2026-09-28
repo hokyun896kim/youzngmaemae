@@ -328,9 +328,9 @@ function renderRights(){
   const card=r=>`<div class="rc"><div class="rh"><b>${esc(r.name)}</b>${r.case_id?'<span class="badge gold">추적</span>':''}</div>
     <div class="rg">${gapCell(r.gap)}<small>괴리율</small></div>
     <dl><div><dt>인수권 종가</dt><dd>${fmt(r.close)}</dd></div><div><dt>이론가</dt><dd>${fmt(r.fair)}</dd></div><div><dt>인수권+청약 원가</dt><dd>${fmt(r.cost)}</dd></div>
-    <div><dt>본주</dt><dd>${fmt(r.stock)}</dd></div><div><dt>발행가</dt><dd>${fmt(r.issue)}</dd></div><div><dt>거래량 · 상장폐지</dt><dd>${fmt(r.volume)} · ${esc((r.delist??'—').slice(5))}</dd></div></dl></div>`;
-  $('#rights').innerHTML=`<div class="rcards">${rows.map(card).join('')}</div><div class="tblw rtable"><table><thead><tr><th>인수권</th><th>종가</th><th>본주</th><th>발행가</th><th>이론가</th><th>괴리율</th><th>인수권+청약 원가</th><th>거래량</th><th>상장폐지</th></tr></thead><tbody>${
-    rows.map(r=>`<tr><td><b>${esc(r.name)}</b>${r.case_id?' <span class="badge gold">추적</span>':''}</td><td>${fmt(r.close)}</td><td>${fmt(r.stock)}</td><td>${fmt(r.issue)}</td><td>${fmt(r.fair)}</td><td>${gapCell(r.gap)}</td><td>${fmt(r.cost)}</td><td>${fmt(r.volume)}</td><td class="mut">${esc(r.delist??'—')}</td></tr>`).join('')
+    <div><dt>본주</dt><dd>${fmt(r.stock)}</dd></div><div><dt>발행가</dt><dd>${fmt(r.issue)}</dd></div><div><dt>거래량 · 매매종료</dt><dd>${fmt(r.volume)} · ${esc((r.last_trade??'—').slice(5))}${r.delist?` <small class="mut">(상폐 ${esc(r.delist.slice(5))})</small>`:''}</dd></div></dl></div>`;
+  $('#rights').innerHTML=`<div class="rcards">${rows.map(card).join('')}</div><div class="tblw rtable"><table><thead><tr><th>인수권</th><th>종가</th><th>본주</th><th>발행가</th><th>이론가</th><th>괴리율</th><th>인수권+청약 원가</th><th>거래량</th><th>매매종료 (KRX 상장폐지일)</th></tr></thead><tbody>${
+    rows.map(r=>`<tr><td><b>${esc(r.name)}</b>${r.case_id?' <span class="badge gold">추적</span>':''}</td><td>${fmt(r.close)}</td><td>${fmt(r.stock)}</td><td>${fmt(r.issue)}</td><td>${fmt(r.fair)}</td><td>${gapCell(r.gap)}</td><td>${fmt(r.cost)}</td><td>${fmt(r.volume)}</td><td>${esc(r.last_trade??'—')} <span class="mut">(${esc(r.delist??'—')})</span></td></tr>`).join('')
   }</tbody></table></div>`;
 }
 
@@ -672,6 +672,7 @@ function aBox(c){
     · ATR(${a.atr_n}) ${a.atr==null?na:`<b>${fmt(a.atr)}원</b> <span class="mut">(${a.atr_pct}%)</span>`}${a.confirmed?'':' · <b class="red">확정발행가 미정</b>'}</div>
     ${rows}
     ${days?`<div class="mut">남은 거래일(오늘 포함): ${days}</div>`:''}
+    ${a.end_check?`<div class="${a.end_check.status==='mismatch'?'red':'mut'}">마지막 매매일: 공시 ${esc(a.end_check.disclosed||'—')} · KRX 상장폐지일 ${esc(a.end_check.delist||'—')}의 전 영업일 ${esc(a.end_check.krx_last||'—')} — ${esc(a.end_check.text)}</div>`:''}
     ${sp?`<div class="mut">공급압력: ${sp}</div>`:''}
     <small class="mut">총원가 할인율 = 1 − (R+I)/P. 괴리율보다 이 값과 원화 쿠션을 먼저 봅니다 — 본주를 공매도로 묶을 수 없어 상장일까지 본주가 빠지면 손실. 쿠션÷ATR 합격선은 H1 데이터가 쌓일 때까지 두지 않습니다.</small>
   </div>`;

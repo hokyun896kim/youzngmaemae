@@ -175,7 +175,9 @@ const BLINDSPOTS = `[검증 지침 — 이 수집기의 알려진 맹점. 숫자
 - 권리락일은 "기준일 전 1영업일"로 추정한 값이다(휴장일 목록 기반).
 - 발행가는 공시 시점별로 예정 → 1차 → 2차(확정)로 바뀐다. 확정발행가 산식(기산일·가중평균 구간, "1차와 2차 중 낮은 가격" 여부, 할인율)은 회사별 증권신고서 '모집 또는 매출에 관한 일반사항'에서 직접 확인해라.
 - 공매도 참여 제한 규정의 현행 세부 조건은 미확인 상태다.
-- 괴리율 = 인수권 종가 ÷ (본주 종가 − 발행가) − 1. 음수 = 인수권이 이론가보다 싸다.`;
+- 괴리율 = 인수권 종가 ÷ (본주 종가 − 발행가) − 1. 음수 = 인수권이 이론가보다 싸다.
+- 신주인수권 ‘상장폐지일’과 ‘매매종료일’을 반드시 구분하며, 마지막 실제 매매가능일은 KRX 및 발행회사 공시에서 검증한다. 증권사 화면의 종료일을 매매종료일로 간주하지 않는다.
+  (사이트 값: 매매종료일 = 발행회사 공시의 인수권 상장(매매)기간 종료일, KRX 상장폐지일은 보통 그 다음 영업일 — 둘을 대조한 결과를 함께 표시한다.)`;
 
 function caseStage(s, today = new Date()) {
   // 날짜 비교는 하루 단위 (오늘 = 해당일이면 그 구간에 포함)
@@ -352,6 +354,8 @@ function aMarginText(c) {
     ...a.rows.map(r => `- [${r.label}] I ${P_N(r.issue)} / P-I ${P_N(r.p_minus_i)} / 괴리율 ${P_PCT(r.gap)} / R+I ${P_N(r.cost)} / 총원가 할인율 ${r.cost_disc == null ? '데이터없음' : r.cost_disc.toFixed(1) + '%'} / 원화 쿠션 ${P_N(r.cushion)} / 쿠션÷ATR ${r.cushion_atr ?? '데이터없음'}${a.r == null && r.r_for_1atr ? ` / 쿠션이 ATR 1배 남는 R 상한 ${P_N(r.r_for_1atr)}` : ''}${r.note ? ` (${r.note})` : ''}`),
     `- 잔여 거래일(오늘 포함, 사이트 갱신일 기준): ${a.days.map(d => `${d.label} ${d.left == null ? '지남/미정' : d.left + '일'}(${P_NA(d.date)})`).join(' · ')}`,
   ];
+  const e = a.end_check;
+  if (e) out.push(`- 인수권 마지막 매매일 검증: 공시 매매종료일 ${P_NA(e.disclosed)} / KRX 상장폐지일 ${P_NA(e.delist)} → 그 전 영업일 ${P_NA(e.krx_last)} — ${e.text}`);
   if (s) out.push(`- 공급충격: 신주 ÷ 증자 전 주식 ${s.dilution == null ? '데이터없음' : s.dilution + '%'} / 신주 ÷ 유통주식 미확인 / 신주 시가총액 ÷ 최근 ${s.n}일 평균 거래대금(종가×거래량 근사) ${s.value_days ?? '데이터없음'}일 / 신주 ÷ 최근 ${s.n}일 평균 거래량 ${s.volume_days ?? '데이터없음'}일 / 상장일 거래량 ÷ 신주 ${s.listing_turnover ?? '상장 전 또는 데이터없음'}`);
   return out.join('\n');
 }
@@ -388,7 +392,7 @@ function buildBriefingPrompt(d) {
     return `- ${c.verdict ? c.verdict.emoji + ' ' : ''}${c.corp_name}(${P_NA(c.stock_code)}) | ${P_NA(c.ic_mthn)} | 자금목적 ${purpose} | 희석 ${sm.dilution_ratio != null ? (sm.dilution_ratio * 100).toFixed(0) + '%' : '-'} | 발행가 ${P_N(s.issue_price)} | ${caseStage(s)} | 권리락 ${P_NA(s.ex_rights_date)} · 인수권 ${P_NA(s.rights_start)}~${P_NA(s.rights_end)} · 상장 ${P_NA(s.listing_date)}${last ? ` | 괴리율 ${P_PCT(last.gap)}(${last.d})` : ''}`;
   }).join('\n') : '- (진행 중인 주주배정 케이스 없음)';
   const rights = (d.rights_today || []).length ? d.rights_today.map(r =>
-    `- ${r.name}: 인수권 ${P_N(r.close)} / 본주 ${P_N(r.stock)} / 발행가 ${P_N(r.issue)} / 이론가 ${P_N(r.fair)} / 괴리율 ${P_PCT(r.gap)} / 인수권+청약 원가 ${P_N(r.cost)} / 거래량 ${P_N(r.volume)} / 상장폐지 ${P_NA(r.delist)}`
+    `- ${r.name}: 인수권 ${P_N(r.close)} / 본주 ${P_N(r.stock)} / 발행가 ${P_N(r.issue)} / 이론가 ${P_N(r.fair)} / 괴리율 ${P_PCT(r.gap)} / 인수권+청약 원가 ${P_N(r.cost)} / 거래량 ${P_N(r.volume)} / KRX 상장폐지일 ${P_NA(r.delist)} → 마지막 매매일 ${P_NA(r.last_trade)}(상장폐지일 전 영업일 — 공시와 대조)`
   ).join('\n') : '- (해당일 상장된 인수권 없음)';
 
   const aCases = open.filter(c => c.a_margin && (c.a_margin.days || []).some(x => x.key === 'rights_end' && x.left != null));

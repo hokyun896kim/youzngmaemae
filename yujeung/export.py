@@ -8,7 +8,7 @@ from pathlib import Path
 
 from . import db, estimate, paper, strategy
 from .backtest import load_card_scenarios
-from .calendar_kr import KRX_HOLIDAYS
+from .calendar_kr import KRX_HOLIDAYS, prev_business_day
 from .config import Config
 from .pipeline import SCHEDULE_LABELS, checked_schedule, latest_facts, live_verdict
 from .prices import compute_gap
@@ -46,7 +46,8 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
 
     live = live_verdict(conn, c, cfg)
     series = []
-    for r in paper.rights_rows(conn, c):
+    r_rows = paper.rights_rows(conn, c)
+    for r in r_rows:
         s_row = conn.execute("SELECT close FROM stock_daily WHERE bas_dd=? AND code=?",
                              (r["bas_dd"], c["stock_code"])).fetchone()
         stock = (s_row[0] if s_row else None) or r["tar_price"]
@@ -82,8 +83,15 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
     p_now, p_date = (last_r["stock"], last_r["d"]) if last_r else \
         ((daily[-1]["close"], daily[-1]["bas_dd"]) if daily else (None, None))
     ind = strategy.indicators(strategy._stock(conn, c["stock_code"]), p_date, estimate.A_ATR_N) if p_date else {}
+    # 매매종료일(마지막 매매가능일) ≠ KRX 상장폐지일 — 발행회사 공시와 KRX(상장폐지일 전 영업일)를 대조
+    end_check = estimate.rights_end_check(sch.get("rights_end"),
+                                          next((r["delist_dd"] for r in reversed(r_rows) if r["delist_dd"]), None))
+    if end_check and end_check["status"] == "mismatch":
+        sch_warn = [*sch_warn, f"인수권 매매종료일 불일치: 공시 {end_check['disclosed']} vs KRX 상장폐지일 "
+                               f"{end_check['delist']} 전 영업일 {end_check['krx_last']} — 원문·KRX 확인"]
+        base["schedule_warnings"] = sch_warn
     a_margin = estimate.a_margin(sch, quick["issue"], p_now, p_date, last_r["rights"] if last_r else None,
-                                 last_r["d"] if last_r else None, ind.get("atr_pct"), today)
+                                 last_r["d"] if last_r else None, ind.get("atr_pct"), today, end_check)
     lst = sch.get("listing_date")
     lst_vol = next((r["volume"] for r in daily if r["bas_dd"] == lst), None) if lst else None
     supply = estimate.supply(live["summary"].get("new_shares"), live["summary"].get("dilution_ratio"), p_now,
@@ -127,6 +135,8 @@ def build_site(conn: sqlite3.Connection, cfg: Config | None = None, today: date 
                 "isu_cd": r["isu_cd"], "name": r["isu_nm"], "close": r["close"], "volume": r["volume"],
                 "stock_code": r["tar_code"], "stock_name": r["tar_name"], "stock": stock,
                 "issue": r["issue_price"], "delist": r["delist_dd"], "case_id": r["case_id"],
+                # 마지막 매매일 = KRX 상장폐지일 전 영업일 (상장폐지일 ≠ 매매종료일)
+                "last_trade": prev_business_day(date.fromisoformat(r["delist_dd"])).isoformat() if r["delist_dd"] else None,
                 "fair": g.fair if g else None, "gap": g.gap_pct if g else None,
                 "cost": g.effective_cost if g else None, "disc": g.discount_pct if g else None,
             })

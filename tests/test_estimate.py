@@ -168,3 +168,16 @@ def test_supply_shock():
     assert (s["dilution"], s["volume_days"], s["value_days"], s["listing_turnover"], s["float_ratio"]) == \
            (40.0, 20.0, 20.0, 0.25, None)
     assert estimate.supply(None, 0.4, 1000, daily) is None
+
+
+def test_rights_end_check_delist_vs_last_trade():
+    """인수권 상장폐지일 ≠ 매매종료일: KRX 상장폐지일은 매매종료 다음 영업일 (실측 SK디앤디 공시 9/29 · KRX 상폐 9/30)."""
+    ok = estimate.rights_end_check("2026-09-29", "2026-09-30")
+    assert (ok["status"], ok["last"], ok["krx_last"]) == ("ok", "2026-09-29", "2026-09-29")
+    # 상장폐지일이 휴장일 다음이면 전 '영업일'로 (10/5 휴장 → 10/6 상폐면 마지막 매매일 10/2)
+    assert estimate.rights_end_check("2026-10-02", "2026-10-06")["status"] == "ok"
+    bad = estimate.rights_end_check("2026-09-30", "2026-09-30")    # 상장폐지일을 매매종료일로 잘못 읽은 경우
+    assert bad["status"] == "mismatch" and bad["krx_last"] == "2026-09-29"
+    assert estimate.rights_end_check("2026-10-02", None)["status"] == "disclosed_only"
+    assert estimate.rights_end_check(None, "2026-09-30")["last"] == "2026-09-29"
+    assert estimate.rights_end_check(None, None) is None
