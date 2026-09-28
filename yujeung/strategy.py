@@ -154,7 +154,7 @@ def _stock(conn: sqlite3.Connection, code: str) -> list[dict]:
         (code,))]
 
 
-def indicators(rows: list[dict], upto: str) -> dict:
+def indicators(rows: list[dict], upto: str, atr_n: int = S2_ATR_N) -> dict:
     """upto(포함)까지의 RSI·ATR(% of 종가). 최근 120거래일, **한 출처로만** 계산한다.
     네이버 일봉은 이후 액면분할·유증까지 반영한 수정주가라 KRX 원주가와 섞으면 날짜 사이에 가짜 급등락이 생긴다
     (백테스트 v1 실측: 이렘 2024 ATR 3,184원 vs 종가 1,483원 → 손절선 음수). 네이버 원값(n_*)이 충분하면 그것만,
@@ -162,8 +162,8 @@ def indicators(rows: list[dict], upto: str) -> dict:
     hist = [r for r in rows if r["bas_dd"] <= upto][-120:]
     nav = [{"bas_dd": r["bas_dd"], "close": r["n_close"], "high": r["n_high"], "low": r["n_low"]}
            for r in hist if r.get("n_close")]
-    src, ser = ("naver", nav) if len(nav) >= S2_ATR_N + 1 else ("stored", hist)
-    a = atr(ser)
+    src, ser = ("naver", nav) if len(nav) >= atr_n + 1 else ("stored", hist)
+    a = atr(ser, atr_n)
     last = ser[-1]["close"] if ser else None
     return {"asof": ser[-1]["bas_dd"] if ser else None, "src": src, "rsi": rsi([r["close"] for r in ser]),
             "atr_pct": round(a / last * 100, 2) if a and last else None,

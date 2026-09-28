@@ -155,6 +155,82 @@ def overhang(new_shares: int | None, volumes: list[int]) -> dict | None:
             "red": days >= OVERHANG_RED_DAYS}
 
 
+# ---- A = 인수권 할인 포착: 괴리 → 총원가 쿠션 → ATR 쿠션 → 신주 공급압력 ----
+# 본주를 공매도해 가격을 고정할 수 없으니 무위험 차익이 아니다. 인수권을 싸게 사도 청약 → 상장까지 본주가 빠지면 손실.
+# 그래서 "−60% 괴리"가 실제로 몇 %의 안전마진(총원가 쿠션)이고, 그 쿠션이 평소 하루 변동(ATR)의 몇 배인지를 본다.
+# 쿠션÷ATR 의 합격선은 두지 않는다 — H1 데이터가 쌓일 때까지 연속형으로 기록만.
+A_ATR_N = 10
+A_DAY_KEYS = (("rights_end", "인수권 거래 종료"), ("subs_start", "청약 시작"), ("listing_date", "신주 상장"))
+
+
+def trading_days_left(today: date, target: str | None) -> int | None:
+    """오늘(거래일이면 포함)부터 target 까지의 거래일 수. 이미 지났으면 None."""
+    if not target or target < today.isoformat():
+        return None
+    from .calendar_kr import is_business_day
+    d, end, n = today, date.fromisoformat(target), 0
+    while d <= end:
+        n += is_business_day(d)
+        d = date.fromordinal(d.toordinal() + 1)
+    return n
+
+
+def _a_row(label: str, kind: str, p: int, i: int, r: int | None, atr: float | None) -> dict:
+    cost = r + i if r else None
+    cushion = p - cost if cost else None
+    return {"label": label, "kind": kind, "issue": i, "p_minus_i": p - i,
+            "gap": round((r / (p - i) - 1) * 100, 1) if r and p > i else None,
+            "cost": cost,
+            "cost_disc": round((1 - cost / p) * 100, 1) if cost else None,      # 총원가 할인율 = 1 − (R+I)/P (양수 = 쿠션)
+            "cushion": cushion,                                                 # 원화 쿠션 = P − (R+I)
+            "cushion_atr": round(cushion / atr, 2) if cushion is not None and atr else None,
+            "r_for_1atr": round(p - i - atr) if atr and p - i - atr > 0 else None}   # 쿠션이 ATR 1배 남는 인수권 가격 상한
+
+
+def a_margin(sch: dict, issue: dict, p: int | None, p_date: str | None, r: int | None, r_date: str | None,
+             atr_pct: float | None, today: date) -> dict | None:
+    """발행가 단계는 섞지 않는다: 확정이면 한 줄, 아니면 1차(공시 또는 추정) + 2차 시나리오를 따로."""
+    if not p or not sch.get("rights_start"):
+        return None
+    atr = round(p * atr_pct / 100) if atr_pct else None
+    confirmed = issue.get("kind") == "확정"
+    kind = issue.get("issue_kind") or sch.get("issue_kind") or "예정"
+    rows = []
+    if confirmed and issue.get("value"):
+        rows.append(_a_row("확정발행가", "확정", p, issue["value"], r, atr))
+    else:
+        if kind == "1차" and sch.get("issue_price"):
+            rows.append(_a_row("1차 발행가(공시)", "1차", p, sch["issue_price"], r, atr))
+        elif issue.get("i1"):
+            rows.append(_a_row("1차 발행가(추정 — 공시가 예정발행가라 안 씀)", "1차 추정", p, issue["i1"], r, atr))
+        if issue.get("i2"):
+            row = _a_row("2차 발행가 시나리오(현재 주가로 추정)", "2차 시나리오", p, issue["i2"], r, atr)
+            i1 = rows[0]["issue"] if rows else None
+            if i1 and issue["i2"] > i1:
+                row["note"] = "2차가 1차보다 높음 — 확정가가 min(1차, 2차)인 회사면 1차 유지 (증권신고서 산식 확인)"
+            rows.append(row)
+    return {"p": p, "p_date": p_date, "r": r, "r_date": r_date, "atr": atr, "atr_n": A_ATR_N, "atr_pct": atr_pct,
+            "confirmed": confirmed, "rows": rows,
+            "days": [{"key": k, "label": lab, "date": sch.get(k), "left": trading_days_left(today, sch.get(k))}
+                     for k, lab in A_DAY_KEYS]}
+
+
+def supply(new_shares: int | None, dilution: float | None, p: int | None, daily: list[tuple[int, int]],
+           listing_volume: int | None = None) -> dict | None:
+    """공급충격: 희석(신주 ÷ 증자 전 주식)과 '시장이 실제로 소화해야 하는 물량'을 구분.
+    daily = [(종가, 거래량)] 최근순 아님(오름차순). 거래대금은 종가×거래량 근사. 유통주식수는 수집하지 않음 → 미확인."""
+    if not new_shares:
+        return None
+    d = [(c, v) for c, v in daily[-AVG_VOLUME_DAYS:] if c and v]
+    avg_vol = sum(v for _, v in d) / len(d) if d else None
+    avg_val = sum(c * v for c, v in d) / len(d) if d else None
+    return {"new_shares": new_shares, "dilution": round(dilution * 100, 1) if dilution is not None else None,
+            "float_ratio": None, "n": len(d),
+            "value_days": round(new_shares * p / avg_val, 1) if p and avg_val else None,
+            "volume_days": round(new_shares / avg_vol, 1) if avg_vol else None,
+            "listing_turnover": round(listing_volume / new_shares, 2) if listing_volume else None}
+
+
 def _next_quarter(op_period: str | None) -> str:
     m = re.search(r"(1분기|반기|3분기|4분기)", op_period or "")
     return NEXT_QUARTER[m.group(1)] if m else "다음 분기"

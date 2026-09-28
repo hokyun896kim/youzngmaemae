@@ -133,3 +133,38 @@ def test_review_17_dilution_ratio_denominator():
     assert q["issue"]["value"] == round(3000 * 0.8 / (1 + 0.30 * 0.2)) and "증자비율 30.0%" in q["issue"]["text"]
     assert q["green_check"] == {"gap": None, "disc": -12.0, "cheap": -20, "disc_floor": -20.0,
                                 "gap_ok": False, "disc_ok": True, "ok": False}
+
+
+def test_a_margin_total_cost_cushion_and_atr():
+    """A = 인수권 할인 포착: SK디앤디 12R(9/23) 실측값 — 괴리율 −41% 이어도 총원가 할인율 13.2% · 쿠션 439원 = ATR 1.25배.
+    확정 전이면 1차(공시)와 2차 시나리오를 따로, 2차가 1차보다 높으면 min 규칙 안내."""
+    sch = {"rights_start": "2026-09-17", "rights_end": "2026-09-29", "subs_start": "2026-10-08",
+           "listing_date": "2026-10-28", "issue_price": 2260, "issue_kind": "1차"}
+    issue = {"kind": "최종 추정", "issue_kind": "1차", "i1": 2260, "i2": 2816, "value": 2260}
+    a = estimate.a_margin(sch, issue, 3335, "2026-09-23", 636, "2026-09-23", 351 / 3335 * 100, date(2026, 9, 28))
+    r1, r2 = a["rows"]
+    assert (r1["kind"], r1["p_minus_i"], r1["gap"], r1["cost"], r1["cost_disc"], r1["cushion"], r1["cushion_atr"]) == \
+           ("1차", 1075, -40.8, 2896, 13.2, 439, 1.25)
+    assert r2["kind"] == "2차 시나리오" and r2["cushion"] == -117 and "min(1차, 2차)" in r2["note"]
+    assert not a["confirmed"] and a["atr"] == 351
+    # 남은 거래일(오늘 포함): 9/28(월)·9/29(화) = 2 / 청약 10/8 = 8 (10/5 휴장) / 상장 10/28 = 21 (10/9 휴장)
+    assert [d["left"] for d in a["days"]] == [2, 8, 21]
+    # 인수권 시세 전: 쿠션이 ATR 1배 남는 R 상한 = P − I − ATR
+    b = estimate.a_margin(sch, issue, 3335, "2026-09-23", None, None, 351 / 3335 * 100, date(2026, 9, 28))
+    assert b["rows"][0]["cost"] is None and b["rows"][0]["r_for_1atr"] == 3335 - 2260 - 351
+    # 확정이면 한 줄, 예정발행가는 1차로 쓰지 않음
+    c = estimate.a_margin(sch, {"kind": "확정", "value": 2300}, 3335, "d", 636, "d", None, date(2026, 9, 28))
+    assert [r["kind"] for r in c["rows"]] == ["확정"] and c["rows"][0]["cushion_atr"] is None
+    d = estimate.a_margin(dict(sch, issue_kind="예정"), {"kind": "1차 추정", "issue_kind": "예정", "i1": 2100},
+                          3335, "d", None, None, None, date(2026, 9, 28))
+    assert [r["kind"] for r in d["rows"]] == ["1차 추정"] and d["rows"][0]["issue"] == 2100
+    assert estimate.a_margin({}, issue, 3335, "d", 636, "d", 5, date(2026, 9, 28)) is None   # 인수권 없는 케이스
+    assert estimate.trading_days_left(date(2026, 9, 28), "2026-09-27") is None
+
+
+def test_supply_shock():
+    daily = [(1000, 100_000)] * 25
+    s = estimate.supply(2_000_000, 0.4, 1000, daily, listing_volume=500_000)
+    assert (s["dilution"], s["volume_days"], s["value_days"], s["listing_turnover"], s["float_ratio"]) == \
+           (40.0, 20.0, 20.0, 0.25, None)
+    assert estimate.supply(None, 0.4, 1000, daily) is None
