@@ -1,6 +1,16 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>유증 레이더</title>
+<!-- 사파리 '홈 화면에 추가'(iOS) · 'Dock에 추가'(macOS) 웹앱 -->
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="유증 레이더">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#080c16">
+<meta name="format-detection" content="telephone=no">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
 <style>
 :root{--bg:#080c16;--panel:#0e1626;--panel2:#131f35;--line:#1c2942;--gold:#d4af37;--gold2:#f0d27a;--txt:#e8edf6;--mut:#7d8aa3;--red:#c2544d;--grn:#4a9d7f;--blu:#5b8def}
@@ -221,6 +231,12 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 }
 footer{color:var(--mut);font-size:11px;margin:34px 0 10px;line-height:1.7}
 a{color:var(--gold2)}
+/* 웹앱(홈 화면) — 노치·상태바·홈 인디케이터 안쪽으로 */
+body{padding-top:calc(clamp(14px,3.5vw,38px) + env(safe-area-inset-top));padding-bottom:calc(clamp(14px,3.5vw,38px) + env(safe-area-inset-bottom));
+ padding-left:max(clamp(14px,3.5vw,38px),env(safe-area-inset-left));padding-right:max(clamp(14px,3.5vw,38px),env(safe-area-inset-right))}
+.btn.reload{display:none}
+.standalone .btn.reload{display:inline-flex;align-items:center;justify-content:center}
+.standalone{-webkit-tap-highlight-color:transparent}
 </style></head><body><div class="wrap">
 <div class="kicker">Rights Offering Radar · Phase 0</div>
 <h1>유증 레이더</h1>
@@ -231,6 +247,7 @@ a{color:var(--gold2)}
 <div class="topbar">
  <button class="btn" onclick="openGuide()">📘 분석 가이드</button>
  <button class="btn gold" id="briefBtn" onclick="copyBriefing(this)">🤖 전체 브리핑 프롬프트 복사</button>
+ <button class="btn reload" onclick="location.reload()" aria-label="새로고침">↻ 새로고침</button>
 </div>
 <div id="briefPreview" class="preview"></div>
 <div class="ssum" id="ssum" hidden></div>
@@ -674,4 +691,11 @@ Promise.all([fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()),
   $('#chips').innerHTML=[['갱신',d.generated_at.replace('T',' ').slice(0,16)+(stale?` · ${Math.floor(age)}시간 전`:''),stale],['인수권 시세',d.last_rights_date||'—'],['주주배정 진행',rc+'건'],['가상 기록',(c.paper_trades??0)+'건'],['제외 공시',(c.excluded_disclosures??0)+'건']].map(([l,v,st])=>`<div class="chip${st?' stale':''}">${l}<b>${v}</b></div>`).join('');
   stratSummary();renderToday();renderRights();renderCases();renderSScore();renderScore();renderExam(BT);
 }).catch(e=>{$('#chips').innerHTML=`<div class="empty">data/site.json 을 읽지 못했습니다 (${esc(e.message)}). 로컬에선 python -m http.server 로 여세요.</div>`});
+// 웹앱(홈 화면)으로 열면 당겨서 새로고침이 없다 → 새로고침 버튼 + 10분 넘게 쉬다 돌아오면 자동 새로고침
+const STANDALONE=navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;
+if(STANDALONE){
+  document.documentElement.classList.add('standalone');
+  const loadedAt=Date.now();
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&Date.now()-loadedAt>10*60e3)location.reload();});
+}
 </script></body></html>
