@@ -57,8 +57,35 @@ def stage(sch: dict, today: date) -> str:
     return "5"
 
 
+SECOND_WINDOW = 5     # 2차 기준주가: 기산일(확정발행가 산정일 = 청약일 전 제3거래일)부터 소급 1주일(5거래일)
+
+
+def second_price(sch: dict, d: float, bars: list[dict], today: date) -> dict | None:
+    """2차 발행가 추정 = min(1주일 가중산술평균주가(VWAP), 기산일 종가) × (1 − 할인율). 권리락 후 주가만 쓴다.
+    기산일 전이면 '오늘이 기산일이라면'으로 최근 5거래일로 대신(projected). VWAP = Σ거래대금 ÷ Σ거래량 (KRX),
+    거래대금이 없는 날이 섞이면 종가×거래량 근사. bars = [{bas_dd, close, volume?, value?}] 오름차순."""
+    ex, fix = sch.get("ex_rights_date"), sch.get("price_fix_date")
+    upto = min(fix, today.isoformat()) if fix else today.isoformat()
+    post = [b for b in bars if b.get("close") and (not ex or b["bas_dd"] >= ex) and b["bas_dd"] <= upto]
+    if not post:
+        return None
+    win = post[-SECOND_WINDOW:]
+    vols = [b.get("volume") or 0 for b in win]
+    if all(b.get("value") and b.get("volume") for b in win):
+        vwap, src = sum(b["value"] for b in win) / sum(vols), "KRX 거래대금 ÷ 거래량"
+    elif sum(vols):
+        vwap, src = sum(b["close"] * (b.get("volume") or 0) for b in win) / sum(vols), "종가×거래량 근사 (거래대금 미수집일 포함)"
+    else:
+        vwap, src = None, "거래량 없음 — 종가만"
+    close_base = win[-1]["close"]
+    base = min(vwap, close_base) if vwap else close_base
+    return {"i2": round(base * (1 - d)), "base": round(base), "vwap": round(vwap) if vwap else None, "vwap_src": src,
+            "close_base": close_base, "base_date": win[-1]["bas_dd"], "window": [b["bas_dd"] for b in win],
+            "fix_date": fix, "projected": not fix or today.isoformat() < fix, "d": d}
+
+
 def issue_estimate(sch: dict, d: float | None, r: float | None, closes: list[tuple[str, int]],
-                   today: date, confirmed: bool = False) -> dict:
+                   today: date, confirmed: bool = False, bars: list[dict] | None = None) -> dict:
     """closes: [(YYYY-MM-DD, 종가)] 오름차순. 반환 value = 이번 계산에 쓸 발행가.
     공시 발행가는 구분(sch.issue_kind)에 따라 다르게 쓴다:
       확정 → 그대로 / 1차('1차' 라벨 또는 1차 산정일 이후 공시) → I1 로 사용 /
@@ -102,10 +129,16 @@ def issue_estimate(sch: dict, d: float | None, r: float | None, closes: list[tup
     if not post:
         out.update(value=i1, kind="1차 추정", i1=i1, text=f"{i1_txt} — 권리락 후 주가 없음")
         return out
-    i2 = round(post[-1] * (1 - d))
+    sp = second_price(sch, d, bars or [{"bas_dd": dd, "close": c} for dd, c in closes], today) or \
+        {"i2": round(post[-1] * (1 - d)), "vwap": None, "close_base": post[-1], "projected": True}   # 산정일 창에 시세 없음
+    i2 = sp["i2"]
     est = min(v for v in (i1, i2) if v)
-    out.update(value=est, kind="최종 추정", i1=i1, i2=i2,
-               text=f"최종 추정 {est:,}원 = min({i1_txt}, 2차 {i2:,}) · 2차 = 권리락 후 주가 {post[-1]:,} × (1−{d:.0%})")
+    # 최저발행가 제한(액면가·신고서의 하한)은 아직 파싱하지 않는다 → floor 미확인 (min 결과가 하한 밑이면 하한이 확정가)
+    base_txt = (f"min(1주 VWAP {sp['vwap']:,}, {'기산일' if not sp['projected'] else '최근'} 종가 {sp['close_base']:,})"
+                if sp["vwap"] else f"권리락 후 주가 {sp['close_base']:,}")
+    out.update(value=est, kind="최종 추정", i1=i1, i2=i2, second=sp, floor=None,
+               text=f"최종 추정 {est:,}원 = min({i1_txt}, 2차 {i2:,}) · 2차 = {base_txt} × (1−{d:.0%})"
+                    + (" — 산정일 전이라 오늘 기준 예상" if sp["projected"] else ""))
     return out
 
 
@@ -153,6 +186,113 @@ def overhang(new_shares: int | None, volumes: list[int]) -> dict | None:
     days = new_shares / avg
     return {"days": round(days, 1), "avg_volume": round(avg), "new_shares": new_shares, "n": len(vols),
             "red": days >= OVERHANG_RED_DAYS}
+
+
+# ---- A = 인수권 할인 포착: 괴리 → 총원가 쿠션 → ATR 쿠션 → 신주 공급압력 ----
+# 본주를 공매도해 가격을 고정할 수 없으니 무위험 차익이 아니다. 인수권을 싸게 사도 청약 → 상장까지 본주가 빠지면 손실.
+# 그래서 "−60% 괴리"가 실제로 몇 %의 안전마진(총원가 쿠션)이고, 그 쿠션이 평소 하루 변동(ATR)의 몇 배인지를 본다.
+# 쿠션÷ATR 의 합격선은 두지 않는다 — H1 데이터가 쌓일 때까지 연속형으로 기록만.
+A_ATR_N = 10
+A_DAY_KEYS = (("rights_end", "인수권 매매종료"),("subs_start", "청약 시작"), ("listing_date", "신주 상장"))
+
+
+def trading_days_left(today: date, target: str | None) -> int | None:
+    """오늘(거래일이면 포함)부터 target 까지의 거래일 수. 이미 지났으면 None."""
+    if not target or target < today.isoformat():
+        return None
+    from .calendar_kr import is_business_day
+    d, end, n = today, date.fromisoformat(target), 0
+    while d <= end:
+        n += is_business_day(d)
+        d = date.fromordinal(d.toordinal() + 1)
+    return n
+
+
+def rights_end_check(disclosed: str | None, delist: str | None) -> dict | None:
+    """인수권 '매매종료일'(마지막 실제 매매가능일)과 KRX '상장폐지일'은 다르다 — 상장폐지일은 매매종료 다음 영업일.
+    발행회사 공시(일정의 인수권 종료일)와 KRX(상장폐지일 전 영업일)를 대조한다. 증권사 화면의 종료일은 쓰지 않는다."""
+    if not disclosed and not delist:
+        return None
+    from .calendar_kr import prev_business_day
+    krx_last = prev_business_day(date.fromisoformat(delist)).isoformat() if delist else None
+    if disclosed and krx_last:
+        status = "ok" if disclosed == krx_last else "mismatch"
+    else:
+        status = "disclosed_only" if disclosed else "krx_only"
+    text = {"ok": "공시·KRX 일치", "mismatch": "⚠ 공시와 KRX 불일치 — 원문·KRX 확인",
+            "disclosed_only": "공시만 (KRX 인수권 시세 전 — 상장폐지일 미수집)", "krx_only": "KRX만 (공시 일정 미파싱)"}[status]
+    return {"last": disclosed or krx_last, "disclosed": disclosed, "delist": delist, "krx_last": krx_last,
+            "status": status, "text": text}
+
+
+def _a_row(label: str, kind: str, p: int, i: int, r: int | None, atr: float | None) -> dict:
+    cost = r + i if r else None
+    cushion = p - cost if cost else None
+    return {"label": label, "kind": kind, "issue": i, "p_minus_i": p - i,
+            "gap": round((r / (p - i) - 1) * 100, 1) if r and p > i else None,
+            "cost": cost,
+            "cost_disc": round((1 - cost / p) * 100, 1) if cost else None,      # 총원가 할인율 = 1 − (R+I)/P (양수 = 쿠션)
+            "cushion": cushion,                                                 # 원화 쿠션 = P − (R+I)
+            "cushion_atr": round(cushion / atr, 2) if cushion is not None and atr else None,
+            "r_for_1atr": round(p - i - atr) if atr and p - i - atr > 0 else None}   # 쿠션이 ATR 1배 남는 인수권 가격 상한
+
+
+def a_margin(sch: dict, issue: dict, p: int | None, p_date: str | None, r: int | None, r_date: str | None,
+             atr_pct: float | None, today: date, end_check: dict | None = None) -> dict | None:
+    """발행가 단계는 섞지 않는다: 확정이면 한 줄, 아니면 1차(공시 또는 추정) + 2차 시나리오를 따로."""
+    if not p or not sch.get("rights_start"):
+        return None
+    atr = round(p * atr_pct / 100) if atr_pct else None
+    confirmed = issue.get("kind") == "확정"
+    kind = issue.get("issue_kind") or sch.get("issue_kind") or "예정"
+    # 3층: ① 1차가 기준 R/(P−I₁)−1 · ② 현재 시점 예상 최종가 기준 R/(P−Î_final)−1 · ③ 실제 확정가 기준 R/(P−I_final)−1
+    # ①만 보면 min(1차, 2차)로 확정가를 정하는 유증에서 틀린다 — ①과 ②의 차이로 "권리가 비싼 건지,
+    # 시장이 미래 발행가 인하를 먼저 반영한 건지"를 가른다.
+    rows = []
+    i1 = sch.get("issue_price") if kind == "1차" and sch.get("issue_price") else issue.get("i1")
+    if i1 and not confirmed:
+        rows.append(_a_row("① 1차가 기준" + ("" if kind == "1차" else " (1차 추정 — 공시가 예정발행가라 안 씀)"),
+                           "1차", p, i1, r, atr))
+    if not confirmed:
+        i_hat = issue.get("value") if issue.get("kind") == "최종 추정" else i1
+        if i_hat:
+            row = _a_row("② 현재 시점 예상 최종가 기준", "예상 최종", p, i_hat, r, atr)
+            if issue.get("kind") != "최종 추정":
+                row["note"] = "권리락 전 — 2차 미산정, 예상 최종 = 1차"
+            rows.append(row)
+        rows.append({"label": "③ 실제 확정가 기준", "kind": "확정", "issue": None,
+                     "note": f"확정 전 (확정발행가 산정일 {sch.get('price_fix_date') or '미확인'})"})
+    elif issue.get("value"):
+        rows.append(_a_row("③ 실제 확정가 기준", "확정", p, issue["value"], r, atr))
+    g1 = next((x.get("gap") for x in rows if x["kind"] == "1차"), None)
+    g2 = next((x.get("gap") for x in rows if x["kind"] == "예상 최종"), None)
+    sp = issue.get("second") or {}
+    final = None if confirmed else {
+        "i1": i1, "i2": issue.get("i2"), "i_hat": next((x["issue"] for x in rows if x["kind"] == "예상 최종"), None),
+        "d": issue.get("d"), "vwap": sp.get("vwap"), "vwap_src": sp.get("vwap_src"), "close_base": sp.get("close_base"),
+        "base_date": sp.get("base_date"), "window": sp.get("window"), "fix_date": sch.get("price_fix_date"),
+        "projected": sp.get("projected"), "floor": None, "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"}
+    return {"p": p, "p_date": p_date, "r": r, "r_date": r_date, "atr": atr, "atr_n": A_ATR_N, "atr_pct": atr_pct,
+            "confirmed": confirmed, "rows": rows, "end_check": end_check, "final": final,
+            "gap_shift": round(g2 - g1, 1) if g1 is not None and g2 is not None else None,
+            "days": [{"key": k, "label": lab, "date": sch.get(k), "left": trading_days_left(today, sch.get(k))}
+                     for k, lab in A_DAY_KEYS]}
+
+
+def supply(new_shares: int | None, dilution: float | None, p: int | None, daily: list[tuple[int, int]],
+           listing_volume: int | None = None) -> dict | None:
+    """공급충격: 희석(신주 ÷ 증자 전 주식)과 '시장이 실제로 소화해야 하는 물량'을 구분.
+    daily = [(종가, 거래량)] 최근순 아님(오름차순). 거래대금은 종가×거래량 근사. 유통주식수는 수집하지 않음 → 미확인."""
+    if not new_shares:
+        return None
+    d = [(c, v) for c, v in daily[-AVG_VOLUME_DAYS:] if c and v]
+    avg_vol = sum(v for _, v in d) / len(d) if d else None
+    avg_val = sum(c * v for c, v in d) / len(d) if d else None
+    return {"new_shares": new_shares, "dilution": round(dilution * 100, 1) if dilution is not None else None,
+            "float_ratio": None, "n": len(d),
+            "value_days": round(new_shares * p / avg_val, 1) if p and avg_val else None,
+            "volume_days": round(new_shares / avg_vol, 1) if avg_vol else None,
+            "listing_turnover": round(listing_volume / new_shares, 2) if listing_volume else None}
 
 
 def _next_quarter(op_period: str | None) -> str:
@@ -212,10 +352,10 @@ def conclusion(verdict: str, g1: dict, gap: float | None, stg: str | None = None
 def quick(verdict: str, g1: dict, gap: float | None, sch: dict, facts: dict, closes: list[tuple[str, int]],
           volumes: list[int], rights_close: int | None, new_shares: int | None, dilution: float | None,
           op_period: str | None, today: date, confirmed: bool, cheap: float = -20, rich: float = 20,
-          card: dict | None = None, disc: float | None = None) -> dict:
+          card: dict | None = None, disc: float | None = None, bars: list[dict] | None = None) -> dict:
     stg = stage(sch, today)
     r = dilution or sch.get("alloc_ratio")    # 증자비율 우선 ([17]) — 없을 때만 배정비율
-    issue = issue_estimate(sch, facts.get("discount"), r, closes, today, confirmed)
+    issue = issue_estimate(sch, facts.get("discount"), r, closes, today, confirmed, bars)
     be = breakeven(stg, sch, issue, closes, rights_close)
     scen, note = scenarios_for(verdict, card)
     tracking = base(verdict) in ("green", "blue") and stg in ("4", "5", "listed")

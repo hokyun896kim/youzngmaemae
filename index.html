@@ -139,6 +139,11 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .quick .ql>span{color:var(--mut)}
 .quick .ql>div{overflow-wrap:anywhere}
 .quick table{min-width:0;margin-top:8px;max-width:560px}
+.abox{margin-top:9px;border-top:1px dashed rgba(212,175,55,.35);padding-top:8px;font-size:12.5px;line-height:1.55}
+.abox .ah{font-weight:800;color:var(--gold2);margin-bottom:2px}.abox .ah small{font-weight:500;margin-left:4px}
+.abox .ar{margin:6px 0;background:#0b1322;border:1px solid var(--line);border-radius:9px;padding:7px 9px}
+.abox dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px 8px;margin-top:5px}
+.abox dt{color:var(--mut);font-size:10.5px}.abox dd{font-weight:700;font-variant-numeric:tabular-nums}
 .quick td,.quick th{padding:4px 8px;font-size:12px}
 .quick .fn{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5}
 .quick .red{color:#f0a8a2;font-weight:700}
@@ -276,7 +281,8 @@ body{padding-top:calc(clamp(14px,3.5vw,38px) + env(safe-area-inset-top));padding
 <div class="uc"><b class="t">1단계 · 증자방식부터 거른다</b>주주배정 계열(주주배정증자, 주주배정후 실권주 일반공모)만 신주인수권증서가 나옵니다. 나머지(제3자배정·일반공모)는 <b>관찰</b> 탭으로 빠집니다.</div>
 <div class="uc"><b class="t">2단계 · 회사부터 본다 (B = 본업)</b>자금 목적 막대가 <b style="color:var(--red)">채무상환</b> 위주거나, 신주÷기존주가 100%를 넘는 <b>초대형 희석</b>이면 빨간 배지가 붙습니다. 필터 5개(업계 1~3위 / 안 망할 회사 / 대체 불가 / 영업흑자 / 52주 중간 이하)를 통과해야 B 후보입니다.</div>
 <div class="uc"><b class="t">3단계 · 사이클 위치를 본다</b>카드의 금색 라벨이 지금 구간입니다: ① 권리 확보 → ② 권리락 후 → ③ <b>인수권 거래 중</b> → ④ 청약 → ⑤ 상장 대기 → ⑥ 상장 후 매물 소화. 타임라인의 빨간 선이 오늘입니다.</div>
-<div class="uc"><b class="t">4단계 · 인수권 괴리를 본다 (A = 보너스)</b>괴리율 = 인수권 ÷ (본주 − 발행가) − 1.<br><b class="neg">음수(초록)</b> = 인수권이 싸다 → "인수권 매수 + 청약"으로 본주보다 싸게 신주 확보 검토.<br><b class="pos">양수(빨강)</b> = 인수권이 비싸다 → 보유 인수권 매도 검토.<br>예) SK디앤디 12R: 인수권 636 / 이론가 1,135(3,395 − 2,260) → <b class="neg">−44%</b>, 인수권+청약 원가 2,896원.</div>
+<div class="uc"><b class="t">4단계 · 인수권 할인 포착 (A = 보너스)</b>괴리율 = 인수권 ÷ (본주 − 발행가) − 1.<br><b class="neg">음수(초록)</b> = 인수권이 싸다 → "인수권 매수 + 청약"으로 본주보다 싸게 신주 확보 검토.<br><b class="pos">양수(빨강)</b> = 인수권이 비싸다 → 보유 인수권 매도 검토.<br>
+단, <b>무위험 차익이 아닙니다</b> — 본주를 공매도해 가격을 묶을 수 없어서 청약 → 신주 상장까지 본주가 빠지면 손실입니다. 그래서 순서대로 봅니다: <b>괴리율 → 총원가 쿠션</b>(총원가 할인율 = 1 − (인수권+발행가)/본주, 원화 쿠션 = 본주 − (인수권+발행가)) <b>→ ATR 쿠션</b>(쿠션 ÷ ATR(10), 하루 변동 몇 번을 버티나) <b>→ 신주 공급압력</b>(신주가 거래대금·거래량 며칠치인가). 카드의 "A 할인 포착" 줄이 이 네 가지입니다.<br>예) SK디앤디 12R(9/23): 괴리율 <b class="neg">−41%</b>로 커 보여도 총원가 할인율 13.2% · 쿠션 439원 = ATR 1.25배.</div>
 <h3>🥇🥈🥉 전략 배지 (기존 판정 🟢🟡🔵⚪ 위에 얹음)</h3>
 <div class="uc"><b class="t">⛔ 금지 규칙이 먼저</b>희석 100% 이상이면 전략 전부 끔(패스). 직전 분기 적자면 전략 2·3 불가(전략 1은 가능). 괴리 −40% 이하면 전략 3 불가(너무 싼 인수권). 남는 전략이 없으면 ⛔.</div>
 <div class="uc"><b class="t">🥇 전략1 · 비싼 인수권 팔기</b>인수권 괴리율 +20% 이상 → 인수권 보유자는 매도, 신규 매수 금지.</div>
@@ -284,9 +290,9 @@ body{padding-top:calc(clamp(14px,3.5vw,38px) + env(safe-area-inset-top));padding
 <div class="uc"><b class="t">🥉 전략3 · 적당히 싼 인수권 매수 + 청약</b>흑자 + 희석 &lt; 100% + 괴리율 −20~0%. 인수권 매수 → 청약 → 상장 후 +5거래일 안에 청산 · 소액.</div>
 <p>근거 줄의 숫자는 <code>data/backtest.json</code> 에서 읽습니다 — 백테스트를 다시 돌리면 자동으로 바뀝니다. 전략별 가상 성과는 아래 "전략별 성적표"에 기출과 나란히 쌓입니다.</p>
 <h3>⚖️ 이미 결론 난 것 (재논의 금지)</h3>
-<p>할인율은 수익이 아닙니다. 권리락 이론가 <code>P_x = (P + r·I) / (1 + r)</code>로 이론상 제로섬이고, 인수권 매도 대금은 깎인 보유주 가치의 보상입니다. 초과청약은 배정주식의 20% 한도이고 실권주가 있어야만 배정됩니다. 진짜 엣지는 <b>회복(B)·수급 타이밍·인수권 괴리(A)·레버리지</b>입니다.</p>
+<p>할인율은 수익이 아닙니다. 권리락 이론가 <code>P_x = (P + r·I) / (1 + r)</code>로 이론상 제로섬이고, 인수권 매도 대금은 깎인 보유주 가치의 보상입니다. 초과청약은 배정주식의 20% 한도이고 실권주가 있어야만 배정됩니다. 진짜 엣지는 <b>회복(B)·수급 타이밍·인수권 할인 포착(A)·레버리지</b>입니다.</p>
 <h3>🤖 GPT 분석지침 — 프롬프트 두 종류</h3>
-<div class="uc"><b class="t">전체 브리핑 프롬프트 (상단 금색 버튼)</b>진행 중인 모든 케이스와 오늘의 인수권 전체를 한 번에 넘깁니다. GPT가 우선순위 분류(B/A/관찰/제외), 괴리 랭킹 TOP3, 5거래일 캘린더, 가설(H1~H3) 샘플, 위험 신호를 정리합니다. <b>매일 아침 한 번</b> 쓰는 용도입니다.</div>
+<div class="uc"><b class="t">전체 브리핑 프롬프트 (상단 금색 버튼)</b>진행 중인 모든 케이스와 오늘의 인수권 전체를 한 번에 넘깁니다. GPT가 우선순위 분류(B/A/관찰/제외), 인수권 할인 포착 랭킹 TOP3(괴리율 순이 아니라 총원가 쿠션·ATR 쿠션·공급압력 순), 5거래일 캘린더, 가설(H1~H3) 샘플, 위험 신호, 마지막 승부 후보 네 줄(B·A·H 샘플·함정)을 정리합니다. <b>매일 아침 한 번</b> 쓰는 용도입니다.</div>
 <div class="uc"><b class="t">개별기업 분석 프롬프트 (각 카드 하단)</b>한 케이스의 공시·일정·정정 이력·괴리율 추이와 1차 자료 링크를 채워 넘깁니다. 자금 목적의 실체 → 필터 5개 판정 → 발행가 산식·보험 구간 → 최대주주 청약 → A 판정 → 수급 사이클 → 베어 케이스 → 반증 조건 → 결론 순서로 깊게 분석합니다.</div>
 <p>두 프롬프트 모두 위 결론을 <b>전제</b>로, 이 수집기의 맹점(파서 미검증·권리락일 추정·발행가 산식 미확인)을 <b>검증 지침</b>으로 담고 있습니다. <b>1차 자료(DART 원문·증권신고서)를 같이 읽힐수록</b> 품질이 올라갑니다.</p>
 <h3>⛔ 이 도구가 하지 않는 것</h3>
@@ -322,9 +328,9 @@ function renderRights(){
   const card=r=>`<div class="rc"><div class="rh"><b>${esc(r.name)}</b>${r.case_id?'<span class="badge gold">추적</span>':''}</div>
     <div class="rg">${gapCell(r.gap)}<small>괴리율</small></div>
     <dl><div><dt>인수권 종가</dt><dd>${fmt(r.close)}</dd></div><div><dt>이론가</dt><dd>${fmt(r.fair)}</dd></div><div><dt>인수권+청약 원가</dt><dd>${fmt(r.cost)}</dd></div>
-    <div><dt>본주</dt><dd>${fmt(r.stock)}</dd></div><div><dt>발행가</dt><dd>${fmt(r.issue)}</dd></div><div><dt>거래량 · 상장폐지</dt><dd>${fmt(r.volume)} · ${esc((r.delist??'—').slice(5))}</dd></div></dl></div>`;
-  $('#rights').innerHTML=`<div class="rcards">${rows.map(card).join('')}</div><div class="tblw rtable"><table><thead><tr><th>인수권</th><th>종가</th><th>본주</th><th>발행가</th><th>이론가</th><th>괴리율</th><th>인수권+청약 원가</th><th>거래량</th><th>상장폐지</th></tr></thead><tbody>${
-    rows.map(r=>`<tr><td><b>${esc(r.name)}</b>${r.case_id?' <span class="badge gold">추적</span>':''}</td><td>${fmt(r.close)}</td><td>${fmt(r.stock)}</td><td>${fmt(r.issue)}</td><td>${fmt(r.fair)}</td><td>${gapCell(r.gap)}</td><td>${fmt(r.cost)}</td><td>${fmt(r.volume)}</td><td class="mut">${esc(r.delist??'—')}</td></tr>`).join('')
+    <div><dt>본주</dt><dd>${fmt(r.stock)}</dd></div><div><dt>발행가</dt><dd>${fmt(r.issue)}</dd></div><div><dt>거래량 · 매매종료</dt><dd>${fmt(r.volume)} · ${esc((r.last_trade??'—').slice(5))}${r.delist?` <small class="mut">(상폐 ${esc(r.delist.slice(5))})</small>`:''}</dd></div></dl></div>`;
+  $('#rights').innerHTML=`<div class="rcards">${rows.map(card).join('')}</div><div class="tblw rtable"><table><thead><tr><th>인수권</th><th>종가</th><th>본주</th><th>발행가</th><th>이론가</th><th>괴리율</th><th>인수권+청약 원가</th><th>거래량</th><th>매매종료 (KRX 상장폐지일)</th></tr></thead><tbody>${
+    rows.map(r=>`<tr><td><b>${esc(r.name)}</b>${r.case_id?' <span class="badge gold">추적</span>':''}</td><td>${fmt(r.close)}</td><td>${fmt(r.stock)}</td><td>${fmt(r.issue)}</td><td>${fmt(r.fair)}</td><td>${gapCell(r.gap)}</td><td>${fmt(r.cost)}</td><td>${fmt(r.volume)}</td><td>${esc(r.last_trade??'—')} <span class="mut">(${esc(r.delist??'—')})</span></td></tr>`).join('')
   }</tbody></table></div>`;
 }
 
@@ -648,6 +654,30 @@ function greenCheck(q){
   return `<div class="ql"><span>🟢 가격 조건</span><div class="gcs">${it('괴리율',g.gap,`≤ ${g.cheap}%`,g.gap_ok)}${it('신주원가 할인율',g.disc,`> ${floor}% · 너무 깊으면 부실 신호`,g.disc_ok)}
     <small class="mut">신주원가 할인율 = (인수권 + 발행가) ÷ 본주 − 1 · KRX 정규장 종가 기준 (포털 통합가와 다를 수 있음) · 기출: 할인 −20% 이하는 +20일 중앙값 −12%</small></div></div>`;
 }
+// A = 인수권 할인 포착: 괴리 → 총원가 쿠션 → ATR 쿠션 → 신주 공급압력. 본주를 공매도로 고정할 수 없어 무위험 차익이 아니다.
+// 쿠션÷ATR 합격선은 두지 않음 — H1 데이터가 쌓일 때까지 연속형으로 기록만
+function aBox(c){
+  const a=c.a_margin, s=c.supply, f=a&&a.final; if(!a||!(a.rows||[]).length) return '';
+  const na='<span class="mut">미확인</span>', w=v=>v==null?na:fmt(v);
+  const rows=a.rows.map(r=>r.issue==null?`<div class="ar"><b>${esc(r.label)}</b> <span class="mut">${esc(r.note||'')}</span></div>`:`<div class="ar"><b>${esc(r.label)}</b>${r.note?`<div class="mut" style="font-size:11px">${esc(r.note)}</div>`:''}<dl>
+    <div><dt>발행가 I</dt><dd>${fmt(r.issue)}</dd></div><div><dt>괴리율 (연구지표)</dt><dd>${r.gap==null?'—':pct(r.gap)}</dd></div><div><dt>R+I 총원가</dt><dd>${w(r.cost)}</dd></div>
+    <div><dt>총원가 할인율</dt><dd>${r.cost_disc==null?'—':`<b class="${r.cost_disc>0?'neg':'pos'}">${r.cost_disc.toFixed(1)}%</b>`}</dd></div><div><dt>쿠션 P−(R+I)</dt><dd>${w(r.cushion)}</dd></div>
+    <div><dt>쿠션 ÷ ATR</dt><dd>${r.cushion_atr!=null?r.cushion_atr+'배':a.r==null&&r.r_for_1atr?`<span class="mut">R ≤ ${fmt(r.r_for_1atr)}이면 1배↑</span>`:'—'}</dd></div></dl></div>`).join('');
+  const days=a.days.filter(d=>d.left!=null).map(d=>`${d.label} ${d.left}일`).join(' · ');
+  const sp=s?[`희석 ${s.dilution==null?'미확인':s.dilution+'%'}`,`신주 = 거래대금 ${s.value_days??'—'}일치`,`거래량 ${s.volume_days??'—'}일치`,'유통주식 대비 미확인',
+    ...(s.listing_turnover!=null?[`상장일 거래량 ÷ 신주 ${s.listing_turnover}`]:[])].join(' · '):'';
+  return `<div class="abox"><div class="ah">A · 인수권 할인 포착 <small class="mut">괴리 → 총원가 쿠션 → ATR 쿠션 → 공급압력</small></div>
+    <div>본주 P <b>${fmt(a.p)}</b> <span class="mut">(${esc(a.p_date||'')})</span> · 인수권 R ${a.r==null?'<span class="mut">시세 대기</span>':`<b>${fmt(a.r)}</b> <span class="mut">(${esc(a.r_date)})</span>`}
+    · ATR(${a.atr_n}) ${a.atr==null?na:`<b>${fmt(a.atr)}원</b> <span class="mut">(${a.atr_pct}%)</span>`}${a.confirmed?'':' · <b class="red">확정발행가 미정</b>'}</div>
+    ${rows}
+    ${a.gap_shift!=null?`<div>① → ② 괴리 차이 <b>${a.gap_shift>0?'+':''}${a.gap_shift}%p</b> <span class="mut">— ①은 비싸 보이는데 ②로 싸지면 시장이 발행가 인하를 먼저 반영한 것, ②에서도 비싸면 권리 자체가 비싼 것</span></div>`:''}
+    ${f?`<div class="mut">예상 최종가 입력: 1차 ${w(f.i1)} · 2차 추정 ${w(f.i2)} = min(1주 VWAP ${w(f.vwap)}, ${f.projected?'최근':'기산일'} 종가 ${w(f.close_base)}${f.base_date?` · ${esc(f.base_date)}`:''}) × (1−${f.d!=null?Math.round(f.d*100)+'%':'할인율 미확인'}) · 최저발행가 제한 미확인 · 산정일 ${esc(f.fix_date||'미확인')}${f.projected?' (산정일 전 — 오늘 기준 예상)':''}${f.vwap_src?` · VWAP: ${esc(f.vwap_src)}`:''}</div>`:''}
+    ${days?`<div class="mut">남은 거래일(오늘 포함): ${days}</div>`:''}
+    ${a.end_check?`<div class="${a.end_check.status==='mismatch'?'red':'mut'}">마지막 매매일: ${a.end_check.delist?`공시 ${esc(a.end_check.disclosed||'—')} · KRX 상장폐지일 ${esc(a.end_check.delist)}의 전 영업일 ${esc(a.end_check.krx_last)} — ${esc(a.end_check.text)}`:`공시 ${esc(a.end_check.disclosed||'—')} (KRX 상장폐지일은 인수권 시세가 들어오면 대조)`}</div>`:''}
+    ${sp?`<div class="mut">공급압력: ${sp}</div>`:''}
+    <small class="mut">총원가 할인율 = 1 − (R+I)/P. 괴리율보다 이 값과 원화 쿠션을 먼저 봅니다 — 본주를 공매도로 묶을 수 없어 상장일까지 본주가 빠지면 손실. 쿠션÷ATR 합격선은 H1 데이터가 쌓일 때까지 두지 않습니다.</small>
+  </div>`;
+}
 function quickBox(c){
   const q=c.quick; if(!q) return '';
   const v=c.verdict||{}, be=q.breakeven, is=q.issue||{}, o=q.overhang;
@@ -658,6 +688,7 @@ function quickBox(c){
     <button class="btn gold" data-label="🤖 미확인 항목만 GPT로 확인 (프롬프트 복사)" onclick="copyCheck(${c.case_id},this)">🤖 미확인 항목만 GPT로 확인 (프롬프트 복사)</button>
     <div class="preview" id="pq${c.case_id}"></div></div>`:''}
   ${greenCheck(q)}
+  ${aBox(c)}
   <div class="ql"><span>다시 볼 조건</span><div>${esc(q.recheck)}</div></div>
   <div class="ql"><span>발행가</span><div>${esc(is.text||'—')}</div></div>
   ${be?`<div class="ql"><span>본전선</span><div><b>${fmt(be.value)}원</b> — ${esc(be.how)} <span class="mut">(${esc(be.text)})</span></div></div>`:`<div class="ql"><span>본전선</span><div class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</div></div>`}

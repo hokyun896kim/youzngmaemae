@@ -8,7 +8,7 @@ from pathlib import Path
 
 from . import db, estimate, paper, strategy
 from .backtest import load_card_scenarios
-from .calendar_kr import KRX_HOLIDAYS
+from .calendar_kr import KRX_HOLIDAYS, prev_business_day
 from .config import Config
 from .pipeline import SCHEDULE_LABELS, checked_schedule, latest_facts, live_verdict
 from .prices import compute_gap
@@ -46,7 +46,8 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
 
     live = live_verdict(conn, c, cfg)
     series = []
-    for r in paper.rights_rows(conn, c):
+    r_rows = paper.rights_rows(conn, c)
+    for r in r_rows:
         s_row = conn.execute("SELECT close FROM stock_daily WHERE bas_dd=? AND code=?",
                              (r["bas_dd"], c["stock_code"])).fetchone()
         stock = (s_row[0] if s_row else None) or r["tar_price"]
@@ -67,7 +68,7 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
                       "eval": paper.evaluate(conn, c, trade, sch, today)}
     v = trade["verdict"] if trade else live["verdict"]
     emoji, name = VERDICTS[v]
-    daily = conn.execute("SELECT bas_dd, close, volume FROM stock_daily WHERE code=? AND close IS NOT NULL "
+    daily = conn.execute("SELECT bas_dd, close, volume, value FROM stock_daily WHERE code=? AND close IS NOT NULL "
                          "AND bas_dd <= ? ORDER BY bas_dd DESC LIMIT 300",
                          (c["stock_code"], today.isoformat())).fetchall()[::-1]
     confirmed = sch.get("issue_kind") == "확정"   # 확정발행가 라벨 또는 확정 산정일 이후 공시
@@ -76,7 +77,38 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         [(r["bas_dd"], r["close"]) for r in daily], [r["volume"] for r in daily],
         next((x["rights"] for x in reversed(series) if x["d"] <= today.isoformat()), None), live["summary"].get("new_shares"),
         live["summary"].get("dilution_ratio"), f["op_period"] if f else None, today, confirmed,
-        -cfg.gap_alert_pct, cfg.gap_alert_pct, load_card_scenarios(), live.get("disc"))
+        -cfg.gap_alert_pct, cfg.gap_alert_pct, load_card_scenarios(), live.get("disc"), [dict(r) for r in daily])
+    # A 3층 분석 추이: 인수권 거래일마다 그날까지의 시세로 ① 1차가 기준 · ② 예상 최종가 기준 괴리를 다시 계산
+    if not confirmed:
+        facts_now = latest_facts(conn, c["case_id"])
+        r_ = live["summary"].get("dilution_ratio") or sch.get("alloc_ratio")
+        for x in series:
+            if not x["rights"] or not x["stock"]:
+                continue
+            upto = [r for r in daily if r["bas_dd"] <= x["d"]]
+            est = estimate.issue_estimate(sch, facts_now.get("discount"), r_, [(r["bas_dd"], r["close"]) for r in upto],
+                                          date.fromisoformat(x["d"]), False, [dict(r) for r in upto])
+            if est.get("kind") == "최종 추정" and est.get("value") and x["stock"] > est["value"]:
+                x["i_hat"] = est["value"]
+                x["gap_hat"] = round((x["rights"] / (x["stock"] - est["value"]) - 1) * 100, 1)
+    # A = 인수권 할인 포착: 같은 날의 인수권·본주 KRX 종가로 총원가 쿠션 · ATR(10) 쿠션 (인수권 시세 전이면 최근 본주 종가만)
+    last_r = next((x for x in reversed(series) if x["rights"] and x["d"] <= today.isoformat()), None)
+    p_now, p_date = (last_r["stock"], last_r["d"]) if last_r else \
+        ((daily[-1]["close"], daily[-1]["bas_dd"]) if daily else (None, None))
+    ind = strategy.indicators(strategy._stock(conn, c["stock_code"]), p_date, estimate.A_ATR_N) if p_date else {}
+    # 매매종료일(마지막 매매가능일) ≠ KRX 상장폐지일 — 발행회사 공시와 KRX(상장폐지일 전 영업일)를 대조
+    end_check = estimate.rights_end_check(sch.get("rights_end"),
+                                          next((r["delist_dd"] for r in reversed(r_rows) if r["delist_dd"]), None))
+    if end_check and end_check["status"] == "mismatch":
+        sch_warn = [*sch_warn, f"인수권 매매종료일 불일치: 공시 {end_check['disclosed']} vs KRX 상장폐지일 "
+                               f"{end_check['delist']} 전 영업일 {end_check['krx_last']} — 원문·KRX 확인"]
+        base["schedule_warnings"] = sch_warn
+    a_margin = estimate.a_margin(sch, quick["issue"], p_now, p_date, last_r["rights"] if last_r else None,
+                                 last_r["d"] if last_r else None, ind.get("atr_pct"), today, end_check)
+    lst = sch.get("listing_date")
+    lst_vol = next((r["volume"] for r in daily if r["bas_dd"] == lst), None) if lst else None
+    supply = estimate.supply(live["summary"].get("new_shares"), live["summary"].get("dilution_ratio"), p_now,
+                             [(r["close"], r["volume"]) for r in daily if not lst or r["bas_dd"] < lst], lst_vol)
     trade_v = conn.execute("SELECT verdict FROM paper_trades WHERE case_id=?", (c["case_id"],)).fetchone()
     strat = strategy.card(conn, c, sch, live["summary"], f["op_income"] if f else None, live["gap"], today,
                           trade_v[0] if trade_v else live["verdict"])
@@ -95,7 +127,7 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
                     "live_reason": live["reason"],
                     # 🟢?/🟡? 확인 필요: 관문1 자동 항목 중 미확인 (화면 빨간 글씨 + 그 항목만 묻는 GPT 프롬프트)
                     "unconfirmed": unconfirmed(live["gate1"]) if v.endswith("_q") else []},
-        "paper": paper_json, "quick": quick,
+        "paper": paper_json, "quick": quick, "a_margin": a_margin, "supply": supply,
     })
     return base
 
@@ -116,6 +148,8 @@ def build_site(conn: sqlite3.Connection, cfg: Config | None = None, today: date 
                 "isu_cd": r["isu_cd"], "name": r["isu_nm"], "close": r["close"], "volume": r["volume"],
                 "stock_code": r["tar_code"], "stock_name": r["tar_name"], "stock": stock,
                 "issue": r["issue_price"], "delist": r["delist_dd"], "case_id": r["case_id"],
+                # 마지막 매매일 = KRX 상장폐지일 전 영업일 (상장폐지일 ≠ 매매종료일)
+                "last_trade": prev_business_day(date.fromisoformat(r["delist_dd"])).isoformat() if r["delist_dd"] else None,
                 "fair": g.fair if g else None, "gap": g.gap_pct if g else None,
                 "cost": g.effective_cost if g else None, "disc": g.discount_pct if g else None,
             })

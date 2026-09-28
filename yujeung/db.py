@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS stock_daily (
     name    TEXT,
     close   INTEGER, open INTEGER, high INTEGER, low INTEGER,
     volume  INTEGER, mktcap INTEGER, list_shrs INTEGER,
+    value   INTEGER,        -- KRX 거래대금(ACC_TRDVAL) — 2차 발행가 기준주가의 가중산술평균(VWAP)용
     -- 네이버 일봉 원값 (KRX 값이 있는 날도 따로 보관). 네이버는 이후 액면분할·유증 등을 반영한 수정주가라
     -- KRX 원주가와 섞으면 날짜 사이에 가짜 급등락이 생긴다 → ATR·RSI 는 이 한 출처로만 계산 (strategy.indicators)
     n_close REAL, n_high REAL, n_low REAL,
@@ -181,6 +182,8 @@ def _migrate(conn: sqlite3.Connection) -> None:
     for col in ("n_close", "n_high", "n_low"):
         if col not in cols:
             conn.execute(f"ALTER TABLE stock_daily ADD COLUMN {col} REAL")
+    if "value" not in cols:            # A 3층 분석: 예상 최종발행가의 VWAP (다음 KRX 수집부터 채워짐)
+        conn.execute("ALTER TABLE stock_daily ADD COLUMN value INTEGER")
     conn.commit()
 
 
