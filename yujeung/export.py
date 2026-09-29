@@ -130,9 +130,10 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         [(r["close"], r["volume"]) for r in daily if not lst or r["bas_dd"] < lst],
         listing_bar=lst_bar, listing_price_type=(strategy.price_type(lst, today) if lst_bar else None)
     )
-    trade_v = conn.execute("SELECT verdict FROM paper_trades WHERE case_id=?", (c["case_id"],)).fetchone()
+    # 전략 행동카드는 과거 불변 판정 스냅샷이 아니라 현재 관문 상태로 판단한다.
+    # 과거 판정은 성과 측정용으로만 보존한다.
     strat = strategy.card(conn, c, sch, live["summary"], f["op_income"] if f else None, live["gap"], today,
-                          trade_v[0] if trade_v else live["verdict"])
+                          live["verdict"])
     strat["paper"] = [{"strategy": t["strategy"], "decided_on": t["decided_on"], "version": t["strategy_version"],
                        "snapshot": json.loads(t["snapshot_json"]), "eval": strategy.evaluate(conn, c, t, sch, today)}
                       for t in conn.execute("SELECT * FROM strategy_trades WHERE case_id=? ORDER BY strategy",
