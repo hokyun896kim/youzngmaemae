@@ -5,6 +5,9 @@
 const P_NA = v => (v == null || v === '' ? '데이터없음' : v);
 const P_N = v => (v == null ? '데이터없음' : Number(v).toLocaleString('ko-KR'));
 const P_PCT = v => (v == null ? '데이터없음' : (v > 0 ? '+' : '') + Number(v).toFixed(1) + '%');
+const P_REASON = x => String(x ?? '').replace(/(?:신주원가 할인율|원가할인)\s*([+-]?\d+(?:\.\d+)?)%/g, (_m, n) => {
+  const v = -Number(n); return `총원가 쿠션율 ${v > 0 ? '+' : ''}${v.toFixed(1)}%`;
+});
 
 // 이미 결론 난 내용 — GPT 가 재논의하지 않도록 전제로 제시
 const PREMISES = `[전제 — 이미 검증된 결론이다. 재논의하지 말고 이 위에서 분석해라]
@@ -347,7 +350,7 @@ ${snapshotText(siteData)}
 - 자금 목적 비중: ${purpose}
 - 발행가(최신 공시 기준): ${P_N(s.issue_price)}원${s.issue_kind ? ` [${s.issue_kind}${s.issue_kind === '예정' ? ' — 이사회 당시 예정발행가, 1차 아님' : ''}]` : ''}
 - 현재 사이클 위치: ${caseStage(s)}
-- 자동 판정: ${c.verdict ? `${c.verdict.emoji} ${c.verdict.name}${c.verdict.provisional ? '(잠정)' : ''} — ${c.verdict.reason}` : '데이터없음'}
+- 자동 판정: ${c.verdict ? `${c.verdict.emoji} ${c.verdict.name}${c.verdict.provisional ? '(잠정)' : ''} — ${P_REASON(c.verdict.reason)}` : '데이터없음'}
 - 전략 배지(자동, 기출 백테스트 기반 행동 카드): ${strategyText(c, siteData)}
 - 관문1 항목: ${c.gate1 ? c.gate1.criteria.map(x => `${x.label}=${{pass: '통과', fail: '탈락', unknown: '미확인', manual: 'GPT 확인 필요'}[x.status]}(${x.text})`).join(' / ') : '데이터없음'}${c.gate1 && c.gate1.reit_note ? `\n- 참고: ${c.gate1.reit_note}` : ''}
 - 최근 본주 가격: ${stockLast ? `${stockLast.d} ${P_N(stockLast.close)}원 [${stockLast.price_type || '시점 미확인'}]` : '데이터없음'}
@@ -444,7 +447,7 @@ function quickText(q) {
   if (!q) return '  (없음)';
   const be = q.breakeven, is = q.issue || {}, o = q.overhang;
   const lines = [
-    `- 30초 결론(자동): ${q.word} — ${q.reason}`,
+    `- 30초 결론(자동): ${q.word} — ${P_REASON(q.reason)}`,
     `- 다시 볼 조건(자동): ${q.recheck}`,
     `- 사이클 단계: ${q.stage_name}`,
     `- 발행가: ${is.text || '데이터없음'}${is.d ? ` (할인율 ${(is.d * 100).toFixed(0)}%, 증자비율 ${(is.r * 100).toFixed(1)}%)` : ' (할인율 미확인 — 증권신고서에서 확인해라)'}`,
