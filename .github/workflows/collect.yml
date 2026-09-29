@@ -58,6 +58,14 @@ jobs:
       KRX_API_KEY: ${{ secrets.KRX_API_KEY }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Sync latest main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git fetch origin main --depth=2
+          git reset --hard origin/main
 
       - uses: actions/setup-python@v5
         with:
@@ -73,8 +81,16 @@ jobs:
         run: |
           CMD="${{ github.event.inputs.command || 'daily' }}"
           if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            # 파서/일정 로직 변경은 기존 진행 케이스도 다시 파싱해 새 규칙을 반영한다.
-            if git diff-tree --no-commit-id --name-only -r "${GITHUB_SHA}" | grep -Eq '^yujeung/(schedule_parser|pipeline)\.py$'; then
+            # 이벤트 payload의 변경 파일을 사용한다. shallow checkout에서도 파서 변경을 놓치지 않는다.
+            PARSER_CHANGED=$(python - <<'PY'
+          import json, os
+          e=json.load(open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8"))
+          h=e.get("head_commit") or {}
+          paths=set((h.get("added") or []) + (h.get("modified") or []) + (h.get("removed") or []))
+          print("1" if paths & {"yujeung/schedule_parser.py", "yujeung/pipeline.py"} else "0")
+          PY
+            )
+            if [ "$PARSER_CHANGED" = "1" ]; then
               CMD="backfill-cases"
             fi
           fi
