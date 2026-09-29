@@ -265,8 +265,10 @@ def card(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, summary: dict, op_
     debt = (summary.get("purpose_pct") or {}).get("채무상환", 0.0)
     cond = conditions(summary.get("dilution_ratio"), debt, op_income, gap, verdict)
     locks = []
-    if verdict and verdict.endswith("_q") and cond["ok"].get("s2"):
-        cond["ok"]["s2"] = False
+    if verdict and verdict.endswith("_q"):
+        for key in ("s2", "s3"):
+            if cond["ok"].get(key):
+                cond["ok"][key] = False
         locks.append("unconfirmed_gate")
     items = []
     rs, re_ = sch.get("rights_start"), sch.get("rights_end") or sch.get("rights_start")
@@ -345,6 +347,11 @@ def record_if_due(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, live: dic
                     "market": c["corp_cls"], "backfilled": backfilled})
                 n += 1
     listing = sch.get("listing_date")
+    old_s2 = conn.execute("SELECT * FROM strategy_trades WHERE case_id=? AND strategy='s2'",
+                          (c["case_id"],)).fetchone()
+    if premature_s2_trade(old_s2):
+        conn.execute("DELETE FROM strategy_trades WHERE case_id=? AND strategy='s2'", (c["case_id"],))
+        conn.commit()
     if listing and not _has(conn, c["case_id"], "s2") and regular_close_final(listing, today):
         # 판정 = 인수권 마지막 날 확정 스냅샷(있으면), 없으면 현재 판정
         pt = conn.execute("SELECT verdict FROM paper_trades WHERE case_id=?", (c["case_id"],)).fetchone()
