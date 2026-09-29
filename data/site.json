@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-09-29T11:42:51+09:00",
+ "generated_at": "2026-09-30T01:15:19+09:00",
  "last_rights_date": "2026-09-28",
  "first_rights_date": "2026-07-21",
  "counts": {
-  "cases": 45,
-  "disclosures": 257,
+  "cases": 49,
+  "disclosures": 272,
   "rights_daily": 55,
   "stock_daily": 1872,
   "excluded_disclosures": 751,
@@ -372,6 +372,7 @@
     ],
     "rank": 2,
     "gap": null,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -400,9 +401,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -447,123 +448,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 2545
+     "close": 2545,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 2415
+     "close": 2415,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 2250
+     "close": 2250,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 2075
+     "close": 2075,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 2070
+     "close": 2070,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 2040
+     "close": 2040,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 1987
+     "close": 1987,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 1985
+     "close": 1985,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 1938
+     "close": 1938,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 1940
+     "close": 1940,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 1945
+     "close": 1945,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 1993
+     "close": 1993,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 1991
+     "close": 1991,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 2050
+     "close": 2050,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 1984
+     "close": 1984,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 2035
+     "close": 2035,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 2100
+     "close": 2100,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 2055
+     "close": 2055,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 1941
+     "close": 1941,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 2520
+     "close": 2520,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 2160
+     "close": 2160,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 1990
+     "close": 1990,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 1980
+     "close": 1980,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 2100
+     "close": 2100,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 2165
+     "close": 2165,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 1998
+     "close": 1998,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 1998
+     "close": 1998,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 1962
+     "close": 1962,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 1999
+     "close": 1999,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 1995
+     "close": 1995,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -651,9 +682,9 @@
     "p_date": "2026-09-29",
     "r": null,
     "r_date": null,
-    "atr": 175,
+    "atr": 176,
     "atr_n": 10,
-    "atr_pct": 8.78,
+    "atr_pct": 8.82,
     "confirmed": false,
     "rows": [
      {
@@ -666,7 +697,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 747
+      "r_for_1atr": 746
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
@@ -678,7 +709,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 747,
+      "r_for_1atr": 746,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
@@ -711,25 +742,27 @@
      "floor": null,
      "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
     },
+    "decision_asof": "2026-09-29",
+    "price_type": "종가",
     "gap_shift": null,
     "days": [
      {
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2026-11-16",
-      "left": 33
+      "left": 32
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2026-11-25",
-      "left": 40
+      "left": 39
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-12-11",
-      "left": 52
+      "left": 51
      }
     ]
    },
@@ -740,7 +773,14 @@
     "n": 20,
     "value_days": 94.7,
     "volume_days": 99.9,
-    "listing_turnover": null
+    "avg_volume": 48042,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -919,6 +959,7 @@
     ],
     "rank": 2,
     "gap": null,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -946,9 +987,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -993,123 +1034,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 1998
+     "close": 1998,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 1927
+     "close": 1927,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 1850
+     "close": 1850,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 1790
+     "close": 1790,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 1694
+     "close": 1694,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 1681
+     "close": 1681,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 1745
+     "close": 1745,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 1815
+     "close": 1815,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 1778
+     "close": 1778,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 1729
+     "close": 1729,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 1846
+     "close": 1846,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 1768
+     "close": 1768,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 1720
+     "close": 1720,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 1622
+     "close": 1622,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 1524
+     "close": 1524,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 1499
+     "close": 1499,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 1390
+     "close": 1390,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 1371
+     "close": 1371,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 1295
+     "close": 1295,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 1263
+     "close": 1263,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 1256
+     "close": 1256,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 1649
+     "close": 1649,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 1541
+     "close": 1541,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 1457
+     "close": 1457,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 1345
+     "close": 1345,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 1385
+     "close": 1385,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 1309
+     "close": 1309,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 1274
+     "close": 1274,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 1265
+     "close": 1265,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 944
+     "close": 944,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -1192,9 +1263,9 @@
     "p_date": "2026-09-29",
     "r": null,
     "r_date": null,
-    "atr": 200,
+    "atr": 194,
     "atr_n": 10,
-    "atr_pct": 21.17,
+    "atr_pct": 20.58,
     "confirmed": true,
     "rows": [
      {
@@ -1219,6 +1290,8 @@
      "text": "공시만 (KRX 인수권 시세 전 — 상장폐지일 미수집)"
     },
     "final": null,
+    "decision_asof": "2026-09-29",
+    "price_type": "종가",
     "gap_shift": null,
     "days": [
      {
@@ -1237,7 +1310,7 @@
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-10-01",
-      "left": 3
+      "left": 2
      }
     ]
    },
@@ -1248,7 +1321,14 @@
     "n": 20,
     "value_days": 6.4,
     "volume_days": 10.1,
-    "listing_turnover": null
+    "avg_volume": 709452,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -1331,6 +1411,7 @@
     "ban": null,
     "rank": 3,
     "gap": null,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -1358,9 +1439,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -1405,123 +1486,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 5450
+     "close": 5450,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 5450
+     "close": 5450,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 5390
+     "close": 5390,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 5440
+     "close": 5440,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 5340
+     "close": 5340,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 5380
+     "close": 5380,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 5380
+     "close": 5380,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 5520
+     "close": 5520,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 5490
+     "close": 5490,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 5520
+     "close": 5520,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 5500
+     "close": 5500,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 5530
+     "close": 5530,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 5360
+     "close": 5360,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 5160
+     "close": 5160,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 5240
+     "close": 5240,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 5250
+     "close": 5250,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 5290
+     "close": 5290,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 5220
+     "close": 5220,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 5240
+     "close": 5240,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 5280
+     "close": 5280,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 5300
+     "close": 5300,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 5270
+     "close": 5270,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 5320
+     "close": 5320,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 5360
+     "close": 5360,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 5340
+     "close": 5340,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 5000
+     "close": 5000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 4795
+     "close": 4795,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 4855
+     "close": 4855,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 4925
+     "close": 4925,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 4865
+     "close": 4865,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -1627,9 +1738,9 @@
     "p_date": "2026-09-29",
     "r": null,
     "r_date": null,
-    "atr": 222,
+    "atr": 228,
     "atr_n": 10,
-    "atr_pct": 4.56,
+    "atr_pct": 4.68,
     "confirmed": false,
     "rows": [
      {
@@ -1654,7 +1765,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 1260
+      "r_for_1atr": 1254
      },
      {
       "label": "③ 실제 확정가 기준",
@@ -1691,25 +1802,27 @@
      "floor": null,
      "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
     },
+    "decision_asof": "2026-09-29",
+    "price_type": "종가",
     "gap_shift": null,
     "days": [
      {
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2026-10-22",
-      "left": 16
+      "left": 15
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2026-11-03",
-      "left": 24
+      "left": 23
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-11-25",
-      "left": 40
+      "left": 39
      }
     ]
    },
@@ -1720,7 +1833,14 @@
     "n": 20,
     "value_days": 163.4,
     "volume_days": 172.3,
-    "listing_turnover": null
+    "avg_volume": 110254,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -1893,6 +2013,7 @@
     ],
     "rank": 2,
     "gap": null,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -1919,9 +2040,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -1966,123 +2087,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 1595
+     "close": 1595,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 1658
+     "close": 1658,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 1566
+     "close": 1566,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 1600
+     "close": 1600,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 1535
+     "close": 1535,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 1635
+     "close": 1635,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 1584
+     "close": 1584,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 1581
+     "close": 1581,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 1601
+     "close": 1601,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 1648
+     "close": 1648,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 1670
+     "close": 1670,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 1703
+     "close": 1703,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 2210
+     "close": 2210,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 1974
+     "close": 1974,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 1920
+     "close": 1920,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 2170
+     "close": 2170,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 2210
+     "close": 2210,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 2185
+     "close": 2185,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 2030
+     "close": 2030,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 2205
+     "close": 2205,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 2100
+     "close": 2100,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 2290
+     "close": 2290,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 2300
+     "close": 2300,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 2280
+     "close": 2280,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 2180
+     "close": 2180,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 2110
+     "close": 2110,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 2030
+     "close": 2030,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 1971
+     "close": 1971,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 2095
+     "close": 2095,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 1995
+     "close": 1995,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -2173,7 +2324,14 @@
     "n": 20,
     "value_days": 10.7,
     "volume_days": 11.7,
-    "listing_turnover": null
+    "avg_volume": 1107067,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -2262,6 +2420,20 @@
       "권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)",
       "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
      ]
+    },
+    {
+     "rcept_no": "20260929000233",
+     "report_nm": "증권신고서(지분증권)",
+     "rcept_dt": "20260929",
+     "kind": "estk",
+     "schedule": {
+      "record_date": "2026-10-20",
+      "subs_start": "2026-11-25",
+      "subs_end": "2026-11-26",
+      "payment_date": "2026-12-03",
+      "issue_price": 14310
+     },
+     "warnings": []
     }
    ],
    "strategy": {
@@ -2274,6 +2446,7 @@
     ],
     "rank": 2,
     "gap": null,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -2300,9 +2473,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -2347,123 +2520,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 25600
+     "close": 25600,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 24650
+     "close": 24650,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 25250
+     "close": 25250,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 26050
+     "close": 26050,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 24800
+     "close": 24800,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 26350
+     "close": 26350,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 25050
+     "close": 25050,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 25650
+     "close": 25650,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 22300
+     "close": 22300,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 20300
+     "close": 20300,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 20550
+     "close": 20550,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 21350
+     "close": 21350,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 20500
+     "close": 20500,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 19650
+     "close": 19650,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 23050
+     "close": 23050,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 25750
+     "close": 25750,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 22950
+     "close": 22950,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 22500
+     "close": 22500,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 21750
+     "close": 21750,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 21800
+     "close": 21800,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 22000
+     "close": 22000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 21800
+     "close": 21800,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 21800
+     "close": 21800,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 22400
+     "close": 22400,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 21400
+     "close": 21400,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 22200
+     "close": 22200,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 22500
+     "close": 22500,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 22600
+     "close": 22600,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 22550
+     "close": 22550,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 21700
+     "close": 21700,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -2551,9 +2754,9 @@
     "p_date": "2026-09-29",
     "r": null,
     "r_date": null,
-    "atr": 1649,
+    "atr": 1686,
     "atr_n": 10,
-    "atr_pct": 7.6,
+    "atr_pct": 7.77,
     "confirmed": false,
     "rows": [
      {
@@ -2566,7 +2769,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 4502
+      "r_for_1atr": 4465
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
@@ -2578,7 +2781,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 4502,
+      "r_for_1atr": 4465,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
@@ -2611,25 +2814,27 @@
      "floor": null,
      "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
     },
+    "decision_asof": "2026-09-29",
+    "price_type": "종가",
     "gap_shift": null,
     "days": [
      {
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2026-11-16",
-      "left": 33
+      "left": 32
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2026-11-25",
-      "left": 40
+      "left": 39
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-12-17",
-      "left": 56
+      "left": 55
      }
     ]
    },
@@ -2640,7 +2845,14 @@
     "n": 20,
     "value_days": 42.4,
     "volume_days": 43.6,
-    "listing_turnover": null
+    "avg_volume": 162922,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -2717,21 +2929,27 @@
       "listing": "2026-11-30",
       "exit_on": "2026-12-14",
       "entry": null,
-      "rsi": 35.5,
-      "atr_pct": 2.84,
+      "preview_price": null,
+      "rsi": 38.5,
+      "atr_pct": 2.8,
       "ind_asof": "2026-09-29",
       "ind_src": "naver",
-      "atr": 38737.6,
+      "atr": 38192.0,
       "confirmed": false,
-      "stop": 1286525,
-      "stop_basis": "최근 종가(미리보기)",
-      "gate": true
+      "price_type": "장중 미리보기",
+      "stop": 1287616,
+      "stop_basis": "장중값(미리보기)",
+      "gate": null,
+      "preview_gate": true
      }
     ],
     "bans": [],
     "ban": null,
     "rank": 1,
     "gap": null,
+    "locks": [
+     "unconfirmed_gate"
+    ],
     "paper": []
    },
    "summary": {
@@ -2759,9 +2977,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -2806,123 +3024,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 1548000
+     "close": 1548000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 1531000
+     "close": 1531000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 1544000
+     "close": 1544000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 1574000
+     "close": 1574000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 1551000
+     "close": 1551000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 1573000
+     "close": 1573000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 1585000
+     "close": 1585000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 1599000
+     "close": 1599000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 1594000
+     "close": 1594000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 1486000
+     "close": 1486000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 1518000
+     "close": 1518000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 1520000
+     "close": 1520000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 1501000
+     "close": 1501000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 1477000
+     "close": 1477000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 1447000
+     "close": 1447000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 1466000
+     "close": 1466000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 1440000
+     "close": 1440000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 1452000
+     "close": 1452000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 1423000
+     "close": 1423000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 1415000
+     "close": 1415000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 1402000
+     "close": 1402000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 1409000
+     "close": 1409000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 1405000
+     "close": 1405000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 1396000
+     "close": 1396000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 1398000
+     "close": 1398000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 1402000
+     "close": 1402000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 1391000
+     "close": 1391000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 1366000
+     "close": 1366000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 1400000
+     "close": 1400000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 1364000
+     "close": 1364000,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -3018,7 +3266,14 @@
     "n": 20,
     "value_days": 59.5,
     "volume_days": 62.7,
-    "listing_turnover": null
+    "avg_volume": 36176,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -3032,19 +3287,19 @@
    "first_rcept_dt": "20260828",
    "first_rcept_no": "20260828001315",
    "schedule": {
-    "record_date": "2026-10-02",
-    "ex_rights_date": "2026-10-01",
-    "rights_start": "2026-10-23",
-    "rights_end": "2026-10-29",
-    "price_fix_date": "2026-11-04",
-    "subs_start": "2026-11-09",
-    "subs_end": "2026-11-10",
-    "payment_date": "2026-11-17",
-    "listing_date": "2026-11-30",
+    "record_date": "2026-10-20",
+    "ex_rights_date": "2026-10-19",
+    "rights_start": "2026-11-06",
+    "rights_end": "2026-11-12",
+    "price_fix_date": "2026-11-26",
+    "subs_start": "2026-12-01",
+    "subs_end": "2026-12-02",
+    "payment_date": "2026-12-10",
+    "listing_date": "2026-12-23",
     "issue_price": 4980,
     "alloc_ratio": 0.4499414112,
     "issue_kind": "예정",
-    "issue_rcept_dt": "20260911"
+    "issue_rcept_dt": "20260929"
    },
    "schedule_warnings": [],
    "history": [
@@ -3084,6 +3339,43 @@
       "issue_price": 4980
      },
      "warnings": []
+    },
+    {
+     "rcept_no": "20260929000430",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "record_date": "2026-10-20",
+      "ex_rights_date": "2026-10-19",
+      "rights_start": "2026-11-06",
+      "rights_end": "2026-11-12",
+      "price_fix_date": "2026-11-26",
+      "subs_start": "2026-12-01",
+      "subs_end": "2026-12-02",
+      "payment_date": "2026-12-10",
+      "listing_date": "2026-12-23",
+      "issue_price": 4980,
+      "alloc_ratio": 0.4499414112
+     },
+     "warnings": [
+      "권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    },
+    {
+     "rcept_no": "20260929000672",
+     "report_nm": "증권신고서(지분증권)",
+     "rcept_dt": "20260929",
+     "kind": "estk",
+     "schedule": {
+      "record_date": "2026-10-20",
+      "subs_start": "2026-12-01",
+      "subs_end": "2026-12-02",
+      "payment_date": "2026-12-10",
+      "issue_price": 4980
+     },
+     "warnings": []
     }
    ],
    "strategy": {
@@ -3096,6 +3388,7 @@
     ],
     "rank": 2,
     "gap": null,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -3124,9 +3417,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -3171,123 +3464,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 7780
+     "close": 7780,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 7740
+     "close": 7740,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 7450
+     "close": 7450,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 7460
+     "close": 7460,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 7210
+     "close": 7210,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 7300
+     "close": 7300,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 7410
+     "close": 7410,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 7350
+     "close": 7350,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 7380
+     "close": 7380,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 7400
+     "close": 7400,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 5590
+     "close": 5590,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 5560
+     "close": 5560,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 5210
+     "close": 5210,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 5220
+     "close": 5220,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 5250
+     "close": 5250,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 5240
+     "close": 5240,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 5150
+     "close": 5150,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 5050
+     "close": 5050,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 4960
+     "close": 4960,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 4820
+     "close": 4820,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 4530
+     "close": 4530,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 4585
+     "close": 4585,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 4325
+     "close": 4325,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 4325
+     "close": 4325,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 5030
+     "close": 5030,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 5480
+     "close": 5480,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 5150
+     "close": 5150,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 5570
+     "close": 5570,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 6820
+     "close": 6820,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 8050
+     "close": 8050,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -3323,42 +3646,42 @@
     "stage": "1",
     "stage_name": "① 권리락 전",
     "issue": {
-     "d": 0.4,
+     "d": 0.25,
      "r": 0.4499,
      "disclosed": 4980,
      "issue_kind": "예정",
-     "value": 4093,
+     "value": 5427,
      "kind": "1차 추정",
-     "i1": 4093,
-     "px": 6822,
-     "text": "1차 추정 4,093원 = 현재가 8,050 × (1−40%) ÷ (1 + 증자비율 45.0%×40%) (공시 4,980원은 예정발행가라 안 씀)"
+     "i1": 5427,
+     "px": 7236,
+     "text": "1차 추정 5,427원 = 현재가 8,050 × (1−25%) ÷ (1 + 증자비율 45.0%×25%) (공시 4,980원은 예정발행가라 안 씀)"
     },
     "breakeven": {
      "stage": "1",
      "how": "본주 매수 + 청약",
-     "value": 6822,
-     "text": "권리락 이론가 Px = 8,050 ÷ (1 + 증자비율 45.0%×40%)"
+     "value": 7236,
+     "text": "권리락 이론가 Px = 8,050 ÷ (1 + 증자비율 45.0%×25%)"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 6.8,
-      "price": 7286
+      "price": 7728
      },
      {
       "name": "보통(중앙값)",
       "pct": -1.7,
-      "price": 6706
+      "price": 7113
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -9.3,
-      "price": 6188
+      "price": 6563
      },
      {
       "name": "최악",
       "pct": -42.3,
-      "price": 3936
+      "price": 4175
      }
     ],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
@@ -3375,85 +3698,87 @@
     "p_date": "2026-09-29",
     "r": null,
     "r_date": null,
-    "atr": 633,
+    "atr": 625,
     "atr_n": 10,
-    "atr_pct": 7.86,
+    "atr_pct": 7.76,
     "confirmed": false,
     "rows": [
      {
       "label": "① 1차가 기준 (1차 추정 — 공시가 예정발행가라 안 씀)",
       "kind": "1차",
-      "issue": 4093,
-      "p_minus_i": 3957,
+      "issue": 5427,
+      "p_minus_i": 2623,
       "gap": null,
       "cost": null,
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 3324
+      "r_for_1atr": 1998
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
       "kind": "예상 최종",
-      "issue": 4093,
-      "p_minus_i": 3957,
+      "issue": 5427,
+      "p_minus_i": 2623,
       "gap": null,
       "cost": null,
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 3324,
+      "r_for_1atr": 1998,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
       "label": "③ 실제 확정가 기준",
       "kind": "확정",
       "issue": null,
-      "note": "확정 전 (확정발행가 산정일 2026-11-04)"
+      "note": "확정 전 (확정발행가 산정일 2026-11-26)"
      }
     ],
     "end_check": {
-     "last": "2026-10-29",
-     "disclosed": "2026-10-29",
+     "last": "2026-11-12",
+     "disclosed": "2026-11-12",
      "delist": null,
      "krx_last": null,
      "status": "disclosed_only",
      "text": "공시만 (KRX 인수권 시세 전 — 상장폐지일 미수집)"
     },
     "final": {
-     "i1": 4093,
+     "i1": 5427,
      "i2": null,
-     "i_hat": 4093,
-     "d": 0.4,
+     "i_hat": 5427,
+     "d": 0.25,
      "vwap": null,
      "vwap_src": null,
      "close_base": null,
      "base_date": null,
      "window": null,
-     "fix_date": "2026-11-04",
+     "fix_date": "2026-11-26",
      "projected": null,
      "floor": null,
      "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
     },
+    "decision_asof": "2026-09-29",
+    "price_type": "종가",
     "gap_shift": null,
     "days": [
      {
       "key": "rights_end",
       "label": "인수권 매매종료",
-      "date": "2026-10-29",
-      "left": 21
+      "date": "2026-11-12",
+      "left": 30
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
-      "date": "2026-11-09",
-      "left": 28
+      "date": "2026-12-01",
+      "left": 43
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
-      "date": "2026-11-30",
-      "left": 43
+      "date": "2026-12-23",
+      "left": 59
      }
     ]
    },
@@ -3464,7 +3789,14 @@
     "n": 20,
     "value_days": 26.0,
     "volume_days": 20.7,
-    "listing_turnover": null
+    "avg_volume": 304935,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -3478,19 +3810,19 @@
    "first_rcept_dt": "20260818",
    "first_rcept_no": "20260818000250",
    "schedule": {
-    "record_date": "2026-10-01",
-    "ex_rights_date": "2026-09-30",
-    "rights_start": "2026-10-23",
-    "rights_end": "2026-10-29",
-    "price_fix_date": "2026-11-04",
-    "subs_start": "2026-11-09",
-    "subs_end": "2026-11-10",
-    "payment_date": "2026-11-12",
-    "listing_date": "2026-11-25",
+    "record_date": "2026-10-29",
+    "ex_rights_date": "2026-10-28",
+    "rights_start": "2026-11-18",
+    "rights_end": "2026-11-24",
+    "price_fix_date": "2026-12-07",
+    "subs_start": "2026-12-10",
+    "subs_end": "2026-12-11",
+    "payment_date": "2026-12-15",
+    "listing_date": "2026-12-29",
     "issue_price": 2775,
     "alloc_ratio": 0.507594018,
     "issue_kind": "예정",
-    "issue_rcept_dt": "20260915"
+    "issue_rcept_dt": "20260929"
    },
    "schedule_warnings": [],
    "history": [
@@ -3553,6 +3885,29 @@
       "issue_price": 2775
      },
      "warnings": []
+    },
+    {
+     "rcept_no": "20260929000566",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "record_date": "2026-10-29",
+      "ex_rights_date": "2026-10-28",
+      "rights_start": "2026-11-18",
+      "rights_end": "2026-11-24",
+      "price_fix_date": "2026-12-07",
+      "subs_start": "2026-12-10",
+      "subs_end": "2026-12-11",
+      "payment_date": "2026-12-15",
+      "listing_date": "2026-12-29",
+      "issue_price": 2775,
+      "alloc_ratio": 0.507594018
+     },
+     "warnings": [
+      "권리락일은 기준일 전 1영업일로 추정 (휴장일 목록 기준)",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
     }
    ],
    "strategy": {
@@ -3561,6 +3916,7 @@
     "ban": null,
     "rank": 3,
     "gap": null,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -3587,9 +3943,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -3634,123 +3990,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 4285
+     "close": 4285,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 3855
+     "close": 3855,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 3585
+     "close": 3585,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 3520
+     "close": 3520,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 3240
+     "close": 3240,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 3135
+     "close": 3135,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 3185
+     "close": 3185,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 3025
+     "close": 3025,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 3040
+     "close": 3040,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 3070
+     "close": 3070,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 3085
+     "close": 3085,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 3050
+     "close": 3050,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 3015
+     "close": 3015,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 2925
+     "close": 2925,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 2955
+     "close": 2955,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 3335
+     "close": 3335,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 3355
+     "close": 3355,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 3360
+     "close": 3360,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 3390
+     "close": 3390,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 3380
+     "close": 3380,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 3460
+     "close": 3460,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 3305
+     "close": 3305,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 3260
+     "close": 3260,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 3300
+     "close": 3300,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 3265
+     "close": 3265,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 3270
+     "close": 3270,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 3020
+     "close": 3020,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 3155
+     "close": 3155,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 3285
+     "close": 3285,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 3260
+     "close": 3260,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -3838,9 +4224,9 @@
     "p_date": "2026-09-29",
     "r": null,
     "r_date": null,
-    "atr": 294,
+    "atr": 293,
     "atr_n": 10,
-    "atr_pct": 9.02,
+    "atr_pct": 8.98,
     "confirmed": false,
     "rows": [
      {
@@ -3853,7 +4239,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 789
+      "r_for_1atr": 790
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
@@ -3865,19 +4251,19 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 789,
+      "r_for_1atr": 790,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
       "label": "③ 실제 확정가 기준",
       "kind": "확정",
       "issue": null,
-      "note": "확정 전 (확정발행가 산정일 2026-11-04)"
+      "note": "확정 전 (확정발행가 산정일 2026-12-07)"
      }
     ],
     "end_check": {
-     "last": "2026-10-29",
-     "disclosed": "2026-10-29",
+     "last": "2026-11-24",
+     "disclosed": "2026-11-24",
      "delist": null,
      "krx_last": null,
      "status": "disclosed_only",
@@ -3893,30 +4279,32 @@
      "close_base": null,
      "base_date": null,
      "window": null,
-     "fix_date": "2026-11-04",
+     "fix_date": "2026-12-07",
      "projected": null,
      "floor": null,
      "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
     },
+    "decision_asof": "2026-09-29",
+    "price_type": "종가",
     "gap_shift": null,
     "days": [
      {
       "key": "rights_end",
       "label": "인수권 매매종료",
-      "date": "2026-10-29",
-      "left": 21
+      "date": "2026-11-24",
+      "left": 38
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
-      "date": "2026-11-09",
-      "left": 28
+      "date": "2026-12-10",
+      "left": 50
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
-      "date": "2026-11-25",
-      "left": 40
+      "date": "2026-12-29",
+      "left": 62
      }
     ]
    },
@@ -3927,7 +4315,14 @@
     "n": 20,
     "value_days": 218.6,
     "volume_days": 218.1,
-    "listing_turnover": null
+    "avg_volume": 16966,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -4033,6 +4428,7 @@
     ],
     "rank": 2,
     "gap": -48.3,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -4059,9 +4455,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -4159,123 +4555,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 3282
+     "close": 3282,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 3269
+     "close": 3269,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 4855
+     "close": 4855,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 4855
+     "close": 4855,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 4500
+     "close": 4500,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 4445
+     "close": 4445,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 4490
+     "close": 4490,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 4650
+     "close": 4650,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 4585
+     "close": 4585,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 4180
+     "close": 4180,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 4130
+     "close": 4130,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 3650
+     "close": 3650,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 4220
+     "close": 4220,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 4120
+     "close": 4120,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 4035
+     "close": 4035,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 3985
+     "close": 3985,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 3845
+     "close": 3845,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 3750
+     "close": 3750,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 4155
+     "close": 4155,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 4090
+     "close": 4090,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 3970
+     "close": 3970,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 3830
+     "close": 3830,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 3695
+     "close": 3695,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 3705
+     "close": 3705,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 3625
+     "close": 3625,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 3340
+     "close": 3340,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 3385
+     "close": 3385,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 3335
+     "close": 3335,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 3490
+     "close": 3490,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 3595
+     "close": 3595,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -4308,8 +4734,8 @@
      "ok": true
     },
     "recheck": "희석 100% 이상 — 조건이 정정되지 않는 한 재검토 없음 (상장일까지 관찰 샘플)",
-    "stage": "3",
-    "stage_name": "③ 인수권 거래 중",
+    "stage": "4",
+    "stage_name": "④ 인수권 종료 · 청약 전",
     "issue": {
      "d": 0.2,
      "r": 2.4,
@@ -4341,31 +4767,31 @@
      "text": "최종 추정 2,260원 = min(1차(공시) 2,260, 2차 2,725) · 2차 = min(1주 VWAP 3,406, 최근 종가 3,595) × (1−20%) — 산정일 전이라 오늘 기준 예상"
     },
     "breakeven": {
-     "stage": "3",
-     "how": "인수권 매수 + 청약",
-     "value": 2896,
-     "text": "인수권 636 + 발행가 2,260"
+     "stage": "4",
+     "how": "본주 매수 (상장 대기)",
+     "value": 3595,
+     "text": "현재가 3,595"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 6.8,
-      "price": 3093
+      "price": 3839
      },
      {
       "name": "보통(중앙값)",
       "pct": -1.7,
-      "price": 2847
+      "price": 3534
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -9.3,
-      "price": 2627
+      "price": 3261
      },
      {
       "name": "최악",
       "pct": -42.3,
-      "price": 1671
+      "price": 2074
      }
     ],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
@@ -4428,44 +4854,46 @@
     },
     "final": {
      "i1": 2260,
-     "i2": 2725,
+     "i2": 2734,
      "i_hat": 2260,
      "d": 0.2,
-     "vwap": 3406,
+     "vwap": 3418,
      "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
-     "close_base": 3595,
-     "base_date": "2026-09-29",
+     "close_base": 3490,
+     "base_date": "2026-09-28",
      "window": [
+      "2026-09-18",
       "2026-09-21",
       "2026-09-22",
       "2026-09-23",
-      "2026-09-28",
-      "2026-09-29"
+      "2026-09-28"
      ],
      "fix_date": "2026-10-06",
      "projected": true,
      "floor": null,
      "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
     },
+    "decision_asof": "2026-09-28",
+    "price_type": "종가",
     "gap_shift": 0.0,
     "days": [
      {
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2026-09-29",
-      "left": 1
+      "left": null
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2026-10-12",
-      "left": 8
+      "left": 7
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-10-28",
-      "left": 20
+      "left": 19
      }
     ]
    },
@@ -4476,7 +4904,14 @@
     "n": 20,
     "value_days": 49.3,
     "volume_days": 57.5,
-    "listing_turnover": null
+    "avg_volume": 777514,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -4583,6 +5018,7 @@
     "ban": null,
     "rank": 0,
     "gap": 37.6,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -4609,9 +5045,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -4670,123 +5106,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 114863
+     "close": 114863,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 107382
+     "close": 107382,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 109800
+     "close": 109800,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 114100
+     "close": 114100,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 105600
+     "close": 105600,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 117000
+     "close": 117000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 112500
+     "close": 112500,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 111500
+     "close": 111500,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 118000
+     "close": 118000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 118200
+     "close": 118200,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 120800
+     "close": 120800,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 116200
+     "close": 116200,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 108000
+     "close": 108000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 106500
+     "close": 106500,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 106000
+     "close": 106000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 106700
+     "close": 106700,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 104800
+     "close": 104800,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 114900
+     "close": 114900,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 118700
+     "close": 118700,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 110300
+     "close": 110300,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 103500
+     "close": 103500,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 107000
+     "close": 107000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 104700
+     "close": 104700,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 102700
+     "close": 102700,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 104900
+     "close": 104900,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 103400
+     "close": 103400,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 104300
+     "close": 104300,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 105000
+     "close": 105000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 111300
+     "close": 111300,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 105100
+     "close": 105100,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -4913,14 +5379,14 @@
      {
       "label": "② 현재 시점 예상 최종가 기준",
       "kind": "예상 최종",
-      "issue": 84080,
-      "p_minus_i": 27220,
-      "gap": 10.2,
-      "cost": 114080,
-      "cost_disc": -2.5,
-      "cushion": -2780,
-      "cushion_atr": -0.47,
-      "r_for_1atr": 21243
+      "issue": 85459,
+      "p_minus_i": 25841,
+      "gap": 16.1,
+      "cost": 115459,
+      "cost_disc": -3.7,
+      "cushion": -4159,
+      "cushion_atr": -0.7,
+      "r_for_1atr": 19864
      },
      {
       "label": "③ 실제 확정가 기준",
@@ -4939,44 +5405,46 @@
     },
     "final": {
      "i1": 89500,
-     "i2": 84080,
-     "i_hat": 84080,
+     "i2": 85459,
+     "i_hat": 85459,
      "d": 0.2,
-     "vwap": 107034,
+     "vwap": 106823,
      "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
-     "close_base": 105100,
-     "base_date": "2026-09-29",
+     "close_base": 111300,
+     "base_date": "2026-09-28",
      "window": [
+      "2026-09-18",
       "2026-09-21",
       "2026-09-22",
       "2026-09-23",
-      "2026-09-28",
-      "2026-09-29"
+      "2026-09-28"
      ],
      "fix_date": "2026-10-12",
      "projected": true,
      "floor": null,
      "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
     },
-    "gap_shift": -27.4,
+    "decision_asof": "2026-09-28",
+    "price_type": "종가",
+    "gap_shift": -21.5,
     "days": [
      {
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2026-10-02",
-      "left": 4
+      "left": 3
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2026-10-15",
-      "left": 11
+      "left": 10
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-11-05",
-      "left": 26
+      "left": 25
      }
     ]
    },
@@ -4987,7 +5455,14 @@
     "n": 20,
     "value_days": 27.9,
     "volume_days": 27.5,
-    "listing_turnover": null
+    "avg_volume": 360078,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -5111,31 +5586,37 @@
       "listing": "2026-09-29",
       "exit_on": "2026-10-15",
       "entry": 1143,
-      "rsi": 45.1,
-      "atr_pct": 7.61,
+      "preview_price": null,
+      "rsi": 44.1,
+      "atr_pct": 7.68,
       "ind_asof": "2026-09-29",
       "ind_src": "naver",
-      "atr": 87.0,
+      "atr": 87.8,
       "confirmed": true,
-      "stop": 969,
+      "price_type": "종가",
+      "stop": 967,
       "stop_basis": "상장일 종가",
-      "gate": true
+      "gate": true,
+      "preview_gate": true
      }
     ],
     "bans": [],
     "ban": null,
     "rank": 0,
     "gap": -38.8,
+    "locks": [
+     "unconfirmed_gate"
+    ],
     "paper": [
      {
       "strategy": "s2",
       "decided_on": "2026-09-29",
-      "version": 4,
+      "version": 5,
       "snapshot": {
        "entry": 1143,
-       "rsi": 45.1,
-       "atr": 87.0,
-       "stop": 969,
+       "rsi": 44.1,
+       "atr": 87.8,
+       "stop": 967,
        "gate": true,
        "verdict": "green",
        "listing_date": "2026-09-29",
@@ -5148,11 +5629,11 @@
       "eval": {
        "entry": 1143,
        "entry_date": "2026-09-29",
-       "rsi": 45.1,
-       "atr_pct": 7.61,
+       "rsi": 44.1,
+       "atr_pct": 7.68,
        "ind_src": "naver",
-       "atr": 87.0,
-       "stop": 969,
+       "atr": 87.8,
+       "stop": 967,
        "gate": true,
        "points": [
         {
@@ -5196,9 +5677,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -5299,123 +5780,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 1350
+     "close": 1350,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 1268
+     "close": 1268,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 1245
+     "close": 1245,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 1249
+     "close": 1249,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 1229
+     "close": 1229,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 1196
+     "close": 1196,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 1216
+     "close": 1216,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 1310
+     "close": 1310,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 1299
+     "close": 1299,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 1262
+     "close": 1262,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 1216
+     "close": 1216,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 1076
+     "close": 1076,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 1084
+     "close": 1084,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 1140
+     "close": 1140,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 1132
+     "close": 1132,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 1201
+     "close": 1201,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 1228
+     "close": 1228,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 1220
+     "close": 1220,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 1273
+     "close": 1273,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 1205
+     "close": 1205,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 1182
+     "close": 1182,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 1161
+     "close": 1161,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 1114
+     "close": 1114,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 1126
+     "close": 1126,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 1123
+     "close": 1123,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 1099
+     "close": 1099,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 1125
+     "close": 1125,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 1196
+     "close": 1196,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 1140
+     "close": 1140,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 1143
+     "close": 1143,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -5558,8 +6069,8 @@
     "table": [],
     "table_note": "기본값 시나리오 — Phase 1 백테스트 완료 시 실제 상장일 수익률 분포(25/50/75 퍼센타일)로 교체 예정",
     "overhang": {
-     "days": 18.5,
-     "avg_volume": 2220231,
+     "days": 18.7,
+     "avg_volume": 2191474,
      "new_shares": 41000000,
      "n": 20,
      "red": false
@@ -5573,11 +6084,41 @@
     "atr": 83,
     "atr_n": 10,
     "atr_pct": 6.83,
-    "confirmed": true,
+    "confirmed": false,
     "rows": [
+     {
+      "label": "① 1차가 기준",
+      "kind": "1차",
+      "issue": 1064,
+      "p_minus_i": 152,
+      "gap": -38.8,
+      "cost": 1157,
+      "cost_disc": 4.9,
+      "cushion": 59,
+      "cushion_atr": 0.71,
+      "r_for_1atr": 69
+     },
+     {
+      "label": "② 현재 시점 예상 최종가 기준",
+      "kind": "예상 최종",
+      "issue": 912,
+      "p_minus_i": 304,
+      "gap": -69.4,
+      "cost": 1005,
+      "cost_disc": 17.4,
+      "cushion": 211,
+      "cushion_atr": 2.54,
+      "r_for_1atr": 221
+     },
      {
       "label": "③ 실제 확정가 기준",
       "kind": "확정",
+      "issue": null,
+      "note": "확정 전 (확정발행가 산정일 2026-08-31)"
+     },
+     {
+      "label": "사후 확정가 기준 (결과 · 진입신호 아님)",
+      "kind": "사후 확정",
       "issue": 911,
       "p_minus_i": 305,
       "gap": -69.5,
@@ -5585,7 +6126,8 @@
       "cost_disc": 17.4,
       "cushion": 212,
       "cushion_atr": 2.55,
-      "r_for_1atr": 222
+      "r_for_1atr": 222,
+      "note": "인수권 거래 당시에는 알 수 없던 확정발행가를 사후 적용한 결과값 — H1 의사결정 신호에 사용 금지"
      }
     ],
     "end_check": {
@@ -5596,8 +6138,30 @@
      "status": "ok",
      "text": "공시·KRX 일치"
     },
-    "final": null,
-    "gap_shift": null,
+    "final": {
+     "i1": 1064,
+     "i2": 912,
+     "i_hat": 912,
+     "d": 0.25,
+     "vwap": 1229,
+     "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+     "close_base": 1216,
+     "base_date": "2026-08-25",
+     "window": [
+      "2026-08-19",
+      "2026-08-20",
+      "2026-08-21",
+      "2026-08-24",
+      "2026-08-25"
+     ],
+     "fix_date": "2026-08-31",
+     "projected": true,
+     "floor": null,
+     "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
+    },
+    "decision_asof": "2026-08-25",
+    "price_type": "종가",
+    "gap_shift": -30.6,
     "days": [
      {
       "key": "rights_end",
@@ -5615,7 +6179,7 @@
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-09-29",
-      "left": 1
+      "left": null
      }
     ]
    },
@@ -5626,7 +6190,14 @@
     "n": 20,
     "value_days": 19.6,
     "volume_days": 18.7,
-    "listing_turnover": 0.04
+    "avg_volume": 2191474,
+    "listing_turnover": 0.038,
+    "listing_volume_multiple": 0.71,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": "종가"
    }
   },
   {
@@ -5803,6 +6374,7 @@
     "ban": null,
     "rank": 1,
     "gap": 66.2,
+    "locks": [],
     "paper": [
      {
       "strategy": "s1",
@@ -5868,9 +6440,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -5971,123 +6543,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 38750
+     "close": 38750,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 37500
+     "close": 37500,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 36500
+     "close": 36500,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 37750
+     "close": 37750,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 37000
+     "close": 37000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 36500
+     "close": 36500,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 36400
+     "close": 36400,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 36000
+     "close": 36000,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 36250
+     "close": 36250,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 35800
+     "close": 35800,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 35200
+     "close": 35200,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 34450
+     "close": 34450,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 34450
+     "close": 34450,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 33400
+     "close": 33400,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 35600
+     "close": 35600,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 34800
+     "close": 34800,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 33800
+     "close": 33800,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 35600
+     "close": 35600,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 33850
+     "close": 33850,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 32500
+     "close": 32500,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 30450
+     "close": 30450,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 31050
+     "close": 31050,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 32350
+     "close": 32350,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 32300
+     "close": 32300,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 31950
+     "close": 31950,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 32600
+     "close": 32600,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 34100
+     "close": 34100,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 33750
+     "close": 33750,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 35900
+     "close": 35900,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 33800
+     "close": 33800,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -6267,11 +6869,41 @@
     "atr": 2213,
     "atr_n": 10,
     "atr_pct": 6.36,
-    "confirmed": true,
+    "confirmed": false,
     "rows": [
+     {
+      "label": "① 1차가 기준",
+      "kind": "1차",
+      "issue": 30950,
+      "p_minus_i": 3850,
+      "gap": 66.2,
+      "cost": 37350,
+      "cost_disc": -7.3,
+      "cushion": -2550,
+      "cushion_atr": -1.15,
+      "r_for_1atr": 1637
+     },
+     {
+      "label": "② 현재 시점 예상 최종가 기준",
+      "kind": "예상 최종",
+      "issue": 26599,
+      "p_minus_i": 8201,
+      "gap": -22.0,
+      "cost": 32999,
+      "cost_disc": 5.2,
+      "cushion": 1801,
+      "cushion_atr": 0.81,
+      "r_for_1atr": 5988
+     },
      {
       "label": "③ 실제 확정가 기준",
       "kind": "확정",
+      "issue": null,
+      "note": "확정 전 (확정발행가 산정일 2026-09-11)"
+     },
+     {
+      "label": "사후 확정가 기준 (결과 · 진입신호 아님)",
+      "kind": "사후 확정",
       "issue": 25050,
       "p_minus_i": 9750,
       "gap": -34.4,
@@ -6279,7 +6911,8 @@
       "cost_disc": 9.6,
       "cushion": 3350,
       "cushion_atr": 1.51,
-      "r_for_1atr": 7537
+      "r_for_1atr": 7537,
+      "note": "인수권 거래 당시에는 알 수 없던 확정발행가를 사후 적용한 결과값 — H1 의사결정 신호에 사용 금지"
      }
     ],
     "end_check": {
@@ -6290,8 +6923,30 @@
      "status": "ok",
      "text": "공시·KRX 일치"
     },
-    "final": null,
-    "gap_shift": null,
+    "final": {
+     "i1": 30950,
+     "i2": 26599,
+     "i_hat": 26599,
+     "d": 0.23,
+     "vwap": 34544,
+     "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+     "close_base": 34800,
+     "base_date": "2026-09-07",
+     "window": [
+      "2026-09-01",
+      "2026-09-02",
+      "2026-09-03",
+      "2026-09-04",
+      "2026-09-07"
+     ],
+     "fix_date": "2026-09-11",
+     "projected": true,
+     "floor": null,
+     "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
+    },
+    "decision_asof": "2026-09-07",
+    "price_type": "종가",
+    "gap_shift": -88.2,
     "days": [
      {
       "key": "rights_end",
@@ -6309,7 +6964,7 @@
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-10-12",
-      "left": 8
+      "left": 7
      }
     ]
    },
@@ -6320,7 +6975,14 @@
     "n": 20,
     "value_days": 28.7,
     "volume_days": 27.6,
-    "listing_turnover": null
+    "avg_volume": 28139,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -6469,6 +7131,7 @@
     ],
     "rank": 2,
     "gap": -61.5,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -6496,9 +7159,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -6599,123 +7262,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 8800
+     "close": 8800,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 8740
+     "close": 8740,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 8430
+     "close": 8430,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 8130
+     "close": 8130,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 7850
+     "close": 7850,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 7580
+     "close": 7580,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 7630
+     "close": 7630,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 7250
+     "close": 7250,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 7200
+     "close": 7200,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 7230
+     "close": 7230,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 7110
+     "close": 7110,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 7770
+     "close": 7770,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 7370
+     "close": 7370,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 7640
+     "close": 7640,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 7870
+     "close": 7870,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 7610
+     "close": 7610,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 7030
+     "close": 7030,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 6870
+     "close": 6870,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 6600
+     "close": 6600,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 6630
+     "close": 6630,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 6420
+     "close": 6420,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 6750
+     "close": 6750,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 6530
+     "close": 6530,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 6510
+     "close": 6510,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 6210
+     "close": 6210,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 7650
+     "close": 7650,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 7440
+     "close": 7440,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 7400
+     "close": 7400,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 9620
+     "close": 9620,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 12090
+     "close": 12090,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -6895,11 +7588,11 @@
     "atr": 580,
     "atr_n": 10,
     "atr_pct": 7.47,
-    "confirmed": true,
+    "confirmed": false,
     "rows": [
      {
-      "label": "③ 실제 확정가 기준",
-      "kind": "확정",
+      "label": "① 1차가 기준",
+      "kind": "1차",
       "issue": 5650,
       "p_minus_i": 2120,
       "gap": -61.5,
@@ -6908,6 +7601,37 @@
       "cushion": 1303,
       "cushion_atr": 2.25,
       "r_for_1atr": 1540
+     },
+     {
+      "label": "② 현재 시점 예상 최종가 기준",
+      "kind": "예상 최종",
+      "issue": 5650,
+      "p_minus_i": 2120,
+      "gap": -61.5,
+      "cost": 6467,
+      "cost_disc": 16.8,
+      "cushion": 1303,
+      "cushion_atr": 2.25,
+      "r_for_1atr": 1540
+     },
+     {
+      "label": "③ 실제 확정가 기준",
+      "kind": "확정",
+      "issue": null,
+      "note": "확정 전 (확정발행가 산정일 2026-09-07)"
+     },
+     {
+      "label": "사후 확정가 기준 (결과 · 진입신호 아님)",
+      "kind": "사후 확정",
+      "issue": 5650,
+      "p_minus_i": 2120,
+      "gap": -61.5,
+      "cost": 6467,
+      "cost_disc": 16.8,
+      "cushion": 1303,
+      "cushion_atr": 2.25,
+      "r_for_1atr": 1540,
+      "note": "인수권 거래 당시에는 알 수 없던 확정발행가를 사후 적용한 결과값 — H1 의사결정 신호에 사용 금지"
      }
     ],
     "end_check": {
@@ -6918,8 +7642,30 @@
      "status": "ok",
      "text": "공시·KRX 일치"
     },
-    "final": null,
-    "gap_shift": null,
+    "final": {
+     "i1": 5650,
+     "i2": 5718,
+     "i_hat": 5650,
+     "d": 0.25,
+     "vwap": 7624,
+     "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+     "close_base": 7770,
+     "base_date": "2026-09-01",
+     "window": [
+      "2026-08-26",
+      "2026-08-27",
+      "2026-08-28",
+      "2026-08-31",
+      "2026-09-01"
+     ],
+     "fix_date": "2026-09-07",
+     "projected": true,
+     "floor": null,
+     "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
+    },
+    "decision_asof": "2026-09-01",
+    "price_type": "종가",
+    "gap_shift": 0.0,
     "days": [
      {
       "key": "rights_end",
@@ -6937,7 +7683,7 @@
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-10-07",
-      "left": 6
+      "left": 5
      }
     ]
    },
@@ -6948,7 +7694,14 @@
     "n": 20,
     "value_days": 22.0,
     "volume_days": 24.6,
-    "listing_turnover": null
+    "avg_volume": 437184,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -7096,6 +7849,7 @@
     ],
     "rank": 2,
     "gap": -9.4,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -7124,9 +7878,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -7227,123 +7981,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 4335
+     "close": 4335,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 4555
+     "close": 4555,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 4210
+     "close": 4210,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 4270
+     "close": 4270,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 3970
+     "close": 3970,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 3880
+     "close": 3880,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 3915
+     "close": 3915,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 3825
+     "close": 3825,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 3805
+     "close": 3805,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 3750
+     "close": 3750,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 3790
+     "close": 3790,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 3620
+     "close": 3620,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 3535
+     "close": 3535,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 3490
+     "close": 3490,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 3600
+     "close": 3600,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 3670
+     "close": 3670,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 3600
+     "close": 3600,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 3620
+     "close": 3620,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 3625
+     "close": 3625,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 3575
+     "close": 3575,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 3545
+     "close": 3545,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 3600
+     "close": 3600,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 3545
+     "close": 3545,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 3610
+     "close": 3610,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 3935
+     "close": 3935,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 3845
+     "close": 3845,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 3820
+     "close": 3820,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 3235
+     "close": 3235,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 3160
+     "close": 3160,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 3040
+     "close": 3040,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -7486,8 +8270,8 @@
     "table": [],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
-     "days": 12.4,
-     "avg_volume": 663273,
+     "days": 12.7,
+     "avg_volume": 647816,
      "new_shares": 8200000,
      "n": 20,
      "red": false
@@ -7501,11 +8285,41 @@
     "atr": 341,
     "atr_n": 10,
     "atr_pct": 8.71,
-    "confirmed": true,
+    "confirmed": false,
     "rows": [
+     {
+      "label": "① 1차가 기준",
+      "kind": "1차",
+      "issue": 3200,
+      "p_minus_i": 715,
+      "gap": -9.4,
+      "cost": 3848,
+      "cost_disc": 1.7,
+      "cushion": 67,
+      "cushion_atr": 0.2,
+      "r_for_1atr": 374
+     },
+     {
+      "label": "② 현재 시점 예상 최종가 기준",
+      "kind": "예상 최종",
+      "issue": 3132,
+      "p_minus_i": 783,
+      "gap": -17.2,
+      "cost": 3780,
+      "cost_disc": 3.4,
+      "cushion": 135,
+      "cushion_atr": 0.4,
+      "r_for_1atr": 442
+     },
      {
       "label": "③ 실제 확정가 기준",
       "kind": "확정",
+      "issue": null,
+      "note": "확정 전 (확정발행가 산정일 2026-08-31)"
+     },
+     {
+      "label": "사후 확정가 기준 (결과 · 진입신호 아님)",
+      "kind": "사후 확정",
       "issue": 2970,
       "p_minus_i": 945,
       "gap": -31.4,
@@ -7513,7 +8327,8 @@
       "cost_disc": 7.6,
       "cushion": 297,
       "cushion_atr": 0.87,
-      "r_for_1atr": 604
+      "r_for_1atr": 604,
+      "note": "인수권 거래 당시에는 알 수 없던 확정발행가를 사후 적용한 결과값 — H1 의사결정 신호에 사용 금지"
      }
     ],
     "end_check": {
@@ -7524,8 +8339,30 @@
      "status": "ok",
      "text": "공시·KRX 일치"
     },
-    "final": null,
-    "gap_shift": null,
+    "final": {
+     "i1": 3200,
+     "i2": 3132,
+     "i_hat": 3132,
+     "d": 0.2,
+     "vwap": 4081,
+     "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+     "close_base": 3915,
+     "base_date": "2026-08-25",
+     "window": [
+      "2026-08-19",
+      "2026-08-20",
+      "2026-08-21",
+      "2026-08-24",
+      "2026-08-25"
+     ],
+     "fix_date": "2026-08-31",
+     "projected": true,
+     "floor": null,
+     "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
+    },
+    "decision_asof": "2026-08-25",
+    "price_type": "종가",
+    "gap_shift": -7.8,
     "days": [
      {
       "key": "rights_end",
@@ -7543,7 +8380,7 @@
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-09-29",
-      "left": 1
+      "left": null
      }
     ]
    },
@@ -7554,7 +8391,14 @@
     "n": 20,
     "value_days": 13.5,
     "volume_days": 12.7,
-    "listing_turnover": 0.05
+    "avg_volume": 647816,
+    "listing_turnover": 0.055,
+    "listing_volume_multiple": 0.69,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": "종가"
    }
   },
   {
@@ -7747,6 +8591,7 @@
     ],
     "rank": 2,
     "gap": null,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -7775,9 +8620,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -7878,123 +8723,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 1289
+     "close": 1289,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 1312
+     "close": 1312,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 1558
+     "close": 1558,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 1437
+     "close": 1437,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 1315
+     "close": 1315,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 1315
+     "close": 1315,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 1278
+     "close": 1278,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 1264
+     "close": 1264,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 1287
+     "close": 1287,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 1269
+     "close": 1269,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 1268
+     "close": 1268,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 1134
+     "close": 1134,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 1105
+     "close": 1105,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 1068
+     "close": 1068,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 1116
+     "close": 1116,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 1116
+     "close": 1116,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 1149
+     "close": 1149,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 1136
+     "close": 1136,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 1170
+     "close": 1170,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 1161
+     "close": 1161,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 1151
+     "close": 1151,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 1180
+     "close": 1180,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 1372
+     "close": 1372,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 1686
+     "close": 1686,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 1863
+     "close": 1863,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 1693
+     "close": 1693,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 1727
+     "close": 1727,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 1801
+     "close": 1801,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 1820
+     "close": 1820,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 1705
+     "close": 1705,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -8141,8 +9016,8 @@
     "table": [],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
-     "days": 2.1,
-     "avg_volume": 8928090,
+     "days": 4.9,
+     "avg_volume": 3873864,
      "new_shares": 18957345,
      "n": 20,
      "red": false
@@ -8156,11 +9031,41 @@
     "atr": 176,
     "atr_n": 10,
     "atr_pct": 13.57,
-    "confirmed": true,
+    "confirmed": false,
     "rows": [
+     {
+      "label": "① 1차가 기준",
+      "kind": "1차",
+      "issue": 1339,
+      "p_minus_i": -41,
+      "gap": null,
+      "cost": 1441,
+      "cost_disc": -11.0,
+      "cushion": -143,
+      "cushion_atr": -0.81,
+      "r_for_1atr": null
+     },
+     {
+      "label": "② 현재 시점 예상 최종가 기준",
+      "kind": "예상 최종",
+      "issue": 833,
+      "p_minus_i": 465,
+      "gap": -78.1,
+      "cost": 935,
+      "cost_disc": 28.0,
+      "cushion": 363,
+      "cushion_atr": 2.06,
+      "r_for_1atr": 289
+     },
      {
       "label": "③ 실제 확정가 기준",
       "kind": "확정",
+      "issue": null,
+      "note": "확정 전 (확정발행가 산정일 2026-08-10)"
+     },
+     {
+      "label": "사후 확정가 기준 (결과 · 진입신호 아님)",
+      "kind": "사후 확정",
       "issue": 1153,
       "p_minus_i": 145,
       "gap": -29.7,
@@ -8168,7 +9073,8 @@
       "cost_disc": 3.3,
       "cushion": 43,
       "cushion_atr": 0.24,
-      "r_for_1atr": null
+      "r_for_1atr": null,
+      "note": "인수권 거래 당시에는 알 수 없던 확정발행가를 사후 적용한 결과값 — H1 의사결정 신호에 사용 금지"
      }
     ],
     "end_check": {
@@ -8179,7 +9085,29 @@
      "status": "ok",
      "text": "공시·KRX 일치"
     },
-    "final": null,
+    "final": {
+     "i1": 1339,
+     "i2": 833,
+     "i_hat": 833,
+     "d": 0.25,
+     "vwap": 1110,
+     "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+     "close_base": 1298,
+     "base_date": "2026-08-04",
+     "window": [
+      "2026-07-29",
+      "2026-07-30",
+      "2026-07-31",
+      "2026-08-03",
+      "2026-08-04"
+     ],
+     "fix_date": "2026-08-10",
+     "projected": true,
+     "floor": null,
+     "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
+    },
+    "decision_asof": "2026-08-04",
+    "price_type": "종가",
     "gap_shift": null,
     "days": [
      {
@@ -8209,7 +9137,14 @@
     "n": 20,
     "value_days": 4.5,
     "volume_days": 4.9,
-    "listing_turnover": 0.08
+    "avg_volume": 3873864,
+    "listing_turnover": 0.077,
+    "listing_volume_multiple": 0.38,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": "종가"
    }
   },
   {
@@ -8223,19 +9158,19 @@
    "first_rcept_dt": "20260415",
    "first_rcept_no": "20260415000377",
    "schedule": {
-    "record_date": "2026-10-01",
-    "ex_rights_date": "2026-09-30",
     "rights_start": "2026-10-23",
     "rights_end": "2026-10-29",
-    "price_fix_date": "2026-11-04",
-    "subs_start": "2026-11-09",
-    "subs_end": "2026-11-10",
-    "payment_date": "2026-11-17",
-    "listing_date": "2026-11-30",
     "issue_price": 5030,
     "alloc_ratio": 0.5497566675,
+    "tbd": [
+     "listing_date",
+     "payment_date",
+     "price_fix_date",
+     "record_date",
+     "subs_start"
+    ],
     "issue_kind": "예정",
-    "issue_rcept_dt": "20260910"
+    "issue_rcept_dt": "20260929"
    },
    "schedule_warnings": [],
    "history": [
@@ -8465,6 +9400,31 @@
       "issue_price": 5030
      },
      "warnings": []
+    },
+    {
+     "rcept_no": "20260929000532",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "rights_start": "2026-10-23",
+      "rights_end": "2026-10-29",
+      "issue_price": 5030,
+      "alloc_ratio": 0.5497566675
+     },
+     "warnings": [
+      "청약일 추후결정 (정정 대기)",
+      "record_date 못 찾음",
+      "subs_start 못 찾음",
+      "payment_date 못 찾음",
+      "listing_date 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전",
+      "확정발행가 산정일 추후결정 (정정 대기)",
+      "신주배정기준일 추후결정 (정정 대기)",
+      "납입일 추후결정 (정정 대기)",
+      "신주 상장일 추후결정 (정정 대기)",
+      "⚠ 금감원 정정신고서 제출요구 이력"
+     ]
     }
    ],
    "strategy": {
@@ -8477,6 +9437,7 @@
     ],
     "rank": 2,
     "gap": null,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -8504,9 +9465,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -8551,123 +9512,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 11250
+     "close": 11250,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 10610
+     "close": 10610,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 10270
+     "close": 10270,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 10410
+     "close": 10410,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 9970
+     "close": 9970,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 9390
+     "close": 9390,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 9320
+     "close": 9320,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 9120
+     "close": 9120,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 9060
+     "close": 9060,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 8930
+     "close": 8930,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 8850
+     "close": 8850,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 11500
+     "close": 11500,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 10510
+     "close": 10510,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 10080
+     "close": 10080,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 10000
+     "close": 10000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 10150
+     "close": 10150,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 9930
+     "close": 9930,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 10000
+     "close": 10000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 10150
+     "close": 10150,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 10520
+     "close": 10520,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 10070
+     "close": 10070,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 10380
+     "close": 10380,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 10570
+     "close": 10570,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 10820
+     "close": 10820,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 10750
+     "close": 10750,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 10590
+     "close": 10590,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 10400
+     "close": 10400,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 10630
+     "close": 10630,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 10610
+     "close": 10610,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 10590
+     "close": 10590,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -8700,8 +9691,8 @@
      "ok": false
     },
     "recheck": "희석 50% 미만으로 정정 시 · 3Q 영업흑자 전환 시",
-    "stage": "1",
-    "stage_name": "① 권리락 전",
+    "stage": "tbd",
+    "stage_name": "인수권 일정 미정",
     "issue": {
      "d": 0.25,
      "r": 0.5496,
@@ -8714,31 +9705,31 @@
      "text": "1차 추정 6,983원 = 현재가 10,590 × (1−25%) ÷ (1 + 증자비율 55.0%×25%) (공시 5,030원은 예정발행가라 안 씀)"
     },
     "breakeven": {
-     "stage": "1",
-     "how": "본주 매수 + 청약",
-     "value": 9311,
-     "text": "권리락 이론가 Px = 10,590 ÷ (1 + 증자비율 55.0%×25%)"
+     "stage": "tbd",
+     "how": "본주 매수 (상장 대기)",
+     "value": 10590,
+     "text": "현재가 10,590"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 6.8,
-      "price": 9944
+      "price": 11310
      },
      {
       "name": "보통(중앙값)",
       "pct": -1.7,
-      "price": 9153
+      "price": 10410
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -9.3,
-      "price": 8445
+      "price": 9605
      },
      {
       "name": "최악",
       "pct": -42.3,
-      "price": 5372
+      "price": 6110
      }
     ],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
@@ -8755,9 +9746,9 @@
     "p_date": "2026-09-29",
     "r": null,
     "r_date": null,
-    "atr": 869,
+    "atr": 858,
     "atr_n": 10,
-    "atr_pct": 8.21,
+    "atr_pct": 8.1,
     "confirmed": false,
     "rows": [
      {
@@ -8770,7 +9761,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 2738
+      "r_for_1atr": 2749
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
@@ -8782,14 +9773,14 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 2738,
+      "r_for_1atr": 2749,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
       "label": "③ 실제 확정가 기준",
       "kind": "확정",
       "issue": null,
-      "note": "확정 전 (확정발행가 산정일 2026-11-04)"
+      "note": "확정 전 (확정발행가 산정일 미확인)"
      }
     ],
     "end_check": {
@@ -8810,30 +9801,32 @@
      "close_base": null,
      "base_date": null,
      "window": null,
-     "fix_date": "2026-11-04",
+     "fix_date": null,
      "projected": null,
      "floor": null,
      "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
     },
+    "decision_asof": "2026-09-29",
+    "price_type": "종가",
     "gap_shift": null,
     "days": [
      {
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2026-10-29",
-      "left": 21
+      "left": 20
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
-      "date": "2026-11-09",
-      "left": 28
+      "date": null,
+      "left": null
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
-      "date": "2026-11-30",
-      "left": 43
+      "date": null,
+      "left": null
      }
     ]
    },
@@ -8844,7 +9837,14 @@
     "n": 20,
     "value_days": 9.7,
     "volume_days": 9.6,
-    "listing_turnover": null
+    "avg_volume": 396559,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -9109,6 +10109,7 @@
     ],
     "rank": 2,
     "gap": null,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -9137,9 +10138,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -9184,123 +10185,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 3455
+     "close": 3455,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 3250
+     "close": 3250,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 3065
+     "close": 3065,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 3070
+     "close": 3070,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 2915
+     "close": 2915,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 2860
+     "close": 2860,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 3280
+     "close": 3280,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 3035
+     "close": 3035,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 3075
+     "close": 3075,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 3010
+     "close": 3010,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 3075
+     "close": 3075,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 3140
+     "close": 3140,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 3075
+     "close": 3075,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 3120
+     "close": 3120,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 3180
+     "close": 3180,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 3115
+     "close": 3115,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 2990
+     "close": 2990,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 2985
+     "close": 2985,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 2985
+     "close": 2985,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 2975
+     "close": 2975,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 2915
+     "close": 2915,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 2945
+     "close": 2945,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 2935
+     "close": 2935,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 2950
+     "close": 2950,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 2980
+     "close": 2980,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 2970
+     "close": 2970,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 2915
+     "close": 2915,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 2940
+     "close": 2940,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 2850
+     "close": 2850,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 2750
+     "close": 2750,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -9390,7 +10421,7 @@
     "r_date": null,
     "atr": 180,
     "atr_n": 10,
-    "atr_pct": 6.54,
+    "atr_pct": 6.53,
     "confirmed": false,
     "rows": [
      {
@@ -9448,25 +10479,27 @@
      "floor": null,
      "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
     },
+    "decision_asof": "2026-09-29",
+    "price_type": "종가",
     "gap_shift": null,
     "days": [
      {
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2026-12-02",
-      "left": 45
+      "left": 44
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2026-12-14",
-      "left": 53
+      "left": 52
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2027-01-04",
-      "left": 66
+      "left": 65
      }
     ]
    },
@@ -9477,7 +10510,14 @@
     "n": 20,
     "value_days": 51.6,
     "volume_days": 57.1,
-    "listing_turnover": null
+    "avg_volume": 105029,
+    "listing_turnover": null,
+    "listing_volume_multiple": null,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": null
    }
   },
   {
@@ -9626,6 +10666,7 @@
     ],
     "rank": 2,
     "gap": -57.1,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -9652,9 +10693,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -9755,123 +10796,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 32700
+     "close": 32700,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 30750
+     "close": 30750,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 30850
+     "close": 30850,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 29450
+     "close": 29450,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 27150
+     "close": 27150,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 26800
+     "close": 26800,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 27800
+     "close": 27800,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 27100
+     "close": 27100,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 26650
+     "close": 26650,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 25600
+     "close": 25600,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 25300
+     "close": 25300,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 25350
+     "close": 25350,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 23550
+     "close": 23550,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 22650
+     "close": 22650,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 24650
+     "close": 24650,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 24250
+     "close": 24250,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 23550
+     "close": 23550,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 23450
+     "close": 23450,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 24400
+     "close": 24400,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 23700
+     "close": 23700,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 22350
+     "close": 22350,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 23400
+     "close": 23400,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 22900
+     "close": 22900,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 23000
+     "close": 23000,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 23450
+     "close": 23450,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 23400
+     "close": 23400,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 22900
+     "close": 22900,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 23050
+     "close": 23050,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 22500
+     "close": 22500,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 22300
+     "close": 22300,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -10018,8 +11089,8 @@
     "table": [],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
-     "days": 19.9,
-     "avg_volume": 276408,
+     "days": 10.0,
+     "avg_volume": 548458,
      "new_shares": 5494500,
      "n": 20,
      "red": false
@@ -10033,11 +11104,11 @@
     "atr": 3029,
     "atr_n": 10,
     "atr_pct": 11.26,
-    "confirmed": true,
+    "confirmed": false,
     "rows": [
      {
-      "label": "③ 실제 확정가 기준",
-      "kind": "확정",
+      "label": "① 1차가 기준",
+      "kind": "1차",
       "issue": 20600,
       "p_minus_i": 6300,
       "gap": -57.1,
@@ -10046,6 +11117,37 @@
       "cushion": 3600,
       "cushion_atr": 1.19,
       "r_for_1atr": 3271
+     },
+     {
+      "label": "② 현재 시점 예상 최종가 기준",
+      "kind": "예상 최종",
+      "issue": 17787,
+      "p_minus_i": 9113,
+      "gap": -70.4,
+      "cost": 20487,
+      "cost_disc": 23.8,
+      "cushion": 6413,
+      "cushion_atr": 2.12,
+      "r_for_1atr": 6084
+     },
+     {
+      "label": "③ 실제 확정가 기준",
+      "kind": "확정",
+      "issue": null,
+      "note": "확정 전 (확정발행가 산정일 2026-08-10)"
+     },
+     {
+      "label": "사후 확정가 기준 (결과 · 진입신호 아님)",
+      "kind": "사후 확정",
+      "issue": 20600,
+      "p_minus_i": 6300,
+      "gap": -57.1,
+      "cost": 23300,
+      "cost_disc": 13.4,
+      "cushion": 3600,
+      "cushion_atr": 1.19,
+      "r_for_1atr": 3271,
+      "note": "인수권 거래 당시에는 알 수 없던 확정발행가를 사후 적용한 결과값 — H1 의사결정 신호에 사용 금지"
      }
     ],
     "end_check": {
@@ -10056,8 +11158,30 @@
      "status": "ok",
      "text": "공시·KRX 일치"
     },
-    "final": null,
-    "gap_shift": null,
+    "final": {
+     "i1": 20600,
+     "i2": 17787,
+     "i_hat": 17787,
+     "d": 0.25,
+     "vwap": 23715,
+     "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+     "close_base": 26900,
+     "base_date": "2026-08-04",
+     "window": [
+      "2026-07-29",
+      "2026-07-30",
+      "2026-07-31",
+      "2026-08-03",
+      "2026-08-04"
+     ],
+     "fix_date": "2026-08-10",
+     "projected": true,
+     "floor": null,
+     "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
+    },
+    "decision_asof": "2026-08-04",
+    "price_type": "종가",
+    "gap_shift": -13.3,
     "days": [
      {
       "key": "rights_end",
@@ -10086,7 +11210,14 @@
     "n": 20,
     "value_days": 9.1,
     "volume_days": 10.0,
-    "listing_turnover": 0.06
+    "avg_volume": 548458,
+    "listing_turnover": 0.059,
+    "listing_volume_multiple": 0.59,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": "종가"
    }
   },
   {
@@ -10099,7 +11230,13 @@
    "status": "open",
    "first_rcept_dt": "20260929",
    "first_rcept_no": "20260928000391",
-   "schedule": {},
+   "schedule": {
+    "payment_date": "2026-10-30",
+    "listing_date": "2026-11-16",
+    "issue_price": 2273,
+    "issue_kind": "예정",
+    "issue_rcept_dt": "20260928"
+   },
    "schedule_warnings": [],
    "history": [
     {
@@ -10107,9 +11244,16 @@
      "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
      "rcept_dt": "20260929",
      "kind": "piic",
-     "schedule": {},
+     "schedule": {
+      "payment_date": "2026-10-30",
+      "listing_date": "2026-11-16",
+      "issue_price": 2273
+     },
      "warnings": [
-      "원문 조회 실패: DART doc: <?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><result><status>014</status><message>파일이 존재하지 않습니다.</message></result>"
+      "record_date 못 찾음",
+      "subs_start 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
      ]
     }
    ],
@@ -10183,6 +11327,213 @@
     },
     "new_shares": 4000000,
     "dilution_ratio": 0.1897
+   }
+  },
+  {
+   "case_id": 76,
+   "corp_name": "광진실업",
+   "stock_code": "026910",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260929",
+   "first_rcept_no": "20260929000377",
+   "schedule": {
+    "subs_start": "2026-09-14",
+    "subs_end": "2026-09-14",
+    "payment_date": "2026-10-30",
+    "listing_date": "2026-11-18",
+    "issue_price": 2995,
+    "issue_kind": "확정",
+    "issue_rcept_dt": "20260929"
+   },
+   "schedule_warnings": [],
+   "history": [
+    {
+     "rcept_no": "20260929000377",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "payment_date": "2026-11-13",
+      "listing_date": "2026-12-02",
+      "issue_price": 4015
+     },
+     "warnings": [
+      "record_date 못 찾음",
+      "subs_start 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    },
+    {
+     "rcept_no": "20260929000392",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "subs_start": "2026-09-14",
+      "subs_end": "2026-09-14",
+      "payment_date": "2026-10-30",
+      "listing_date": "2026-11-18",
+      "issue_price": 2995
+     },
+     "warnings": [
+      "record_date 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    }
+   ],
+   "summary": {
+    "total_amount": 5000003965,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 1245331,
+    "dilution_ratio": 0.1571
+   }
+  },
+  {
+   "case_id": 77,
+   "corp_name": "한주에이알티",
+   "stock_code": "058450",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260929",
+   "first_rcept_no": "20260929000431",
+   "schedule": {
+    "payment_date": "2026-11-30",
+    "listing_date": "2026-12-18",
+    "issue_price": 3490,
+    "issue_kind": "예정",
+    "issue_rcept_dt": "20260929"
+   },
+   "schedule_warnings": [],
+   "history": [
+    {
+     "rcept_no": "20260929000431",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "payment_date": "2026-11-30",
+      "listing_date": "2026-12-18",
+      "issue_price": 3490
+     },
+     "warnings": [
+      "record_date 못 찾음",
+      "subs_start 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    }
+   ],
+   "summary": {
+    "total_amount": 1999996850,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 573065,
+    "dilution_ratio": 0.1143
+   }
+  },
+  {
+   "case_id": 78,
+   "corp_name": "MSDI",
+   "stock_code": "123010",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260929",
+   "first_rcept_no": "20260929000507",
+   "schedule": {
+    "subs_start": "2026-09-22",
+    "subs_end": "2026-09-22",
+    "payment_date": "2026-10-29",
+    "listing_date": "2026-11-17",
+    "issue_price": 2919,
+    "issue_kind": "확정",
+    "issue_rcept_dt": "20260929"
+   },
+   "schedule_warnings": [],
+   "history": [
+    {
+     "rcept_no": "20260929000507",
+     "report_nm": "주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "subs_start": "2026-09-22",
+      "subs_end": "2026-09-22",
+      "payment_date": "2026-10-29",
+      "listing_date": "2026-11-17",
+      "issue_price": 2919
+     },
+     "warnings": [
+      "record_date 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    }
+   ],
+   "summary": {
+    "total_amount": 1999999554,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 685166,
+    "dilution_ratio": 0.0339
+   }
+  },
+  {
+   "case_id": 79,
+   "corp_name": "리튬포어스",
+   "stock_code": "073570",
+   "market": "코스닥",
+   "ic_mthn": "제3자배정증자",
+   "is_rights": false,
+   "status": "open",
+   "first_rcept_dt": "20260929",
+   "first_rcept_no": "20260929000646",
+   "schedule": {
+    "payment_date": "2026-12-23",
+    "listing_date": "2027-01-25",
+    "issue_price": 1915,
+    "issue_kind": "예정",
+    "issue_rcept_dt": "20260929"
+   },
+   "schedule_warnings": [],
+   "history": [
+    {
+     "rcept_no": "20260929000646",
+     "report_nm": "주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "payment_date": "2026-12-23",
+      "listing_date": "2027-01-25",
+      "issue_price": 1915
+     },
+     "warnings": [
+      "record_date 못 찾음",
+      "subs_start 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    }
+   ],
+   "summary": {
+    "total_amount": 1100002810,
+    "purpose_pct": {
+     "운영": 100.0
+    },
+    "new_shares": 574414,
+    "dilution_ratio": 0.0477
    }
   },
   {
@@ -10637,11 +11988,11 @@
    "schedule": {
     "subs_start": "2026-09-17",
     "subs_end": "2026-09-17",
-    "payment_date": "2026-10-08",
-    "listing_date": "2026-10-30",
+    "payment_date": "2026-10-12",
+    "listing_date": "2026-11-06",
     "issue_price": 3430,
     "issue_kind": "확정",
-    "issue_rcept_dt": "20260923"
+    "issue_rcept_dt": "20260929"
    },
    "schedule_warnings": [],
    "history": [
@@ -10661,6 +12012,25 @@
       "record_date 못 찾음",
       "rights_start 못 찾음",
       "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    },
+    {
+     "rcept_no": "20260929000309",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "subs_start": "2026-09-17",
+      "subs_end": "2026-09-17",
+      "payment_date": "2026-10-12",
+      "listing_date": "2026-11-06",
+      "issue_price": 3430
+     },
+     "warnings": [
+      "record_date 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전",
+      "정정표와 본문 불일치 — 원문 확인: subs_start 본문 2026-09-17 / 정정후 2026-10-06; subs_end 본문 2026-09-17 / 정정후 2026-10-06; issue_price 본문 3430 / 정정후 5"
      ]
     }
    ],
@@ -11669,7 +13039,7 @@
     "listing_date": "2026-10-23",
     "issue_price": 527,
     "issue_kind": "확정",
-    "issue_rcept_dt": "20260928"
+    "issue_rcept_dt": "20260929"
    },
    "schedule_warnings": [],
    "history": [
@@ -11799,6 +13169,24 @@
       "rights_start 못 찾음",
       "미검증 파서: 실제 공시 원문으로 정확도 확인 전",
       "정정표와 본문 불일치 — 원문 확인: issue_price 본문 527 / 정정후 257"
+     ]
+    },
+    {
+     "rcept_no": "20260929000323",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "subs_start": "2026-09-21",
+      "subs_end": "2026-09-21",
+      "payment_date": "2026-10-06",
+      "listing_date": "2026-10-23",
+      "issue_price": 527
+     },
+     "warnings": [
+      "record_date 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
      ]
     }
    ],
@@ -13184,11 +14572,11 @@
    "schedule": {
     "subs_start": "2026-09-18",
     "subs_end": "2026-09-18",
-    "payment_date": "2026-09-30",
-    "listing_date": "2026-10-23",
+    "payment_date": "2026-10-12",
+    "listing_date": "2026-11-02",
     "issue_price": 4719,
     "issue_kind": "확정",
-    "issue_rcept_dt": "20260923"
+    "issue_rcept_dt": "20260929"
    },
    "schedule_warnings": [],
    "history": [
@@ -13652,6 +15040,59 @@
       "미검증 파서: 실제 공시 원문으로 정확도 확인 전",
       "정정표와 본문 불일치 — 원문 확인: issue_price 본문 4719 / 정정후 105954"
      ]
+    },
+    {
+     "rcept_no": "20260929000203",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "payment_date": "2026-10-29",
+      "listing_date": "2026-11-19",
+      "issue_price": 2244
+     },
+     "warnings": [
+      "record_date 못 찾음",
+      "subs_start 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    },
+    {
+     "rcept_no": "20260929000435",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "subs_start": "2026-09-18",
+      "subs_end": "2026-09-18",
+      "payment_date": "2026-10-12",
+      "listing_date": "2026-11-02",
+      "issue_price": 4719
+     },
+     "warnings": [
+      "record_date 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
+    },
+    {
+     "rcept_no": "20260929000442",
+     "report_nm": "[기재정정]주요사항보고서(유상증자결정)",
+     "rcept_dt": "20260929",
+     "kind": "piic",
+     "schedule": {
+      "subs_start": "2026-09-18",
+      "subs_end": "2026-09-18",
+      "payment_date": "2026-10-12",
+      "listing_date": "2026-11-02",
+      "issue_price": 4719
+     },
+     "warnings": [
+      "record_date 못 찾음",
+      "rights_start 못 찾음",
+      "미검증 파서: 실제 공시 원문으로 정확도 확인 전"
+     ]
     }
    ],
    "summary": {
@@ -13828,6 +15269,7 @@
     ],
     "rank": 2,
     "gap": -9.7,
+    "locks": [],
     "paper": []
    },
    "summary": {
@@ -13855,9 +15297,9 @@
      },
      {
       "key": "major",
-      "label": "최대주주 전량 이상 청약",
+      "label": "최대주주 최초 배정권리 전량 이상 청약",
       "status": "unknown",
-      "text": "최대주주 청약 GPT 확인 필요"
+      "text": "최초 배정권리 전량 여부 GPT 확인 필요"
      },
      {
       "key": "op",
@@ -13958,123 +15400,153 @@
    "stock_series": [
     {
      "d": "2026-08-14",
-     "close": 4330
+     "close": 4330,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-18",
-     "close": 4085
+     "close": 4085,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-19",
-     "close": 3815
+     "close": 3815,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-20",
-     "close": 3700
+     "close": 3700,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-21",
-     "close": 3350
+     "close": 3350,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-24",
-     "close": 3415
+     "close": 3415,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-25",
-     "close": 3490
+     "close": 3490,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-26",
-     "close": 3850
+     "close": 3850,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-27",
-     "close": 3980
+     "close": 3980,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-28",
-     "close": 4230
+     "close": 4230,
+     "price_type": "종가"
     },
     {
      "d": "2026-08-31",
-     "close": 4950
+     "close": 4950,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-01",
-     "close": 4930
+     "close": 4930,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-02",
-     "close": 4760
+     "close": 4760,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-03",
-     "close": 5100
+     "close": 5100,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-04",
-     "close": 5850
+     "close": 5850,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-07",
-     "close": 6470
+     "close": 6470,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-08",
-     "close": 5710
+     "close": 5710,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-09",
-     "close": 7420
+     "close": 7420,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-10",
-     "close": 8300
+     "close": 8300,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-11",
-     "close": 8290
+     "close": 8290,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-14",
-     "close": 8320
+     "close": 8320,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-15",
-     "close": 7800
+     "close": 7800,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-16",
-     "close": 6740
+     "close": 6740,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-17",
-     "close": 6480
+     "close": 6480,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-18",
-     "close": 6530
+     "close": 6530,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-21",
-     "close": 6400
+     "close": 6400,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-22",
-     "close": 6630
+     "close": 6630,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-23",
-     "close": 6630
+     "close": 6630,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-28",
-     "close": 6870
+     "close": 6870,
+     "price_type": "종가"
     },
     {
      "d": "2026-09-29",
-     "close": 7370
+     "close": 7370,
+     "price_type": "종가"
     }
    ],
    "facts": {
@@ -14192,8 +15664,8 @@
        "date": "2026-09-29",
        "price": 7370,
        "ret": 97.3,
-       "idx_ret": 10.0,
-       "excess": 87.3
+       "idx_ret": 11.1,
+       "excess": 86.2
       }
      ],
      "issue_note": null,
@@ -14225,8 +15697,8 @@
     "table": [],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
-     "days": 3.1,
-     "avg_volume": 2701931,
+     "days": 8.8,
+     "avg_volume": 965331,
      "new_shares": 8500000,
      "n": 20,
      "red": false
@@ -14240,11 +15712,41 @@
     "atr": 545,
     "atr_n": 10,
     "atr_pct": 11.43,
-    "confirmed": true,
+    "confirmed": false,
     "rows": [
+     {
+      "label": "① 1차가 기준",
+      "kind": "1차",
+      "issue": 4050,
+      "p_minus_i": 720,
+      "gap": -9.7,
+      "cost": 4700,
+      "cost_disc": 1.5,
+      "cushion": 70,
+      "cushion_atr": 0.13,
+      "r_for_1atr": 175
+     },
+     {
+      "label": "② 현재 시점 예상 최종가 기준",
+      "kind": "예상 최종",
+      "issue": 2665,
+      "p_minus_i": 2105,
+      "gap": -69.1,
+      "cost": 3315,
+      "cost_disc": 30.5,
+      "cushion": 1455,
+      "cushion_atr": 2.67,
+      "r_for_1atr": 1560
+     },
      {
       "label": "③ 실제 확정가 기준",
       "kind": "확정",
+      "issue": null,
+      "note": "확정 전 (확정발행가 산정일 2026-07-31)"
+     },
+     {
+      "label": "사후 확정가 기준 (결과 · 진입신호 아님)",
+      "kind": "사후 확정",
       "issue": 3085,
       "p_minus_i": 1685,
       "gap": -61.4,
@@ -14252,7 +15754,8 @@
       "cost_disc": 21.7,
       "cushion": 1035,
       "cushion_atr": 1.9,
-      "r_for_1atr": 1140
+      "r_for_1atr": 1140,
+      "note": "인수권 거래 당시에는 알 수 없던 확정발행가를 사후 적용한 결과값 — H1 의사결정 신호에 사용 금지"
      }
     ],
     "end_check": {
@@ -14263,8 +15766,30 @@
      "status": "ok",
      "text": "공시·KRX 일치"
     },
-    "final": null,
-    "gap_shift": null,
+    "final": {
+     "i1": 4050,
+     "i2": 2665,
+     "i_hat": 2665,
+     "d": 0.4,
+     "vwap": 4441,
+     "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+     "close_base": 4770,
+     "base_date": "2026-07-27",
+     "window": [
+      "2026-07-21",
+      "2026-07-22",
+      "2026-07-23",
+      "2026-07-24",
+      "2026-07-27"
+     ],
+     "fix_date": "2026-07-31",
+     "projected": true,
+     "floor": null,
+     "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"
+    },
+    "decision_asof": "2026-07-27",
+    "price_type": "종가",
+    "gap_shift": -59.4,
     "days": [
      {
       "key": "rights_end",
@@ -14293,7 +15818,14 @@
     "n": 20,
     "value_days": 10.3,
     "volume_days": 8.8,
-    "listing_turnover": 0.16
+    "avg_volume": 965331,
+    "listing_turnover": 0.164,
+    "listing_volume_multiple": 1.45,
+    "listing_vwap": null,
+    "listing_close_vs_vwap": null,
+    "listing_close_location": null,
+    "listing_low_recovery": null,
+    "listing_price_type": "종가"
    }
   }
  ],
@@ -14350,11 +15882,11 @@
    "win_rate": 100.0,
    "avg": 97.3,
    "worst": 97.3,
-   "avg_excess": 87.3
+   "avg_excess": 86.2
   }
  ],
  "strategy_rules": {
-  "version": 4,
+  "version": 5,
   "strategies": {
    "s1": {
     "medal": "🥇",
@@ -14450,6 +15982,18 @@
   }
  ],
  "notifications": [
+  {
+   "seq": 48,
+   "topic": "일정 변경 아이에이",
+   "text": "[유증수집 #48] 일정 변경 아이에이\n신주배정기준일: 2026-10-01 → 2026-10-29\n권리락일(추정): 2026-09-30 → 2026-10-28\n인수권 상장 시작: 2026-10-23 → 2026-11-18\n인수권 상장 종료: 2026-10-29 → 2026-11-24\n확정발행가 산정일: 2026-11-04 → 2026-12-07\n청약 시작: 2026-11-09 → 2026-12-10\n청약 종료: 2026-11-10 → 2026-12-11\n납입일: 2026-11-12 → 2026-12-15\n신주 상장일: 2026-11-25 → 2026-12-29",
+   "sent_at": "2026-09-30T01:12:40+09:00"
+  },
+  {
+   "seq": 47,
+   "topic": "일정 변경 뷰노",
+   "text": "[유증수집 #47] 일정 변경 뷰노\n신주배정기준일: 2026-10-02 → 2026-10-20\n권리락일(추정): 2026-10-01 → 2026-10-19\n인수권 상장 시작: 2026-10-23 → 2026-11-06\n인수권 상장 종료: 2026-10-29 → 2026-11-12\n확정발행가 산정일: 2026-11-04 → 2026-11-26\n청약 시작: 2026-11-09 → 2026-12-01\n청약 종료: 2026-11-10 → 2026-12-02\n납입일: 2026-11-17 → 2026-12-10\n신주 상장일: 2026-11-30 → 2026-12-23",
+   "sent_at": "2026-09-30T01:12:32+09:00"
+  },
   {
    "seq": 46,
    "topic": "일정 변경 큐리언트",
