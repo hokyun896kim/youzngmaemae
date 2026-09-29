@@ -266,9 +266,7 @@ def card(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, summary: dict, op_
     cond = conditions(summary.get("dilution_ratio"), debt, op_income, gap, verdict)
     locks = []
     if verdict and verdict.endswith("_q"):
-        for key in ("s2", "s3"):
-            if cond["ok"].get(key):
-                cond["ok"][key] = False
+        # 연구/백테스트 표본은 기존처럼 남긴다. 실전 행동만 UI에서 잠근다.
         locks.append("unconfirmed_gate")
     items = []
     rs, re_ = sch.get("rights_start"), sch.get("rights_end") or sch.get("rights_start")
@@ -326,7 +324,7 @@ def _insert(conn, case_id: int, key: str, decided_on: str, snap: dict) -> None:
 
 
 def record_if_due(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, live: dict, op_income: int | None,
-                  backfilled: bool) -> int:
+                  backfilled: bool, today: date | None = None) -> int:
     """전략별 스냅샷 (한 번만, 불변). s1·s3 = 인수권 마지막 날, s2 = 신주 상장일 종가."""
     from .paper import rights_last_day, rights_rows
     n = 0
@@ -347,12 +345,13 @@ def record_if_due(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, live: dic
                     "market": c["corp_cls"], "backfilled": backfilled})
                 n += 1
     listing = sch.get("listing_date")
+    asof = today or datetime.now(db.KST).date()
     old_s2 = conn.execute("SELECT * FROM strategy_trades WHERE case_id=? AND strategy='s2'",
                           (c["case_id"],)).fetchone()
     if premature_s2_trade(old_s2):
         conn.execute("DELETE FROM strategy_trades WHERE case_id=? AND strategy='s2'", (c["case_id"],))
         conn.commit()
-    if listing and not _has(conn, c["case_id"], "s2") and regular_close_final(listing, today):
+    if listing and not _has(conn, c["case_id"], "s2") and regular_close_final(listing, asof):
         # 판정 = 인수권 마지막 날 확정 스냅샷(있으면), 없으면 현재 판정
         pt = conn.execute("SELECT verdict FROM paper_trades WHERE case_id=?", (c["case_id"],)).fetchone()
         verdict = pt[0] if pt else live.get("verdict")
