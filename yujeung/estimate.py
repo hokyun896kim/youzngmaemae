@@ -238,7 +238,8 @@ def _a_row(label: str, kind: str, p: int, i: int, r: int | None, atr: float | No
 
 
 def a_margin(sch: dict, issue: dict, p: int | None, p_date: str | None, r: int | None, r_date: str | None,
-             atr_pct: float | None, today: date, end_check: dict | None = None) -> dict | None:
+             atr_pct: float | None, today: date, end_check: dict | None = None,
+             current_sch: dict | None = None, realized_issue: dict | None = None) -> dict | None:
     """발행가 단계는 섞지 않는다: 확정이면 한 줄, 아니면 1차(공시 또는 추정) + 2차 시나리오를 따로."""
     if not p or not sch.get("rights_start"):
         return None
@@ -264,6 +265,10 @@ def a_margin(sch: dict, issue: dict, p: int | None, p_date: str | None, r: int |
                      "note": f"확정 전 (확정발행가 산정일 {sch.get('price_fix_date') or '미확인'})"})
     elif issue.get("value"):
         rows.append(_a_row("③ 실제 확정가 기준", "확정", p, issue["value"], r, atr))
+    if realized_issue and realized_issue.get("value"):
+        rr = _a_row("사후 확정가 기준 (결과 · 진입신호 아님)", "사후 확정", p, realized_issue["value"], r, atr)
+        rr["note"] = "인수권 거래 당시에는 알 수 없던 확정발행가를 사후 적용한 결과값 — H1 의사결정 신호에 사용 금지"
+        rows.append(rr)
     g1 = next((x.get("gap") for x in rows if x["kind"] == "1차"), None)
     g2 = next((x.get("gap") for x in rows if x["kind"] == "예상 최종"), None)
     sp = issue.get("second") or {}
@@ -272,27 +277,41 @@ def a_margin(sch: dict, issue: dict, p: int | None, p_date: str | None, r: int |
         "d": issue.get("d"), "vwap": sp.get("vwap"), "vwap_src": sp.get("vwap_src"), "close_base": sp.get("close_base"),
         "base_date": sp.get("base_date"), "window": sp.get("window"), "fix_date": sch.get("price_fix_date"),
         "projected": sp.get("projected"), "floor": None, "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"}
+    cur = current_sch or sch
     return {"p": p, "p_date": p_date, "r": r, "r_date": r_date, "atr": atr, "atr_n": A_ATR_N, "atr_pct": atr_pct,
             "confirmed": confirmed, "rows": rows, "end_check": end_check, "final": final,
+            "decision_asof": p_date, "price_type": "종가" if p_date and p_date < today.isoformat() else "동일일 스냅샷",
             "gap_shift": round(g2 - g1, 1) if g1 is not None and g2 is not None else None,
-            "days": [{"key": k, "label": lab, "date": sch.get(k), "left": trading_days_left(today, sch.get(k))}
+            "days": [{"key": k, "label": lab, "date": cur.get(k), "left": trading_days_left(today, cur.get(k))}
                      for k, lab in A_DAY_KEYS]}
 
 
 def supply(new_shares: int | None, dilution: float | None, p: int | None, daily: list[tuple[int, int]],
-           listing_volume: int | None = None) -> dict | None:
-    """공급충격: 희석(신주 ÷ 증자 전 주식)과 '시장이 실제로 소화해야 하는 물량'을 구분.
-    daily = [(종가, 거래량)] 최근순 아님(오름차순). 거래대금은 종가×거래량 근사. 유통주식수는 수집하지 않음 → 미확인."""
+           listing_bar: dict | None = None, listing_price_type: str | None = None) -> dict | None:
+    """공급충격: 기준 평균은 반드시 상장 전 D-20~D-1. listing_bar는 D0 실측(장중이면 명시)용."""
     if not new_shares:
         return None
     d = [(c, v) for c, v in daily[-AVG_VOLUME_DAYS:] if c and v]
     avg_vol = sum(v for _, v in d) / len(d) if d else None
     avg_val = sum(c * v for c, v in d) / len(d) if d else None
+    lb = listing_bar or {}
+    lv = lb.get("volume")
+    lval = lb.get("value")
+    lvwap = round(lval / lv) if lval and lv else None
+    lclose, llow, lhigh = lb.get("close"), lb.get("low"), lb.get("high")
     return {"new_shares": new_shares, "dilution": round(dilution * 100, 1) if dilution is not None else None,
             "float_ratio": None, "n": len(d),
             "value_days": round(new_shares * p / avg_val, 1) if p and avg_val else None,
             "volume_days": round(new_shares / avg_vol, 1) if avg_vol else None,
-            "listing_turnover": round(listing_volume / new_shares, 2) if listing_volume else None}
+            "avg_volume": round(avg_vol) if avg_vol else None,
+            "listing_turnover": round(lv / new_shares, 3) if lv else None,
+            "listing_volume_multiple": round(lv / avg_vol, 2) if lv and avg_vol else None,
+            "listing_vwap": lvwap,
+            "listing_close_vs_vwap": round((lclose / lvwap - 1) * 100, 1) if lclose and lvwap else None,
+            "listing_close_location": round((lclose - llow) / (lhigh - llow) * 100, 1)
+                                      if lclose and llow is not None and lhigh is not None and lhigh > llow else None,
+            "listing_low_recovery": round((lclose / llow - 1) * 100, 1) if lclose and llow else None,
+            "listing_price_type": listing_price_type}
 
 
 def _next_quarter(op_period: str | None) -> str:
