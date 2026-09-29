@@ -19,6 +19,8 @@ from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount,
                               extract_rights_period, find_dates, issue_kind, parse_documents, validate_schedule)
 from .verdict import decide, gate1, reason_line
 
+ESTK_FACTS_VERSION = 2  # 최대주주 지분율을 청약률로 오인하던 v1 폐기
+
 SCHEDULE_LABELS = {
     "record_date": "신주배정기준일", "ex_rights_date": "권리락일(추정)", "rights_start": "인수권 상장 시작",
     "rights_end": "인수권 상장 종료", "price_fix_date": "확정발행가 산정일", "subs_start": "청약 시작",
@@ -246,6 +248,7 @@ def step_estk(dart: DartClient, conn, today: date, alerts: bool = True, discount
             if mh:
                 sch.extras["facts"]["major_holder"] = mh
             sch.extras["major_holder_checked"] = True
+            sch.extras["major_holder_parser"] = ESTK_FACTS_VERSION
             if need_rights:
                 rec = sch.record_date or (before or {}).get("record_date")
                 subs = sch.subs_start or (before or {}).get("subs_start")
@@ -275,7 +278,7 @@ def recheck_estk_discount(dart: DartClient, conn) -> int:
         ex = json.loads(r["extras_json"] or "{}")
         facts = ex.setdefault("facts", {})
         need_discount = not ex.get("discount_checked") and not facts.get("discount")
-        need_major = not ex.get("major_holder_checked")
+        need_major = (ex.get("major_holder_parser") or 0) < ESTK_FACTS_VERSION
         if not need_discount and not need_major:
             continue
         try:
@@ -293,7 +296,10 @@ def recheck_estk_discount(dart: DartClient, conn) -> int:
             mh = next((v for v in (extract_major_holder(t) for t in texts) if v), None)
             if mh:
                 facts["major_holder"] = mh
+            else:
+                facts.pop("major_holder", None)
             ex["major_holder_checked"] = True
+            ex["major_holder_parser"] = ESTK_FACTS_VERSION
             changed = True
         if changed:
             conn.execute("UPDATE schedule_versions SET extras_json=? WHERE rcept_no=?", (db.dumps(ex), r["rcept_no"]))
