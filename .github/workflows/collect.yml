@@ -19,6 +19,7 @@ on:
       - 'index.html'
       - 'prompts.js'
       - '.github/workflows/collect.yml'
+      - '.force-backfill'
   workflow_dispatch:
     inputs:
       command:
@@ -81,7 +82,11 @@ jobs:
         run: |
           CMD="${{ github.event.inputs.command || 'daily' }}"
           if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            # 이벤트 payload의 변경 파일을 사용한다. shallow checkout에서도 파서 변경을 놓치지 않는다.
+            # 필요할 때 .force-backfill 파일로 진행 케이스 전체 재파싱을 명시적으로 요청할 수 있다.
+            if [ -f .force-backfill ]; then
+              CMD="backfill-cases"
+            fi
+            # 이벤트 payload의 변경 파일도 보조 신호로 사용한다.
             PARSER_CHANGED=$(python - <<'PY'
           import json, os
           e=json.load(open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8"))
