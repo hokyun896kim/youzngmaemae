@@ -10,7 +10,7 @@ from . import db, estimate, paper, strategy
 from .backtest import load_card_scenarios
 from .calendar_kr import KRX_HOLIDAYS, prev_business_day
 from .config import Config
-from .pipeline import SCHEDULE_LABELS, checked_schedule, latest_facts, live_verdict
+from .pipeline import SCHEDULE_LABELS, checked_schedule, latest_facts, latest_schedule, live_verdict
 from .prices import compute_gap
 from .verdict import VERDICTS, unconfirmed
 
@@ -55,7 +55,8 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         series.append({"d": r["bas_dd"], "name": r["isu_nm"], "rights": r["close"], "stock": stock,
                        "issue": r["issue_price"], "fair": g.fair if g else None, "gap": g.gap_pct if g else None,
                        "cost": g.effective_cost if g else None, "disc": g.discount_pct if g else None})
-    stock_series = [{"d": r["bas_dd"], "close": r["close"]} for r in conn.execute(
+    stock_series = [{"d": r["bas_dd"], "close": r["close"], "price_type": strategy.price_type(r["bas_dd"], today)}
+                    for r in conn.execute(
         "SELECT bas_dd, close FROM stock_daily WHERE code=? ORDER BY bas_dd DESC LIMIT 30", (c["stock_code"],))][::-1]
     f = conn.execute("SELECT * FROM case_facts WHERE case_id=?", (c["case_id"],)).fetchone()
 
@@ -74,7 +75,8 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
     confirmed = sch.get("issue_kind") == "확정"   # 확정발행가 라벨 또는 확정 산정일 이후 공시
     quick = estimate.quick(
         v, live["gate1"], live["gap"], sch, latest_facts(conn, c["case_id"]),
-        [(r["bas_dd"], r["close"]) for r in daily], [r["volume"] for r in daily],
+        [(r["bas_dd"], r["close"]) for r in daily],
+        [r["volume"] for r in daily if not sch.get("listing_date") or r["bas_dd"] < sch["listing_date"]],
         next((x["rights"] for x in reversed(series) if x["d"] <= today.isoformat()), None), live["summary"].get("new_shares"),
         live["summary"].get("dilution_ratio"), f["op_period"] if f else None, today, confirmed,
         -cfg.gap_alert_pct, cfg.gap_alert_pct, load_card_scenarios(), live.get("disc"), [dict(r) for r in daily])
@@ -103,15 +105,35 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         sch_warn = [*sch_warn, f"인수권 매매종료일 불일치: 공시 {end_check['disclosed']} vs KRX 상장폐지일 "
                                f"{end_check['delist']} 전 영업일 {end_check['krx_last']} — 원문·KRX 확인"]
         base["schedule_warnings"] = sch_warn
-    a_margin = estimate.a_margin(sch, quick["issue"], p_now, p_date, last_r["rights"] if last_r else None,
-                                 last_r["d"] if last_r else None, ind.get("atr_pct"), today, end_check)
+    # A 의사결정값은 반드시 P/R 날짜 당시 공개돼 있던 공시와 시세만 사용한다.
+    # 최신 확정발행가를 과거 인수권 마지막 날에 소급하면 룩어헤드 바이어스가 생긴다.
+    decision_sch = latest_schedule(conn, c["case_id"], as_of=p_date) if p_date else sch
+    decision_facts = latest_facts(conn, c["case_id"], as_of=p_date) if p_date else latest_facts(conn, c["case_id"])
+    daily_asof = [r for r in daily if not p_date or r["bas_dd"] <= p_date]
+    decision_r = live["summary"].get("dilution_ratio") or decision_sch.get("alloc_ratio")
+    decision_confirmed = decision_sch.get("issue_kind") == "확정"
+    decision_issue = estimate.issue_estimate(
+        decision_sch, decision_facts.get("discount"), decision_r,
+        [(r["bas_dd"], r["close"]) for r in daily_asof],
+        date.fromisoformat(p_date) if p_date else today, decision_confirmed, [dict(r) for r in daily_asof]
+    )
+    realized_issue = quick["issue"] if quick["issue"].get("kind") == "확정" and not decision_confirmed else None
+    a_margin = estimate.a_margin(
+        decision_sch, decision_issue, p_now, p_date, last_r["rights"] if last_r else None,
+        last_r["d"] if last_r else None, ind.get("atr_pct"), today, end_check,
+        current_sch=sch, realized_issue=realized_issue
+    )
     lst = sch.get("listing_date")
-    lst_vol = next((r["volume"] for r in daily if r["bas_dd"] == lst), None) if lst else None
-    supply = estimate.supply(live["summary"].get("new_shares"), live["summary"].get("dilution_ratio"), p_now,
-                             [(r["close"], r["volume"]) for r in daily if not lst or r["bas_dd"] < lst], lst_vol)
-    trade_v = conn.execute("SELECT verdict FROM paper_trades WHERE case_id=?", (c["case_id"],)).fetchone()
+    lst_bar = next((dict(r) for r in daily if r["bas_dd"] == lst), None) if lst else None
+    supply = estimate.supply(
+        live["summary"].get("new_shares"), live["summary"].get("dilution_ratio"), p_now,
+        [(r["close"], r["volume"]) for r in daily if not lst or r["bas_dd"] < lst],
+        listing_bar=lst_bar, listing_price_type=(strategy.price_type(lst, today) if lst_bar else None)
+    )
+    # 전략 행동카드는 과거 불변 판정 스냅샷이 아니라 현재 관문 상태로 판단한다.
+    # 과거 판정은 성과 측정용으로만 보존한다.
     strat = strategy.card(conn, c, sch, live["summary"], f["op_income"] if f else None, live["gap"], today,
-                          trade_v[0] if trade_v else live["verdict"])
+                          live["verdict"])
     strat["paper"] = [{"strategy": t["strategy"], "decided_on": t["decided_on"], "version": t["strategy_version"],
                        "snapshot": json.loads(t["snapshot_json"]), "eval": strategy.evaluate(conn, c, t, sch, today)}
                       for t in conn.execute("SELECT * FROM strategy_trades WHERE case_id=? ORDER BY strategy",

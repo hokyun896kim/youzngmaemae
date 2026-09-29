@@ -41,14 +41,17 @@ def save_schedule(conn: sqlite3.Connection, rcept_no: str, case_id: int, s: Sche
 _DATE_FIELDS = ("record_date", "rights_start", "subs_start", "payment_date", "listing_date")
 
 
-def latest_schedule(conn: sqlite3.Connection, case_id: int, exclude: str | None = None) -> dict:
-    """케이스의 최신 일정.
+def latest_schedule(conn: sqlite3.Connection, case_id: int, exclude: str | None = None,
+                    as_of: str | None = None) -> dict:
+    """케이스의 최신 일정. as_of(YYYY-MM-DD)를 주면 그날까지 공시된 정보만 사용한다.
     정정공시가 뜨면 옛 일정은 통째로 버린다: 가장 최근 유상증자결정 원문(날짜가 하나라도 잡힌 것) 하나가 기준이고,
     그보다 뒤에 나온 증권신고서 값만 위에 덮는다. (옛 공시 값이 빈칸을 메우지 않게)"""
+    asof8 = (as_of or "").replace("-", "")
     rows = conn.execute(
-        "SELECT s.*, IFNULL(d.kind, 'piic') AS kind FROM schedule_versions s "
-        "LEFT JOIN disclosures d USING (rcept_no) WHERE s.case_id=? AND s.rcept_no != ? ORDER BY s.rcept_no",
-        (case_id, exclude or "")).fetchall()
+        "SELECT s.*, IFNULL(d.kind, 'piic') AS kind, d.rcept_dt AS disclosure_dt FROM schedule_versions s "
+        "LEFT JOIN disclosures d USING (rcept_no) WHERE s.case_id=? AND s.rcept_no != ? "
+        "AND (?='' OR IFNULL(d.rcept_dt, substr(s.rcept_no,1,8))<=?) ORDER BY s.rcept_no",
+        (case_id, exclude or "", asof8, asof8)).fetchall()
     # 기준 공시: 날짜가 하나라도 잡혔거나, 일정이 '추후결정'으로 바뀐 공시 (실측 경남제약 9/18 — 전부 미정이면
     # 이전 정정의 날짜로 되돌아가면 안 된다)
     piic = [r for r in rows if r["kind"] == "piic" and (
@@ -87,10 +90,14 @@ def latest_schedule(conn: sqlite3.Connection, case_id: int, exclude: str | None 
     return merged
 
 
-def latest_facts(conn: sqlite3.Connection, case_id: int) -> dict:
-    """원문·증권신고서에서 뽑은 판정 재료(최대주주 청약, 인수방식) — 최신 공시 우선."""
+def latest_facts(conn: sqlite3.Connection, case_id: int, as_of: str | None = None) -> dict:
+    """원문·증권신고서 판정 재료. as_of가 있으면 그 날짜까지 공개된 사실만 사용한다."""
     facts: dict = {}
-    for r in conn.execute("SELECT extras_json FROM schedule_versions WHERE case_id=? ORDER BY rcept_no", (case_id,)):
+    asof8 = (as_of or "").replace("-", "")
+    for r in conn.execute(
+        "SELECT s.extras_json FROM schedule_versions s LEFT JOIN disclosures d USING (rcept_no) "
+        "WHERE s.case_id=? AND (?='' OR IFNULL(d.rcept_dt, substr(s.rcept_no,1,8))<=?) ORDER BY s.rcept_no",
+        (case_id, asof8, asof8)):
         f = json.loads(r[0] or "{}").get("facts") or {}
         for k, v in f.items():
             if v or v is False:      # False 도 정보다 — '인수권 상장여부 아니오'(rights_listed) 가 빠지던 문제

@@ -24,13 +24,14 @@ from __future__ import annotations
 
 import json
 import sqlite3
-from datetime import date
+from datetime import date, datetime, time
 from statistics import median
 
 from . import db
 from .calendar_kr import shift_business_days
 
-STRATEGY_VERSION = 4   # 4: 전략2 판정 조건을 관문1 통과 전체(🟢/🟡 · ? 포함)로 넓힘 (형님 09-27 — v4 판정에서 🟡?→🟢? 로 옮긴 2건이 빠지던 문제)
+STRATEGY_VERSION = 5   # 5: 실전 카드 ? 판정 잠금 + 상장일 15:30 전 장중값을 종가로 확정하지 않음 (09-29)
+#                        4: 전략2 판정 조건을 관문1 통과 전체(🟢/🟡 · ? 포함)로 넓힘 (형님 09-27 — v4 판정에서 🟡?→🟢? 로 옮긴 2건이 빠지던 문제)
 #                        3: 전략2에 '판정 🟡/🟡?' 조건 추가 (형님 B안 — 기출 조건 전체 70건 +0.5% vs 🟡? 14건 +5.0%)
 #                        2: ATR·RSI 를 한 출처(네이버 수정주가)로만 계산, ATR 은 % 로 진입가에 적용
 #                        1: KRX 원주가와 네이버 수정주가가 섞여 ATR 이 부풀었음 (손절선이 음수가 되기도)
@@ -54,6 +55,7 @@ S2_ATR_MULT = 2.0
 S2_RSI_N = 14
 S2_RSI_MAX = 50.0             # 상장일 종가 RSI ≤ 50 → 진입 가능
 S2_SIZE = "평소의 절반"
+MARKET_CLOSE = time(15, 30)
 
 # ---- 전략 3: 적당히 싼 인수권 매수 + 청약 ----
 S3_GAP_LO = -20.0             # 괴리 −20% 초과 (−20% 이하는 기출 '−40~−20%' 구간)
@@ -170,6 +172,34 @@ def indicators(rows: list[dict], upto: str, atr_n: int = S2_ATR_N) -> dict:
             "close": hist[-1]["close"] if hist else None}
 
 
+def regular_close_final(bas_dd: str | None, today: date, now: datetime | None = None) -> bool:
+    """과거일은 확정, 오늘은 KST 15:30 이후만 정규장 종가 확정으로 본다."""
+    if not bas_dd:
+        return False
+    t = today.isoformat()
+    if bas_dd < t:
+        return True
+    if bas_dd > t:
+        return False
+    now = now or datetime.now(db.KST)
+    return now.time().replace(tzinfo=None) >= MARKET_CLOSE
+
+
+def price_type(bas_dd: str | None, today: date) -> str:
+    return "종가" if regular_close_final(bas_dd, today) else "장중값"
+
+
+def premature_s2_trade(row) -> bool:
+    """15:30 전에 저장된 상장일 전략2 스냅샷은 장중값으로 간주한다."""
+    if not row or row["strategy"] != "s2":
+        return False
+    try:
+        created = datetime.fromisoformat(row["created_at"])
+    except (TypeError, ValueError):
+        return False
+    return created.date().isoformat() == row["decided_on"] and created.time().replace(tzinfo=None) < MARKET_CLOSE
+
+
 def stop_price(entry: float | None, atr_pct: float | None) -> int | None:
     """손절선 = 진입가 − ATR × 2 (ATR 은 % → 진입가 기준 원화)."""
     return round(entry * (1 - S2_ATR_MULT * atr_pct / 100)) if entry and atr_pct else None
@@ -234,6 +264,10 @@ def card(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, summary: dict, op_
     t = today.isoformat()
     debt = (summary.get("purpose_pct") or {}).get("채무상환", 0.0)
     cond = conditions(summary.get("dilution_ratio"), debt, op_income, gap, verdict)
+    locks = []
+    if verdict and verdict.endswith("_q"):
+        # 연구/백테스트 표본은 기존처럼 남긴다. 실전 행동만 UI에서 잠근다.
+        locks.append("unconfirmed_gate")
     items = []
     rs, re_ = sch.get("rights_start"), sch.get("rights_end") or sch.get("rights_start")
     listing = sch.get("listing_date")
@@ -252,14 +286,19 @@ def card(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, summary: dict, op_
             it.update(state=_state(t, a, b), window=[a, b], listing=listing, exit_on=b)
             rows = _stock(conn, c["stock_code"]) if c["stock_code"] else []
             on_listing = next((r for r in rows if r["bas_dd"] == listing), None)
+            final = bool(on_listing) and regular_close_final(listing, today)
             ind = indicators(rows, listing if on_listing else t)
-            entry = on_listing["close"] if on_listing else None
-            base_px = entry or ind["close"]
-            it.update(entry=entry, rsi=ind["rsi"], atr_pct=ind["atr_pct"], ind_asof=ind["asof"], ind_src=ind["src"],
+            preview_price = on_listing["close"] if on_listing and not final else None
+            entry = on_listing["close"] if final else None
+            base_px = entry or preview_price or ind["close"]
+            preview_gate = None if ind["rsi"] is None else ind["rsi"] <= S2_RSI_MAX
+            it.update(entry=entry, preview_price=preview_price, rsi=ind["rsi"], atr_pct=ind["atr_pct"],
+                      ind_asof=ind["asof"], ind_src=ind["src"],
                       atr=round(base_px * ind["atr_pct"] / 100, 1) if base_px and ind["atr_pct"] else None,
-                      confirmed=bool(on_listing), stop=stop_price(base_px, ind["atr_pct"]),
-                      stop_basis="상장일 종가" if on_listing else "최근 종가(미리보기)",
-                      gate=None if ind["rsi"] is None else ind["rsi"] <= S2_RSI_MAX)
+                      confirmed=final, price_type=("종가" if final else "장중 미리보기"),
+                      stop=stop_price(base_px, ind["atr_pct"]),
+                      stop_basis="상장일 종가" if final else "장중값(미리보기)",
+                      gate=preview_gate if final else None, preview_gate=preview_gate)
         else:
             it.update(state="wait", window=[None, None])
         items.append(it)
@@ -270,7 +309,7 @@ def card(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, summary: dict, op_
         ban = cond["bans"]
         items = [] if "dilution" in cond["bans"] else items
     rank = 0 if any(x["state"] == "live" for x in items) else 1 if items else 2 if ban else 3
-    return {"items": items, "bans": cond["bans"], "ban": ban, "rank": rank, "gap": gap}
+    return {"items": items, "bans": cond["bans"], "ban": ban, "rank": rank, "gap": gap, "locks": locks}
 
 
 # ---- 가상 성과 기록 ----
@@ -285,7 +324,7 @@ def _insert(conn, case_id: int, key: str, decided_on: str, snap: dict) -> None:
 
 
 def record_if_due(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, live: dict, op_income: int | None,
-                  backfilled: bool) -> int:
+                  backfilled: bool, today: date | None = None) -> int:
     """전략별 스냅샷 (한 번만, 불변). s1·s3 = 인수권 마지막 날, s2 = 신주 상장일 종가."""
     from .paper import rights_last_day, rights_rows
     n = 0
@@ -306,7 +345,13 @@ def record_if_due(conn: sqlite3.Connection, c: sqlite3.Row, sch: dict, live: dic
                     "market": c["corp_cls"], "backfilled": backfilled})
                 n += 1
     listing = sch.get("listing_date")
-    if listing and not _has(conn, c["case_id"], "s2"):
+    asof = today or datetime.now(db.KST).date()
+    old_s2 = conn.execute("SELECT * FROM strategy_trades WHERE case_id=? AND strategy='s2'",
+                          (c["case_id"],)).fetchone()
+    if premature_s2_trade(old_s2):
+        conn.execute("DELETE FROM strategy_trades WHERE case_id=? AND strategy='s2'", (c["case_id"],))
+        conn.commit()
+    if listing and not _has(conn, c["case_id"], "s2") and regular_close_final(listing, asof):
         # 판정 = 인수권 마지막 날 확정 스냅샷(있으면), 없으면 현재 판정
         pt = conn.execute("SELECT verdict FROM paper_trades WHERE case_id=?", (c["case_id"],)).fetchone()
         verdict = pt[0] if pt else live.get("verdict")
