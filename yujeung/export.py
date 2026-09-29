@@ -67,9 +67,13 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         paper_json = {"verdict": trade["verdict"], "decided_on": trade["decided_on"],
                       "logic_version": trade["logic_version"], "snapshot": snap,
                       "eval": paper.evaluate(conn, c, trade, sch, today)}
-    v = trade["verdict"] if trade else live["verdict"]
+    # 화면·30초 결론은 항상 현재 관문/현재 가격 기준의 live 판정을 사용한다.
+    # 과거 확정 판정은 paper 블록에 불변 스냅샷으로 별도 보존한다.
+    v = live["verdict"]
     emoji, name = VERDICTS[v]
-    daily = conn.execute("SELECT bas_dd, close, volume, value FROM stock_daily WHERE code=? AND close IS NOT NULL "
+    snap_v = trade["verdict"] if trade else None
+    snap_emoji, snap_name = VERDICTS[snap_v] if snap_v else (None, None)
+    daily = conn.execute("SELECT bas_dd, close, high, low, volume, value FROM stock_daily WHERE code=? AND close IS NOT NULL "
                          "AND bas_dd <= ? ORDER BY bas_dd DESC LIMIT 300",
                          (c["stock_code"], today.isoformat())).fetchall()[::-1]
     confirmed = sch.get("issue_kind") == "확정"   # 확정발행가 라벨 또는 확정 산정일 이후 공시
@@ -144,10 +148,14 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         "facts": {"op_income": f["op_income"] if f else None, "op_period": f["op_period"] if f else None,
                   "pos52": f["pos52"] if f else None, "pos52_basis": f["pos52_basis"] if f else None},
         "verdict": {"code": v, "emoji": emoji, "name": name,
-                    "reason": json.loads(trade["snapshot_json"])["reason"] if trade else live["reason"],
-                    "provisional": not trade, "decided_on": trade["decided_on"] if trade else None,
+                    "reason": live["reason"],
+                    "provisional": trade is None,
+                    "decided_on": trade["decided_on"] if trade else None,
                     "live_reason": live["reason"],
-                    # 🟢?/🟡? 확인 필요: 관문1 자동 항목 중 미확인 (화면 빨간 글씨 + 그 항목만 묻는 GPT 프롬프트)
+                    "snapshot": ({"code": snap_v, "emoji": snap_emoji, "name": snap_name,
+                                  "reason": json.loads(trade["snapshot_json"])["reason"],
+                                  "decided_on": trade["decided_on"]} if trade else None),
+                    # 현재 판정의 미확인 관문. 과거 paper 판정과 섞지 않는다.
                     "unconfirmed": unconfirmed(live["gate1"]) if v.endswith("_q") else []},
         "paper": paper_json, "quick": quick, "a_margin": a_margin, "supply": supply,
     })
