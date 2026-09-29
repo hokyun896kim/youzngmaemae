@@ -77,14 +77,22 @@ def gate1(summary: dict, facts: dict, op_income: int | None, op_period: str | No
 
     mh = (facts or {}).get("major_holder") or {}
     level = mh.get("level")
+    initial_pct, held_pct = mh.get("initial_pct"), mh.get("held_pct")
+    detail = []
+    if initial_pct is not None:
+        detail.append(f"최초 배정권리 대비 {initial_pct:.0f}%")
+    if held_pct is not None:
+        detail.append(f"청약시점 보유권리 대비 {held_pct:.0f}%")
+    suffix = " · ".join(detail)
     if level == "full":
-        crit.append(_c("major", "최대주주 전량 이상 청약", "pass", "최대주주 전량 청약(원문)"))
+        crit.append(_c("major", "최대주주 최초 배정권리 전량 이상 청약", "pass",
+                       suffix or "최대주주 최초 배정권리 전량 청약(원문)"))
     elif level in ("partial", "none"):
-        pct = f" {mh.get('pct'):.0f}%" if mh.get("pct") is not None else ""
-        crit.append(_c("major", "최대주주 전량 이상 청약", "fail",
-                       "최대주주 불참" if level == "none" else f"최대주주 일부 청약{pct}"))
+        crit.append(_c("major", "최대주주 최초 배정권리 전량 이상 청약", "fail",
+                       "최대주주 불참" if level == "none" else (suffix or "최대주주 일부 청약")))
     else:
-        crit.append(_c("major", "최대주주 전량 이상 청약", "unknown", "최대주주 청약 GPT 확인 필요"))
+        text = (suffix + " · " if suffix else "") + "최초 배정권리 전량 여부 GPT 확인 필요"
+        crit.append(_c("major", "최대주주 최초 배정권리 전량 이상 청약", "unknown", text))
 
     if op_income is None:
         crit.append(_c("op", "직전 분기 영업흑자", "unknown", "영업이익 미확인"))
