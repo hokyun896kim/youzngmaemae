@@ -15,8 +15,8 @@ from .detect import (DetectEvent, detect, drop_case, merge_duplicate_cases, purg
 from .krx import KrxClient, KrxError
 from .naver import INDEX_SYMBOL, NaverClient, NaverError
 from .prices import collect_day, compute_gap, gaps_for_day, relink_rights
-from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount, extract_rights_period, find_dates,
-                              issue_kind, parse_documents, validate_schedule)
+from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount, extract_major_holder,
+                              extract_rights_period, find_dates, issue_kind, parse_documents, validate_schedule)
 from .verdict import decide, gate1, reason_line
 
 SCHEDULE_LABELS = {
@@ -242,6 +242,10 @@ def step_estk(dart: DartClient, conn, today: date, alerts: bool = True, discount
             except DartError:
                 texts = []
             d = next((v for v in map(extract_discount, texts) if v), None) if discount else None
+            mh = next((v for v in map(extract_major_holder, texts) if v), None)
+            if mh:
+                sch.extras["facts"]["major_holder"] = mh
+            sch.extras["major_holder_checked"] = True
             if need_rights:
                 rec = sch.record_date or (before or {}).get("record_date")
                 subs = sch.subs_start or (before or {}).get("subs_start")
@@ -262,22 +266,38 @@ def step_estk(dart: DartClient, conn, today: date, alerts: bool = True, discount
 
 
 def recheck_estk_discount(dart: DartClient, conn) -> int:
-    """할인율을 읽기 전에 들어온 증권신고서(진행 중 주주배정)는 한 번 원문을 받아 할인율을 채운다."""
+    """기존 증권신고서의 할인율·최대주주 청약 사실을 원문에서 보강한다.
+    major_holder_checked 플래그로 원문에 관련 문구가 없는 케이스도 매 실행 재조회하지 않는다."""
     n = 0
     for r in conn.execute(
             "SELECT s.rcept_no, s.extras_json FROM schedule_versions s JOIN disclosures d USING (rcept_no) "
             "JOIN cases c ON c.case_id=d.case_id WHERE d.kind='estk' AND c.status='open' AND c.is_rights=1").fetchall():
         ex = json.loads(r["extras_json"] or "{}")
-        if ex.get("discount_checked") or (ex.get("facts") or {}).get("discount"):
+        facts = ex.setdefault("facts", {})
+        need_discount = not ex.get("discount_checked") and not facts.get("discount")
+        need_major = not ex.get("major_holder_checked")
+        if not need_discount and not need_major:
             continue
         try:
-            d = next((v for v in (extract_discount(clean(b)) for b in dart.document(r["rcept_no"]).values()) if v), None)
+            texts = [clean(b) for b in dart.document(r["rcept_no"]).values()]
         except DartError:
             continue
-        ex.setdefault("facts", {})["discount"] = d
-        ex["discount_checked"] = True
-        conn.execute("UPDATE schedule_versions SET extras_json=? WHERE rcept_no=?", (db.dumps(ex), r["rcept_no"]))
-        n += 1
+        changed = False
+        if need_discount:
+            d = next((v for v in (extract_discount(t) for t in texts) if v), None)
+            if d:
+                facts["discount"] = d
+            ex["discount_checked"] = True
+            changed = True
+        if need_major:
+            mh = next((v for v in (extract_major_holder(t) for t in texts) if v), None)
+            if mh:
+                facts["major_holder"] = mh
+            ex["major_holder_checked"] = True
+            changed = True
+        if changed:
+            conn.execute("UPDATE schedule_versions SET extras_json=? WHERE rcept_no=?", (db.dumps(ex), r["rcept_no"]))
+            n += 1
     conn.commit()
     return n
 
