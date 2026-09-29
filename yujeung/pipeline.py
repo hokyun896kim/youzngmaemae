@@ -19,7 +19,7 @@ from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount,
                               extract_rights_period, find_dates, issue_kind, parse_documents, validate_schedule)
 from .verdict import decide, gate1, reason_line
 
-ESTK_FACTS_VERSION = 2  # 최대주주 지분율을 청약률로 오인하던 v1 폐기
+ESTK_FACTS_VERSION = 3  # v3: '100% 참여하기 어려움'을 전량청약으로 오인하지 않음
 
 SCHEDULE_LABELS = {
     "record_date": "신주배정기준일", "ex_rights_date": "권리락일(추정)", "rights_start": "인수권 상장 시작",
