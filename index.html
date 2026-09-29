@@ -569,8 +569,8 @@ function caseCard(c){
   const hist=c.history.map(h=>`<div><a href="${dartUrl(h.rcept_no)}" target="_blank" rel="noopener">${esc(h.report_nm)}</a> <span class="mut">${h.rcept_dt}</span><br>${
     Object.entries(h.schedule).map(([k,v])=>`${k}=${esc(v)}`).join(' · ')||'<span class="mut">일정 없음</span>'}${
     h.warnings.filter(w=>!w.includes('미검증')&&!w.includes('추정')).length?`<div class="warn">⚠ ${h.warnings.filter(w=>!w.includes('미검증')&&!w.includes('추정')).map(esc).join(', ')}</div>`:''}</div>`).join('');
-  const v=c.verdict, g=c.gate1;
-  const vbar=v?`<div class="vbar"><span class="vbadge ${v.code}">${v.emoji} ${esc(v.name)}${v.provisional?' · 잠정':''}</span><div class="vreason">${esc(displayReason(v.reason))}<small>${v.provisional?'인수권 마지막 날 괴리로 확정됩니다':'확정 '+v.decided_on+(v.live_reason!==v.reason?' · 현재: '+esc(displayReason(v.live_reason)):'')}${g&&g.reit_note?' · '+esc(g.reit_note):''}</small></div></div>`:'';
+  const v=c.verdict, g=c.gate1, vs=v&&v.snapshot;
+  const vbar=v?`<div class="vbar"><span class="vbadge ${v.code}">${v.emoji} ${esc(v.name)} · 현재</span><div class="vreason">${esc(displayReason(v.reason))}<small>${vs?`과거 확정 ${esc(vs.decided_on||'—')}: ${vs.emoji||''} ${esc(vs.name||'')} · ${esc(displayReason(vs.reason||''))}`:'인수권 마지막 날에 과거 판정 스냅샷을 별도 확정'}${g&&g.reit_note?' · '+esc(g.reit_note):''}</small></div></div>`:'';
   const ico={pass:'✅',fail:'❌',unknown:'❔',manual:'🤖'};
   const crit=g?`<div class="crit">${g.criteria.map(x=>`<span class="cr ${x.status}" title="${esc(x.label)}">${ico[x.status]} ${esc(x.text==='GPT 확인 필요'?x.label+' · GPT 확인 필요':x.text)}</span>`).join('')}</div>`:'';
   const quick=quickBox(c);
