@@ -287,7 +287,8 @@ def a_margin(sch: dict, issue: dict, p: int | None, p_date: str | None, r: int |
 
 
 def supply(new_shares: int | None, dilution: float | None, p: int | None, daily: list[tuple[int, int]],
-           listing_bar: dict | None = None, listing_price_type: str | None = None) -> dict | None:
+           listing_bar: dict | None = None, listing_price_type: str | None = None,
+           listing_volume: int | None = None) -> dict | None:
     """공급충격: 기준 평균은 반드시 상장 전 D-20~D-1. listing_bar는 D0 실측(장중이면 명시)용."""
     if not new_shares:
         return None
@@ -295,7 +296,7 @@ def supply(new_shares: int | None, dilution: float | None, p: int | None, daily:
     avg_vol = sum(v for _, v in d) / len(d) if d else None
     avg_val = sum(c * v for c, v in d) / len(d) if d else None
     lb = listing_bar or {}
-    lv = lb.get("volume")
+    lv = lb.get("volume") or listing_volume
     lval = lb.get("value")
     lvwap = round(lval / lv) if lval and lv else None
     lclose, llow, lhigh = lb.get("close"), lb.get("low"), lb.get("high")
@@ -357,7 +358,7 @@ def conclusion(verdict: str, g1: dict, gap: float | None, stg: str | None = None
     else:
         reason = f"괴리율 {gap:+.1f}%" if gap is not None else "관문1 통과 · 괴리율 대기"
         if disc is not None:
-            reason += f" · 총원가 쿠션율 {-disc:+.1f}%"
+            reason += f" · 신주원가 할인율 {disc:+.1f}%"
         if g1.get("n_unknown"):
             reason += f" (관문1 미확인 {g1['n_unknown']}개 — GPT 확인)"
     if verdict == "blue" and not g1["passed"]:
@@ -381,8 +382,7 @@ def quick(verdict: str, g1: dict, gap: float | None, sch: dict, facts: dict, clo
     return {
         **conclusion(verdict, g1, gap, stg, disc),
         # 🟢 가격 조건 두 숫자 나란히 (카드 표시용)
-        "green_check": {"gap": gap, "disc": disc, "cushion_pct": (-disc if disc is not None else None),
-                        "cheap": cheap, "disc_floor": DISC_FLOOR, "cushion_ceiling": -DISC_FLOOR,
+        "green_check": {"gap": gap, "disc": disc, "cheap": cheap, "disc_floor": DISC_FLOOR,
                         "gap_ok": gap is not None and gap <= cheap, "disc_ok": disc is not None and disc > DISC_FLOOR,
                         "ok": green_price(gap, disc, cheap)},
         "recheck": ("신주 상장일 시가 · +5 · +20거래일 가상 성과로 판정 검증" if tracking
