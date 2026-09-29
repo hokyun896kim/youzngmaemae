@@ -357,7 +357,7 @@ def conclusion(verdict: str, g1: dict, gap: float | None, stg: str | None = None
     else:
         reason = f"괴리율 {gap:+.1f}%" if gap is not None else "관문1 통과 · 괴리율 대기"
         if disc is not None:
-            reason += f" · 신주원가 할인율 {disc:+.1f}%"
+            reason += f" · 총원가 쿠션율 {-disc:+.1f}%"
         if g1.get("n_unknown"):
             reason += f" (관문1 미확인 {g1['n_unknown']}개 — GPT 확인)"
     if verdict == "blue" and not g1["passed"]:
@@ -381,7 +381,8 @@ def quick(verdict: str, g1: dict, gap: float | None, sch: dict, facts: dict, clo
     return {
         **conclusion(verdict, g1, gap, stg, disc),
         # 🟢 가격 조건 두 숫자 나란히 (카드 표시용)
-        "green_check": {"gap": gap, "disc": disc, "cheap": cheap, "disc_floor": DISC_FLOOR,
+        "green_check": {"gap": gap, "disc": disc, "cushion_pct": (-disc if disc is not None else None),
+                        "cheap": cheap, "disc_floor": DISC_FLOOR, "cushion_ceiling": -DISC_FLOOR,
                         "gap_ok": gap is not None and gap <= cheap, "disc_ok": disc is not None and disc > DISC_FLOOR,
                         "ok": green_price(gap, disc, cheap)},
         "recheck": ("신주 상장일 시가 · +5 · +20거래일 가상 성과로 판정 검증" if tracking
