@@ -285,7 +285,7 @@ function scheduleText(s) {
 
 // ---- 🟢?/🟡? 확인 필요: 미확인 항목만 묻는 짧은 프롬프트 ----
 const CHECK_Q = {
-  major: '최대주주(특수관계인 포함)가 이번 유상증자 배정 물량을 전량 이상 청약하는가? 청약 예정 비율(%)과 근거 문구(증권신고서 "최대주주 등의 청약 참여" 항목 등)를 인용해라.',
+  major: '최대주주(특수관계인 포함)의 청약을 두 기준으로 분리해 확인해라: ① 최초 배정권리 대비 실제/예정 청약률 ② 청약시점 보유권리 대비 청약률(초과청약 포함). 잔여 권리 120% 초과청약만으로 최초 배정 전량 참여로 보지 마라.',
   uw: '인수 방식이 총액인수 / 잔액인수 / 모집주선 중 무엇인가? 대표주관회사와 실권주 처리 방식을 증권신고서 "인수인에 관한 사항"에서 확인해라.',
   op: '직전 분기(가장 최근 제출된 분기·반기보고서, 연결 우선) 영업이익은 흑자인가 적자인가? 금액과 보고서 기간을 적어라.',
   pos52: '현재 주가는 최근 52주 최저가~최고가 범위에서 몇 % 위치인가? (최저=0%, 최고=100%) 최저·최고·현재가와 날짜를 적어라.',
@@ -306,7 +306,7 @@ ${links}
 [답 형식]
 항목마다 "확인됨: 통과 / 확인됨: 탈락 / 확인 불가" 중 하나 + 근거(공시명·날짜·문구) 한 줄.
 마지막 줄: 모두 통과면 "${v.code === 'green_q' ? '🟢' : '🟡'} 확정", 하나라도 탈락이면 "⚪ 관찰 샘플", 확인 불가가 남으면 "확인 필요 유지".
-(기준: 관문1 = 채무상환 < 50% · 희석 < 50% · 최대주주 전량 이상 청약 · 직전 분기 영업흑자 · 52주 위치 ≤ 50% · 총액/잔액인수)`;
+(기준: 관문1 = 채무상환 < 50% · 희석 < 50% · 최대주주 최초 배정권리 전량 이상 청약 · 직전 분기 영업흑자 · 52주 위치 ≤ 50% · 총액/잔액인수)`;
 }
 
 // ---- 개별기업 분석 프롬프트 ----
@@ -398,14 +398,15 @@ function strategyText(c, d) {
   const S = c.strategy, R = d && d.strategy_rules;
   if (!S || !R) return '데이터없음';
   if (S.ban) return S.ban.map(b => `⛔ ${R.bans[b].label} — ${R.bans[b].effect}`).join(' / ');
-  if (!S.items.length) return '해당 전략 없음';
+  const locked=(S.locks||[]).includes('unconfirmed_gate');
+  if (!S.items.length) return locked?'실전 게이트 잠김 — 관문 미확인 항목 확인 필요':'해당 전략 없음';
   const st = {live: '지금 해당', wait: '대기', past: '기간 종료'};
   return S.items.map(it => {
     const D = R.strategies[it.key];
     let x = `${D.medal} ${D.title} [${st[it.state]}] (조건: ${D.cond})`;
-    if (it.key === 's2') x += ` 청산일 ${P_NA(it.exit_on)} · 손절 ${P_N(it.stop)}원(${it.stop_basis || '-'}) · RSI ${it.rsi ?? '-'}`;
+    if (it.key === 's2') x += ` 청산일 ${P_NA(it.exit_on)} · 손절 ${P_N(it.stop)}원(${it.stop_basis || '-'}) · RSI ${it.rsi ?? '-'} · ${it.confirmed?'종가 확정':'장중/미리보기 — 종가 미확정'}`;
     return x;
-  }).join(' / ') + (S.bans.length ? ` · 참고: ${S.bans.map(b => R.bans[b].label).join(', ')}` : '');
+  }).join(' / ') + (locked?' · 🔒 관문 미확인으로 전략2·3 실전 게이트 잠김':'') + (S.bans.length ? ` · 참고: ${S.bans.map(b => R.bans[b].label).join(', ')}` : '');
 }
 
 // A = 인수권 할인 포착 — 사이트 자동 계산값 (DECISION_RULES 의 출력 항목 순서)
@@ -413,7 +414,7 @@ function aMarginText(c) {
   const a = c.a_margin, s = c.supply;
   if (!a || !(a.rows || []).length) return '  (인수권 없음 또는 본주 시세 없음)';
   const out = [
-    `- 본주 현재가 P: ${P_N(a.p)}원 (${P_NA(a.p_date)} 종가) / 인수권 가격 R: ${a.r == null ? '미확인(아직 인수권 시세 없음)' : `${P_N(a.r)}원 (${a.r_date})`}`,
+    `- A_decision 기준시점: ${P_NA(a.decision_asof || a.p_date)} / 본주 P: ${P_N(a.p)}원 (${P_NA(a.p_date)} ${P_NA(a.price_type || '시점 미확인')}) / 인수권 R: ${a.r == null ? '미확인(아직 인수권 시세 없음)' : `${P_N(a.r)}원 (${a.r_date})`}`,
     `- ATR(${a.atr_n}): ${a.atr == null ? '미확인' : `${P_N(a.atr)}원 (${a.atr_pct}%)`} · 확정발행가: ${a.confirmed ? '확정' : '미정'}`,
     ...a.rows.map(r => r.issue == null ? `- [${r.label}] ${r.note || '데이터없음'}` : `- [${r.label}] I ${P_N(r.issue)} / P-I ${P_N(r.p_minus_i)} / 괴리율 ${P_PCT(r.gap)} / R+I ${P_N(r.cost)} / 총원가 할인율 ${r.cost_disc == null ? '데이터없음' : r.cost_disc.toFixed(1) + '%'} / 원화 쿠션 ${P_N(r.cushion)} / 쿠션÷ATR ${r.cushion_atr ?? '데이터없음'}${a.r == null && r.r_for_1atr ? ` / 쿠션이 ATR 1배 남는 R 상한 ${P_N(r.r_for_1atr)}` : ''}${r.note ? ` (${r.note})` : ''}`),
     `- 잔여 거래일(오늘 포함, 사이트 갱신일 기준): ${a.days.map(d => `${d.label} ${d.left == null ? '지남/미정' : d.left + '일'}(${P_NA(d.date)})`).join(' · ')}`,
@@ -426,7 +427,7 @@ function aMarginText(c) {
   if (hs.length) out.push(`- 일별 ①·② 괴리 추이: ${hs.map(x => `${x.d.slice(5)} ①${P_PCT(x.gap)}${x.gap_hat != null ? ` ②${P_PCT(x.gap_hat)}(Î ${P_N(x.i_hat)})` : ''}`).join(' · ')}`);
   const e = a.end_check;
   if (e) out.push(`- 인수권 마지막 매매일 검증: 공시 매매종료일 ${P_NA(e.disclosed)} / KRX 상장폐지일 ${P_NA(e.delist)} → 그 전 영업일 ${P_NA(e.krx_last)} — ${e.text}`);
-  if (s) out.push(`- 공급충격: 신주 ÷ 증자 전 주식 ${s.dilution == null ? '데이터없음' : s.dilution + '%'} / 신주 ÷ 유통주식 미확인 / 신주 시가총액 ÷ 최근 ${s.n}일 평균 거래대금(종가×거래량 근사) ${s.value_days ?? '데이터없음'}일 / 신주 ÷ 최근 ${s.n}일 평균 거래량 ${s.volume_days ?? '데이터없음'}일 / 상장일 거래량 ÷ 신주 ${s.listing_turnover ?? '상장 전 또는 데이터없음'}`);
+  if (s) out.push(`- 공급충격: 신주 ÷ 증자 전 주식 ${s.dilution == null ? '데이터없음' : s.dilution + '%'} / 신주 ÷ 유통주식 미확인 / 신주 시가총액 ÷ 상장 전 최근 ${s.n}일 평균 거래대금 ${s.value_days ?? '데이터없음'}일 / 신주 ÷ 상장 전 최근 ${s.n}일 평균 거래량 ${s.volume_days ?? '데이터없음'}일 / D0 소화율 ${s.listing_turnover == null ? '상장 전 또는 데이터없음' : (s.listing_turnover*100).toFixed(1)+'%'}${s.listing_price_type?' ['+s.listing_price_type+']':''}${s.listing_volume_multiple!=null?' / D0 거래량 = 평소 '+s.listing_volume_multiple+'배':''}${s.listing_vwap?' / D0 VWAP '+P_N(s.listing_vwap):''}${s.listing_close_vs_vwap!=null?' / 종가-VWAP '+P_PCT(s.listing_close_vs_vwap):''}`);
   return out.join('\n');
 }
 
@@ -449,7 +450,7 @@ function quickText(q) {
     `- 발행가: ${is.text || '데이터없음'}${is.d ? ` (할인율 ${(is.d * 100).toFixed(0)}%, 증자비율 ${(is.r * 100).toFixed(1)}%)` : ' (할인율 미확인 — 증권신고서에서 확인해라)'}`,
     `- 본전선: ${be ? `${P_N(be.value)}원 — ${be.how} (${be.text})` : (q.stage === 'listed' ? '상장 완료' : '계산 불가')}`,
     ...(q.table || []).map(t => `  · ${t.name} ${t.pct > 0 ? '+' : ''}${t.pct}%: 상장일 주가 ${P_N(t.price)}원 → 수익률 ${t.pct > 0 ? '+' : ''}${t.pct}%`),
-    `- 매물 소화: ${o ? `평소 거래량 ${o.days}일치 (신주 ${P_N(o.new_shares)}주 ÷ 최근 ${o.n}일 평균 ${P_N(o.avg_volume)}주)${o.red ? ' ⚠ 60일 이상' : ''}` : '데이터없음'}`,
+    `- 매물 소화: ${o ? `상장 전 평소 거래량 ${o.days}일치 (신주 ${P_N(o.new_shares)}주 ÷ D-20~D-1 평균 ${P_N(o.avg_volume)}주)${o.red ? ' ⚠ 60일 이상' : ''}` : '데이터없음'}`,
   ];
   if ((q.table || []).length) lines.push(`- ${q.table_note}`);
   return lines.join('\n');
@@ -491,7 +492,7 @@ ${caseLines}
 [A 인수권 할인 포착 — 인수권 거래 전·중인 케이스 (사이트 자동 계산, 검증 대상)]
 ${aLines}
 
-[오늘 상장된 신주인수권증서 전체 (${P_NA(d.last_rights_date)} 종가)]
+[오늘 상장된 신주인수권증서 전체 (${P_NA(d.last_rights_date)} · ${(()=>{const gd=(d.generated_at||'').slice(0,10),gt=(d.generated_at||'').slice(11,16);return d.last_rights_date<gd||(d.last_rights_date===gd&&gt>='15:30')?'종가':'장중 스냅샷';})()})]
 ${rights}
 
 ${BLINDSPOTS}
@@ -503,7 +504,7 @@ ${BLINDSPOTS}
 
 [브리핑 요청]
 1. 오늘의 우선순위: 위 케이스를 [B 본업 후보 / A 기회(인수권 할인 포착) / 관찰 샘플 / 제외]로 분류하고, 각각 한 줄 이유를 대라. 필터 5개로 걸러지는 종목은 명확히 탈락시켜라.
-2. 인수권 할인 포착 랭킹: 괴리율 순이 아니라 총원가 할인율·원화 쿠션÷ATR(10)·공급충격·발행가 확정 여부·잔여 거래일로 3개를 골라, 각 항목 값과 괴리가 방치된 이유(강제 투매·상장 물량 선반영·공매도 차익 차단)를 함께 정리해라.
+2. 인수권 할인 포착 랭킹: 괴리율 순이 아니라 총원가 쿠션율·원화 쿠션÷ATR(10)·공급충격·발행가 확정 여부·잔여 거래일로 3개를 골라, 각 항목 값과 괴리가 방치된 이유(강제 투매·상장 물량 선반영·공매도 차익 차단)를 함께 정리해라.
 3. 이번 주 캘린더: 앞으로 5거래일 안에 권리락·인수권 시작/종료·청약·신주 상장이 있는 케이스를 날짜순으로 나열하고, 각 이벤트에서 확인할 것 1개씩 적어라.
 4. 가설 샘플: H1·H2·H3 검증 샘플로 기록할 가치가 있는 케이스와, 기록할 때 추가로 수집해야 할 데이터를 제시해라.
 5. 경고: 채무상환형·초대형 희석·정정신고서 요구·복합 Corporate Action 등 위험 신호가 있는 케이스를 짚어라.
