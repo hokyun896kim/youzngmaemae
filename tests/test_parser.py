@@ -262,3 +262,16 @@ def test_major_holder_ownership_percentage_alone_is_not_subscription_rate():
     got = extract_major_holder(text)
     assert got is None or got["level"] == "unknown"
     assert not got or got.get("initial_pct") != 17.53
+
+
+def test_major_holder_sg_100_percent_difficult_then_70_percent_plan():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "당사의 최대주주 및 특수관계인의 지분율은 총 17.53%에 달합니다. "
+        "당사의 최대주주 및 특수관계인은 금번 구주주 청약에 배정물량의 70%를 참여할 계획을 가지고 있습니다. "
+        "최근 시장 여건 상 주식담보대출이 어려운 상황이며 배정물량의 100%를 참여하기는 어려운 여건 속에서, "
+        "금번 주주배정 후 실권주 일반공모에 최대한 참여하기 위하여 배정물량의 70%를 참여하기로 결정한 상황입니다."
+    )
+    got = extract_major_holder(text)
+    assert got["level"] == "partial"
+    assert got["initial_pct"] == 70.0
