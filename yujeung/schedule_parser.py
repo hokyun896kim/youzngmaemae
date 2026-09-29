@@ -312,41 +312,66 @@ _PCT_RE = re.compile(r"(\d{1,3}(?:\.\d+)?)\s*%")
 
 
 def extract_major_holder(text: str) -> dict | None:
-    """최대주주 청약 참여 수준. 진행 케이스는 파서 변경 뒤 백필 재파싱해 엄격 기준을 다시 적용한다.
-    initial_pct = 최초 배정권리 대비 청약/보유 예정 비율(엄격 관문 기준)
-    held_pct = 청약시점 보유권리 대비 청약률(초과청약 포함)
-    '초과청약 120%'만으로 최초 배정 전량 참여라고 판정하지 않는다.
+    """최대주주 청약 참여 수준.
+    지분율(예: '최대주주 및 특수관계인 지분율 17.53%')을 청약률로 오인하지 않는다.
+    청약/참여 표현 가까이에 있고, 배정물량·신주인수권 문맥과 직접 연결된 비율만 사용한다.
     """
     best = None
     rank = {"full": 4, "partial": 3, "none": 3, "unknown": 1}
-    for m in re.finditer(r"최대주주", text):
-        win = text[m.start(): m.start() + 320]
-        if not re.search(r"청약|참여|신주인수권", win):
-            continue
-        pcts = [float(x) for x in _PCT_RE.findall(win)]
-        below = [x for x in pcts if x < 100]
-        above = [x for x in pcts if x >= 100]
-        held_pct = max(above) if re.search(r"초과청약|보유[^.。]{0,30}권리", win) and above else None
-        initial_pct = min(below) if below else None
 
-        if re.search(r"미정|결정되지|확정되지", win):
-            cur = {"level": "unknown", "text": win[:180]}
-        elif re.search(r"참여하지\s*않|불참|미참여|청약하지\s*않", win):
-            cur = {"level": "none", "text": win[:180]}
-        elif initial_pct is not None:
-            cur = {"level": "partial" if initial_pct < 100 else "full",
-                   "pct": initial_pct, "initial_pct": initial_pct, "held_pct": held_pct, "text": win[:180]}
-        elif re.search(r"전량|전부|배정[^.。]{0,40}100\s*%", win):
-            cur = {"level": "full", "pct": 100.0, "initial_pct": 100.0,
-                   "held_pct": held_pct, "text": win[:180]}
-        elif held_pct is not None:
-            cur = {"level": "unknown", "held_pct": held_pct, "text": win[:180]}
-        elif above:
-            cur = {"level": "unknown", "text": win[:180]}
-        else:
+    for m in re.finditer(r"최대주주", text):
+        win = text[m.start(): m.start() + 1400]
+        events = list(re.finditer(r"청약|참여", win))
+        if not events:
             continue
-        if best is None or rank[cur["level"]] > rank[best["level"]]:
-            best = cur
+
+        # 불참/미정/전량은 해당 표현 주변 문맥에서 직접 판정한다.
+        for ev in events:
+            ctx = win[max(0, ev.start() - 240): min(len(win), ev.end() + 260)]
+            if re.search(r"참여하지\s*않|불참|미참여|청약하지\s*않", ctx):
+                cur = {"level": "none", "text": ctx[:220]}
+                if best is None or rank[cur["level"]] > rank[best["level"]]:
+                    best = cur
+                continue
+            if re.search(r"미정|결정되지|확정되지", ctx):
+                cur = {"level": "unknown", "text": ctx[:220]}
+                if best is None or rank[cur["level"]] > rank[best["level"]]:
+                    best = cur
+                continue
+            if re.search(r"(?:배정[^.。]{0,80})?(?:전량|전부)[^.。]{0,80}(?:청약|참여)|(?:청약|참여)[^.。]{0,80}(?:전량|전부)", ctx):
+                cur = {"level": "full", "pct": 100.0, "initial_pct": 100.0, "held_pct": None, "text": ctx[:220]}
+                if best is None or rank[cur["level"]] > rank[best["level"]]:
+                    best = cur
+                continue
+
+            # 청약/참여 표현에 가장 가까운 '배정물량/신주인수권 문맥의 %'만 후보로 삼는다.
+            cand = []
+            for pm in _PCT_RE.finditer(ctx):
+                pct = float(pm.group(1))
+                near = ctx[max(0, pm.start() - 90): min(len(ctx), pm.end() + 90)]
+                if re.search(r"지분율|보유\s*지분|합산\s*지분", near) and not re.search(
+                        r"배정[^.。]{0,45}%|%[^.。]{0,45}(?:청약|참여)", near):
+                    continue
+                if not re.search(r"배정|신주인수권|청약|참여|초과청약", near):
+                    continue
+                dist = min(abs(pm.start() - ev.start()), abs(pm.end() - ev.end()))
+                cand.append((dist, pct, near))
+            if not cand:
+                continue
+            _, pct, near = min(cand, key=lambda x: x[0])
+
+            held = bool(re.search(r"초과청약|보유[^.。]{0,80}(?:배정|신주인수권|물량)", ctx))
+            if held and pct >= 100:
+                cur = {"level": "unknown", "held_pct": pct, "text": ctx[:220]}
+            else:
+                cur = {"level": "partial" if pct < 100 else "full",
+                       "pct": pct, "initial_pct": pct, "held_pct": None, "text": ctx[:220]}
+            if best is None or rank[cur["level"]] > rank[best["level"]]:
+                best = cur
+            elif best and best["level"] == cur["level"] == "partial":
+                # 같은 문단에 지분율과 청약률이 섞이면 청약/배정 표현에 가까운 값이 이미 cur에 들어온다.
+                best = cur
+
     return best
 
 
