@@ -338,6 +338,10 @@ def extract_major_holder(text: str) -> dict | None:
                 if best is None or rank[cur["level"]] > rank[best["level"]]:
                     best = cur
                 continue
+            # "배정물량의 100%를 참여하기는 어려운 여건"처럼 전량 청약을 부정하는 문장은
+            # 100% 참여로 판정하지 않는다. 이어지는 실제 참여계획(예: 70%)을 찾아야 한다.
+            if re.search(r"(?:100\s*%|전량|전부)[^.。]{0,100}(?:청약|참여)[^.。]{0,80}(?:어렵|부담|곤란|불가|않|아니)", ctx):
+                continue
             if re.search(r"(?:배정[^.。]{0,80})?(?:전량|전부)[^.。]{0,80}(?:청약|참여)|(?:청약|참여)[^.。]{0,80}(?:전량|전부)", ctx):
                 cur = {"level": "full", "pct": 100.0, "initial_pct": 100.0, "held_pct": None, "text": ctx[:220]}
                 if best is None or rank[cur["level"]] > rank[best["level"]]:
