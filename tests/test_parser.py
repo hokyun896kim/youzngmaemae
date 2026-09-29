@@ -239,3 +239,26 @@ def test_electronic_securities_date_not_rights_when_record_tbd():
                     "<P>신주인수권증서는 전자증권제도 시행일(2019년 9월 16일) 이후 전자등록 방식으로 상장되어 거래됩니다.</P>"))
     s = parse_document(doc)
     assert s.record_date is None and s.rights_start is None
+
+
+def test_major_holder_subscription_rate_ignores_ownership_percentage():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "최대주주 및 특수관계인의 지분율은 총 17.53% 에 달합니다. "
+        "당사의 최대주주인 박창호의 지분과 특수관계인 지분을 포함할 경우 17.53%입니다. "
+        "금번 유상증자에서 최대주주 측은 배정받은 물량의 70% 수준에서 청약에 참여할 예정입니다."
+    )
+    got = extract_major_holder(text)
+    assert got["level"] == "partial"
+    assert got["initial_pct"] == 70.0
+
+
+def test_major_holder_ownership_percentage_alone_is_not_subscription_rate():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "최대주주 및 특수관계인의 지분율은 17.53%입니다. "
+        "금번 유상증자 청약과 관련한 구체적인 참여 비율은 아직 확정되지 않았습니다."
+    )
+    got = extract_major_holder(text)
+    assert got is None or got["level"] == "unknown"
+    assert not got or got.get("initial_pct") != 17.53
