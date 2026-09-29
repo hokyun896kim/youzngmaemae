@@ -158,6 +158,6 @@ def reason_line(g1: dict, gap: float | None, verdict: str, disc: float | None = 
         head += f"(미확인 {g1['n_unknown']})"
     tail = f" · 괴리 {gap:+.1f}%" if gap is not None else " · 괴리 대기"
     if disc is not None:
-        tail += f" · 원가할인 {disc:+.1f}%"
+        tail += f" · 총원가 쿠션율 {-disc:+.1f}%"
     emoji, name = VERDICTS[verdict]
     return f"{head}{tail} → {emoji} {name}"
