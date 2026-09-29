@@ -309,6 +309,11 @@ const $=s=>document.querySelector(s);
 const fmt=n=>n==null?'—':Number(n).toLocaleString('ko-KR');
 const pct=n=>n==null?'—':(n>0?'+':'')+n.toFixed(1)+'%';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function displayReason(x){
+  return String(x??'').replace(/(?:신주원가 할인율|원가할인)\s*([+-]?\d+(?:\.\d+)?)%/g,(_m,n)=>{
+    const v=-Number(n); return `총원가 쿠션율 ${v>0?'+':''}${v.toFixed(1)}%`;
+  });
+}
 const dartUrl=r=>`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${r}`;
 const PURP_COL={'시설':'#5b8def','영업양수':'#8e6bd8','운영':'#4a9d7f','채무상환':'#c2544d','타법인취득':'#d4af37','기타':'#7d8aa3'};
 const TL=[['ex_rights_date','권리락'],['record_date','기준일'],['rights_start','인수권 시작'],['rights_end','인수권 끝'],['price_fix_date','발행가 확정'],['subs_start','청약'],['payment_date','납입'],['listing_date','신주 상장']];
@@ -565,7 +570,7 @@ function caseCard(c){
     Object.entries(h.schedule).map(([k,v])=>`${k}=${esc(v)}`).join(' · ')||'<span class="mut">일정 없음</span>'}${
     h.warnings.filter(w=>!w.includes('미검증')&&!w.includes('추정')).length?`<div class="warn">⚠ ${h.warnings.filter(w=>!w.includes('미검증')&&!w.includes('추정')).map(esc).join(', ')}</div>`:''}</div>`).join('');
   const v=c.verdict, g=c.gate1;
-  const vbar=v?`<div class="vbar"><span class="vbadge ${v.code}">${v.emoji} ${esc(v.name)}${v.provisional?' · 잠정':''}</span><div class="vreason">${esc(v.reason)}<small>${v.provisional?'인수권 마지막 날 괴리로 확정됩니다':'확정 '+v.decided_on+(v.live_reason!==v.reason?' · 현재: '+esc(v.live_reason):'')}${g&&g.reit_note?' · '+esc(g.reit_note):''}</small></div></div>`:'';
+  const vbar=v?`<div class="vbar"><span class="vbadge ${v.code}">${v.emoji} ${esc(v.name)}${v.provisional?' · 잠정':''}</span><div class="vreason">${esc(displayReason(v.reason))}<small>${v.provisional?'인수권 마지막 날 괴리로 확정됩니다':'확정 '+v.decided_on+(v.live_reason!==v.reason?' · 현재: '+esc(displayReason(v.live_reason)):'')}${g&&g.reit_note?' · '+esc(g.reit_note):''}</small></div></div>`:'';
   const ico={pass:'✅',fail:'❌',unknown:'❔',manual:'🤖'};
   const crit=g?`<div class="crit">${g.criteria.map(x=>`<span class="cr ${x.status}" title="${esc(x.label)}">${ico[x.status]} ${esc(x.text==='GPT 확인 필요'?x.label+' · GPT 확인 필요':x.text)}</span>`).join('')}</div>`:'';
   const quick=quickBox(c);
@@ -708,7 +713,7 @@ function quickBox(c){
   const v=c.verdict||{}, be=q.breakeven, is=q.issue||{}, o=q.overhang, so=c.supply||{};
   const rows=(q.table||[]).map(t=>`<tr><td>${t.name}</td><td><b>${fmt(t.price)}</b>원</td><td><b class="${t.pct>=0?'pos':'neg'}">${(t.pct>0?'+':'')+t.pct}%</b></td></tr>`).join('');
   return `<div class="quick"><div class="qw">${v.emoji||''} ${esc(q.word)}</div><div class="qs">30초 결론 · ${esc(q.stage_name)}</div>
-  <div class="ql"><span>이유</span><div>${esc(q.reason)}</div></div>
+  <div class="ql"><span>이유</span><div>${esc(displayReason(q.reason))}</div></div>
   ${(v.unconfirmed||[]).length?`<div class="unc"><div class="ul">⚠ ${v.unconfirmed.map(u=>esc(u.label)).join(' · ')}</div>
     <button class="btn gold" data-label="🤖 미확인 항목만 GPT로 확인 (프롬프트 복사)" onclick="copyCheck(${c.case_id},this)">🤖 미확인 항목만 GPT로 확인 (프롬프트 복사)</button>
     <div class="preview" id="pq${c.case_id}"></div></div>`:''}
