@@ -18,7 +18,8 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 13  # 13: '실권주 미발행' + 잔액·총액인수 없음 → 인수방식 '실권주미발행'(관문1 탈락) — 아이에이
+PARSER_VERSION = 14  # 14: 최대주주 청약을 최초 배정권리 대비 / 청약시점 보유권리 대비로 분리 — 초과청약만으로 전량 판정 금지
+#                     13: '실권주 미발행' + 잔액·총액인수 없음 → 인수방식 '실권주미발행'(관문1 탈락) — 아이에이
 #                     12: 인수권 문장의 '전자증권제도 시행일' 날짜 무시(기준일 미정일 때 — 경남제약 2019-09-16)
 #                     11: 옛 양식(2020) 인수권 기간 — 첫 후보가 무효여도 계속 탐색, '날짜~날짜 신주인수권증서 상장 거래기간'(증권신고서),
 #                        '신주인수권증서의 상장여부 아니오' 기록
@@ -311,22 +312,37 @@ _PCT_RE = re.compile(r"(\d{1,3}(?:\.\d+)?)\s*%")
 
 
 def extract_major_holder(text: str) -> dict | None:
-    """'최대주주 … 청약/참여 …' 문장에서 참여 수준. level: full(100%·전량 이상) / partial / none / unknown"""
+    """최대주주 청약 참여 수준.
+    initial_pct = 최초 배정권리 대비 청약/보유 예정 비율(엄격 관문 기준)
+    held_pct = 청약시점 보유권리 대비 청약률(초과청약 포함)
+    '초과청약 120%'만으로 최초 배정 전량 참여라고 판정하지 않는다.
+    """
     best = None
-    rank = {"full": 3, "partial": 2, "none": 2, "unknown": 1}
+    rank = {"full": 4, "partial": 3, "none": 3, "unknown": 1}
     for m in re.finditer(r"최대주주", text):
-        win = text[m.start(): m.start() + 220]
-        if not re.search(r"청약|참여", win):
+        win = text[m.start(): m.start() + 320]
+        if not re.search(r"청약|참여|신주인수권", win):
             continue
+        pcts = [float(x) for x in _PCT_RE.findall(win)]
+        below = [x for x in pcts if x < 100]
+        above = [x for x in pcts if x >= 100]
+        held_pct = max(above) if re.search(r"초과청약|보유[^.。]{0,30}권리", win) and above else None
+        initial_pct = min(below) if below else None
+
         if re.search(r"미정|결정되지|확정되지", win):
-            cur = {"level": "unknown", "text": win[:140]}
+            cur = {"level": "unknown", "text": win[:180]}
         elif re.search(r"참여하지\s*않|불참|미참여|청약하지\s*않", win):
-            cur = {"level": "none", "text": win[:140]}
-        elif re.search(r"전량|전부|초과청약", win) or any(float(x) >= 100 for x in _PCT_RE.findall(win)):
-            cur = {"level": "full", "text": win[:140]}
-        elif _PCT_RE.search(win):
-            pct = max(float(x) for x in _PCT_RE.findall(win))
-            cur = {"level": "partial", "pct": pct, "text": win[:140]}
+            cur = {"level": "none", "text": win[:180]}
+        elif initial_pct is not None:
+            cur = {"level": "partial" if initial_pct < 100 else "full",
+                   "pct": initial_pct, "initial_pct": initial_pct, "held_pct": held_pct, "text": win[:180]}
+        elif re.search(r"전량|전부|배정[^.。]{0,40}100\s*%", win):
+            cur = {"level": "full", "pct": 100.0, "initial_pct": 100.0,
+                   "held_pct": held_pct, "text": win[:180]}
+        elif held_pct is not None:
+            cur = {"level": "unknown", "held_pct": held_pct, "text": win[:180]}
+        elif above:
+            cur = {"level": "unknown", "text": win[:180]}
         else:
             continue
         if best is None or rank[cur["level"]] > rank[best["level"]]:
