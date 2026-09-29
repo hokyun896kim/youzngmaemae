@@ -45,7 +45,7 @@ permissions:
 
 concurrency:
   # PR 시험 실행(push)·원문 점검(doc-grep)은 데이터를 커밋하지 않으므로 별도 줄 — 대기 중인 backtest·daily 를 밀어내지 않게
-  group: ${{ (github.event_name == 'push' || github.event.inputs.command == 'doc-grep') && format('yujeung-trial-{0}-{1}', github.ref, github.event.inputs.command || 'push') || 'yujeung-collect' }}
+  group: ${{ ((github.event_name == 'push' && github.ref != 'refs/heads/main') || github.event.inputs.command == 'doc-grep') && format('yujeung-trial-{0}-{1}', github.ref, github.event.inputs.command || 'push') || 'yujeung-collect' }}
   cancel-in-progress: false
 
 jobs:
@@ -73,46 +73,8 @@ jobs:
         run: |
           CMD="${{ github.event.inputs.command || 'daily' }}"
           if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            # 파서/일정 로직을 바꾼 main 커밋은 기존 진행 케이스도 재파싱해야 새 규칙이 site.json에 반영된다.
-            if git diff-tree --no-commit-id --name-only -r "${GITHUB_SHA}" | grep -Eq '^yujeung/(schedule_parser|pipeline)\.py            # PR 브랜치: 실제 API 점검 + 백필 시험 실행(저장 안 함) 결과를 로그로
-            python -m yujeung verify || echo "::warning::verify 일부 실패"
-            # 실제 원문 점검: 이렘 9/23 기재정정(정정표가 본문 앞), 경남제약 9/18 기재정정(정정표가 본문 뒤·인수권 추후결정)
-            python -m yujeung parse-doc 20260923000500 || true
-            python -m yujeung parse-doc 20260918000349 || true
-            python -m yujeung backfill-cases --months 1 --dry-run --report all   # 진행 중 주주배정 전부 재파싱 결과
-            exit 0
-          fi
-          case "$CMD" in
-            daily)  python -m yujeung daily ;;
-            verify) python -m yujeung verify ;;
-            backfill-cases) python -m yujeung backfill-cases --months "${{ github.event.inputs.months || 5 }}" --report 210980 290650 009730 ;;
-            backfill-rights) python -m yujeung backfill-rights --start "${{ github.event.inputs.start }}" --end "${{ github.event.inputs.end }}" ;;
-            backtest)
-              # PR 브랜치에서 돌리면 백테스트 결과만 커밋(site.json·DB 는 main 의 정기 수집 몫 — 머지 충돌 방지)
-              NOEXP=""; [ "${{ github.ref }}" != "refs/heads/main" ] && NOEXP="--no-export"
-              if [ -n "${{ github.event.inputs.year }}" ]; then python -m yujeung backtest --year "${{ github.event.inputs.year }}" $NOEXP
-              else python -m yujeung backtest --aggregate-only; fi ;;
-            doc-grep) python -m yujeung doc-grep ${{ github.event.inputs.args }} ;;   # 키워드는 args 에 --kw ... 로 (기본: 인수권증서 배정기준일)
-            backtest-compare) python -m yujeung backtest --year "${{ github.event.inputs.year }}" --compare-tail ;;
-            *) echo "unknown command $CMD"; exit 1 ;;
-          esac
-
-      - name: Commit data if changed
-        if: always() && github.event_name != 'push'
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/site.json data/yujeung.sql
-          [ -e data/backtest.json ] && git add data/backtest.json data/backtest
-          if git diff --staged --quiet; then
-            echo "변경 없음 — 커밋 생략"
-          else
-            git commit -m "chore: 유증 데이터 자동 갱신 ($(TZ=Asia/Seoul date +%Y-%m-%d\ %H:%M) KST)"
-            # 긴 백테스트 도중 main 이 앞서 나갔으면 받아서 올린다 (데이터 파일은 봇만 쓴다)
-            git pull --rebase origin "${GITHUB_REF_NAME}" || { git rebase --abort; exit 1; }
-            git push
-          fi
-; then
+            # 파서/일정 로직 변경은 기존 진행 케이스도 다시 파싱해 새 규칙을 반영한다.
+            if git diff-tree --no-commit-id --name-only -r "${GITHUB_SHA}" | grep -Eq '^yujeung/(schedule_parser|pipeline)\.py$'; then
               CMD="backfill-cases"
             fi
           fi
@@ -141,7 +103,7 @@ jobs:
           esac
 
       - name: Commit data if changed
-        if: always() && github.event_name != 'push'
+        if: always() && (github.event_name != 'push' || github.ref == 'refs/heads/main')
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
