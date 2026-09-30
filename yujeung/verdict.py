@@ -89,7 +89,8 @@ def gate1(summary: dict, facts: dict, op_income: int | None, op_period: str | No
         ev_text = next((e.get("text") for e in ev if e.get("basis") in ("held", "negated", "unknown")), None)
     if ev_text:
         short = ev_text[:105] + ("…" if len(ev_text) > 105 else "")
-        detail.append(f'근거 "{short}"')
+        src = mh.get("rcept_dt") or mh.get("rcept_no")
+        detail.append(f'근거{(" "+src) if src else ""} "{short}"')
     if mh.get("conflict"):
         detail.append("근거 충돌")
     suffix = " · ".join(detail)
