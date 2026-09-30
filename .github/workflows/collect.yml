@@ -47,7 +47,7 @@ permissions:
 concurrency:
   # PR 시험 실행(push)·원문 점검(doc-grep)은 데이터를 커밋하지 않으므로 별도 줄 — 대기 중인 backtest·daily 를 밀어내지 않게
   group: ${{ ((github.event_name == 'push' && github.ref != 'refs/heads/main') || github.event.inputs.command == 'doc-grep') && format('yujeung-trial-{0}-{1}', github.ref, github.event.inputs.command || 'push') || 'yujeung-collect' }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   collect:
