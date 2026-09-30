@@ -209,6 +209,36 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 /* [18] 전략 배지 */
 .ssum{margin:6px 0 4px;padding:9px 12px;border:1px solid rgba(212,175,55,.45);border-radius:12px;background:rgba(212,175,55,.06);font-size:13px;font-weight:700;line-height:1.6}
 .ssum small{display:block;font-weight:500;color:var(--mut);font-size:11px}
+/* 집중 후보 엔진: 전체 케이스를 1~3개로 압축 */
+.focus{margin:18px 0 8px;border:1px solid rgba(212,175,55,.5);border-radius:18px;padding:15px;background:linear-gradient(135deg,rgba(212,175,55,.10),rgba(14,22,38,.96) 48%,rgba(91,141,239,.06))}
+.focus .fh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.focus .ft{font-size:13px;font-weight:800;color:var(--gold2);letter-spacing:.02em}
+.focus .fbig{font-size:clamp(22px,5vw,34px);font-weight:900;line-height:1.15;margin-top:3px}
+.focus .fsub{font-size:11.5px;color:var(--mut);line-height:1.55;margin-top:5px}
+.focus .fstats{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.focus .fstat{font-size:10.5px;padding:4px 7px;border:1px solid var(--line);border-radius:999px;background:#0b1322;color:var(--mut)}
+.focus .fstat b{color:var(--txt)}
+.focus .fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:8px;margin-top:11px}
+.focus .fc{border:1px solid var(--line);border-radius:12px;padding:11px;background:#0b1322;cursor:pointer;min-width:0}
+.focus .fc:hover{border-color:var(--gold)}
+.focus .fc.strong{border-color:#2f6b55;box-shadow:inset 3px 0 0 var(--grn)}
+.focus .fc.conditional{border-color:#7a6420;box-shadow:inset 3px 0 0 var(--gold)}
+.focus .fc.wait{border-color:#34496d;box-shadow:inset 3px 0 0 #6f8fbe}
+.focus .fc.reverse{border-color:#6d2a26;box-shadow:inset 3px 0 0 var(--red)}
+.focus .fctop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.focus .fcname{font-size:17px;font-weight:900}
+.focus .fclabel{font-size:10.5px;font-weight:800;border-radius:999px;padding:3px 7px;border:1px solid var(--line);white-space:nowrap}
+.focus .strong .fclabel{color:#8fe0bf;border-color:#2f6b55}.focus .conditional .fclabel{color:var(--gold2);border-color:#7a6420}
+.focus .wait .fclabel{color:#9dbcff;border-color:#34496d}.focus .reverse .fclabel{color:#f0a8a2;border-color:#6d2a26}
+.focus .fcwhy{font-size:12.5px;line-height:1.55;margin-top:7px}
+.focus .fcm{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.focus .fcm span{font-size:10.5px;color:var(--mut);border:1px solid var(--line);border-radius:7px;padding:3px 6px}
+.focus .fcm b{color:var(--txt)}
+.focus .fblock{font-size:11px;color:#e8c46a;margin-top:7px;line-height:1.5}
+.focus .fempty{margin-top:10px;border:1px dashed var(--line);border-radius:12px;padding:12px;color:var(--mut);font-size:12.5px;line-height:1.6}
+.focus .frev{margin-top:10px}
+.focus .frevtitle{font-size:11px;color:#f0a8a2;font-weight:800;margin-bottom:6px}
+@media (max-width:600px){.focus{padding:12px}.focus .fstats{justify-content:flex-start}.focus .fgrid{grid-template-columns:1fr}.focus .fcname{font-size:16px}}
 .strat{margin:-2px 0 12px;display:grid;gap:8px}
 .sitem{border:1px solid rgba(212,175,55,.55);border-radius:12px;padding:10px 12px;background:rgba(212,175,55,.08)}
 .sitem.wait,.sitem.past{border-style:dashed;background:#0b1322}
@@ -272,6 +302,7 @@ body{padding-top:calc(clamp(14px,3.5vw,38px) + env(safe-area-inset-top));padding
 </div>
 <div id="briefPreview" class="preview"></div>
 <div class="ssum" id="ssum" hidden></div>
+<div class="focus" id="focus"></div>
 
 <h2>오늘 볼 것 <small id="todayDate"></small></h2>
 <div class="today" id="today"></div>
@@ -562,6 +593,83 @@ function stratSummary(){
   const el=$('#ssum'); el.hidden=false;
   el.innerHTML=`지금 해당 전략 ${Object.keys(R.strategies).map(k=>`${R.strategies[k].medal}${live[k]}`).join(' · ')}<small>대기 ${Object.keys(R.strategies).map(k=>`${R.strategies[k].medal}${wait[k]}`).join(' · ')} · ⛔ ${ban}건 · 주주배정 진행 ${open.length}건 기준 · 전략 배지는 기존 판정(🟢🟡🔵⚪) 위에 얹는 행동 카드</small>`;
 }
+
+// ---- 집중 후보 엔진: 좋은 것을 억지로 만들지 않고 읽어야 할 종목 수를 줄인다 ----
+const FOCUS_AUTO_KEYS=new Set(['debt','dilution','major','op','pos52','uw']);
+function focusARow(c){
+  const rows=(c.a_margin?.rows||[]).filter(r=>r.issue!=null&&r.kind!=='사후 확정');
+  return rows.find(r=>r.kind==='확정')||rows.find(r=>r.kind==='예상 최종')||rows.find(r=>r.kind==='1차')||rows.at(-1)||null;
+}
+function focusInfo(c){
+  const auto=(c.gate1?.criteria||[]).filter(x=>FOCUS_AUTO_KEYS.has(x.key));
+  const fails=auto.filter(x=>x.status==='fail');
+  const unknowns=auto.filter(x=>x.status==='unknown');
+  const items=(c.strategy?.items||[]);
+  const buyLive=items.find(x=>x.state==='live'&&(x.key==='s2'||x.key==='s3'));
+  const buyWait=items.find(x=>x.state==='wait'&&(x.key==='s2'||x.key==='s3'));
+  const sellLive=items.find(x=>x.state==='live'&&x.key==='s1');
+  const supply=c.supply||{}, ar=focusARow(c);
+  const noFail=fails.length===0, noUnknown=unknowns.length===0;
+  const supplyOK=supply.volume_days==null||!supply.red;
+  let kind='exclude', label='제외', why='', blockers=[];
+  if(sellLive){
+    kind='reverse';label='매수 후보 아님';
+    why='현재 인수권 고평가 전략이 활성화되어 신규 매수보다 보유 인수권 매도 쪽을 먼저 보는 구간입니다.';
+  }else if(buyLive&&noFail&&noUnknown&&supplyOK){
+    kind='strong';label='강한 매수 검토';
+    why=buyLive.key==='s3'?'현재 인수권 매수+청약 행동 구간이며 자동 관문과 공급압력 필터를 모두 통과했습니다.':'현재 신주 상장일 매수 행동 구간이며 자동 관문과 공급압력 필터를 모두 통과했습니다.';
+  }else if(buyLive&&noFail){
+    kind='conditional';label='조건부 검토';
+    why='행동 구간은 열렸지만 확인되지 않은 관문 또는 공급압력 경계가 남아 있습니다.';
+  }else if((buyWait||c.gate1?.passed)&&noFail){
+    kind='wait';label='다음 후보';
+    why=buyWait?'구조 관문은 살아 있으나 실제 매수 행동 구간이 아직 오지 않았습니다.':'자동 구조 관문은 통과했지만 아직 가격·일정 행동 신호가 없습니다.';
+  }else{
+    const top=fails.slice(0,2).map(x=>x.text);
+    why=top.length?top.join(' · '):'현재 집중 후보 조건을 충족하지 못했습니다.';
+  }
+  blockers=unknowns.map(x=>x.text);
+  if(supply.red&&kind!=='exclude') blockers.push('공급압력 '+supply.volume_days+'일치 ≥ 경계 '+(supply.red_threshold_days??60)+'일');
+  if(buyWait) blockers.push('행동구간 대기 · '+((c.quick||{}).stage_name||'일정 진행 중'));
+  const urgency=kind==='strong'?0:kind==='conditional'?1:kind==='wait'?2:kind==='reverse'?3:9;
+  return {c:c,kind:kind,label:label,why:why,blockers:blockers,ar:ar,supply:supply,urgency:urgency,
+    liveKey:buyLive?.key||sellLive?.key||'',waitKey:buyWait?.key||'',fails:fails,unknowns:unknowns};
+}
+function focusMetrics(x){
+  const c=x.c,a=x.ar,s=x.supply,out=[];
+  if(c.summary?.dilution_ratio!=null) out.push(['희석',(c.summary.dilution_ratio*100).toFixed(0)+'%']);
+  if(c.strategy?.gap!=null) out.push(['괴리',pct(c.strategy.gap)]);
+  if(a?.cost_disc!=null) out.push(['총원가 쿠션',a.cost_disc.toFixed(1)+'%']);
+  if(a?.cushion_atr!=null) out.push(['쿠션/ATR',a.cushion_atr+'배']);
+  if(s?.volume_days!=null) out.push(['공급압력',s.volume_days+'일치']);
+  return out.slice(0,4);
+}
+function focusCard(x){
+  const m=focusMetrics(x).map(p=>'<span>'+esc(p[0])+' <b>'+esc(p[1])+'</b></span>').join('');
+  const block=x.blockers.length?'<div class="fblock">남은 관문 · '+x.blockers.slice(0,3).map(esc).join(' · ')+'</div>':'';
+  return '<div class="fc '+x.kind+'" onclick="jumpTo('+x.c.case_id+')"><div class="fctop"><div class="fcname">'+esc(x.c.corp_name)+'</div><span class="fclabel">'+esc(x.label)+'</span></div>'+
+    '<div class="fcwhy">'+esc(x.why)+'</div>'+(m?'<div class="fcm">'+m+'</div>':'')+block+'</div>';
+}
+function renderFocus(){
+  const open=DATA.cases.filter(c=>c.is_rights&&c.status==='open');
+  const all=open.map(focusInfo);
+  const strong=all.filter(x=>x.kind==='strong');
+  const cond=all.filter(x=>x.kind==='conditional');
+  const wait=all.filter(x=>x.kind==='wait');
+  const reverse=all.filter(x=>x.kind==='reverse');
+  const excluded=all.filter(x=>x.kind==='exclude');
+  const candidates=[...strong,...cond,...wait].sort((a,b)=>a.urgency-b.urgency).slice(0,3);
+  const headline=strong.length?'강한 매수 검토 후보 '+strong.length+'건':'오늘은 강한 매수 검토 후보 없음';
+  const sub=strong.length
+    ?'자동 관문·현재 행동 구간·공급압력까지 동시에 통과한 케이스만 올립니다. 카드 클릭 시 원자료와 검산 트레이스로 이동합니다.'
+    :'억지로 종목을 채우지 않습니다. 아래에는 조건부·대기 후보만 보여주고, 나머지는 자동으로 뒤로 보냅니다.';
+  const stat='<div class="fstats"><span class="fstat">강한 <b>'+strong.length+'</b></span><span class="fstat">조건부 <b>'+cond.length+'</b></span><span class="fstat">대기 <b>'+wait.length+'</b></span><span class="fstat">제외 <b>'+excluded.length+'</b></span></div>';
+  const cards=candidates.length?'<div class="fgrid">'+candidates.map(focusCard).join('')+'</div>':
+    '<div class="fempty">현재 자동 관문을 통과해 위로 올릴 매수 후보가 없습니다. 이 상태 자체가 레이더의 결론입니다.</div>';
+  const rev=reverse.length?'<div class="frev"><div class="frevtitle">반대 신호 · 신규 매수보다 피하거나 매도 쪽을 보는 구간</div><div class="fgrid">'+reverse.slice(0,2).map(focusCard).join('')+'</div></div>':'';
+  $('#focus').innerHTML='<div class="fh"><div><div class="ft">오늘의 집중 후보 · '+esc(kstToday())+'</div><div class="fbig">'+esc(headline)+'</div><div class="fsub">'+esc(sub)+'</div></div>'+stat+'</div>'+cards+rev+
+    '<div class="fsub">승격 규칙: 현재 매수 행동카드(전략2·3) 활성 + 자동 관문 실패/미확인 0 + 공급압력 경계 미통과. 업계순위·대체불가 같은 수동 판단은 상세 카드에서 별도 확인합니다.</div>';
+}
 function renderSScore(){
   const R=DATA.strategy_rules, rows=DATA.strategy_scorecard||[]; if(!R){$('#sscore').innerHTML='<div class="empty">다음 수집부터 표시됩니다.</div>';return;}
   const S=(BT&&BT.strategies)||{};
@@ -790,7 +898,7 @@ Promise.all([fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()),
   const age=(Date.now()-new Date(d.generated_at).getTime())/3600e3, stale=!(age<24);
   const rc=d.cases.filter(x=>x.is_rights&&x.status==='open').length;
   $('#chips').innerHTML=[['갱신',d.generated_at.replace('T',' ').slice(0,16)+(stale?` · ${Math.floor(age)}시간 전`:''),stale],['인수권 시세',d.last_rights_date||'—'],['주주배정 진행',rc+'건'],['가상 기록',(c.paper_trades??0)+'건'],['제외 공시',(c.excluded_disclosures??0)+'건']].map(([l,v,st])=>`<div class="chip${st?' stale':''}">${l}<b>${v}</b></div>`).join('');
-  stratSummary();renderToday();renderRights();renderCases();renderSScore();renderScore();renderExam(BT);
+  stratSummary();renderFocus();renderToday();renderRights();renderCases();renderSScore();renderScore();renderExam(BT);
 }).catch(e=>{$('#chips').innerHTML=`<div class="empty">data/site.json 을 읽지 못했습니다 (${esc(e.message)}). 로컬에선 python -m http.server 로 여세요.</div>`});
 // 웹앱(홈 화면)으로 열면 당겨서 새로고침이 없다 → 새로고침 버튼 + 10분 넘게 쉬다 돌아오면 자동 새로고침
 const STANDALONE=navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;
