@@ -120,8 +120,11 @@ def latest_facts(conn: sqlite3.Connection, case_id: int, as_of: str | None = Non
         for k, v in f.items():
             # 구버전 증권신고서 파서가 만든 최대주주 PASS는 재파싱 전에는 사용하지 않는다.
             # DART 재조회 실패 시에도 stale 100%가 실전 게이트를 여는 것보다 unknown이 안전하다.
-            if k == "major_holder" and r["kind"] == "estk" and (ex.get("major_holder_parser") or 0) < ESTK_FACTS_VERSION:
-                continue
+            if k == "major_holder":
+                # 자동 관문은 증권신고서(estk) 원문에 근거가 있는 최대주주 청약 정보만 사용한다.
+                # PIIC의 넓은 문맥 휴리스틱이나 구버전 estk 파싱값은 PASS 근거로 쓰지 않는다.
+                if r["kind"] != "estk" or (ex.get("major_holder_parser") or 0) < ESTK_FACTS_VERSION:
+                    continue
             if v or v is False:      # False 도 정보다 — '인수권 상장여부 아니오'(rights_listed) 가 빠지던 문제
                 facts[k] = v
     return facts
