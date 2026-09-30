@@ -196,7 +196,7 @@ def test_supply_shock():
            (40.0, 20.0, 20.0, 0.25, None)
     assert (s["baseline_label"], s["baseline_complete"], s["baseline_start"], s["baseline_end"]) == \
            ("현재 최근20(예비)", False, "2026-08-31", "2026-09-25")
-    assert s["red"]
+    assert s["red"] == (s["volume_days"] >= estimate.OVERHANG_RED_DAYS)
     done = estimate.supply(2_000_000, 0.4, 1000, daily, baseline_complete=True)
     assert done["baseline_label"] == "D-20~D-1" and done["baseline_complete"]
     assert estimate.supply(None, 0.4, 1000, daily) is None
