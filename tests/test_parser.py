@@ -275,3 +275,49 @@ def test_major_holder_sg_100_percent_difficult_then_70_percent_plan():
     got = extract_major_holder(text)
     assert got["level"] == "partial"
     assert got["initial_pct"] == 70.0
+
+
+def test_major_holder_evidence_70_plan_beats_negated_100():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "당사의 최대주주 및 특수관계인은 금번 구주주 청약에 배정물량의 70%를 참여할 계획입니다. "
+        "최근 시장 여건 상 주식담보대출이 어려운 상황이며 배정물량의 100%를 참여하기는 어려운 여건입니다."
+    )
+    got = extract_major_holder(text)
+    assert got["level"] == "partial"
+    assert got["initial_pct"] == 70.0
+    assert any(e["basis"] == "negated" and e["pct"] == 100.0 for e in got["evidence"])
+
+
+def test_major_holder_unrelated_100_does_not_create_full():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "최대주주 변경 가능성은 제한적일 것으로 판단합니다. "
+        "투자설명서는 직전에 교부한 투자설명서와 내용이 100% 동일합니다. "
+        "주권은 상장일부터 계좌에 입고되며 일반 주주가 참여할 수 있습니다."
+    )
+    got = extract_major_holder(text)
+    assert got is None or got["level"] != "full"
+
+
+def test_major_holder_held_120_is_not_initial_full():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "최대주주는 청약시점에 보유한 신주인수권 물량의 120%를 초과청약할 예정입니다."
+    )
+    got = extract_major_holder(text)
+    assert got["level"] == "unknown"
+    assert got["initial_pct"] is None
+    assert got["held_pct"] == 120.0
+
+
+def test_major_holder_conflicting_initial_evidence_locks():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "최대주주는 배정물량의 70%를 청약할 예정입니다. "
+        "최대주주는 이후 배정물량의 100%를 청약할 예정이라고 정정하였습니다."
+    )
+    got = extract_major_holder(text)
+    assert got["level"] == "unknown"
+    assert got["conflict"] is True
+    assert got["initial_pct"] is None
