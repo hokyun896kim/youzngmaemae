@@ -275,3 +275,14 @@ def test_major_holder_sg_100_percent_difficult_then_70_percent_plan():
     got = extract_major_holder(text)
     assert got["level"] == "partial"
     assert got["initial_pct"] == 70.0
+
+
+def test_major_holder_negated_full_does_not_hide_real_plan():
+    """'100%를 참여하기는 어려운'(ㅂ불규칙) 부정 구절은 지우되, 같은 문맥의 실제 참여계획은 살린다.
+    전량·불참 표현은 그대로."""
+    from yujeung.schedule_parser import extract_major_holder as f
+    got = f("최대주주는 배정물량의 100%를 참여하기는 어려운 상황입니다. 최대주주는 배정물량의 50%를 참여할 계획입니다.")
+    assert got["level"] == "partial" and got["pct"] == 50.0
+    assert f("최대주주는 배정물량 전량을 청약할 예정입니다.")["level"] == "full"
+    assert f("최대주주는 배정물량의 100%를 청약할 계획입니다.")["level"] == "full"
+    assert f("최대주주는 청약에 참여하지 않을 예정입니다.")["level"] == "none"
