@@ -340,7 +340,7 @@ def extract_major_holder(text: str) -> dict | None:
                 continue
             # "배정물량의 100%를 참여하기는 어려운 여건"처럼 전량 청약을 부정하는 문장은
             # 100% 참여로 판정하지 않는다. 이어지는 실제 참여계획(예: 70%)을 찾아야 한다.
-            if re.search(r"(?:100\s*%|전량|전부)[^.。]{0,100}(?:청약|참여)[^.。]{0,80}(?:어렵|부담|곤란|불가|않|아니)", ctx):
+            if re.search(r"(?:100\s*%|전량|전부)[^.。]{0,100}(?:청약|참여)[^.。]{0,80}(?:어렵|어려|부담|곤란|불가|않|아니)", ctx):
                 continue
             if re.search(r"(?:배정[^.。]{0,80})?(?:전량|전부)[^.。]{0,80}(?:청약|참여)|(?:청약|참여)[^.。]{0,80}(?:전량|전부)", ctx):
                 cur = {"level": "full", "pct": 100.0, "initial_pct": 100.0, "held_pct": None, "text": ctx[:220]}
@@ -362,7 +362,7 @@ def extract_major_holder(text: str) -> dict | None:
                 # 전량 참여를 부정하는 문장은 청약률 100% 후보에서 제외한다.
                 pct_tail = ctx[pm.start(): min(len(ctx), pm.end() + 180)]
                 if pct >= 100 and re.search(
-                        r"%[^.。]{0,90}(?:청약|참여)[^.。]{0,90}(?:어렵|부담|곤란|불가|않|아니)", pct_tail):
+                        r"%[^.。]{0,90}(?:청약|참여)[^.。]{0,90}(?:어렵|어려|부담|곤란|불가|않|아니)", pct_tail):
                     continue
                 dist = min(abs(pm.start() - ev.start()), abs(pm.end() - ev.end()))
                 cand.append((dist, pct, near))
