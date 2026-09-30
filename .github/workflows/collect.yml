@@ -79,12 +79,18 @@ jobs:
         run: python -m pytest -q
 
       - name: Run
+        env:
+          HEAD_COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           CMD="${{ github.event.inputs.command || 'daily' }}"
           if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            # 계산/화면 출력만 바꾼 커밋은 외부 API를 다시 긁지 않고 기존 DB에서 site.json만 재생성한다.
+            # 커밋 메시지에 [export-only] 를 넣으면 이 빠른 경로를 사용한다.
+            if [[ "$HEAD_COMMIT_MSG" == *"[export-only]"* ]]; then
+              CMD="export"
             # 일반 파서 변경은 daily 안의 버전 비교 재파싱으로 충분하다.
             # 정말 전체 기간 재수집이 필요할 때만 .force-backfill 로 명시 요청한다.
-            if [ -f .force-backfill ]; then
+            elif [ -f .force-backfill ]; then
               CMD="backfill-cases"
             fi
           fi
@@ -99,6 +105,7 @@ jobs:
           fi
           case "$CMD" in
             daily)  python -m yujeung daily ;;
+            export) python -m yujeung export ;;
             verify) python -m yujeung verify ;;
             backfill-cases) python -m yujeung backfill-cases --months "${{ github.event.inputs.months || 5 }}" --report 210980 290650 009730 ;;
             backfill-rights) python -m yujeung backfill-rights --start "${{ github.event.inputs.start }}" --end "${{ github.event.inputs.end }}" ;;
