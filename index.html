@@ -692,12 +692,13 @@ function aBox(c){
     <div><dt>총원가 할인율</dt><dd>${r.cost_disc==null?'—':`<b class="${r.cost_disc>0?'neg':'pos'}">${r.cost_disc.toFixed(1)}%</b>`}</dd></div><div><dt>쿠션 P−(R+I)</dt><dd>${w(r.cushion)}</dd></div>
     <div><dt>쿠션 ÷ ATR</dt><dd>${r.cushion_atr!=null?r.cushion_atr+'배':a.r==null&&r.r_for_1atr?`<span class="mut">R ≤ ${fmt(r.r_for_1atr)}이면 1배↑</span>`:'—'}</dd></div></dl></div>`).join('');
   const days=a.days.filter(d=>d.left!=null).map(d=>`${d.label} ${d.left}일`).join(' · ');
-  const sp=s?[`희석 ${s.dilution==null?'미확인':s.dilution+'%'}`,`신주 = 거래대금 ${s.value_days??'—'}일치`,`거래량 ${s.volume_days??'—'}일치`,'유통주식 대비 미확인',
+  const srange=s&&s.baseline_start&&s.baseline_end?` ${s.baseline_start.slice(5)}~${s.baseline_end.slice(5)}`:'';
+  const sp=s?[`기준 ${s.baseline_label||'현재 최근20(예비)'}${srange}`,`희석 ${s.dilution==null?'미확인':s.dilution+'%'}`,`신주 = 거래대금 ${s.value_days??'—'}일치`,`거래량 ${s.volume_days??'—'}일치`,'유통주식 대비 미확인',
     ...(s.listing_turnover!=null?[`D0 소화율 ${(s.listing_turnover*100).toFixed(1)}% ${s.listing_price_type?'('+s.listing_price_type+')':''}`]:[])].join(' · '):'';
   const legacyWarn=!a.decision_asof&&a.confirmed&&a.r_date&&a.r_date<kstToday()?'<div class="warnbox">⚠ 이 배포 데이터는 과거 P/R에 최신 확정발행가가 소급됐을 수 있습니다. 다음 데이터 갱신부터 A 당시값과 사후값을 분리합니다.</div>':'';
   return `<div class="abox"><div class="ah">A · 인수권 할인 포착 <small class="mut">괴리 → 총원가 쿠션 → ATR 쿠션 → 공급압력</small></div>
     ${legacyWarn}
-    <div>본주 P <b>${fmt(a.p)}</b> <span class="mut">(${esc(a.p_date||'')})</span> · 인수권 R ${a.r==null?'<span class="mut">시세 대기</span>':`<b>${fmt(a.r)}</b> <span class="mut">(${esc(a.r_date)})</span>`}
+    <div>본주 P <b>${fmt(a.p)}</b> <span class="mut">(${esc(a.p_date||'')}${a.price_type?' · '+esc(a.price_type):''})</span> · 인수권 R ${a.r==null?'<span class="mut">시세 대기</span>':`<b>${fmt(a.r)}</b> <span class="mut">(${esc(a.r_date)})</span>`}
     · ATR(${a.atr_n}) ${a.atr==null?na:`<b>${fmt(a.atr)}원</b> <span class="mut">(${a.atr_pct}%)</span>`}${a.confirmed?'':' · <b class="red">확정발행가 미정</b>'}</div>
     ${rows}
     ${a.gap_shift!=null?`<div>① → ② 괴리 차이 <b>${a.gap_shift>0?'+':''}${a.gap_shift}%p</b> <span class="mut">— ①은 비싸 보이는데 ②로 싸지면 시장이 발행가 인하를 먼저 반영한 것, ②에서도 비싸면 권리 자체가 비싼 것</span></div>`:''}
@@ -722,7 +723,7 @@ function quickBox(c){
   <div class="ql"><span>다시 볼 조건</span><div>${esc(q.recheck)}</div></div>
   <div class="ql"><span>발행가</span><div>${esc(is.text||'—')}</div></div>
   ${be?`<div class="ql"><span>본전선</span><div><b>${fmt(be.value)}원</b> — ${esc(be.how)} <span class="mut">(${esc(be.text)})</span></div></div>`:`<div class="ql"><span>본전선</span><div class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</div></div>`}
-  ${o?`<div class="ql"><span>매물 소화</span><div><b class="${o.red?'red':''}">상장 전 평소 거래량 ${o.days.toLocaleString()}일치</b> <span class="mut">(신주 ${fmt(o.new_shares)}주 ÷ D-20~D-1 평균 ${fmt(o.avg_volume)}주)</span></div></div>`:''}
+  ${so.volume_days!=null?`<div class="ql"><span>매물 소화</span><div><b class="${so.red?'red':''}">${esc(so.baseline_label||'현재 최근20(예비)')} 거래량 ${so.volume_days.toLocaleString()}일치</b> <span class="mut">(신주 ${fmt(so.new_shares)}주 ÷ 평균 ${fmt(so.avg_volume)}주${so.baseline_start&&so.baseline_end?' · '+esc(so.baseline_start)+'~'+esc(so.baseline_end):''})</span></div></div>`:o?`<div class="ql"><span>매물 소화</span><div><b class="${o.red?'red':''}">최근 거래량 ${o.days.toLocaleString()}일치</b> <span class="mut">(신주 ${fmt(o.new_shares)}주 ÷ 최근 평균 ${fmt(o.avg_volume)}주)</span></div></div>`:''}
   ${so.listing_turnover!=null?`<div class="ql"><span>D0 실측</span><div><b>신주 소화율 ${(so.listing_turnover*100).toFixed(1)}%</b> <span class="mut">${esc(so.listing_price_type||'')} · 평소 거래량의 ${so.listing_volume_multiple??'—'}배${so.listing_vwap?' · VWAP '+fmt(so.listing_vwap)+'원':''}${so.listing_close_vs_vwap!=null?' · 종가/VWAP '+pct(so.listing_close_vs_vwap):''}${so.listing_close_location!=null?' · 종가위치 '+so.listing_close_location+'%':''}</span></div></div>`:''}
   ${rows?`<table><thead><tr><th>시나리오 (본전선 대비)</th><th>상장일 주가</th><th>수익률</th></tr></thead><tbody>${rows}</tbody></table><div class="fn">${esc(q.table_note)}<br>2차 발행가는 반드시 권리락 <b>후</b> 주가로 계산합니다.</div>`:''}
   </div>`;
