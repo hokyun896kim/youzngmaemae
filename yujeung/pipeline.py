@@ -22,6 +22,20 @@ from .verdict import decide, gate1, reason_line
 ESTK_FACTS_VERSION = 5  # v5: 최대주주 청약을 근거문장 증거로 재파싱하고 stale 판정은 자동 사용 금지
 #                         v4: 부정된 100% 표현은 버리고 같은 문단의 실제 청약계획(예: 70%)을 사용
 
+def _tag_major_holder_evidence(mh: dict | None, rcept_no: str, rcept_dt: str | None = None) -> dict | None:
+    """최대주주 청약 근거에 공시 식별자를 붙여 나중에 원문까지 추적 가능하게 한다."""
+    if not mh:
+        return mh
+    out = dict(mh)
+    out["rcept_no"] = rcept_no
+    out["rcept_dt"] = rcept_dt or rcept_no[:8]
+    out["evidence"] = [
+        {**e, "rcept_no": rcept_no, "rcept_dt": rcept_dt or rcept_no[:8]}
+        for e in (mh.get("evidence") or [])
+    ]
+    return out
+
+
 SCHEDULE_LABELS = {
     "record_date": "신주배정기준일", "ex_rights_date": "권리락일(추정)", "rights_start": "인수권 상장 시작",
     "rights_end": "인수권 상장 종료", "price_fix_date": "확정발행가 산정일", "subs_start": "청약 시작",
@@ -252,7 +266,7 @@ def step_estk(dart: DartClient, conn, today: date, alerts: bool = True, discount
             d = next((v for v in map(extract_discount, texts) if v), None) if discount else None
             mh = next((v for v in map(extract_major_holder, texts) if v), None)
             if mh:
-                sch.extras["facts"]["major_holder"] = mh
+                sch.extras["facts"]["major_holder"] = _tag_major_holder_evidence(mh, rcept_no, rcept_no[:8])
             sch.extras["major_holder_checked"] = True
             sch.extras["major_holder_parser"] = ESTK_FACTS_VERSION
             if need_rights:
@@ -279,7 +293,7 @@ def recheck_estk_discount(dart: DartClient, conn) -> int:
     major_holder_checked 플래그로 원문에 관련 문구가 없는 케이스도 매 실행 재조회하지 않는다."""
     n = 0
     for r in conn.execute(
-            "SELECT s.rcept_no, s.extras_json FROM schedule_versions s JOIN disclosures d USING (rcept_no) "
+            "SELECT s.rcept_no, s.extras_json, d.rcept_dt FROM schedule_versions s JOIN disclosures d USING (rcept_no) "
             "JOIN cases c ON c.case_id=d.case_id WHERE d.kind='estk' AND c.status='open' AND c.is_rights=1").fetchall():
         ex = json.loads(r["extras_json"] or "{}")
         facts = ex.setdefault("facts", {})
@@ -301,7 +315,7 @@ def recheck_estk_discount(dart: DartClient, conn) -> int:
         if need_major:
             mh = next((v for v in (extract_major_holder(t) for t in texts) if v), None)
             if mh:
-                facts["major_holder"] = mh
+                facts["major_holder"] = _tag_major_holder_evidence(mh, r["rcept_no"], r["rcept_dt"])
             else:
                 facts.pop("major_holder", None)
             ex["major_holder_checked"] = True
