@@ -321,3 +321,50 @@ def test_major_holder_conflicting_initial_evidence_locks():
     assert got["level"] == "unknown"
     assert got["conflict"] is True
     assert got["initial_pct"] is None
+
+
+def test_major_holder_hypothetical_100_table_does_not_pass():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "최대주주 및 특수관계인 주식수 및 지분율 변동 예상. "
+        "증자 후 최대주주 100% 청약 참여 시 지분율 42.66%, "
+        "최대주주 120% 청약 참여/배정 시 지분율 42.98%."
+    )
+    got = extract_major_holder(text)
+    assert got is None or got["level"] != "full"
+
+
+def test_major_holder_skdnd_scenario_120_does_not_pass():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "최대주주 120% 청약이라는 보수적인 시나리오를 가정하더라도 "
+        "증자 후 일반주주 소유주식 비율은 기준을 상회합니다."
+    )
+    got = extract_major_holder(text)
+    assert got is None or got["initial_pct"] is None
+
+
+def test_major_holder_ecopro_excess_120_is_held_not_initial():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "금번 유상증자에 있어서 최대주주는 배정비율에 따라 3,638,443주를 배정받게 될 예정으로, "
+        "이에 더해 최대 120%까지 초과 청약을 진행할 계획입니다."
+    )
+    got = extract_major_holder(text)
+    assert got["level"] == "unknown"
+    assert got["initial_pct"] is None
+    assert got["held_pct"] == 120.0
+
+
+def test_major_holder_real_sg_wording_is_partial_70():
+    from yujeung.schedule_parser import extract_major_holder
+    text = (
+        "당사의 최대주주 및 특수관계인은 금번 구주주 청약에 배정물량의 70%를 참여"
+        "(예정발행가액 기준 8,284백만원)할 계획을 가지고 있으며, 특수관계인의 청약 참여 여부는 "
+        "공시서류 제출 전일 기준 확정된 바 없습니다. 당사의 최대주주는 박창호 개인입니다. "
+        "최근 시장 여건 상 주식담보대출이 어려운 상황이며 배정물량의 100%를 참여하기는 어려운 여건 속에서, "
+        "금번 주주배정 후 실권주 일반공모에 최대한 참여하기 위하여 배정물량의 70%를 참여하기로 결정한 상황입니다."
+    )
+    got = extract_major_holder(text)
+    assert got["level"] == "partial"
+    assert got["initial_pct"] == 70.0
