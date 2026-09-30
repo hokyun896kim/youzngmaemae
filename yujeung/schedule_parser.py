@@ -352,11 +352,17 @@ def extract_major_holder(text: str) -> dict | None:
             cand = []
             for pm in _PCT_RE.finditer(ctx):
                 pct = float(pm.group(1))
-                near = ctx[max(0, pm.start() - 90): min(len(ctx), pm.end() + 90)]
+                near = ctx[max(0, pm.start() - 110): min(len(ctx), pm.end() + 140)]
                 if re.search(r"지분율|보유\s*지분|합산\s*지분", near) and not re.search(
                         r"배정[^.。]{0,45}%|%[^.。]{0,45}(?:청약|참여)", near):
                     continue
                 if not re.search(r"배정|신주인수권|청약|참여|초과청약", near):
+                    continue
+                # '배정물량의 100%를 참여하기는 어려운'처럼 비율 바로 뒤에서
+                # 전량 참여를 부정하는 문장은 청약률 100% 후보에서 제외한다.
+                pct_tail = ctx[pm.start(): min(len(ctx), pm.end() + 180)]
+                if pct >= 100 and re.search(
+                        r"%[^.。]{0,90}(?:청약|참여)[^.。]{0,90}(?:어렵|부담|곤란|불가|않|아니)", pct_tail):
                     continue
                 dist = min(abs(pm.start() - ev.start()), abs(pm.end() - ev.end()))
                 cand.append((dist, pct, near))
