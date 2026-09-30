@@ -190,9 +190,15 @@ def test_second_price_vwap_and_projection():
 
 def test_supply_shock():
     daily = [(1000, 100_000)] * 25
-    s = estimate.supply(2_000_000, 0.4, 1000, daily, listing_volume=500_000)
+    s = estimate.supply(2_000_000, 0.4, 1000, daily, listing_volume=500_000,
+                        baseline_complete=False, baseline_start="2026-08-31", baseline_end="2026-09-25")
     assert (s["dilution"], s["volume_days"], s["value_days"], s["listing_turnover"], s["float_ratio"]) == \
            (40.0, 20.0, 20.0, 0.25, None)
+    assert (s["baseline_label"], s["baseline_complete"], s["baseline_start"], s["baseline_end"]) == \
+           ("현재 최근20(예비)", False, "2026-08-31", "2026-09-25")
+    assert s["red"]
+    done = estimate.supply(2_000_000, 0.4, 1000, daily, baseline_complete=True)
+    assert done["baseline_label"] == "D-20~D-1" and done["baseline_complete"]
     assert estimate.supply(None, 0.4, 1000, daily) is None
 
 
