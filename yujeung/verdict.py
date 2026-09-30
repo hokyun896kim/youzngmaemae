@@ -83,6 +83,15 @@ def gate1(summary: dict, facts: dict, op_income: int | None, op_period: str | No
         detail.append(f"최초 배정권리 대비 {initial_pct:.0f}%")
     if held_pct is not None:
         detail.append(f"청약시점 보유권리 대비 {held_pct:.0f}%")
+    ev = mh.get("evidence") or []
+    ev_text = next((e.get("text") for e in ev if e.get("basis") == "initial" and e.get("polarity") == "positive"), None)
+    if not ev_text:
+        ev_text = next((e.get("text") for e in ev if e.get("basis") in ("held", "negated", "unknown")), None)
+    if ev_text:
+        short = ev_text[:105] + ("…" if len(ev_text) > 105 else "")
+        detail.append(f'근거 "{short}"')
+    if mh.get("conflict"):
+        detail.append("근거 충돌")
     suffix = " · ".join(detail)
     if level == "full":
         crit.append(_c("major", "최대주주 최초 배정권리 전량 이상 청약", "pass",
