@@ -312,91 +312,134 @@ def _first_number(values: list[str], min_value: float = 0) -> float | None:
 _PCT_RE = re.compile(r"(\d{1,3}(?:\.\d+)?)\s*%")
 
 
-def _mh_sentence(text: str, pos: int, radius: int = 520) -> str:
-    """pos 주변 최대 두 문장. 17.53 같은 소수점은 문장 끝으로 오인하지 않는다."""
+def _mh_sentence(text: str, pos: int, radius: int = 700) -> str:
+    """pos 주변 문맥. 긴 표/문단에서도 anchor 자체가 잘리지 않도록 가운데를 보존한다."""
     lo, hi = max(0, pos - radius), min(len(text), pos + radius)
     marks = [lo + m.start() for m in re.finditer(r"(?<!\\d)[.。;](?!\\d)", text[lo:hi])]
     prev = [x for x in marks if x < pos]
     nxt = [x for x in marks if x >= pos]
-    a = (prev[-1] + 1) if prev else lo
-    # 최대 두 문장을 허용: '최대주주는 다음과 같습니다. 금번 배정물량의 70%...' 형태 대응
-    b = (nxt[1] + 1) if len(nxt) >= 2 else ((nxt[0] + 1) if nxt else hi)
-    return clean(text[a:b])[:900]
+    start = (prev[-1] + 1) if prev else lo
+    end = (nxt[1] + 1) if len(nxt) >= 2 else ((nxt[0] + 1) if nxt else hi)
+    raw = text[start:end]
+    # 표/붙은 텍스트는 한 '문장'이 수천 자가 될 수 있다. anchor 전후만 보존한다.
+    if len(raw) > 1200:
+        rel = max(0, min(len(raw), pos - start))
+        cut = max(0, min(rel - 320, len(raw) - 1200))
+        raw = raw[cut:cut + 1200]
+    return clean(raw)
+
+
+def _mh_pct_tail(sentence: str, pct: float) -> str:
+    """대상 %부터 다음 % 전까지만 반환. 뒤의 다른 비율에 붙은 부정어를 잘못 끌어오지 않는다."""
+    token = rf"{int(pct) if float(pct).is_integer() else pct:g}\s*%"
+    m = re.search(token, sentence)
+    if not m:
+        return sentence
+    tail = sentence[m.start():]
+    nxt = re.search(r"\d{1,3}(?:\.\d+)?\s*%", tail[m.end() - m.start():])
+    if nxt:
+        tail = tail[:m.end() - m.start() + nxt.start()]
+    return tail
 
 
 def _mh_negated(sentence: str, pct: float | None = None) -> bool:
     """'100% 참여하기는 어려운'처럼 그 비율의 실제 참여를 부정하는 문장."""
-    if pct is None:
-        return bool(re.search(r"(?:전량|전부)[^.。;]{0,100}(?:어렵|어려|불가|곤란|않|아니)", sentence))
-    token = rf"{int(pct) if float(pct).is_integer() else pct:g}\s*%"
-    return bool(re.search(token + r"[^.。;]{0,120}(?:청약|참여)?[^.。;]{0,100}(?:어렵|어려|불가|곤란|않|아니)", sentence))
+    target = sentence if pct is None else _mh_pct_tail(sentence, pct)
+    return bool(re.search(
+        r"(?:청약|참여)?[^.。;]{0,120}(?:어렵|어려|불가|곤란|않|아니|못하|힘들)",
+        target,
+    )) if pct is not None else bool(re.search(
+        r"(?:전량|전부)[^.。;]{0,120}(?:어렵|어려|불가|곤란|않|아니|못하|힘들)", target
+    ))
+
+
+def _mh_committed(ctx: str) -> bool:
+    """실제 청약 의사·계획·결정을 나타내는 문맥인지."""
+    return bool(re.search(
+        r"(?:청약|참여)[^.。;]{0,100}(?:계획|예정|결정|하기로|진행|의사|한다|합니다|할\s*것)"
+        r"|(?:계획|예정|결정|의사)[^.。;]{0,100}(?:청약|참여)",
+        ctx,
+    ))
+
+
+def _mh_hypothetical(ctx: str) -> bool:
+    """시나리오·가정·'청약 참여 시/경우'는 실제 참여계획과 분리한다."""
+    return bool(re.search(
+        r"시나리오|가정|보수적(?:인)?\s*가정"
+        r"|(?:청약|참여|배정)(?:\s*참여)?\s*(?:시|경우)"
+        r"|(?:청약|참여)할\s*경우"
+        r"|(?:시|경우)[^.。;]{0,25}(?:청약|참여)",
+        ctx,
+    ))
 
 
 def extract_major_holder(text: str) -> dict | None:
-    """최대주주 청약을 '근거문장' 단위로 추출한다.
+    """최대주주 청약을 근거문장 단위로 추출한다.
 
-    반환 evidence:
-      - basis=initial : 최초 배정권리/배정물량 대비 참여율
-      - basis=held    : 청약시점 보유 신주인수권 대비 참여율(초과청약 포함)
-      - basis=none/unknown/negated : 불참·미정·부정문
-
-    핵심 안전규칙:
-      * 지분율, 일반적인 100%, 전자증권/투자설명서 문구는 청약률로 쓰지 않는다.
-      * '배정'과 '청약/참여'가 같은 짧은 문맥 안에 있어야 initial 증거가 된다.
-      * 100% 참여가 어렵다는 부정문은 PASS 증거가 아니다.
-      * initial 증거끼리 값이 충돌하면 unknown으로 잠그고 자동 PASS하지 않는다.
+    initial = 최초 배정권리/배정물량 대비 실제 참여율
+    held    = 청약시점 보유권리 대비 초과청약률
+    시나리오·가정·부정문은 initial PASS 근거로 쓰지 않는다.
     """
     t = clean(text)
     evidence: list[dict] = []
 
-    # 최대주주/특수관계인 언급이 포함된 짧은 문장만 후보로 본다.
-    anchors = list(re.finditer(r"최대주주|특수관계인", t))
-    for a in anchors:
+    for a in re.finditer(r"최대주주|특수관계인", t):
         sent = _mh_sentence(t, a.start())
         if not re.search(r"청약|참여|신주인수권", sent):
             continue
 
-        # 명시적 불참/미정.
-        if re.search(r"(?:청약|참여)[^.。;]{0,50}(?:하지\s*않|안\s*할|불참|미참여)|(?:불참|미참여)[^.。;]{0,50}(?:청약|참여)", sent):
+        if re.search(r"(?:청약|참여)[^.。;]{0,60}(?:하지\s*않|안\s*할|불참|미참여)|(?:불참|미참여)[^.。;]{0,60}(?:청약|참여)", sent):
             evidence.append({"basis": "none", "pct": 0.0, "polarity": "negative", "text": sent})
-        if re.search(r"(?:청약|참여)[^.。;]{0,70}(?:미정|결정되지|확정되지)|(?:미정|결정되지|확정되지)[^.。;]{0,70}(?:청약|참여)", sent):
+        if re.search(r"(?:청약|참여)[^.。;]{0,90}(?:미정|결정되지|확정되지|확정된\s*바\s*없)|(?:미정|결정되지|확정되지|확정된\s*바\s*없)[^.。;]{0,90}(?:청약|참여)", sent):
             evidence.append({"basis": "unknown", "pct": None, "polarity": "unknown", "text": sent})
 
-        # '배정물량의 70%를 참여', '배정받은 주식의 100% 청약' 등 최초 배정 기준.
         init_patterns = [
-            r"(?:배정(?:받은|받을|예정|물량|주식|수량|권리)?|배정물량)[^.。;]{0,80}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,80}?(?:청약|참여)",
-            r"(?:청약|참여)[^.。;]{0,70}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,70}?(?:배정|배정물량)",
+            r"(?:배정(?:받은|받을|예정|물량|주식|수량|권리)?|배정물량)[^.。;]{0,100}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,100}?(?:청약|참여)",
+            r"(?:청약|참여)[^.。;]{0,90}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,90}?(?:배정|배정물량)",
         ]
         for rx in init_patterns:
             for m in re.finditer(rx, sent):
                 pct = float(m.group(1))
                 if not 0 <= pct <= 120:
                     continue
-                ev_text = sent
-                if _mh_negated(ev_text, pct):
-                    evidence.append({"basis": "negated", "pct": pct, "polarity": "negative", "text": ev_text})
+                local = sent[max(0, m.start() - 120): min(len(sent), m.end() + 180)]
+                if _mh_negated(local, pct):
+                    evidence.append({"basis": "negated", "pct": pct, "polarity": "negative", "text": local})
                     continue
-                evidence.append({"basis": "initial", "pct": pct, "polarity": "positive", "text": ev_text})
+                # '120%까지 초과 청약'은 최초 배정 100% 참여의 직접 증거가 아니다.
+                if re.search(r"초과\s*청약", local):
+                    evidence.append({"basis": "held", "pct": pct, "polarity": "positive", "text": local})
+                    continue
+                # 표의 '100% 청약 참여 시', '보수적 시나리오' 같은 가정값은 자동 PASS 금지.
+                if _mh_hypothetical(local) and not _mh_committed(local):
+                    evidence.append({"basis": "unknown", "pct": pct, "polarity": "unknown", "text": local})
+                    continue
+                # 최초 배정 청약률은 실제 계획/예정/결정 문구가 있을 때만 인정한다.
+                if not _mh_committed(local):
+                    continue
+                evidence.append({"basis": "initial", "pct": pct, "polarity": "positive", "text": local})
 
-        # '전량 청약/전량 참여'는 배정 문맥이 같은 문장에 있을 때만 100%로 본다.
-        if re.search(r"배정[^.。;]{0,100}(?:전량|전부)[^.。;]{0,80}(?:청약|참여)|(?:전량|전부)[^.。;]{0,80}(?:청약|참여)[^.。;]{0,100}배정", sent):
+        # 명시적 전량 청약도 실제 의사 표현일 때만 인정.
+        if re.search(r"배정[^.。;]{0,110}(?:전량|전부)[^.。;]{0,90}(?:청약|참여)|(?:전량|전부)[^.。;]{0,90}(?:청약|참여)[^.。;]{0,110}배정", sent):
             if _mh_negated(sent):
                 evidence.append({"basis": "negated", "pct": 100.0, "polarity": "negative", "text": sent})
-            else:
+            elif _mh_hypothetical(sent) and not _mh_committed(sent):
+                evidence.append({"basis": "unknown", "pct": 100.0, "polarity": "unknown", "text": sent})
+            elif _mh_committed(sent):
                 evidence.append({"basis": "initial", "pct": 100.0, "polarity": "positive", "text": sent})
 
-        # 보유 신주인수권/잔여 권리 기준 초과청약. 최초 배정 전량 여부와 절대 합치지 않는다.
         held_patterns = [
-            r"(?:보유|잔여)[^.。;]{0,80}(?:신주인수권|권리|배정주식|물량)[^.。;]{0,100}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,60}?(?:청약|참여|초과청약)",
-            r"(?:초과청약|청약|참여)[^.。;]{0,80}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,100}?(?:보유|잔여)[^.。;]{0,60}(?:신주인수권|권리|물량)",
+            r"(?:보유|잔여)[^.。;]{0,90}(?:신주인수권|권리|배정주식|물량)[^.。;]{0,110}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,70}?(?:청약|참여|초과\s*청약)",
+            r"(?:초과\s*청약|청약|참여)[^.。;]{0,90}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,110}?(?:보유|잔여)[^.。;]{0,70}(?:신주인수권|권리|물량)",
+            r"(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,80}?초과\s*청약",
         ]
         for rx in held_patterns:
             for m in re.finditer(rx, sent):
                 pct = float(m.group(1))
-                if 0 <= pct <= 200 and not _mh_negated(sent, pct):
-                    evidence.append({"basis": "held", "pct": pct, "polarity": "positive", "text": sent})
+                local = sent[max(0, m.start() - 120): min(len(sent), m.end() + 180)]
+                if 0 <= pct <= 200 and not _mh_negated(local, pct) and _mh_committed(local):
+                    evidence.append({"basis": "held", "pct": pct, "polarity": "positive", "text": local})
 
-    # 중복 근거 제거.
     uniq, seen = [], set()
     for e in evidence:
         key = (e["basis"], e.get("pct"), e["text"])
@@ -409,10 +452,9 @@ def extract_major_holder(text: str) -> dict | None:
     held = [e for e in evidence if e["basis"] == "held" and e["polarity"] == "positive"]
     none = [e for e in evidence if e["basis"] == "none"]
     unknown = [e for e in evidence if e["basis"] == "unknown"]
-
-    # 같은 문서 안에서 최초 배정 기준이 충돌하면 자동 판정 금지.
     initial_vals = sorted({e["pct"] for e in initial})
     held_vals = sorted({e["pct"] for e in held})
+
     if len(initial_vals) > 1:
         return {"level": "unknown", "initial_pct": None,
                 "held_pct": held_vals[-1] if held_vals else None,
