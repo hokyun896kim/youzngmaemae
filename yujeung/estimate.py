@@ -288,8 +288,11 @@ def a_margin(sch: dict, issue: dict, p: int | None, p_date: str | None, r: int |
 
 def supply(new_shares: int | None, dilution: float | None, p: int | None, daily: list[tuple[int, int]],
            listing_bar: dict | None = None, listing_price_type: str | None = None,
-           listing_volume: int | None = None) -> dict | None:
-    """공급충격: 기준 평균은 반드시 상장 전 D-20~D-1. listing_bar는 D0 실측(장중이면 명시)용."""
+           listing_volume: int | None = None, baseline_complete: bool = False,
+           baseline_start: str | None = None, baseline_end: str | None = None) -> dict | None:
+    """공급충격. D-1까지 자료가 실제로 채워졌을 때만 기준을 'D-20~D-1'로 확정한다.
+    그 전에는 같은 계산값을 '현재 최근20(예비)'로 명시해 미래 구간을 이미 관측한 것처럼 보이지 않게 한다.
+    listing_bar는 D0 실측(장중이면 명시)용."""
     if not new_shares:
         return None
     d = [(c, v) for c, v in daily[-AVG_VOLUME_DAYS:] if c and v]
@@ -300,10 +303,15 @@ def supply(new_shares: int | None, dilution: float | None, p: int | None, daily:
     lval = lb.get("value")
     lvwap = round(lval / lv) if lval and lv else None
     lclose, llow, lhigh = lb.get("close"), lb.get("low"), lb.get("high")
+    volume_days = round(new_shares / avg_vol, 1) if avg_vol else None
     return {"new_shares": new_shares, "dilution": round(dilution * 100, 1) if dilution is not None else None,
             "float_ratio": None, "n": len(d),
+            "baseline_complete": bool(baseline_complete),
+            "baseline_label": "D-20~D-1" if baseline_complete else "현재 최근20(예비)",
+            "baseline_start": baseline_start, "baseline_end": baseline_end,
             "value_days": round(new_shares * p / avg_val, 1) if p and avg_val else None,
-            "volume_days": round(new_shares / avg_vol, 1) if avg_vol else None,
+            "volume_days": volume_days,
+            "red": bool(volume_days is not None and volume_days >= OVERHANG_RED_DAYS),
             "avg_volume": round(avg_vol) if avg_vol else None,
             "listing_turnover": round(lv / new_shares, 3) if lv else None,
             "listing_volume_multiple": round(lv / avg_vol, 2) if lv and avg_vol else None,
