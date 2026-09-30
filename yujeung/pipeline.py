@@ -19,7 +19,8 @@ from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount,
                               extract_rights_period, find_dates, issue_kind, parse_documents, validate_schedule)
 from .verdict import decide, gate1, reason_line
 
-ESTK_FACTS_VERSION = 4  # v4: 부정된 100% 표현은 버리고 같은 문단의 실제 청약계획(예: 70%)을 사용
+ESTK_FACTS_VERSION = 5  # v5: 최대주주 청약을 근거문장 증거로 재파싱하고 stale 판정은 자동 사용 금지
+#                         v4: 부정된 100% 표현은 버리고 같은 문단의 실제 청약계획(예: 70%)을 사용
 
 SCHEDULE_LABELS = {
     "record_date": "신주배정기준일", "ex_rights_date": "권리락일(추정)", "rights_start": "인수권 상장 시작",
@@ -97,11 +98,16 @@ def latest_facts(conn: sqlite3.Connection, case_id: int, as_of: str | None = Non
     facts: dict = {}
     asof8 = (as_of or "").replace("-", "")
     for r in conn.execute(
-        "SELECT s.extras_json FROM schedule_versions s LEFT JOIN disclosures d USING (rcept_no) "
+        "SELECT s.extras_json, IFNULL(d.kind,'piic') AS kind FROM schedule_versions s LEFT JOIN disclosures d USING (rcept_no) "
         "WHERE s.case_id=? AND (?='' OR IFNULL(d.rcept_dt, substr(s.rcept_no,1,8))<=?) ORDER BY s.rcept_no",
         (case_id, asof8, asof8)):
-        f = json.loads(r[0] or "{}").get("facts") or {}
+        ex = json.loads(r["extras_json"] or "{}")
+        f = ex.get("facts") or {}
         for k, v in f.items():
+            # 구버전 증권신고서 파서가 만든 최대주주 PASS는 재파싱 전에는 사용하지 않는다.
+            # DART 재조회 실패 시에도 stale 100%가 실전 게이트를 여는 것보다 unknown이 안전하다.
+            if k == "major_holder" and r["kind"] == "estk" and (ex.get("major_holder_parser") or 0) < ESTK_FACTS_VERSION:
+                continue
             if v or v is False:      # False 도 정보다 — '인수권 상장여부 아니오'(rights_listed) 가 빠지던 문제
                 facts[k] = v
     return facts
