@@ -144,6 +144,22 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .abox .ar{margin:6px 0;background:#0b1322;border:1px solid var(--line);border-radius:9px;padding:7px 9px}
 .abox dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px 8px;margin-top:5px}
 .abox dt{color:var(--mut);font-size:10.5px}.abox dd{font-weight:700;font-variant-numeric:tabular-nums}
+.tracebox{margin-top:9px;border-top:1px dashed var(--line);padding-top:7px;font-size:11.5px}
+.tracebox summary{cursor:pointer;color:var(--gold2);font-weight:800;list-style:none}
+.tracebox summary::-webkit-details-marker{display:none}
+.tracebox summary::before{content:"▸";display:inline-block;margin-right:6px;color:var(--mut);transition:transform .15s ease}
+.tracebox[open] summary::before{transform:rotate(90deg)}
+.tracebox summary span{font-weight:500;color:var(--mut);margin-left:4px}
+.tracegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:7px;margin-top:7px}
+.trsec{background:#0b1322;border:1px solid var(--line);border-radius:9px;padding:7px 9px;line-height:1.55;min-width:0}
+.trsec .tt{display:block;color:var(--txt);font-size:11px;margin-bottom:3px}
+.trline{overflow-wrap:anywhere;color:var(--mut)}
+.trline b{color:var(--txt);font-variant-numeric:tabular-nums}
+.trsrc a{color:#9dbcff;text-decoration:none}.trsrc a:hover{text-decoration:underline}
+.trgates{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.trgate{font-size:10px;padding:2px 5px;border:1px solid var(--line);border-radius:6px;color:var(--mut)}
+.trgate.pass{color:#8fe0bf;border-color:#24503f}.trgate.fail{color:#f0a8a2;border-color:#5a2a27}
+.trgate.unknown,.trgate.manual{color:var(--gold2);border-color:#5a4a1a}
 .quick td,.quick th{padding:4px 8px;font-size:12px}
 .quick .fn{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5}
 .quick .red{color:#f0a8a2;font-weight:700}
@@ -709,6 +725,27 @@ function aBox(c){
     <small class="mut">총원가 할인율 = 1 − (R+I)/P. 괴리율보다 이 값과 원화 쿠션을 먼저 봅니다 — 본주를 공매도로 묶을 수 없어 상장일까지 본주가 빠지면 손실. 쿠션÷ATR 합격선은 H1 데이터가 쌓일 때까지 두지 않습니다.</small>
   </div>`;
 }
+function traceBox(c){
+  const a=c.a_margin||{}, s=c.supply||{}, hist=c.history||[], gates=(c.gate1&&c.gate1.criteria)||[], v=c.verdict||{};
+  const src=hist.slice(-3).reverse().map(h=>h.rcept_no
+    ? `<div class="trline trsrc"><a href="${dartUrl(h.rcept_no)}" target="_blank" rel="noopener">${esc(h.rcept_dt||'')} · ${esc(h.report_nm||'DART 공시')}</a></div>`
+    : `<div class="trline">${esc(h.rcept_dt||'')} · ${esc(h.report_nm||'공시')}</div>`).join('') || '<div class="trline">공시 원자료 미확인</div>';
+  const ar=(a.rows||[]).filter(r=>r.issue!=null).map(r=>`<div class="trline"><b>${esc(r.label)}</b> · I ${fmt(r.issue)} · P−I ${fmt(r.p_minus_i)} · R+I ${fmt(r.cost)} · 쿠션 ${fmt(r.cushion)} · 쿠션율 ${r.cost_disc==null?'—':r.cost_disc.toFixed(1)+'%'} · 쿠션/ATR ${r.cushion_atr==null?'—':r.cushion_atr+'배'}</div>`).join('') || '<div class="trline">인수권 시세/발행가 계산 대기</div>';
+  const gs=gates.map(g=>`<span class="trgate ${esc(g.status||'')}">${esc(g.label)} · ${esc(g.status||'—')}</span>`).join('');
+  const px=`P ${fmt(a.p)}원 (${esc(a.p_date||'—')}${a.price_type?' · '+esc(a.price_type):''}) · R ${a.r==null?'시세 대기':fmt(a.r)+'원 ('+esc(a.r_date||'—')+')'} · ATR(${a.atr_n??'—'}) ${a.atr==null?'—':fmt(a.atr)+'원'}`;
+  const sup=s&&s.volume_days!=null
+    ? `${esc(s.baseline_label||'현재 최근20(예비)')} ${esc(s.baseline_start||'—')}~${esc(s.baseline_end||'—')} · 평균거래량 ${fmt(s.avg_volume)}주 · 신주/평균 ${s.volume_days}일치 · 경계 ${s.red_threshold_days??'—'}일`
+    : '공급압력 계산 대기';
+  return `<details class="tracebox"><summary>검산 트레이스 <span>원자료 → 입력값 → 계산 → 신호</span></summary>
+    <div class="tracegrid">
+      <div class="trsec"><b class="tt">1 · 원자료</b>${src}</div>
+      <div class="trsec"><b class="tt">2 · 가격 입력</b><div class="trline">${px}</div></div>
+      <div class="trsec"><b class="tt">3 · A 계산 중간값</b>${ar}</div>
+      <div class="trsec"><b class="tt">4 · 공급압력 기준</b><div class="trline">${sup}</div></div>
+      <div class="trsec"><b class="tt">5 · 관문/최종 신호</b><div class="trline"><b>${esc(v.emoji||'')} ${esc(v.name||v.code||'—')}</b> · ${esc(v.reason||'')}</div><div class="trgates">${gs}</div></div>
+    </div>
+  </details>`;
+}
 function quickBox(c){
   const q=c.quick; if(!q) return '';
   const v=c.verdict||{}, be=q.breakeven, is=q.issue||{}, o=q.overhang, so=c.supply||{};
@@ -720,6 +757,7 @@ function quickBox(c){
     <div class="preview" id="pq${c.case_id}"></div></div>`:''}
   ${greenCheck(q)}
   ${aBox(c)}
+  ${traceBox(c)}
   <div class="ql"><span>다시 볼 조건</span><div>${esc(q.recheck)}</div></div>
   <div class="ql"><span>발행가</span><div>${esc(is.text||'—')}</div></div>
   ${be?`<div class="ql"><span>본전선</span><div><b>${fmt(be.value)}원</b> — ${esc(be.how)} <span class="mut">(${esc(be.text)})</span></div></div>`:`<div class="ql"><span>본전선</span><div class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</div></div>`}
