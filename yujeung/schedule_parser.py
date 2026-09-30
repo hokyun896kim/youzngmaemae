@@ -18,7 +18,8 @@ from datetime import date
 from .calendar_kr import ex_rights_date, shift_business_days
 
 # 파서 로직을 고치면 올린다 → 기존 공시가 다음 실행 때 재파싱된다 (pipeline.step_schedules)
-PARSER_VERSION = 14  # 14: 최대주주 청약을 최초 배정권리 대비 / 청약시점 보유권리 대비로 분리 — 초과청약만으로 전량 판정 금지
+PARSER_VERSION = 15  # 15: 최대주주 청약을 근거문장 기반 증거로 추출 — 배정기준/보유권리기준 분리, 충돌 시 자동 PASS 금지
+#                     14: 최대주주 청약을 최초 배정권리 대비 / 청약시점 보유권리 대비로 분리 — 초과청약만으로 전량 판정 금지
 #                     13: '실권주 미발행' + 잔액·총액인수 없음 → 인수방식 '실권주미발행'(관문1 탈락) — 아이에이
 #                     12: 인수권 문장의 '전자증권제도 시행일' 날짜 무시(기준일 미정일 때 — 경남제약 2019-09-16)
 #                     11: 옛 양식(2020) 인수권 기간 — 첫 후보가 무효여도 계속 탐색, '날짜~날짜 신주인수권증서 상장 거래기간'(증권신고서),
@@ -311,76 +312,130 @@ def _first_number(values: list[str], min_value: float = 0) -> float | None:
 _PCT_RE = re.compile(r"(\d{1,3}(?:\.\d+)?)\s*%")
 
 
-def extract_major_holder(text: str) -> dict | None:
-    """최대주주 청약 참여 수준.
-    지분율(예: '최대주주 및 특수관계인 지분율 17.53%')을 청약률로 오인하지 않는다.
-    청약/참여 표현 가까이에 있고, 배정물량·신주인수권 문맥과 직접 연결된 비율만 사용한다.
-    """
-    best = None
-    rank = {"full": 4, "partial": 3, "none": 3, "unknown": 1}
+def _mh_sentence(text: str, pos: int, radius: int = 520) -> str:
+    """pos 주변의 한두 문장만 잘라 최대주주 청약 근거로 쓴다. 장문의 다른 100%가 섞이지 않게 한다."""
+    a = max(text.rfind(".", max(0, pos - radius), pos),
+            text.rfind("。", max(0, pos - radius), pos),
+            text.rfind(";", max(0, pos - radius), pos))
+    a = max(0, a + 1)
+    ends = [x for x in (text.find(".", pos, min(len(text), pos + radius)),
+                         text.find("。", pos, min(len(text), pos + radius)),
+                         text.find(";", pos, min(len(text), pos + radius))) if x >= 0]
+    b = min(ends) + 1 if ends else min(len(text), pos + radius)
+    return clean(text[a:b])[:700]
 
-    for m in re.finditer(r"최대주주", text):
-        win = text[m.start(): m.start() + 1400]
-        events = list(re.finditer(r"청약|참여", win))
-        if not events:
+
+def _mh_negated(sentence: str, pct: float | None = None) -> bool:
+    """'100% 참여하기는 어려운'처럼 그 비율의 실제 참여를 부정하는 문장."""
+    if pct is None:
+        return bool(re.search(r"(?:전량|전부)[^.。;]{0,100}(?:어렵|어려|불가|곤란|않|아니)", sentence))
+    token = rf"{int(pct) if float(pct).is_integer() else pct:g}\s*%"
+    return bool(re.search(token + r"[^.。;]{0,120}(?:청약|참여)?[^.。;]{0,100}(?:어렵|어려|불가|곤란|않|아니)", sentence))
+
+
+def extract_major_holder(text: str) -> dict | None:
+    """최대주주 청약을 '근거문장' 단위로 추출한다.
+
+    반환 evidence:
+      - basis=initial : 최초 배정권리/배정물량 대비 참여율
+      - basis=held    : 청약시점 보유 신주인수권 대비 참여율(초과청약 포함)
+      - basis=none/unknown/negated : 불참·미정·부정문
+
+    핵심 안전규칙:
+      * 지분율, 일반적인 100%, 전자증권/투자설명서 문구는 청약률로 쓰지 않는다.
+      * '배정'과 '청약/참여'가 같은 짧은 문맥 안에 있어야 initial 증거가 된다.
+      * 100% 참여가 어렵다는 부정문은 PASS 증거가 아니다.
+      * initial 증거끼리 값이 충돌하면 unknown으로 잠그고 자동 PASS하지 않는다.
+    """
+    t = clean(text)
+    evidence: list[dict] = []
+
+    # 최대주주/특수관계인 언급이 포함된 짧은 문장만 후보로 본다.
+    anchors = list(re.finditer(r"최대주주|특수관계인", t))
+    for a in anchors:
+        sent = _mh_sentence(t, a.start())
+        if not re.search(r"청약|참여|신주인수권", sent):
             continue
 
-        # 불참/미정/전량은 해당 표현 주변 문맥에서 직접 판정한다.
-        for ev in events:
-            ctx = win[max(0, ev.start() - 240): min(len(win), ev.end() + 260)]
-            if re.search(r"참여하지\s*않|불참|미참여|청약하지\s*않", ctx):
-                cur = {"level": "none", "text": ctx[:220]}
-                if best is None or rank[cur["level"]] > rank[best["level"]]:
-                    best = cur
-                continue
-            if re.search(r"미정|결정되지|확정되지", ctx):
-                cur = {"level": "unknown", "text": ctx[:220]}
-                if best is None or rank[cur["level"]] > rank[best["level"]]:
-                    best = cur
-                continue
-            # 전량 참여 부정은 이벤트 전체를 버리지 않고, 아래 % 후보 단계에서
-            # 해당 100% 후보만 제외한다. 같은 문단의 실제 계획(예: 70%)은 살아 있어야 한다.
-            if re.search(r"(?:배정[^.。]{0,80})?(?:전량|전부)[^.。]{0,80}(?:청약|참여)|(?:청약|참여)[^.。]{0,80}(?:전량|전부)", ctx):
-                cur = {"level": "full", "pct": 100.0, "initial_pct": 100.0, "held_pct": None, "text": ctx[:220]}
-                if best is None or rank[cur["level"]] > rank[best["level"]]:
-                    best = cur
-                continue
+        # 명시적 불참/미정.
+        if re.search(r"(?:청약|참여)[^.。;]{0,50}(?:하지\s*않|안\s*할|불참|미참여)|(?:불참|미참여)[^.。;]{0,50}(?:청약|참여)", sent):
+            evidence.append({"basis": "none", "pct": 0.0, "polarity": "negative", "text": sent})
+        if re.search(r"(?:청약|참여)[^.。;]{0,70}(?:미정|결정되지|확정되지)|(?:미정|결정되지|확정되지)[^.。;]{0,70}(?:청약|참여)", sent):
+            evidence.append({"basis": "unknown", "pct": None, "polarity": "unknown", "text": sent})
 
-            # 청약/참여 표현에 가장 가까운 '배정물량/신주인수권 문맥의 %'만 후보로 삼는다.
-            cand = []
-            for pm in _PCT_RE.finditer(ctx):
-                pct = float(pm.group(1))
-                near = ctx[max(0, pm.start() - 110): min(len(ctx), pm.end() + 140)]
-                if re.search(r"지분율|보유\s*지분|합산\s*지분", near) and not re.search(
-                        r"배정[^.。]{0,45}%|%[^.。]{0,45}(?:청약|참여)", near):
+        # '배정물량의 70%를 참여', '배정받은 주식의 100% 청약' 등 최초 배정 기준.
+        init_patterns = [
+            r"(?:배정(?:받은|받을|예정|물량|주식|수량|권리)?|배정물량)[^.。;]{0,80}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,80}?(?:청약|참여)",
+            r"(?:청약|참여)[^.。;]{0,70}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,70}?(?:배정|배정물량)",
+        ]
+        for rx in init_patterns:
+            for m in re.finditer(rx, sent):
+                pct = float(m.group(1))
+                if not 0 <= pct <= 120:
                     continue
-                if not re.search(r"배정|신주인수권|청약|참여|초과청약", near):
+                ev_text = sent
+                if _mh_negated(ev_text, pct):
+                    evidence.append({"basis": "negated", "pct": pct, "polarity": "negative", "text": ev_text})
                     continue
-                # '배정물량의 100%를 참여하기는 어려운'처럼 비율 바로 뒤에서
-                # 전량 참여를 부정하는 문장은 청약률 100% 후보에서 제외한다.
-                pct_tail = ctx[pm.start(): min(len(ctx), pm.end() + 180)]
-                if pct >= 100 and re.search(
-                        r"%[^.。]{0,90}(?:청약|참여)[^.。]{0,90}(?:어렵|어려|부담|곤란|불가|않|아니)", pct_tail):
-                    continue
-                dist = min(abs(pm.start() - ev.start()), abs(pm.end() - ev.end()))
-                cand.append((dist, pct, near))
-            if not cand:
-                continue
-            _, pct, near = min(cand, key=lambda x: x[0])
+                evidence.append({"basis": "initial", "pct": pct, "polarity": "positive", "text": ev_text})
 
-            held = bool(re.search(r"초과청약|보유[^.。]{0,80}(?:배정|신주인수권|물량)", ctx))
-            if held and pct >= 100:
-                cur = {"level": "unknown", "held_pct": pct, "text": ctx[:220]}
+        # '전량 청약/전량 참여'는 배정 문맥이 같은 문장에 있을 때만 100%로 본다.
+        if re.search(r"배정[^.。;]{0,100}(?:전량|전부)[^.。;]{0,80}(?:청약|참여)|(?:전량|전부)[^.。;]{0,80}(?:청약|참여)[^.。;]{0,100}배정", sent):
+            if _mh_negated(sent):
+                evidence.append({"basis": "negated", "pct": 100.0, "polarity": "negative", "text": sent})
             else:
-                cur = {"level": "partial" if pct < 100 else "full",
-                       "pct": pct, "initial_pct": pct, "held_pct": None, "text": ctx[:220]}
-            if best is None or rank[cur["level"]] > rank[best["level"]]:
-                best = cur
-            elif best and best["level"] == cur["level"] == "partial":
-                # 같은 문단에 지분율과 청약률이 섞이면 청약/배정 표현에 가까운 값이 이미 cur에 들어온다.
-                best = cur
+                evidence.append({"basis": "initial", "pct": 100.0, "polarity": "positive", "text": sent})
 
-    return best
+        # 보유 신주인수권/잔여 권리 기준 초과청약. 최초 배정 전량 여부와 절대 합치지 않는다.
+        held_patterns = [
+            r"(?:보유|잔여)[^.。;]{0,80}(?:신주인수권|권리|배정주식|물량)[^.。;]{0,100}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,60}?(?:청약|참여|초과청약)",
+            r"(?:초과청약|청약|참여)[^.。;]{0,80}?(\d{1,3}(?:\.\d+)?)\s*%[^.。;]{0,100}?(?:보유|잔여)[^.。;]{0,60}(?:신주인수권|권리|물량)",
+        ]
+        for rx in held_patterns:
+            for m in re.finditer(rx, sent):
+                pct = float(m.group(1))
+                if 0 <= pct <= 200 and not _mh_negated(sent, pct):
+                    evidence.append({"basis": "held", "pct": pct, "polarity": "positive", "text": sent})
+
+    # 중복 근거 제거.
+    uniq, seen = [], set()
+    for e in evidence:
+        key = (e["basis"], e.get("pct"), e["text"])
+        if key not in seen:
+            seen.add(key)
+            uniq.append(e)
+    evidence = uniq
+
+    initial = [e for e in evidence if e["basis"] == "initial" and e["polarity"] == "positive"]
+    held = [e for e in evidence if e["basis"] == "held" and e["polarity"] == "positive"]
+    none = [e for e in evidence if e["basis"] == "none"]
+    unknown = [e for e in evidence if e["basis"] == "unknown"]
+
+    # 같은 문서 안에서 최초 배정 기준이 충돌하면 자동 판정 금지.
+    initial_vals = sorted({e["pct"] for e in initial})
+    held_vals = sorted({e["pct"] for e in held})
+    if len(initial_vals) > 1:
+        return {"level": "unknown", "initial_pct": None,
+                "held_pct": held_vals[-1] if held_vals else None,
+                "conflict": True, "evidence": evidence,
+                "text": "최초 배정권리 대비 청약률 근거가 서로 충돌 — 원문 확인 필요"}
+    if initial_vals:
+        pct = initial_vals[0]
+        return {"level": "full" if pct >= 100 else "partial",
+                "pct": pct, "initial_pct": pct,
+                "held_pct": held_vals[-1] if held_vals else None,
+                "conflict": False, "evidence": evidence,
+                "text": initial[0]["text"]}
+    if none:
+        return {"level": "none", "initial_pct": 0.0,
+                "held_pct": held_vals[-1] if held_vals else None,
+                "conflict": False, "evidence": evidence, "text": none[0]["text"]}
+    if held_vals or unknown:
+        return {"level": "unknown", "initial_pct": None,
+                "held_pct": held_vals[-1] if held_vals else None,
+                "conflict": False, "evidence": evidence,
+                "text": (held[0]["text"] if held else unknown[0]["text"])}
+    return None
 
 
 # 실측 아이에이: "미청약된 주식(실권주 및 단수주)은 미발행 처리합니다" / "실권주 및 단수주는 미발행 처리할 예정"
