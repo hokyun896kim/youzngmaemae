@@ -19,7 +19,7 @@ from .schedule_parser import (PARSER_VERSION, Schedule, clean, extract_discount,
                               extract_rights_period, find_dates, issue_kind, parse_documents, validate_schedule)
 from .verdict import decide, gate1, reason_line
 
-ESTK_FACTS_VERSION = 5  # v5: 최대주주 청약을 근거문장 증거로 재파싱하고 stale 판정은 자동 사용 금지
+ESTK_FACTS_VERSION = 6  # v6: 실제 청약계획·가정 시나리오·초과청약을 분리하고 anchor 절단 방지
 #                         v4: 부정된 100% 표현은 버리고 같은 문단의 실제 청약계획(예: 70%)을 사용
 
 def _tag_major_holder_evidence(mh: dict | None, rcept_no: str, rcept_dt: str | None = None) -> dict | None:
