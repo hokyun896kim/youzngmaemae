@@ -264,7 +264,7 @@ def step_estk(dart: DartClient, conn, today: date, alerts: bool = True, discount
             except DartError:
                 texts = []
             d = next((v for v in map(extract_discount, texts) if v), None) if discount else None
-            mh = next((v for v in map(extract_major_holder, texts) if v), None)
+            mh = extract_major_holder(" ".join(texts)) if texts else None
             if mh:
                 sch.extras["facts"]["major_holder"] = _tag_major_holder_evidence(mh, rcept_no, rcept_no[:8])
             sch.extras["major_holder_checked"] = True
