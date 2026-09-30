@@ -82,20 +82,9 @@ jobs:
         run: |
           CMD="${{ github.event.inputs.command || 'daily' }}"
           if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            # 필요할 때 .force-backfill 파일로 진행 케이스 전체 재파싱을 명시적으로 요청할 수 있다.
+            # 일반 파서 변경은 daily 안의 버전 비교 재파싱으로 충분하다.
+            # 정말 전체 기간 재수집이 필요할 때만 .force-backfill 로 명시 요청한다.
             if [ -f .force-backfill ]; then
-              CMD="backfill-cases"
-            fi
-            # 이벤트 payload의 변경 파일도 보조 신호로 사용한다.
-            PARSER_CHANGED=$(python - <<'PY'
-          import json, os
-          e=json.load(open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8"))
-          h=e.get("head_commit") or {}
-          paths=set((h.get("added") or []) + (h.get("modified") or []) + (h.get("removed") or []))
-          print("1" if paths & {"yujeung/schedule_parser.py", "yujeung/pipeline.py"} else "0")
-          PY
-            )
-            if [ "$PARSER_CHANGED" = "1" ]; then
               CMD="backfill-cases"
             fi
           fi
