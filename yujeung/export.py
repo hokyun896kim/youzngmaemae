@@ -127,12 +127,24 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         last_r["d"] if last_r else None, ind.get("atr_pct"), today, end_check,
         current_sch=sch, realized_issue=realized_issue
     )
+    # 같은 날 가격도 15:30 이후 수집이면 '종가'로 표시한다. 날짜만 같다고 장중값으로 취급하지 않는다.
+    if a_margin and p_date:
+        a_margin["price_type"] = strategy.price_type(p_date, today)
     lst = sch.get("listing_date")
     lst_bar = next((dict(r) for r in daily if r["bas_dd"] == lst), None) if lst else None
+    pre_listing = [r for r in daily if not lst or r["bas_dd"] < lst]
+    baseline_rows = pre_listing[-estimate.AVG_VOLUME_DAYS:]
+    baseline_start = baseline_rows[0]["bas_dd"] if baseline_rows else None
+    baseline_end = baseline_rows[-1]["bas_dd"] if baseline_rows else None
+    baseline_complete = False
+    if lst and baseline_end and len(baseline_rows) == estimate.AVG_VOLUME_DAYS:
+        d1 = prev_business_day(date.fromisoformat(lst)).isoformat()
+        baseline_complete = baseline_end == d1
     supply = estimate.supply(
         live["summary"].get("new_shares"), live["summary"].get("dilution_ratio"), p_now,
-        [(r["close"], r["volume"]) for r in daily if not lst or r["bas_dd"] < lst],
-        listing_bar=lst_bar, listing_price_type=(strategy.price_type(lst, today) if lst_bar else None)
+        [(r["close"], r["volume"]) for r in pre_listing],
+        listing_bar=lst_bar, listing_price_type=(strategy.price_type(lst, today) if lst_bar else None),
+        baseline_complete=baseline_complete, baseline_start=baseline_start, baseline_end=baseline_end
     )
     # 전략 행동카드는 과거 불변 판정 스냅샷이 아니라 현재 관문 상태로 판단한다.
     # 과거 판정은 성과 측정용으로만 보존한다.
