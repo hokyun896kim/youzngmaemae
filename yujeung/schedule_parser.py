@@ -315,7 +315,7 @@ _PCT_RE = re.compile(r"(\d{1,3}(?:\.\d+)?)\s*%")
 def _mh_sentence(text: str, pos: int, radius: int = 700) -> str:
     """pos 주변 문맥. 긴 표/문단에서도 anchor 자체가 잘리지 않도록 가운데를 보존한다."""
     lo, hi = max(0, pos - radius), min(len(text), pos + radius)
-    marks = [lo + m.start() for m in re.finditer(r"(?<!\\d)[.。;](?!\\d)", text[lo:hi])]
+    marks = [lo + m.start() for m in re.finditer(r"(?<!\d)[.。;](?!\d)", text[lo:hi])]
     prev = [x for x in marks if x < pos]
     nxt = [x for x in marks if x >= pos]
     start = (prev[-1] + 1) if prev else lo
