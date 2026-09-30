@@ -313,16 +313,15 @@ _PCT_RE = re.compile(r"(\d{1,3}(?:\.\d+)?)\s*%")
 
 
 def _mh_sentence(text: str, pos: int, radius: int = 520) -> str:
-    """pos 주변의 한두 문장만 잘라 최대주주 청약 근거로 쓴다. 장문의 다른 100%가 섞이지 않게 한다."""
-    a = max(text.rfind(".", max(0, pos - radius), pos),
-            text.rfind("。", max(0, pos - radius), pos),
-            text.rfind(";", max(0, pos - radius), pos))
-    a = max(0, a + 1)
-    ends = [x for x in (text.find(".", pos, min(len(text), pos + radius)),
-                         text.find("。", pos, min(len(text), pos + radius)),
-                         text.find(";", pos, min(len(text), pos + radius))) if x >= 0]
-    b = min(ends) + 1 if ends else min(len(text), pos + radius)
-    return clean(text[a:b])[:700]
+    """pos 주변 최대 두 문장. 17.53 같은 소수점은 문장 끝으로 오인하지 않는다."""
+    lo, hi = max(0, pos - radius), min(len(text), pos + radius)
+    marks = [lo + m.start() for m in re.finditer(r"(?<!\\d)[.。;](?!\\d)", text[lo:hi])]
+    prev = [x for x in marks if x < pos]
+    nxt = [x for x in marks if x >= pos]
+    a = (prev[-1] + 1) if prev else lo
+    # 최대 두 문장을 허용: '최대주주는 다음과 같습니다. 금번 배정물량의 70%...' 형태 대응
+    b = (nxt[1] + 1) if len(nxt) >= 2 else ((nxt[0] + 1) if nxt else hi)
+    return clean(text[a:b])[:900]
 
 
 def _mh_negated(sentence: str, pct: float | None = None) -> bool:
