@@ -312,6 +312,7 @@ def supply(new_shares: int | None, dilution: float | None, p: int | None, daily:
             "value_days": round(new_shares * p / avg_val, 1) if p and avg_val else None,
             "volume_days": volume_days,
             "red": bool(volume_days is not None and volume_days >= OVERHANG_RED_DAYS),
+            "red_threshold_days": OVERHANG_RED_DAYS,
             "avg_volume": round(avg_vol) if avg_vol else None,
             "listing_turnover": round(lv / new_shares, 3) if lv else None,
             "listing_volume_multiple": round(lv / avg_vol, 2) if lv and avg_vol else None,
