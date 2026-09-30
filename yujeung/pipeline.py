@@ -313,7 +313,7 @@ def recheck_estk_discount(dart: DartClient, conn) -> int:
             ex["discount_checked"] = True
             changed = True
         if need_major:
-            mh = next((v for v in (extract_major_holder(t) for t in texts) if v), None)
+            mh = extract_major_holder(" ".join(texts)) if texts else None
             if mh:
                 facts["major_holder"] = _tag_major_holder_evidence(mh, r["rcept_no"], r["rcept_dt"])
             else:
