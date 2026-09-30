@@ -343,13 +343,22 @@ def _mh_pct_tail(sentence: str, pct: float) -> str:
 
 
 def _mh_negated(sentence: str, pct: float | None = None) -> bool:
-    """'100% 참여하기는 어려운'처럼 그 비율의 실제 참여를 부정하는 문장."""
+    """청약률 자체를 부정하는 표현만 잡는다.
+    '70% 참여 계획 ... 주식담보대출이 어려운 상황'의 '어려운'을 70% 부정으로 오인하지 않는다.
+    """
     target = sentence if pct is None else _mh_pct_tail(sentence, pct)
+    neg = r"(?:어렵|어려|불가|곤란|않|아니|못하|힘들)"
+    if pct is not None:
+        # 예: '100%를 참여하기는 어려운', '100% 청약은 불가'
+        return bool(re.search(
+            r"(?:\d{1,3}(?:\.\d+)?\s*%)?\s*(?:를|을)?\s*"
+            r"(?:청약|참여)(?:하기|하는|할|하고|하여|해서)?(?:는|가|은|이)?"
+            r"[^.。;]{0,35}" + neg,
+            target,
+        ))
     return bool(re.search(
-        r"(?:청약|참여)?[^.。;]{0,120}(?:어렵|어려|불가|곤란|않|아니|못하|힘들)",
+        r"(?:전량|전부)[^.。;]{0,35}(?:청약|참여)[^.。;]{0,35}" + neg,
         target,
-    )) if pct is not None else bool(re.search(
-        r"(?:전량|전부)[^.。;]{0,120}(?:어렵|어려|불가|곤란|않|아니|못하|힘들)", target
     ))
 
 
