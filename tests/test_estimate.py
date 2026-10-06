@@ -241,3 +241,57 @@ def test_rights_end_check_delist_vs_last_trade():
     assert estimate.rights_end_check("2026-10-02", None)["status"] == "disclosed_only"
     assert estimate.rights_end_check(None, "2026-09-30")["last"] == "2026-09-29"
     assert estimate.rights_end_check(None, None) is None
+
+
+def test_iv_premium_implied_issue_and_exec():
+    """IV 프리미엄 = R/max(P−I,0)−1 (P≤I면 비율 없음) · 시장 암시 발행가 = P−R · 체결가능 총원가 C_exec."""
+    z = estimate._a_row("x", "1차", 8000, 8500, 300, 100)
+    assert z["iv"] == 0 and z["iv_zero"] and z["iv_premium"] is None
+    # 에코프로비엠 10/2: P 115,700 · R 29,050 → I_implied 86,650 (1차 89,500 보다 낮음)
+    sch = {"rights_start": "2026-09-24", "rights_end": "2026-10-02", "listing_date": "2026-11-05",
+           "payment_date": "2026-10-21", "issue_price": 89500, "issue_kind": "1차", "alloc_ratio": 0.0921}
+    issue = {"kind": "최종 추정", "issue_kind": "1차", "i1": 89500, "i2": 87038, "value": 87038}
+    a = estimate.a_margin(sch, issue, 115700, "2026-10-02", 29050, "2026-10-02", 5.0, date(2026, 10, 2),
+                          r_bar={"close": 29050, "volume": 1000, "value": 29_100_000, "high": 30000, "low": 28000},
+                          p_pre=120000)
+    im = a["implied"]
+    assert im["i_implied"] == 86650 and im["i_hat"] == 87038 and im["d_i"] == -388
+    ex = a["exec"]
+    assert ex["r_vwap"] == 29100 and ex["r_exec"] == 29100            # 종가보다 비싼 VWAP 을 체결가능가로
+    assert ex["cost"] == ex["r_exec"] + ex["fee"] + 87038 + ex["carry"] + ex["sell_cost"]
+    assert ex["carry_days"] == {"r": 34, "i": 15} and ex["cushion"] == 115700 - ex["cost"]
+    assert a["stage"]["code"] == "price" and a["stage"]["basis"] == "C_exec"
+    assert a["exposure"]["t_listing"] == 23                           # 10/2 ~ 11/5 거래일 (10/5·10/9 휴장)
+    assert a["funding"]["pct"] == round(0.0921 * 87038 / 120000 * 100, 1) and a["funding"]["basis"] == "권리락 전 종가"
+
+
+def test_supply_median_and_excess_turnover():
+    daily = [(1000, v) for v in [100] * 15 + [2000] * 5]                 # 급등 5일이 평균을 부풀림
+    s = estimate.supply(10_000, 0.3, 1000, daily, listing_volume=3000, post_volumes=[3000, 1000, 600, 500, 400, 300])
+    assert s["avg_volume"] == 575 and s["median_volume"] == 100
+    assert s["volume_days"] == 17.4 and s["volume_days_median"] == 100.0
+    assert s["listing_turnover"] == 0.3 and s["excess_turnover_d0"] == round((3000 - 575) / 10_000, 3)
+    assert s["excess_turnover_d0_d5"] == round((5800 - 6 * 575) / 10_000, 3)
+    assert s["effective_shares"] is None and "보호예수" in s["effective_note"]
+
+
+def test_b6_decompose_pretrend_shock_persistence():
+    days = [f"2026-06-{d:02d}" for d in range(1, 31)]
+    idx = [(d, 100.0) for d in days]                                    # 지수 보합 → 초과수익 = 종목 수익률
+    px = [100] * 22 + [88, 85, 85, 84, 82, 80, 80, 80]                  # t0 = 06-23 (공시 06-23)
+    b = estimate.b6_decompose(list(zip(days, px)), idx, "2026-06-23", "2026-06-30")
+    assert b["t0"] == "2026-06-23" and b["pretrend"]["ar"] == 0.0 and b["shock"]["ar"] == -15.0
+    assert b["persistence"]["ar"] == round((80 / 85 - 1) * 100, 1) and "공시 충격 우세" in b["read"]
+    pre = [130 - i for i in range(22)] + [107, 106, 106, 105, 104, 103, 103, 103]   # 이미 하락 중
+    b2 = estimate.b6_decompose(list(zip(days, pre)), idx, "2026-06-23", "2026-06-30")
+    assert "기존 하락 추세 우세" in b2["read"]
+    # 권리락 이론가 보정: Px/P = (P + r·I)/((1+r)·P)
+    assert round(estimate.ex_rights_factor(10000, 0.5, 7000), 4) == round(13500 / 15000, 4)
+
+
+def test_a_realized_points_mae_mfe():
+    bars = [{"bas_dd": f"2026-11-{d:02d}", "close": c} for d, c in
+            [(2, 100), (3, 90), (4, 120), (5, 110), (6, 105), (9, 100), (10, 99), (11, 98), (12, 97), (13, 96), (16, 95), (17, 94), (18, 93), (19, 92)]]
+    r = estimate.a_realized(100, "2026-11-01", "2026-11-04", bars)
+    assert [p["ret"] for p in r["points"]] == [20.0, 0.0, -2.0, -7.0]
+    assert r["mae"] == -10.0 and r["mfe"] == 20.0 and r["complete"]
