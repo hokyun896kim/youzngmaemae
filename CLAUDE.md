@@ -14,7 +14,7 @@
 - `yujeung/notify.py` — 알림 문구 생성·기록만 (발송 없음, 헤더 자동, 순번 = notifications.seq). 알림 역할은 사이트 '오늘 볼 것'
 - `yujeung/verdict.py` — 관문1(채무상환·희석·최대주주·영업흑자·52주·총액인수)+관문2(괴리) → 🟢🟡🔵⚪. 관문1 자동 항목 미확인이 있으면 🟢?/🟡?(green_q/yellow_q) 확인 필요 — 진입·측정은 `verdict.base()` 로 원래 판정을 따르고 집계는 따로
 - `yujeung/strategy.py` — [18] 전략 배지(🥇 비싼 인수권 팔기 · 🥈 상장일 매수 10거래일 · 🥉 적당히 싼 인수권+청약) + 금지 규칙(⛔). 조건 상수는 여기 한 곳, 근거 숫자는 data/backtest.json `strategies`(하드코딩 금지). 전략별 가상 성과 = strategy_trades. 전략 로직을 바꾸면 `STRATEGY_VERSION` 을 올린다 (🥈 는 판정 🟢/🟡(? 포함) = 관문1 통과일 때만)
-- `yujeung/estimate.py` — 카드 '30초 결론' + 발행가 추정(할인율 d) + 단계별 본전선 + 어림 손익표 + 매물 소화일수 + A 인수권 할인 포착(`a_margin`: 총원가 쿠션·ATR(10) 쿠션, 발행가 3층 ① 1차가 ② 예상 최종가(`second_price`: min(1주 VWAP, 기산일 종가)×(1−d), 매일) ③ 확정가) + 공급충격(`supply`). A 는 '괴리 차익'이 아님(무위험 아님)
+- `yujeung/estimate.py` — 카드 '30초 결론' + 발행가 추정(할인율 d) + 단계별 본전선 + 어림 손익표 + 매물 소화일수 + A 인수권 할인 포착(`a_margin`: 총원가 쿠션·ATR(10) 쿠션, 발행가 3층 ① 1차가 ② 예상 최종가(`second_price`: min(1주 VWAP, 기산일 종가)×(1−d), 매일) ③ 확정가) + 공급충격(`supply`) + 발행가 단계 배지(`issue_stage`: 예정/1차/예상최종/확정) + A 3단계(`a_stage`: 사전감시 → 가격관찰 → 조건충족, R 없으면 랭킹 금지). 괴리율은 화면·프롬프트에서 'IV 프리미엄'(내재가치 대비)으로 부르고, 시장 암시 발행가(`implied`)·체결가능 총원가(`a_exec`, 비용 상수는 가정)·노출기간·청약자금 부담률·`a_realized`(MAE/MFE, 사후값)·`b6_decompose`(B⑥ 공시 전 추세/충격/지속) A 는 '괴리 차익'이 아님(무위험 아님)
 - `yujeung/paper.py` — 가상 성과: 인수권 마지막 날 판정 스냅샷(불변) + 상장 후 수익률·지수 초과
 - `yujeung/backtest.py` — 과거 유증 백테스트(기출문제). 연도별 임시 DB, 미래 정보 금지(`dart.op_income_asof`), 결과 data/backtest/*.json + data/backtest.json. 설명·한계는 docs/backtest.md
 - `yujeung/naver.py` — 네이버 일봉(본주·지수), `dart.latest_op_income` — 직전 분기 영업이익

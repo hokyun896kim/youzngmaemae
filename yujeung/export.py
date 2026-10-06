@@ -54,7 +54,9 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         g = compute_gap(r["close"], stock, r["issue_price"] or sch.get("issue_price"))
         series.append({"d": r["bas_dd"], "name": r["isu_nm"], "rights": r["close"], "stock": stock,
                        "issue": r["issue_price"], "fair": g.fair if g else None, "gap": g.gap_pct if g else None,
-                       "cost": g.effective_cost if g else None, "disc": g.discount_pct if g else None})
+                       "cost": g.effective_cost if g else None, "disc": g.discount_pct if g else None,
+                       # 시장 암시 발행가 I_implied = P − R (인수권 가격이 암시하는 최종 발행가)
+                       "i_implied": stock - r["close"] if stock and r["close"] else None})
     stock_series = [{"d": r["bas_dd"], "close": r["close"], "price_type": strategy.price_type(r["bas_dd"], today)}
                     for r in conn.execute(
         "SELECT bas_dd, close FROM stock_daily WHERE code=? ORDER BY bas_dd DESC LIMIT 30", (c["stock_code"],))][::-1]
@@ -122,10 +124,14 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         date.fromisoformat(p_date) if p_date else today, decision_confirmed, [dict(r) for r in daily_asof]
     )
     realized_issue = quick["issue"] if quick["issue"].get("kind") == "확정" and not decision_confirmed else None
+    r_bar = next((dict(r) for r in r_rows if last_r and r["bas_dd"] == last_r["d"]), None)
+    ex = sch.get("ex_rights_date")
+    pre_ex = [r for r in daily_asof if ex and r["bas_dd"] < ex]
+    p_pre = pre_ex[-1]["close"] if pre_ex and ex <= (p_date or today.isoformat()) else None
     a_margin = estimate.a_margin(
         decision_sch, decision_issue, p_now, p_date, last_r["rights"] if last_r else None,
         last_r["d"] if last_r else None, ind.get("atr_pct"), today, end_check,
-        current_sch=sch, realized_issue=realized_issue
+        current_sch=sch, realized_issue=realized_issue, r_bar=r_bar, p_pre=p_pre
     )
     # 같은 날 가격도 15:30 이후 수집이면 '종가'로 표시한다. 날짜만 같다고 장중값으로 취급하지 않는다.
     if a_margin and p_date:
@@ -144,8 +150,33 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
         live["summary"].get("new_shares"), live["summary"].get("dilution_ratio"), p_now,
         [(r["close"], r["volume"]) for r in pre_listing],
         listing_bar=lst_bar, listing_price_type=(strategy.price_type(lst, today) if lst_bar else None),
-        baseline_complete=baseline_complete, baseline_start=baseline_start, baseline_end=baseline_end
+        baseline_complete=baseline_complete, baseline_start=baseline_start, baseline_end=baseline_end,
+        post_volumes=[r["volume"] for r in daily if lst and r["bas_dd"] >= lst][:6]
     )
+    # A_realized: 인수권 마지막 날 C_exec(확정발행가 적용)로 샀다면 — 사후값, 진입신호 아님
+    a_real = None
+    if a_margin and a_margin.get("r") and lst and lst <= today.isoformat():
+        fin = quick["issue"] if quick["issue"].get("kind") == "확정" else None
+        row = {"issue": fin["value"]} if fin and fin.get("value") else estimate.a_applied_row(a_margin)
+        if row and row.get("issue"):
+            ex_ = estimate.a_exec(row, a_margin["p"], a_margin["r"], r_bar, a_margin.get("atr"), sch, a_margin["r_date"])
+            a_real = estimate.a_realized(ex_["cost"], a_margin["r_date"], lst, [dict(r) for r in daily])
+            if a_real:
+                a_real["issue"] = row["issue"]
+                a_real["issue_basis"] = "확정발행가" if fin else "당시 적용 발행가(확정가 미수집)"
+    # B⑥ 3분할: 공시 전 추세 / 공시 충격 / 이후 지속 (시장지수 대비)
+    idx_name = paper.INDEX_OF.get(c["corp_cls"], "KOSPI")
+    idx_rows = conn.execute("SELECT bas_dd, close FROM index_daily WHERE idx=? AND close IS NOT NULL ORDER BY bas_dd",
+                            (idx_name,)).fetchall()
+    fr = c["first_rcept_dt"]
+    ann = f"{fr[:4]}-{fr[4:6]}-{fr[6:]}" if fr else None
+    ex_pre = [r for r in daily if ex and r["bas_dd"] < ex]
+    i_ex = (quick["issue"] or {}).get("i1") or (quick["issue"] or {}).get("value")
+    b6 = estimate.b6_decompose([(r["bas_dd"], r["close"]) for r in daily], [(r["bas_dd"], r["close"]) for r in idx_rows],
+                               ann, today.isoformat(), ex,
+                               estimate.ex_rights_factor(ex_pre[-1]["close"] if ex_pre else None,
+                                                         live["summary"].get("dilution_ratio") or sch.get("alloc_ratio"), i_ex),
+                               idx_name)
     # 전략 행동카드는 과거 불변 판정 스냅샷이 아니라 현재 관문 상태로 판단한다.
     # 과거 판정은 성과 측정용으로만 보존한다.
     strat = strategy.card(conn, c, sch, live["summary"], f["op_income"] if f else None, live["gap"], today,
@@ -170,6 +201,7 @@ def _case_json(conn: sqlite3.Connection, c: sqlite3.Row, cfg: Config, today: dat
                     # 현재 판정의 미확인 관문. 과거 paper 판정과 섞지 않는다.
                     "unconfirmed": unconfirmed(live["gate1"]) if v.endswith("_q") else []},
         "paper": paper_json, "quick": quick, "a_margin": a_margin, "supply": supply,
+        "a_realized": a_real, "b6": b6,
     })
     return base
 
