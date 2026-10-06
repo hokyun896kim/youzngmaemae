@@ -144,6 +144,19 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .abox .ar{margin:6px 0;background:#0b1322;border:1px solid var(--line);border-radius:9px;padding:7px 9px}
 .abox dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px 8px;margin-top:5px}
 .abox dt{color:var(--mut);font-size:10.5px}.abox dd{font-weight:700;font-variant-numeric:tabular-nums}
+/* 카드 맨 위 4지표: 총원가 할인율 | 쿠션÷ATR | 공급일수 | 발행가 단계 (괴리율보다 먼저) */
+.k4row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0 4px}
+.k4{background:#0b1322;border:1px solid var(--line);border-radius:10px;padding:7px 9px;min-width:0}
+.k4 span{display:block;font-size:10.5px;color:var(--mut)}.k4 b{font-size:16px;font-variant-numeric:tabular-nums}
+.k4 small{display:block;font-size:10px;color:var(--mut);line-height:1.4;margin-top:1px}
+@media (max-width:600px){.k4row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* 발행가 단계 배지 — 예정 / 1차 / 예상최종 / 확정 강제 */
+.isb{display:inline-block;font-size:10.5px;font-weight:800;border-radius:6px;padding:1px 6px;margin-right:4px;vertical-align:1px;border:1px solid}
+.isb.planned{color:#9aa6bd;border-color:#3a4760}.isb.first{color:#9dbcff;border-color:#34496d}
+.isb.final_est{color:var(--gold2);border-color:#7a6420}.isb.confirmed{color:#8fe0bf;border-color:#2f6b55}
+/* A 3단계: 사전감시(랭킹 아님) → 가격관찰 → 조건충족 */
+.a3{font-size:11.5px;line-height:1.5;border-radius:8px;padding:5px 8px;margin:4px 0 2px;border:1px solid var(--line);color:var(--mut)}
+.a3 b{margin-right:4px}.a3.prewatch b{color:#9aa6bd}.a3.price b{color:#9dbcff}.a3.met{border-color:#2f6b55}.a3.met b{color:#8fe0bf}
 .tracebox{margin-top:9px;border-top:1px dashed var(--line);padding-top:7px;font-size:11.5px}
 .tracebox summary{cursor:pointer;color:var(--gold2);font-weight:800;list-style:none}
 .tracebox summary::-webkit-details-marker{display:none}
@@ -598,7 +611,38 @@ function stratSummary(){
 const FOCUS_AUTO_KEYS=new Set(['debt','dilution','major','op','pos52','uw']);
 function focusARow(c){
   const rows=(c.a_margin?.rows||[]).filter(r=>r.issue!=null&&r.kind!=='사후 확정');
-  return rows.find(r=>r.kind==='확정')||rows.find(r=>r.kind==='예상 최종')||rows.find(r=>r.kind==='1차')||rows.at(-1)||null;
+  const k=c.a_margin?.stage?.row_kind;
+  return (k&&rows.find(r=>r.kind===k))||rows.find(r=>r.kind==='확정')||rows.find(r=>r.kind==='예상 최종')||rows.find(r=>r.kind==='1차')||rows.at(-1)||null;
+}
+// 발행가 단계 배지: '발행가'를 단계 없이 쓰지 않는다 (1차가 → 확정가 착각 방지)
+const ISTAGE={'확정':{code:'confirmed',label:'확정'},'1차':{code:'first',label:'1차'}};
+function kindStage(k){return ISTAGE[k]||{code:'planned',label:'예정'};}   // 공시 발행가 구분(s.issue_kind)
+function issueStage(is){   // estimate.issue_stage 와 같은 규칙 (구버전 site.json 대비)
+  if(!is) return null; if(is.stage) return is.stage;
+  const k=is.kind; return k==='확정'?ISTAGE['확정']:k==='최종 추정'?{code:'final_est',label:'예상최종'}:(k==='1차 공시'||(k==='공시'&&is.issue_kind==='1차'))?ISTAGE['1차']:{code:'planned',label:'예정'};
+}
+function stageBadge(st){st=st||{code:'planned',label:'예정'};return `<span class="isb ${esc(st.code)}">${esc(st.label)}</span>`;}
+function aStageChip(c){
+  const a=c.a_margin; if(!a) return '';
+  if(a.stage) return `<div class="a3 ${esc(a.stage.code)}"><b>${esc(a.stage.label)}</b>${esc(a.stage.why||'')}</div>`;
+  return (a.end_check&&a.end_check.last&&a.end_check.last<kstToday())?'<div class="a3"><b>A 해당 없음</b>인수권 매매 종료</div>':'';
+}
+// 카드 맨 위 4지표 — 괴리율(연구지표)보다 먼저 본다
+function topKpi(c){
+  if(!c.is_rights) return '';
+  const a=c.a_margin, r=focusARow(c), s=c.supply||{}, q=c.quick||{}, o=q.overhang;
+  // 인수권 거래 중이면 A 의사결정에 쓴 발행가 단계, 끝났으면 현재 발행가 단계 (확정 후 '확정 전' 오표시 방지)
+  const live=a&&a.stage, st=live?(a.issue_stage||issueStage(q.issue)):issueStage(q.issue)||(a&&a.issue_stage);
+  const iv=live&&r&&r.issue!=null?r.issue:((q.issue||{}).value??(r&&r.issue));
+  const past=a&&!live&&a.r!=null?`인수권 마지막 시세 ${esc((a.r_date||'').slice(5))} · 당시 발행가 기준`:'';
+  const noR=a&&a.stage&&a.r==null, days=s.volume_days!=null?s.volume_days:(o?o.days:null), red=s.volume_days!=null?s.red:(o&&o.red);
+  const cell=(l,v,sub)=>`<div class="k4"><span>${l}</span><b>${v}</b>${sub?`<small>${sub}</small>`:''}</div>`;
+  const cd=r&&r.cost_disc!=null?`<b class="${r.cost_disc>0?'neg':'pos'}">${r.cost_disc>0?'+':''}${r.cost_disc.toFixed(1)}%</b>`:`<span class="mut">${noR?'R 대기':'—'}</span>`;
+  const ca=r&&r.cushion_atr!=null?r.cushion_atr+'배':`<span class="mut">${noR?'R 대기':'—'}</span>`;
+  return `<div class="k4row">${cell('총원가 할인율',cd,past||(r&&r.cost!=null?`1 − (R+I)/P · R+I ${fmt(r.cost)}`:noR?'인수권 시세 전':''))}
+    ${cell('쿠션 ÷ ATR',ca,r&&r.cushion!=null?`쿠션 ${fmt(r.cushion)}원 · 합격선 없음${past?' · '+past.split(' · ')[0]:''}`:noR&&r&&r.r_for_1atr?`R ≤ ${fmt(r.r_for_1atr)}이면 1배`:'')}
+    ${cell('공급일수',days!=null?`<b class="${red?'red':''}">${days.toLocaleString()}일</b>`:'<span class="mut">—</span>',days!=null?'신주 ÷ 평균 거래량'+(s.baseline_label?` · ${esc(s.baseline_label)}`:''):'')}
+    ${cell('발행가 단계',stageBadge(st)+(iv!=null?fmt(iv):''),st&&st.code!=='confirmed'?'확정 전 — 확정가로 읽지 말 것':'')}</div>${aStageChip(c)}`;
 }
 function focusInfo(c){
   const auto=(c.gate1?.criteria||[]).filter(x=>FOCUS_AUTO_KEYS.has(x.key));
@@ -637,12 +681,13 @@ function focusInfo(c){
 }
 function focusMetrics(x){
   const c=x.c,a=x.ar,s=x.supply,out=[];
-  if(c.summary?.dilution_ratio!=null) out.push(['희석',(c.summary.dilution_ratio*100).toFixed(0)+'%']);
-  if(c.strategy?.gap!=null) out.push(['괴리',pct(c.strategy.gap)]);
-  if(a?.cost_disc!=null) out.push(['총원가 쿠션',a.cost_disc.toFixed(1)+'%']);
-  if(a?.cushion_atr!=null) out.push(['쿠션/ATR',a.cushion_atr+'배']);
-  if(s?.volume_days!=null) out.push(['공급압력',s.volume_days+'일치']);
-  return out.slice(0,4);
+  const st=c.a_margin?.issue_stage||issueStage(c.quick?.issue);
+  const wait=c.a_margin?.stage&&c.a_margin.r==null?'R 대기':'—';
+  out.push(['총원가 할인율',a?.cost_disc!=null?a.cost_disc.toFixed(1)+'%':wait]);
+  out.push(['쿠션/ATR',a?.cushion_atr!=null?a.cushion_atr+'배':wait]);
+  if(s?.volume_days!=null) out.push(['공급일수',s.volume_days+'일']);
+  out.push(['발행가',st?st.label:'예정']);
+  return out;
 }
 function focusCard(x){
   const m=focusMetrics(x).map(p=>'<span>'+esc(p[0])+' <b>'+esc(p[1])+'</b></span>').join('');
@@ -663,12 +708,17 @@ function renderFocus(){
   const sub=strong.length
     ?'자동 관문·현재 행동 구간·공급압력까지 동시에 통과한 케이스만 올립니다. 카드 클릭 시 원자료와 검산 트레이스로 이동합니다.'
     :'억지로 종목을 채우지 않습니다. 아래에는 조건부·대기 후보만 보여주고, 나머지는 자동으로 뒤로 보냅니다.';
+  const aSt=k=>open.filter(c=>c.a_margin?.stage?.code===k);
+  const aMet=aSt('met'), aPrice=aSt('price'), aPre=aSt('prewatch');
+  const aLine='<div class="fsub">A 인수권 할인 포착 · 조건충족 <b>'+aMet.length+'</b>'+(aMet.length?' ('+aMet.map(c=>esc(c.corp_name)).join(', ')+')':'')+
+    ' · 가격관찰 <b>'+aPrice.length+'</b>'+(aPrice.length?' ('+aPrice.map(c=>esc(c.corp_name)).join(', ')+')':'')+
+    ' · 사전감시 <b>'+aPre.length+'</b> <span class="mut">— 사전감시는 R(인수권 시세)이 없어 후보·랭킹 대상이 아닙니다</span></div>';
   const stat='<div class="fstats"><span class="fstat">강한 <b>'+strong.length+'</b></span><span class="fstat">조건부 <b>'+cond.length+'</b></span><span class="fstat">대기 <b>'+wait.length+'</b></span><span class="fstat">제외 <b>'+excluded.length+'</b></span></div>';
   const cards=candidates.length?'<div class="fgrid">'+candidates.map(focusCard).join('')+'</div>':
     '<div class="fempty">현재 자동 관문을 통과해 위로 올릴 매수 후보가 없습니다. 이 상태 자체가 레이더의 결론입니다.</div>';
   const rev=reverse.length?'<div class="frev"><div class="frevtitle">반대 신호 · 신규 매수보다 피하거나 매도 쪽을 보는 구간</div><div class="fgrid">'+reverse.slice(0,2).map(focusCard).join('')+'</div></div>':'';
   $('#focus').innerHTML='<div class="fh"><div><div class="ft">오늘의 집중 후보 · '+esc(kstToday())+'</div><div class="fbig">'+esc(headline)+'</div><div class="fsub">'+esc(sub)+'</div></div>'+stat+'</div>'+cards+rev+
-    '<div class="fsub">승격 규칙: 현재 매수 행동카드(전략2·3) 활성 + 자동 관문 실패/미확인 0 + 공급압력 경계 미통과. 업계순위·대체불가 같은 수동 판단은 상세 카드에서 별도 확인합니다.</div>';
+    aLine+'<div class="fsub">승격 규칙: 현재 매수 행동카드(전략2·3) 활성 + 자동 관문 실패/미확인 0 + 공급압력 경계 미통과. 업계순위·대체불가 같은 수동 판단은 상세 카드에서 별도 확인합니다.</div>';
 }
 function renderSScore(){
   const R=DATA.strategy_rules, rows=DATA.strategy_scorecard||[]; if(!R){$('#sscore').innerHTML='<div class="empty">다음 수집부터 표시됩니다.</div>';return;}
@@ -704,8 +754,8 @@ function caseCard(c){
   <div class="meta">최초 공시 ${c.first_rcept_dt} · ${esc(c.ic_mthn||'증자방식 미상')}</div>
   ${c.is_rights&&c.status==='open'?`<span class="stage">${esc(caseStage(s))}</span>`:''}</div>
   <div>${c.is_rights?'<span class="badge gold">주주배정 · 인수권</span>':'<span class="badge">관찰</span>'} ${debt?'<span class="badge red">채무상환형</span>':''} ${big?'<span class="badge red">초대형 희석</span>':''} ${fssReq?'<span class="badge red">금감원 정정요구</span>':''}</div></div>
-  ${c.is_rights?stratBox(c):''}${vbar}${quick}${c.is_rights?raceBar(c):''}${crit}
-  <div class="grid">${kv('발행가'+(s.issue_kind?` <span class="mut">(${esc(s.issue_kind)})</span>`:''),fmt(s.issue_price)+'원')}${kv('배정비율',s.alloc_ratio!=null?Number(s.alloc_ratio).toFixed(4):'—')}${kv('신주÷기존주',sm.dilution_ratio!=null?(sm.dilution_ratio*100).toFixed(0)+'%':'—')}${kv('모집 규모',sm.total_amount?Math.round(sm.total_amount/1e8).toLocaleString()+'억':'—')}</div>
+  ${topKpi(c)}${c.is_rights?stratBox(c):''}${vbar}${quick}${c.is_rights?raceBar(c):''}${crit}
+  <div class="grid">${kv('공시 발행가',stageBadge(kindStage(s.issue_kind))+fmt(s.issue_price)+'원')}${kv('배정비율',s.alloc_ratio!=null?Number(s.alloc_ratio).toFixed(4):'—')}${kv('신주÷기존주',sm.dilution_ratio!=null?(sm.dilution_ratio*100).toFixed(0)+'%':'—')}${kv('모집 규모',sm.total_amount?Math.round(sm.total_amount/1e8).toLocaleString()+'억':'—')}</div>
   ${purp?`<div class="meta">자금 목적</div><div class="purp">${purp}</div><div class="legend">${leg}</div>`:''}
   ${c.is_rights?timeline(s):''}${swarn}
   ${c.is_rights?gauge(c):spark(c.rights_series||[])}
@@ -823,7 +873,7 @@ function aBox(c){
   return `<div class="abox"><div class="ah">A · 인수권 할인 포착 <small class="mut">괴리 → 총원가 쿠션 → ATR 쿠션 → 공급압력</small></div>
     ${legacyWarn}
     <div>본주 P <b>${fmt(a.p)}</b> <span class="mut">(${esc(a.p_date||'')}${a.price_type?' · '+esc(a.price_type):''})</span> · 인수권 R ${a.r==null?'<span class="mut">시세 대기</span>':`<b>${fmt(a.r)}</b> <span class="mut">(${esc(a.r_date)})</span>`}
-    · ATR(${a.atr_n}) ${a.atr==null?na:`<b>${fmt(a.atr)}원</b> <span class="mut">(${a.atr_pct}%)</span>`}${a.confirmed?'':' · <b class="red">확정발행가 미정</b>'}</div>
+    · ATR(${a.atr_n}) ${a.atr==null?na:`<b>${fmt(a.atr)}원</b> <span class="mut">(${a.atr_pct}%)</span>`}${a.confirmed?'':' · <b class="red">확정발행가 미정</b>'} · 적용 발행가 단계 ${stageBadge(a.issue_stage||issueStage((c.quick||{}).issue))}</div>
     ${rows}
     ${a.gap_shift!=null?`<div>① → ② 괴리 차이 <b>${a.gap_shift>0?'+':''}${a.gap_shift}%p</b> <span class="mut">— ①은 비싸 보이는데 ②로 싸지면 시장이 발행가 인하를 먼저 반영한 것, ②에서도 비싸면 권리 자체가 비싼 것</span></div>`:''}
     ${f?`<div class="mut">예상 최종가 입력: 1차 ${w(f.i1)} · 2차 추정 ${w(f.i2)} = min(1주 VWAP ${w(f.vwap)}, ${f.projected?'최근':'기산일'} 종가 ${w(f.close_base)}${f.base_date?` · ${esc(f.base_date)}`:''}) × (1−${f.d!=null?Math.round(f.d*100)+'%':'할인율 미확인'}) · 최저발행가 제한 미확인 · 산정일 ${esc(f.fix_date||'미확인')}${f.projected?' (산정일 전 — 오늘 기준 예상)':''}${f.vwap_src?` · VWAP: ${esc(f.vwap_src)}`:''}</div>`:''}
@@ -867,7 +917,7 @@ function quickBox(c){
   ${aBox(c)}
   ${traceBox(c)}
   <div class="ql"><span>다시 볼 조건</span><div>${esc(q.recheck)}</div></div>
-  <div class="ql"><span>발행가</span><div>${esc(is.text||'—')}</div></div>
+  <div class="ql"><span>발행가</span><div>${stageBadge(issueStage(is))}${esc(is.text||'—')}</div></div>
   ${be?`<div class="ql"><span>본전선</span><div><b>${fmt(be.value)}원</b> — ${esc(be.how)} <span class="mut">(${esc(be.text)})</span></div></div>`:`<div class="ql"><span>본전선</span><div class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</div></div>`}
   ${so.volume_days!=null?`<div class="ql"><span>매물 소화</span><div><b class="${so.red?'red':''}">${esc(so.baseline_label||'현재 최근20(예비)')} 거래량 ${so.volume_days.toLocaleString()}일치</b> <span class="mut">(신주 ${fmt(so.new_shares)}주 ÷ 평균 ${fmt(so.avg_volume)}주${so.baseline_start&&so.baseline_end?' · '+esc(so.baseline_start)+'~'+esc(so.baseline_end):''})</span></div></div>`:o?`<div class="ql"><span>매물 소화</span><div><b class="${o.red?'red':''}">최근 거래량 ${o.days.toLocaleString()}일치</b> <span class="mut">(신주 ${fmt(o.new_shares)}주 ÷ 최근 평균 ${fmt(o.avg_volume)}주)</span></div></div>`:''}
   ${so.listing_turnover!=null?`<div class="ql"><span>D0 실측</span><div><b>신주 소화율 ${(so.listing_turnover*100).toFixed(1)}%</b> <span class="mut">${esc(so.listing_price_type||'')} · 평소 거래량의 ${so.listing_volume_multiple??'—'}배${so.listing_vwap?' · VWAP '+fmt(so.listing_vwap)+'원':''}${so.listing_close_vs_vwap!=null?' · 종가/VWAP '+pct(so.listing_close_vs_vwap):''}${so.listing_close_location!=null?' · 종가위치 '+so.listing_close_location+'%':''}</span></div></div>`:''}

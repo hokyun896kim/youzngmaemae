@@ -84,8 +84,34 @@ def second_price(sch: dict, d: float, bars: list[dict], today: date) -> dict | N
             "fix_date": fix, "projected": not fix or today.isoformat() < fix, "d": d}
 
 
+# 발행가 단계 배지 — 화면·프롬프트에서 '발행가'를 단계 없이 쓰지 않는다 (1차가를 확정가로 착각 방지)
+#   예정: 이사회 예정발행가만 있음(1차 미산정 — 값은 1차 추정) / 1차: 1차 발행가 산정·공시 /
+#   예상최종: 권리락 후 min(1차, 2차 추정) 매일 재계산 / 확정: 확정발행가 공시(또는 청약 시작 후)
+ISSUE_STAGES = {"planned": "예정", "first": "1차", "final_est": "예상최종", "confirmed": "확정"}
+
+
+def issue_stage(issue: dict | None) -> dict:
+    kind = (issue or {}).get("kind")
+    if kind == "확정":
+        code = "confirmed"
+    elif kind == "최종 추정":
+        code = "final_est"
+    elif kind == "1차 공시" or (kind == "공시" and (issue or {}).get("issue_kind") == "1차"):
+        code = "first"
+    else:                     # 1차 추정 · 공시(예정) · 미확인
+        code = "planned"
+    return {"code": code, "label": ISSUE_STAGES[code]}
+
+
 def issue_estimate(sch: dict, d: float | None, r: float | None, closes: list[tuple[str, int]],
                    today: date, confirmed: bool = False, bars: list[dict] | None = None) -> dict:
+    out = _issue_estimate(sch, d, r, closes, today, confirmed, bars)
+    out["stage"] = issue_stage(out)
+    return out
+
+
+def _issue_estimate(sch: dict, d: float | None, r: float | None, closes: list[tuple[str, int]],
+                    today: date, confirmed: bool = False, bars: list[dict] | None = None) -> dict:
     """closes: [(YYYY-MM-DD, 종가)] 오름차순. 반환 value = 이번 계산에 쓸 발행가.
     공시 발행가는 구분(sch.issue_kind)에 따라 다르게 쓴다:
       확정 → 그대로 / 1차('1차' 라벨 또는 1차 산정일 이후 공시) → I1 로 사용 /
@@ -278,12 +304,52 @@ def a_margin(sch: dict, issue: dict, p: int | None, p_date: str | None, r: int |
         "base_date": sp.get("base_date"), "window": sp.get("window"), "fix_date": sch.get("price_fix_date"),
         "projected": sp.get("projected"), "floor": None, "rule": "min(1차, 2차) — 회사별 산식은 증권신고서 확인"}
     cur = current_sch or sch
-    return {"p": p, "p_date": p_date, "r": r, "r_date": r_date, "atr": atr, "atr_n": A_ATR_N, "atr_pct": atr_pct,
-            "confirmed": confirmed, "rows": rows, "end_check": end_check, "final": final,
-            "decision_asof": p_date, "price_type": "종가" if p_date and p_date < today.isoformat() else "동일일 스냅샷",
-            "gap_shift": round(g2 - g1, 1) if g1 is not None and g2 is not None else None,
-            "days": [{"key": k, "label": lab, "date": cur.get(k), "left": trading_days_left(today, cur.get(k))}
-                     for k, lab in A_DAY_KEYS]}
+    out = {"p": p, "p_date": p_date, "r": r, "r_date": r_date, "atr": atr, "atr_n": A_ATR_N, "atr_pct": atr_pct,
+           "confirmed": confirmed, "rows": rows, "end_check": end_check, "final": final,
+           "issue_stage": issue_stage(issue),
+           "decision_asof": p_date, "price_type": "종가" if p_date and p_date < today.isoformat() else "동일일 스냅샷",
+           "gap_shift": round(g2 - g1, 1) if g1 is not None and g2 is not None else None,
+           "days": [{"key": k, "label": lab, "date": cur.get(k), "left": trading_days_left(today, cur.get(k))}
+                    for k, lab in A_DAY_KEYS]}
+    out["stage"] = a_stage(out, cur, today)
+    return out
+
+
+# A 3단계 — R(인수권 실측 시세)이 없을 때부터 'A 후보'로 랭킹하지 않는다.
+#   사전감시: 인수권 상장 전(R 없음) — 감시 목록일 뿐 후보·랭킹 아님. 쿠션이 ATR 1배 남는 R 상한만 미리 본다
+#   가격관찰: R 실측 + 아직 매매 가능 + 적용 발행가 기준 원화 쿠션 ≤ 0 (본주보다 비싸거나 같음)
+#   조건충족: R 실측 + 아직 매매 가능 + 적용 발행가 기준 원화 쿠션 > 0 (R+I < P)
+# 쿠션÷ATR 은 합격선 없이 연속형으로만 표시한다 (brief: H1 데이터 축적 전 임의 기준 금지).
+# 인수권 매매종료일이 지났으면 A 단계 없음(None).
+A_STAGES = {"prewatch": "A 사전감시", "price": "A 가격관찰", "met": "A 조건충족"}
+A_ROW_ORDER = ("확정", "예상 최종", "1차")     # 적용 발행가 = 가장 늦은 단계 (사후 확정은 의사결정에 안 씀)
+
+
+def a_applied_row(a: dict | None) -> dict | None:
+    rows = [r for r in (a or {}).get("rows") or [] if r.get("issue") is not None]
+    return next((r for k in A_ROW_ORDER for r in rows if r["kind"] == k), None)
+
+
+def a_stage(a: dict, sch: dict, today: date) -> dict | None:
+    last = (a.get("end_check") or {}).get("last") or sch.get("rights_end")
+    if last and last < today.isoformat():
+        return None
+    row = a_applied_row(a)
+    base = {"row_kind": row["kind"] if row else None}
+    if not a.get("r"):
+        start = sch.get("rights_start")
+        when = f"인수권 상장 {start}" if start else "인수권 상장일 미정"
+        hint = f" · 쿠션이 ATR 1배 남는 R 상한 {row['r_for_1atr']:,}원" if row and row.get("r_for_1atr") else ""
+        return {**base, "code": "prewatch", "label": A_STAGES["prewatch"],
+                "why": f"R 없음({when}) — 감시만, 랭킹 대상 아님{hint}"}
+    if row and row.get("cushion") is not None and row["cushion"] > 0:
+        return {**base, "code": "met", "label": A_STAGES["met"],
+                "why": f"R+I {row['cost']:,} < P {a['p']:,} — 원화 쿠션 {row['cushion']:,}원 "
+                       f"(총원가 할인율 {row['cost_disc']:+.1f}%, 쿠션÷ATR {row['cushion_atr'] if row['cushion_atr'] is not None else '미확인'})"}
+    why = (f"R+I {row['cost']:,} ≥ P {a['p']:,} — 쿠션 {row['cushion']:,}원"
+           + (f" · R ≤ {row['r_for_1atr']:,}원이면 쿠션 ATR 1배" if row.get("r_for_1atr") else "")
+           if row and row.get("cost") else "적용 발행가 미확인")
+    return {**base, "code": "price", "label": A_STAGES["price"], "why": why}
 
 
 def supply(new_shares: int | None, dilution: float | None, p: int | None, daily: list[tuple[int, int]],

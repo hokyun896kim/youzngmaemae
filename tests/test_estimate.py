@@ -169,6 +169,34 @@ def test_a_margin_three_layers():
     assert estimate.trading_days_left(date(2026, 9, 28), "2026-09-27") is None
 
 
+def test_issue_stage_badge():
+    """발행가 배지는 예정 / 1차 / 예상최종 / 확정 네 가지로 강제 — 1차가를 확정가로 착각하지 않게."""
+    st = lambda **k: estimate.issue_stage(k)["label"]
+    assert st(kind="확정") == "확정" and st(kind="최종 추정") == "예상최종"
+    assert st(kind="1차 공시") == "1차" and st(kind="공시", issue_kind="1차") == "1차"
+    assert st(kind="1차 추정", issue_kind="예정") == "예정" and st(kind="공시", issue_kind="예정") == "예정"
+    assert estimate.issue_stage(None)["label"] == "예정"
+    # 삼성바이오로직스형: 1차 공시가 권리락 전이면 '1차' — 확정 아님
+    sch = {"issue_price": 1174000, "issue_kind": "1차", "ex_rights_date": "2026-11-01"}
+    i = estimate.issue_estimate(sch, 0.15, 0.1, [("2026-10-05", 1500000)], date(2026, 10, 6))
+    assert i["value"] == 1174000 and i["stage"]["label"] == "1차"
+
+
+def test_a_stage_three_steps():
+    """A 사전감시(R 없음 — 랭킹 금지) → A 가격관찰(R 있음, 쿠션 ≤ 0) → A 조건충족(R 있음, 쿠션 > 0). 매매종료 후엔 없음."""
+    sch = {"rights_start": "2026-09-17", "rights_end": "2026-09-29", "issue_price": 2260, "issue_kind": "1차"}
+    issue = {"kind": "최종 추정", "issue_kind": "1차", "i1": 2260, "i2": 2816, "value": 2260}
+    atr_pct = 351 / 3335 * 100
+    pre = estimate.a_margin(sch, issue, 3335, "d", None, None, atr_pct, date(2026, 9, 10))["stage"]
+    assert pre["code"] == "prewatch" and "랭킹 대상 아님" in pre["why"] and "724" in pre["why"]
+    met = estimate.a_margin(sch, issue, 3335, "d", 636, "d", atr_pct, date(2026, 9, 28))
+    assert met["stage"]["code"] == "met" and met["stage"]["row_kind"] == "예상 최종"
+    assert met["issue_stage"]["label"] == "예상최종"
+    px = estimate.a_margin(sch, issue, 3335, "d", 1200, "d", atr_pct, date(2026, 9, 28))["stage"]
+    assert px["code"] == "price" and "724" in px["why"]       # R ≤ P − I − ATR 이면 쿠션 ATR 1배
+    assert estimate.a_margin(sch, issue, 3335, "d", 636, "d", atr_pct, date(2026, 9, 30))["stage"] is None
+
+
 def test_second_price_vwap_and_projection():
     """2차 = min(1주 VWAP, 기산일 종가) × (1−d). 권리락 후 시세만, 기산일(산정일) 이후 시세는 안 씀."""
     sch = {"ex_rights_date": "2026-09-03", "price_fix_date": "2026-09-10"}
