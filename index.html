@@ -250,6 +250,8 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .focus .fblock{font-size:11px;color:#e8c46a;margin-top:7px;line-height:1.5}
 .focus .fempty{margin-top:10px;border:1px dashed var(--line);border-radius:12px;padding:12px;color:var(--mut);font-size:12.5px;line-height:1.6}
 .focus .frev{margin-top:10px}
+.focus .frevtitle.tierS{color:#8fe0bf}.focus .frevtitle.tierA{color:var(--gold2)}.focus .frevtitle.tierB{color:#9dbcff}
+.focus .fc.weak{border-color:#34496d;box-shadow:inset 3px 0 0 #6f8fbe}.focus .weak .fclabel{color:#9dbcff;border-color:#34496d}
 .focus .frevtitle{font-size:11px;color:#f0a8a2;font-weight:800;margin-bottom:6px}
 @media (max-width:600px){.focus{padding:12px}.focus .fstats{justify-content:flex-start}.focus .fgrid{grid-template-columns:1fr}.focus .fcname{font-size:16px}}
 .strat{margin:-2px 0 12px;display:grid;gap:8px}
@@ -669,6 +671,10 @@ function focusInfo(c){
   }else if((buyWait||c.gate1?.passed)&&noFail){
     kind='wait';label='다음 후보';
     why=buyWait?'구조 관문은 살아 있으나 실제 매수 행동 구간이 아직 오지 않았습니다.':'자동 구조 관문은 통과했지만 아직 가격·일정 행동 신호가 없습니다.';
+  }else if(fails.length===1&&!c.gate1?.hard_fail&&(c.quick?.stage!=='listed'||buyLive)){
+    // B급: 자동 관문 하나만 탈락 + 아직 행동 가능한 일정 — 볼 만은 하지만 손익비가 낮다
+    kind='weak';label='손익비 낮음';
+    why='자동 관문 1개 탈락('+fails[0].text+') — 구조는 볼 만하지만 손익비가 떨어집니다.'+(c.b6?.read?.startsWith('공시 충격')?' B⑥: 공시 충격 우세(유증으로 눌린 쪽).':'');
   }else{
     const top=fails.slice(0,2).map(x=>x.text);
     why=top.length?top.join(' · '):'현재 집중 후보 조건을 충족하지 못했습니다.';
@@ -676,8 +682,9 @@ function focusInfo(c){
   blockers=unknowns.map(x=>x.text);
   if(supply.red&&kind!=='exclude') blockers.push('공급압력 '+supply.volume_days+'일치 ≥ 경계 '+(supply.red_threshold_days??60)+'일');
   if(buyWait) blockers.push('행동구간 대기 · '+((c.quick||{}).stage_name||'일정 진행 중'));
-  const urgency=kind==='strong'?0:kind==='conditional'?1:kind==='wait'?2:kind==='reverse'?3:9;
-  return {c:c,kind:kind,label:label,why:why,blockers:blockers,ar:ar,supply:supply,urgency:urgency,
+  const urgency=kind==='strong'?0:kind==='conditional'?1:kind==='wait'?2:kind==='weak'?(c.b6?.read?.startsWith('공시 충격')?3:4):kind==='reverse'?5:9;
+  const tier=kind==='strong'?'S':(kind==='conditional'||kind==='wait')?'A':kind==='weak'?'B':'';
+  return {c:c,kind:kind,tier:tier,label:label,why:why,blockers:blockers,ar:ar,supply:supply,urgency:urgency,
     liveKey:buyLive?.key||sellLive?.key||'',waitKey:buyWait?.key||'',fails:fails,unknowns:unknowns};
 }
 function focusMetrics(x){
@@ -692,34 +699,31 @@ function focusMetrics(x){
 }
 function focusCard(x){
   const m=focusMetrics(x).map(p=>'<span>'+esc(p[0])+' <b>'+esc(p[1])+'</b></span>').join('');
-  const block=x.blockers.length?'<div class="fblock">남은 관문 · '+x.blockers.slice(0,3).map(esc).join(' · ')+'</div>':'';
-  return '<div class="fc '+x.kind+'" onclick="jumpTo('+x.c.case_id+')"><div class="fctop"><div class="fcname">'+esc(x.c.corp_name)+'</div><span class="fclabel">'+esc(x.label)+'</span></div>'+
+  const block=x.blockers.length?'<div class="fblock">남은 관문 · '+x.blockers.slice(0,3).map(t=>esc(String(t).length>48?String(t).slice(0,48)+'…':t)).join(' · ')+'</div>':'';
+  return '<div class="fc '+x.kind+'" onclick="jumpTo('+x.c.case_id+')"><div class="fctop"><div class="fcname">'+esc(x.c.corp_name)+'</div><span class="fclabel">'+(x.tier?esc(x.tier)+'급 · ':'')+esc(x.label)+'</span></div>'+
     '<div class="fcwhy">'+esc(x.why)+'</div>'+(m?'<div class="fcm">'+m+'</div>':'')+block+'</div>';
 }
 function renderFocus(){
   const open=DATA.cases.filter(c=>c.is_rights&&c.status==='open');
-  const all=open.map(focusInfo);
-  const strong=all.filter(x=>x.kind==='strong');
-  const cond=all.filter(x=>x.kind==='conditional');
-  const wait=all.filter(x=>x.kind==='wait');
+  const all=open.map(focusInfo).sort((a,b)=>a.urgency-b.urgency);
+  const S=all.filter(x=>x.tier==='S'), A=all.filter(x=>x.tier==='A'), B=all.filter(x=>x.tier==='B');
   const reverse=all.filter(x=>x.kind==='reverse');
   const excluded=all.filter(x=>x.kind==='exclude');
-  const candidates=[...strong,...cond,...wait].sort((a,b)=>a.urgency-b.urgency).slice(0,3);
-  const headline=strong.length?'강한 매수 검토 후보 '+strong.length+'건':'오늘은 강한 매수 검토 후보 없음';
-  const sub=strong.length
-    ?'자동 관문·현재 행동 구간·공급압력까지 동시에 통과한 케이스만 올립니다. 카드 클릭 시 원자료와 검산 트레이스로 이동합니다.'
-    :'억지로 종목을 채우지 않습니다. 아래에는 조건부·대기 후보만 보여주고, 나머지는 자동으로 뒤로 보냅니다.';
+  const headline=`S급 ${S.length} · A급 ${A.length} · B급 ${B.length}`;
+  const sub=S.length?'S급 = 자동 관문·현재 매수 행동 구간·공급압력을 모두 통과. 카드 클릭 시 원자료와 검산 트레이스로 이동합니다.'
+    :'오늘 S급은 없습니다. 억지로 올리지 않고, 아래 A·B급은 등급대로만 보여줍니다.';
+  const stat='<div class="fstats"><span class="fstat">S <b>'+S.length+'</b></span><span class="fstat">A <b>'+A.length+'</b></span><span class="fstat">B <b>'+B.length+'</b></span><span class="fstat">반대 <b>'+reverse.length+'</b></span><span class="fstat">제외 <b>'+excluded.length+'</b></span></div>';
+  const sec=(t,xs,max,desc)=>xs.length?'<div class="frev"><div class="frevtitle tier'+t+'">'+t+'급 · '+desc+(xs.length>max?' <span class="mut">(상위 '+max+' / '+xs.length+'건)</span>':'')+'</div><div class="fgrid">'+xs.slice(0,max).map(focusCard).join('')+'</div></div>':'';
+  const cards=(S.length||A.length||B.length)?sec('S',S,6,'강한 매수 검토 — 관문·행동구간·공급압력 모두 통과')+sec('A',A,4,'다음 매수 검토 — 미확인 관문·공급 경계가 남았거나 행동 구간 대기')+sec('B',B,4,'손익비 낮은 검토 — 자동 관문 1개 탈락, 아직 행동 가능한 일정'):
+    '<div class="fempty">S·A·B급 모두 없습니다. 자동 관문을 2개 이상 탈락했거나 행동 가능한 일정이 지난 케이스뿐입니다. 이 상태 자체가 레이더의 결론입니다.</div>';
+  const rev=reverse.length?'<div class="frev"><div class="frevtitle">반대 신호 · 신규 매수보다 피하거나 매도 쪽을 보는 구간</div><div class="fgrid">'+reverse.slice(0,2).map(focusCard).join('')+'</div></div>':'';
   const aSt=k=>open.filter(c=>c.a_margin?.stage?.code===k);
   const aMet=aSt('met'), aPrice=aSt('price'), aPre=aSt('prewatch');
   const aLine='<div class="fsub">A 인수권 할인 포착 · 조건충족 <b>'+aMet.length+'</b>'+(aMet.length?' ('+aMet.map(c=>esc(c.corp_name)).join(', ')+')':'')+
     ' · 가격관찰 <b>'+aPrice.length+'</b>'+(aPrice.length?' ('+aPrice.map(c=>esc(c.corp_name)).join(', ')+')':'')+
     ' · 사전감시 <b>'+aPre.length+'</b> <span class="mut">— 사전감시는 R(인수권 시세)이 없어 후보·랭킹 대상이 아닙니다</span></div>';
-  const stat='<div class="fstats"><span class="fstat">강한 <b>'+strong.length+'</b></span><span class="fstat">조건부 <b>'+cond.length+'</b></span><span class="fstat">대기 <b>'+wait.length+'</b></span><span class="fstat">제외 <b>'+excluded.length+'</b></span></div>';
-  const cards=candidates.length?'<div class="fgrid">'+candidates.map(focusCard).join('')+'</div>':
-    '<div class="fempty">현재 자동 관문을 통과해 위로 올릴 매수 후보가 없습니다. 이 상태 자체가 레이더의 결론입니다.</div>';
-  const rev=reverse.length?'<div class="frev"><div class="frevtitle">반대 신호 · 신규 매수보다 피하거나 매도 쪽을 보는 구간</div><div class="fgrid">'+reverse.slice(0,2).map(focusCard).join('')+'</div></div>':'';
   $('#focus').innerHTML='<div class="fh"><div><div class="ft">오늘의 집중 후보 · '+esc(kstToday())+'</div><div class="fbig">'+esc(headline)+'</div><div class="fsub">'+esc(sub)+'</div></div>'+stat+'</div>'+cards+rev+
-    aLine+'<div class="fsub">승격 규칙: 현재 매수 행동카드(전략2·3) 활성 + 자동 관문 실패/미확인 0 + 공급압력 경계 미통과. 업계순위·대체불가 같은 수동 판단은 상세 카드에서 별도 확인합니다.</div>';
+    aLine+'<div class="fsub">등급 규칙: S = 매수 행동카드(전략2·3) 활성 + 자동 관문 실패/미확인 0 + 공급압력 경계 미통과 · A = 행동카드 활성인데 미확인·공급 경계가 남음, 또는 관문 통과 후 행동 구간 대기 · B = 자동 관문 1개만 탈락(희석 100%↑ 제외) + 아직 행동 가능한 일정 — B 안에서는 B⑥ 공시 충격 우세를 앞에. 업계순위·대체불가 같은 수동 판단은 상세 카드에서 별도 확인합니다.</div>';
 }
 function renderSScore(){
   const R=DATA.strategy_rules, rows=DATA.strategy_scorecard||[]; if(!R){$('#sscore').innerHTML='<div class="empty">다음 수집부터 표시됩니다.</div>';return;}
