@@ -252,6 +252,10 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .focus .frev{margin-top:10px}
 .focus .frevtitle.tierS{color:#8fe0bf}.focus .frevtitle.tierA{color:var(--gold2)}.focus .frevtitle.tierB{color:#9dbcff}
 .focus .fc.weak{border-color:#34496d;box-shadow:inset 3px 0 0 #6f8fbe}.focus .weak .fclabel{color:#9dbcff;border-color:#34496d}
+.focus .fexcl{margin-top:10px;font-size:11.5px}.focus .fexcl summary{cursor:pointer;color:var(--mut)}
+.focus .fexcl div{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.focus .fexcl span{border:1px solid var(--line);border-radius:7px;padding:3px 7px;cursor:pointer}
+.focus .fexcl small{color:var(--mut)}.focus .flegend{margin-top:9px;font-size:10.5px;color:var(--mut);line-height:1.6}.focus .flegend b{color:var(--txt);font-weight:700}
+.focus .fclabel small{font-weight:500;opacity:.85}
 .focus .frevtitle{font-size:11px;color:#f0a8a2;font-weight:800;margin-bottom:6px}
 @media (max-width:600px){.focus{padding:12px}.focus .fstats{justify-content:flex-start}.focus .fgrid{grid-template-columns:1fr}.focus .fcname{font-size:16px}}
 .strat{margin:-2px 0 12px;display:grid;gap:8px}
@@ -611,6 +615,7 @@ function stratSummary(){
 
 // ---- 집중 후보 엔진: 좋은 것을 억지로 만들지 않고 읽어야 할 종목 수를 줄인다 ----
 const FOCUS_AUTO_KEYS=new Set(['debt','dilution','major','op','pos52','uw']);
+const FOCUS_SHORT={debt:'채무상환형',dilution:'희석 큼',major:'최대주주 불참',op:'영업적자',pos52:'52주 고점권',uw:'인수 보장 없음'};
 function focusARow(c){
   const rows=(c.a_margin?.rows||[]).filter(r=>r.issue!=null&&r.kind!=='사후 확정');
   const k=c.a_margin?.stage?.row_kind;
@@ -679,12 +684,15 @@ function focusInfo(c){
     const top=fails.slice(0,2).map(x=>x.text);
     why=top.length?top.join(' · '):'현재 집중 후보 조건을 충족하지 못했습니다.';
   }
+  // 짧은 탈락 사유 (제외 목록용): 즉시탈락 > 일정 지남 > 관문 n개 탈락
+  const shortWhy=c.gate1?.hard_fail?'희석 100%↑ 즉시탈락':(c.quick?.stage==='listed'&&!buyLive)?'상장 완료 · 들어갈 일정 지남':
+    fails.length?('관문 '+fails.length+'개 탈락: '+fails.map(x=>FOCUS_SHORT[x.key]||x.label).join('·')):'행동 신호 없음';
   blockers=unknowns.map(x=>x.text);
   if(supply.red&&kind!=='exclude') blockers.push('공급압력 '+supply.volume_days+'일치 ≥ 경계 '+(supply.red_threshold_days??60)+'일');
   if(buyWait) blockers.push('행동구간 대기 · '+((c.quick||{}).stage_name||'일정 진행 중'));
   const urgency=kind==='strong'?0:kind==='conditional'?1:kind==='wait'?2:kind==='weak'?(c.b6?.read?.startsWith('공시 충격')?3:4):kind==='reverse'?5:9;
   const tier=kind==='strong'?'S':(kind==='conditional'||kind==='wait')?'A':kind==='weak'?'B':'';
-  return {c:c,kind:kind,tier:tier,label:label,why:why,blockers:blockers,ar:ar,supply:supply,urgency:urgency,
+  return {c:c,kind:kind,tier:tier,label:label,why:why,shortWhy:shortWhy,blockers:blockers,ar:ar,supply:supply,urgency:urgency,
     liveKey:buyLive?.key||sellLive?.key||'',waitKey:buyWait?.key||'',fails:fails,unknowns:unknowns};
 }
 function focusMetrics(x){
@@ -700,7 +708,7 @@ function focusMetrics(x){
 function focusCard(x){
   const m=focusMetrics(x).map(p=>'<span>'+esc(p[0])+' <b>'+esc(p[1])+'</b></span>').join('');
   const block=x.blockers.length?'<div class="fblock">남은 관문 · '+x.blockers.slice(0,3).map(t=>esc(String(t).length>48?String(t).slice(0,48)+'…':t)).join(' · ')+'</div>':'';
-  return '<div class="fc '+x.kind+'" onclick="jumpTo('+x.c.case_id+')"><div class="fctop"><div class="fcname">'+esc(x.c.corp_name)+'</div><span class="fclabel">'+(x.tier?esc(x.tier)+'급 · ':'')+esc(x.label)+'</span></div>'+
+  return '<div class="fc '+x.kind+'" onclick="jumpTo('+x.c.case_id+')"><div class="fctop"><div class="fcname">'+esc(x.c.corp_name)+'</div><span class="fclabel">'+(x.tier?esc(x.tier)+'급 · ':'')+esc(x.label)+(x.tier==='B'?' <small>'+esc(x.shortWhy.replace('관문 1개 탈락: ',''))+'</small>':'')+'</span></div>'+
     '<div class="fcwhy">'+esc(x.why)+'</div>'+(m?'<div class="fcm">'+m+'</div>':'')+block+'</div>';
 }
 function renderFocus(){
@@ -719,10 +727,13 @@ function renderFocus(){
   const rev=reverse.length?'<div class="frev"><div class="frevtitle">반대 신호 · 신규 매수보다 피하거나 매도 쪽을 보는 구간</div><div class="fgrid">'+reverse.slice(0,2).map(focusCard).join('')+'</div></div>':'';
   const aSt=k=>open.filter(c=>c.a_margin?.stage?.code===k);
   const aMet=aSt('met'), aPrice=aSt('price'), aPre=aSt('prewatch');
-  const aLine='<div class="fsub">A 인수권 할인 포착 · 조건충족 <b>'+aMet.length+'</b>'+(aMet.length?' ('+aMet.map(c=>esc(c.corp_name)).join(', ')+')':'')+
+  const aLine='<div class="fsub">A전략(인수권 할인 포착) · 조건충족 <b>'+aMet.length+'</b>'+(aMet.length?' ('+aMet.map(c=>esc(c.corp_name)).join(', ')+')':'')+
     ' · 가격관찰 <b>'+aPrice.length+'</b>'+(aPrice.length?' ('+aPrice.map(c=>esc(c.corp_name)).join(', ')+')':'')+
     ' · 사전감시 <b>'+aPre.length+'</b> <span class="mut">— 사전감시는 R(인수권 시세)이 없어 후보·랭킹 대상이 아닙니다</span></div>';
-  $('#focus').innerHTML='<div class="fh"><div><div class="ft">오늘의 집중 후보 · '+esc(kstToday())+'</div><div class="fbig">'+esc(headline)+'</div><div class="fsub">'+esc(sub)+'</div></div>'+stat+'</div>'+cards+rev+
+  const exl=excluded.length?'<details class="fexcl"><summary>제외 '+excluded.length+'건 · 탈락 사유 보기</summary><div>'+
+    excluded.map(x=>'<span onclick="jumpTo('+x.c.case_id+')"><b>'+esc(x.c.corp_name)+'</b> <small>'+esc(x.shortWhy)+'</small></span>').join('')+'</div></details>':'';
+  const legend='<div class="flegend"><b>용어</b> S·A·B급 = 오늘 검토 등급 · <b>A전략</b> = 인수권 할인 포착(인수권+청약으로 본주보다 싸게) · <b>B전략</b> = 유증으로 눌린 우량주 회복(본업) · <b>B⑥</b> = 정말 유증 때문에 눌렸나 · <b>H1</b> 인수권 할인 기대수익 · <b>H2</b> 상장일 매물 후 반등 · <b>H3</b> 권리락 착시 급등 (H = 검증 중인 가설)</div>';
+  $('#focus').innerHTML='<div class="fh"><div><div class="ft">오늘의 집중 후보 · '+esc(kstToday())+'</div><div class="fbig">'+esc(headline)+'</div><div class="fsub">'+esc(sub)+'</div></div>'+stat+'</div>'+cards+rev+exl+legend+
     aLine+'<div class="fsub">등급 규칙: S = 매수 행동카드(전략2·3) 활성 + 자동 관문 실패/미확인 0 + 공급압력 경계 미통과 · A = 행동카드 활성인데 미확인·공급 경계가 남음, 또는 관문 통과 후 행동 구간 대기 · B = 자동 관문 1개만 탈락(희석 100%↑ 제외) + 아직 행동 가능한 일정 — B 안에서는 B⑥ 공시 충격 우세를 앞에. 업계순위·대체불가 같은 수동 판단은 상세 카드에서 별도 확인합니다.</div>';
 }
 function renderSScore(){
@@ -878,7 +889,7 @@ function aBox(c){
     ...(s.excess_turnover_d0!=null?[`D0 초과회전율 ${(s.excess_turnover_d0*100).toFixed(1)}%`]:[]),
     ...(s.excess_turnover_d0_d5!=null?[`D0~D5 누적 초과회전율 ${(s.excess_turnover_d0_d5*100).toFixed(1)}%`]:[])].join(' · '):'';
   const legacyWarn=!a.decision_asof&&a.confirmed&&a.r_date&&a.r_date<kstToday()?'<div class="warnbox">⚠ 이 배포 데이터는 과거 P/R에 최신 확정발행가가 소급됐을 수 있습니다. 다음 데이터 갱신부터 A 당시값과 사후값을 분리합니다.</div>':'';
-  return `<div class="abox"><div class="ah">A · 인수권 할인 포착 <small class="mut">IV 프리미엄 → 총원가 쿠션 → ATR 쿠션 → 공급압력</small></div>
+  return `<div class="abox"><div class="ah">A전략 · 인수권 할인 포착 <small class="mut">인수권+청약으로 본주보다 싸게 신주 확보 · IV 프리미엄 → 총원가 쿠션 → ATR 쿠션 → 공급압력</small></div>
     ${legacyWarn}
     <div>본주 P <b>${fmt(a.p)}</b> <span class="mut">(${esc(a.p_date||'')}${a.price_type?' · '+esc(a.price_type):''})</span> · 인수권 R ${a.r==null?'<span class="mut">시세 대기</span>':`<b>${fmt(a.r)}</b> <span class="mut">(${esc(a.r_date)})</span>`}
     · ATR(${a.atr_n}) ${a.atr==null?na:`<b>${fmt(a.atr)}원</b> <span class="mut">(${a.atr_pct}%)</span>`}${a.confirmed?'':' · <b class="red">확정발행가 미정</b>'} · 적용 발행가 단계 ${stageBadge(a.issue_stage||issueStage((c.quick||{}).issue))}</div>
@@ -912,7 +923,7 @@ function aExtra(a){
 function b6Box(c){
   const b=c.b6; if(!b) return '';
   const cell=(l,x,sub)=>`<div class="k4"><span>${l}</span><b>${x?`<b class="${x.ar>=0?'pos':'neg'}">${x.ar>0?'+':''}${x.ar}%p</b>`:'<span class="mut">—</span>'}</b><small>${x?`${x.from.slice(5)}~${x.to.slice(5)} · 종목 ${pct(x.stock)} / ${esc(b.index_name)} ${pct(x.index)}`:sub||''}</small></div>`;
-  return `<div class="abox"><div class="ah">B⑥ 유증으로 눌렸는가 <small class="mut">시장 대비 초과수익 · t0 ${esc(b.t0)}${b.ex_adjusted?' · 권리락 보정':''}</small></div>
+  return `<div class="abox"><div class="ah">B⑥ 정말 유증 때문에 눌렸나 <small class="mut">B전략(눌린 우량주 회복)의 6번째 확인 · 시장 대비 초과수익 · t0 ${esc(b.t0)}${b.ex_adjusted?' · 권리락 보정':''}</small></div>
     <div class="k4row" style="grid-template-columns:repeat(3,minmax(0,1fr))">${cell('a · 공시 전 추세 [-20,-1]',b.pretrend,'')}${cell('b · 공시 충격 [0,+1]',b.shock,'')}${cell('c · 악재 지속 [+2,오늘]',b.persistence,'')}</div>
     <div>${b.read?`<b>${esc(b.read)}</b> `:''}${b.shock3?`<span class="mut">CAR[0,+3] ${b.shock3.ar>0?'+':''}${b.shock3.ar}%p</span>`:''}</div>
     <small class="mut">${esc(b.note)} · 자동 해석은 판단 보조이며 관문이 아닙니다.</small></div>`;
