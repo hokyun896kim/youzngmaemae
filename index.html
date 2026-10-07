@@ -446,8 +446,8 @@ small{line-height:1.5}
 <section class="hero">
 <div class="kicker">주주배정 유상증자 · Phase 0</div>
 <p class="def">주주배정 유상증자를 <b>DART</b>에서 감지하고, 일정(기준일·권리락·인수권 기간·청약·상장)을 추적하며,
-<b>KRX 신주인수권증서</b> 일별 시세로 <b>인수권 IV 프리미엄</b>(인수권 ÷ (본주 − 발행가) − 1)을 매일 기록합니다.
-IV 프리미엄이 <b class="neg">음수</b>면 인수권이 싸고, <b class="pos">양수</b>면 비쌉니다.</p>
+<b>KRX 신주인수권증서</b> 일별 시세로 <b>인수권 IV 프리미엄</b>(인수권 ÷ (본주 − 발행가) − 1)을 매일 기록해요.
+IV 프리미엄이 <b class="neg">음수</b>면 인수권이 싸고, <b class="pos">양수</b>면 비싸요.</p>
 <div class="chips" id="chips"></div>
 </section>
 <div class="topbar">
@@ -472,31 +472,31 @@ IV 프리미엄이 <b class="neg">음수</b>면 인수권이 싸고, <b class="p
 <h2>판정별 성적표 <small>가상 진입 기준 · 신주 상장 +20거래일</small></h2>
 <div id="score"></div>
 <h2>기출문제 성적표 <small>2020~2026.06 과거 주주배정 유증 백테스트 · 판정 로직 그대로 · 미래 정보 금지</small></h2>
-<div id="exam"><div class="empty">백테스트 결과가 아직 없습니다 (Actions → backtest 실행).</div></div>
+<div id="exam"><div class="empty">백테스트 결과가 아직 없어요 (Actions → backtest 실행).</div></div>
 
 <div class="modal" id="guide" onclick="if(event.target===this)closeGuide()"><div class="mbox">
 <button class="btn x" onclick="closeGuide()">닫기 ✕</button>
 <h3>📘 이 사이트를 읽는 법</h3>
-<p>유증 레이더는 <b>"어느 유증 케이스를 깊게 팔지"</b> 골라주는 발견 도구입니다. 카드 맨 위 <b>전략 배지</b>(🥇🥈🥉·⛔)는 과거 유증 백테스트(기출문제)에서 나온 행동 카드일 뿐, 확정 신호가 아닙니다.</p>
-<div class="uc"><b class="t">1단계 · 증자방식부터 거른다</b>주주배정 계열(주주배정증자, 주주배정후 실권주 일반공모)만 신주인수권증서가 나옵니다. 나머지(제3자배정·일반공모)는 <b>관찰</b> 탭으로 빠집니다.</div>
-<div class="uc"><b class="t">2단계 · 회사부터 본다 (B = 본업)</b>자금 목적 막대가 <b style="color:var(--red)">채무상환</b> 위주거나, 신주÷기존주가 100%를 넘는 <b>초대형 희석</b>이면 빨간 배지가 붙습니다. 필터 5개(업계 1~3위 / 안 망할 회사 / 대체 불가 / 영업흑자 / 52주 중간 이하)를 통과해야 B 후보입니다.</div>
-<div class="uc"><b class="t">3단계 · 사이클 위치를 본다</b>카드의 금색 라벨이 지금 구간입니다: ① 권리 확보 → ② 권리락 후 → ③ <b>인수권 거래 중</b> → ④ 청약 → ⑤ 상장 대기 → ⑥ 상장 후 매물 소화. 타임라인의 빨간 선이 오늘입니다.</div>
-<div class="uc"><b class="t">4단계 · 인수권 할인 포착 (A = 보너스)</b><b>내재가치 대비 프리미엄(IV 프리미엄, 구 괴리율)</b> = 인수권 ÷ max(본주 − 발행가, 0) − 1. 본주 − 발행가는 인수권의 현재 <b>내재가치</b>일 뿐이라, 인수권 가격에는 남은 기간의 시간가치와 발행가 하향 기대가 더 들어 있습니다 — +10%를 "10% 고평가(오가격)"로 읽지 마세요. 본주 ≤ 발행가면 비율을 내지 않습니다(내재가치 0).<br><b class="neg">음수(파랑)</b> = 내재가치보다 싸다 → "인수권 매수 + 청약"으로 본주보다 싸게 신주 확보 검토.<br><b class="pos">양수(빨강)</b> = 내재가치보다 비싸다 → 보유 인수권 매도 검토.<br><b>시장 암시 발행가</b> = 본주 − 인수권: 인수권 가격이 암시하는 최종 발행가. 예상 최종가보다 낮으면 권리가 비싸거나 시장이 추가 인하를 기대, 높으면 인수권이 쌀 가능성.<br>
-단, <b>무위험 차익이 아닙니다</b> — 본주를 공매도해 가격을 묶을 수 없어서 청약 → 신주 상장까지 본주가 빠지면 손실입니다. 그래서 순서대로 봅니다: <b>IV 프리미엄 → 총원가 쿠션</b>(총원가 할인율 = 1 − (인수권+발행가)/본주, 원화 쿠션 = 본주 − (인수권+발행가)) <b>→ ATR 쿠션</b>(쿠션 ÷ ATR(10), 하루 변동 몇 번을 버티나) <b>→ 신주 공급압력</b>(신주가 거래대금·거래량 며칠치인가). 카드의 "A 할인 포착" 줄이 이 네 가지입니다.<br>예) SK디앤디 12R(9/23): IV 프리미엄 <b class="neg">−41%</b>로 커 보여도 총원가 할인율 13.2% · 쿠션 439원 = ATR 1.25배.</div>
+<p>유증 레이더는 <b>"어느 유증 케이스를 깊게 팔지"</b> 골라주는 발견 도구예요. 카드 맨 위 <b>전략 배지</b>(🥇🥈🥉·⛔)는 과거 유증 백테스트(기출문제)에서 나온 행동 카드일 뿐, 확정 신호가 아니에요.</p>
+<div class="uc"><b class="t">1단계 · 증자방식부터 거른다</b>주주배정 계열(주주배정증자, 주주배정후 실권주 일반공모)만 신주인수권증서가 나와요. 나머지(제3자배정·일반공모)는 <b>관찰</b> 탭으로 빠져요.</div>
+<div class="uc"><b class="t">2단계 · 회사부터 본다 (B = 본업)</b>자금 목적 막대가 <b style="color:var(--red)">채무상환</b> 위주거나, 신주÷기존주가 100%를 넘는 <b>초대형 희석</b>이면 빨간 배지가 붙어요. 필터 5개(업계 1~3위 / 안 망할 회사 / 대체 불가 / 영업흑자 / 52주 중간 이하)를 통과해야 B 후보예요.</div>
+<div class="uc"><b class="t">3단계 · 사이클 위치를 본다</b>카드의 금색 라벨이 지금 구간이에요: ① 권리 확보 → ② 권리락 후 → ③ <b>인수권 거래 중</b> → ④ 청약 → ⑤ 상장 대기 → ⑥ 상장 후 매물 소화. 타임라인의 빨간 선이 오늘이에요.</div>
+<div class="uc"><b class="t">4단계 · 인수권 할인 포착 (A = 보너스)</b><b>내재가치 대비 프리미엄(IV 프리미엄, 구 괴리율)</b> = 인수권 ÷ max(본주 − 발행가, 0) − 1. 본주 − 발행가는 인수권의 현재 <b>내재가치</b>일 뿐이라, 인수권 가격에는 남은 기간의 시간가치와 발행가 하향 기대가 더 들어 있어요 — +10%를 "10% 고평가(오가격)"로 읽지 마세요. 본주 ≤ 발행가면 비율을 내지 않아요(내재가치 0).<br><b class="neg">음수(파랑)</b> = 내재가치보다 싸다 → "인수권 매수 + 청약"으로 본주보다 싸게 신주 확보 검토.<br><b class="pos">양수(빨강)</b> = 내재가치보다 비싸다 → 보유 인수권 매도 검토.<br><b>시장 암시 발행가</b> = 본주 − 인수권: 인수권 가격이 암시하는 최종 발행가. 예상 최종가보다 낮으면 권리가 비싸거나 시장이 추가 인하를 기대, 높으면 인수권이 쌀 가능성.<br>
+단, <b>무위험 차익이 아니에요</b> — 본주를 공매도해 가격을 묶을 수 없어서 청약 → 신주 상장까지 본주가 빠지면 손실이에요. 그래서 순서대로 봐요: <b>IV 프리미엄 → 총원가 쿠션</b>(총원가 할인율 = 1 − (인수권+발행가)/본주, 원화 쿠션 = 본주 − (인수권+발행가)) <b>→ ATR 쿠션</b>(쿠션 ÷ ATR(10), 하루 변동 몇 번을 버티나) <b>→ 신주 공급압력</b>(신주가 거래대금·거래량 며칠치인가). 카드의 "A 할인 포착" 줄이 이 네 가지예요.<br>예) SK디앤디 12R(9/23): IV 프리미엄 <b class="neg">−41%</b>로 커 보여도 총원가 할인율 13.2% · 쿠션 439원 = ATR 1.25배.</div>
 <h3>🥇🥈🥉 전략 배지 (기존 판정 🟢🟡🔵⚪ 위에 얹음)</h3>
 <div class="uc"><b class="t">⛔ 금지 규칙이 먼저</b>희석 100% 이상이면 전략 전부 끔(패스). 직전 분기 적자면 전략 2·3 불가(전략 1은 가능). IV 프리미엄 −40% 이하면 전략 3 불가(너무 싼 인수권). 남는 전략이 없으면 ⛔.</div>
 <div class="uc"><b class="t">🥇 전략1 · 비싼 인수권 팔기</b>인수권 IV 프리미엄 +20% 이상 → 인수권 보유자는 매도, 신규 매수 금지.</div>
-<div class="uc"><b class="t">🥈 전략2 · 신주 상장일 매수 → 10거래일 보유</b>연구 표본은 🟢/🟡(? 포함)까지 기록하지만, <b>? 판정은 실전 행동카드를 잠급니다.</b> 미확인 관문을 먼저 해소한 뒤 흑자 + 희석 &lt; 50% + 채무상환 &lt; 50%를 확인합니다. 상장 D-3부터 표시하고, 상장일에는 15:30 전까지 장중 미리보기만 제공합니다. <b>정규장 종가와 종가 RSI(14) ≤ 50이 확정된 뒤</b> 진입 게이트를 판정합니다. +10거래일 청산 · 손절 = 진입가 − ATR(14)×2 · 비중 평소의 절반.</div>
+<div class="uc"><b class="t">🥈 전략2 · 신주 상장일 매수 → 10거래일 보유</b>연구 표본은 🟢/🟡(? 포함)까지 기록하지만, <b>? 판정은 실전 행동카드를 잠가요.</b> 미확인 관문을 먼저 해소한 뒤 흑자 + 희석 &lt; 50% + 채무상환 &lt; 50%를 확인해요. 상장 D-3부터 표시하고, 상장일에는 15:30 전까지 장중 미리보기만 제공해요. <b>정규장 종가와 종가 RSI(14) ≤ 50이 확정된 뒤</b> 진입 게이트를 판정해요. +10거래일 청산 · 손절 = 진입가 − ATR(14)×2 · 비중 평소의 절반.</div>
 <div class="uc"><b class="t">🥉 전략3 · 적당히 싼 인수권 매수 + 청약</b>흑자 + 희석 &lt; 100% + IV 프리미엄 −20~0%. 인수권 매수 → 청약 → 상장 후 +5거래일 안에 청산 · 소액.</div>
-<p>근거 줄의 숫자는 <code>data/backtest.json</code> 에서 읽습니다 — 백테스트를 다시 돌리면 자동으로 바뀝니다. 전략별 가상 성과는 아래 "전략별 성적표"에 기출과 나란히 쌓입니다.</p>
+<p>근거 줄의 숫자는 <code>data/backtest.json</code> 에서 읽어요 — 백테스트를 다시 돌리면 자동으로 바뀌어요. 전략별 가상 성과는 아래 "전략별 성적표"에 기출과 나란히 쌓여요.</p>
 <h3>⚖️ 이미 결론 난 것 (재논의 금지)</h3>
-<p>할인율은 수익이 아닙니다. 권리락 이론가 <code>P_x = (P + r·I) / (1 + r)</code>로 이론상 제로섬이고, 인수권 매도 대금은 깎인 보유주 가치의 보상입니다. 초과청약은 배정주식의 20% 한도이고 실권주가 있어야만 배정됩니다. 진짜 엣지는 <b>회복(B)·수급 타이밍·인수권 할인 포착(A)·레버리지</b>입니다.</p>
+<p>할인율은 수익이 아니에요. 권리락 이론가 <code>P_x = (P + r·I) / (1 + r)</code>로 이론상 제로섬이고, 인수권 매도 대금은 깎인 보유주 가치의 보상이에요. 초과청약은 배정주식의 20% 한도이고 실권주가 있어야만 배정돼요. 진짜 엣지는 <b>회복(B)·수급 타이밍·인수권 할인 포착(A)·레버리지</b>예요.</p>
 <h3>🤖 GPT 분석지침 — 프롬프트 두 종류</h3>
-<div class="uc"><b class="t">전체 브리핑 프롬프트 (상단 금색 버튼)</b>진행 중인 모든 케이스와 오늘의 인수권 전체를 한 번에 넘깁니다. GPT가 우선순위 분류(B/A/관찰/제외), 인수권 할인 포착 랭킹 TOP3(IV 프리미엄 순이 아니라 총원가 쿠션·ATR 쿠션·공급압력 순), 5거래일 캘린더, 가설(H1~H3) 샘플, 위험 신호, 마지막 승부 후보 네 줄(B·A·H 샘플·함정)을 정리합니다. <b>매일 아침 한 번</b> 쓰는 용도입니다.</div>
-<div class="uc"><b class="t">개별기업 분석 프롬프트 (각 카드 하단)</b>한 케이스의 공시·일정·정정 이력·IV 프리미엄 추이와 1차 자료 링크를 채워 넘깁니다. 자금 목적의 실체 → 필터 5개 판정 → 발행가 산식·보험 구간 → 최대주주 청약 → A 판정 → 수급 사이클 → 베어 케이스 → 반증 조건 → 결론 순서로 깊게 분석합니다.</div>
-<p>두 프롬프트 모두 위 결론을 <b>전제</b>로, 이 수집기의 맹점(파서 미검증·권리락일 추정·발행가 산식 미확인)을 <b>검증 지침</b>으로 담고 있습니다. <b>1차 자료(DART 원문·증권신고서)를 같이 읽힐수록</b> 품질이 올라갑니다.</p>
+<div class="uc"><b class="t">전체 브리핑 프롬프트 (상단 금색 버튼)</b>진행 중인 모든 케이스와 오늘의 인수권 전체를 한 번에 넘겨요. GPT가 우선순위 분류(B/A/관찰/제외), 인수권 할인 포착 랭킹 TOP3(IV 프리미엄 순이 아니라 총원가 쿠션·ATR 쿠션·공급압력 순), 5거래일 캘린더, 가설(H1~H3) 샘플, 위험 신호, 마지막 승부 후보 네 줄(B·A·H 샘플·함정)을 정리해요. <b>매일 아침 한 번</b> 쓰는 용도예요.</div>
+<div class="uc"><b class="t">개별기업 분석 프롬프트 (각 카드 하단)</b>한 케이스의 공시·일정·정정 이력·IV 프리미엄 추이와 1차 자료 링크를 채워 넘겨요. 자금 목적의 실체 → 필터 5개 판정 → 발행가 산식·보험 구간 → 최대주주 청약 → A 판정 → 수급 사이클 → 베어 케이스 → 반증 조건 → 결론 순서로 깊게 분석해요.</div>
+<p>두 프롬프트 모두 위 결론을 <b>전제</b>로, 이 수집기의 맹점(파서 미검증·권리락일 추정·발행가 산식 미확인)을 <b>검증 지침</b>으로 담고 있어요. <b>1차 자료(DART 원문·증권신고서)를 같이 읽힐수록</b> 품질이 올라가요.</p>
 <h3>⛔ 이 도구가 하지 않는 것</h3>
-<p>목표가는 주지 않습니다. 전략 배지도 기출 통계일 뿐 확정 신호가 아닙니다. MACD·볼린저는 쓰지 않습니다(타이밍은 일목·RSI 50 게이트·ATR로만). 최종 판단은 1차 자료와 미래에셋 화면으로 직접 확인한 뒤 형님이 내립니다.</p>
+<p>목표가는 주지 않아요. 전략 배지도 기출 통계일 뿐 확정 신호가 아니에요. MACD·볼린저는 쓰지 않아요(타이밍은 일목·RSI 50 게이트·ATR로만). 최종 판단은 1차 자료와 미래에셋 화면으로 직접 확인한 뒤 형님이 내려요.</p>
 </div></div>
 
 <footer>데이터: OpenDART(유상증자결정·증권신고서·원문), KRX Open API(sr_bydd_trd·stk/ksq_bydd_trd).
@@ -535,7 +535,7 @@ function gapCell(g){
 function renderRights(){
   const rows=[...DATA.rights_today].sort((a,b)=>(a.gap??999)-(b.gap??999));
   $('#rdate').textContent=DATA.last_rights_date?`${DATA.last_rights_date} ${priceKind(DATA.last_rights_date)}`:'';
-  if(!rows.length){$('#rights').innerHTML='<div class="empty">아직 수집된 인수권 시세가 없습니다.<br>KRX_API_KEY 설정 후 Actions가 돌면 채워집니다.</div>';return;}
+  if(!rows.length){$('#rights').innerHTML='<div class="empty">아직 수집된 인수권 시세가 없어요.<br>KRX_API_KEY 설정 후 Actions가 돌면 채워져요.</div>';return;}
   const card=r=>`<div class="rc"><div class="rh"><b>${esc(r.name)}</b>${r.case_id?'<span class="badge gold">추적</span>':''}</div>
     <div class="rg">${gapCell(r.gap)}<small>IV 프리미엄</small></div>
     <dl><div><dt>인수권 종가</dt><dd>${fmt(r.close)}</dd></div><div><dt>내재가치 P−I</dt><dd>${fmt(r.fair)}</dd></div><div><dt>시장 암시 발행가 P−R</dt><dd>${r.stock&&r.close?fmt(r.stock-r.close):'—'}</dd></div><div><dt>인수권+청약 원가</dt><dd>${fmt(r.cost)}</dd></div>
@@ -707,7 +707,7 @@ function stratBox(c){
   if(S.ban) return `<div class="strat"><div class="sban">${S.ban.map(banLine).join('<br>')}<small>금지 규칙 (최우선) · +20일 비교 기준 = 인수권 마지막 날 인수권 매수+청약</small></div></div>`;
   const unresolved=(S.locks||[]).includes('unconfirmed_gate') ||
     (((c.verdict||{}).live_reason||'').includes('미확인')) || ((c.verdict||{}).code||'').endsWith('_q');
-  const lockNote=unresolved?'<div class="snote">🔒 실전 게이트 잠김 — 관문 미확인 항목을 먼저 확인해야 전략2·3 행동카드가 활성화됩니다. 백테스트 표본은 별도로 계속 기록합니다.</div>':'';
+  const lockNote=unresolved?'<div class="snote">🔒 실전 게이트 잠김 — 관문 미확인 항목을 먼저 확인해야 전략2·3 행동카드가 활성화돼요. 백테스트 표본은 별도로 계속 기록해요.</div>':'';
   if(!S.items.length) return `<div class="strat"><div class="snone">해당 전략 없음${S.gap==null?' · 인수권 IV 프리미엄 대기':''}</div>${lockNote}</div>`;
   const stTxt=it=>{
     if(unresolved&&['s2','s3'].includes(it.key)) return '확인 필요 · 실전 게이트 잠김';
@@ -800,23 +800,23 @@ function focusInfo(c){
   let kind='exclude', label='제외', why='', blockers=[];
   if(sellLive){
     kind='reverse';label='매수 후보 아님';
-    why='현재 인수권 고평가 전략이 활성화되어 신규 매수보다 보유 인수권 매도 쪽을 먼저 보는 구간입니다.';
+    why='현재 인수권 고평가 전략이 활성화되어 신규 매수보다 보유 인수권 매도 쪽을 먼저 보는 구간이에요.';
   }else if(buyLive&&noFail&&noUnknown&&supplyOK){
     kind='strong';label='강한 매수 검토';
-    why=buyLive.key==='s3'?'현재 인수권 매수+청약 행동 구간이며 자동 관문과 공급압력 필터를 모두 통과했습니다.':'현재 신주 상장일 매수 행동 구간이며 자동 관문과 공급압력 필터를 모두 통과했습니다.';
+    why=buyLive.key==='s3'?'현재 인수권 매수+청약 행동 구간이며 자동 관문과 공급압력 필터를 모두 통과했어요.':'현재 신주 상장일 매수 행동 구간이며 자동 관문과 공급압력 필터를 모두 통과했어요.';
   }else if(buyLive&&noFail){
     kind='conditional';label='조건부 검토';
-    why='행동 구간은 열렸지만 확인되지 않은 관문 또는 공급압력 경계가 남아 있습니다.';
+    why='행동 구간은 열렸지만 확인되지 않은 관문 또는 공급압력 경계가 남아 있어요.';
   }else if((buyWait||c.gate1?.passed)&&noFail){
     kind='wait';label='다음 후보';
-    why=buyWait?'구조 관문은 살아 있으나 실제 매수 행동 구간이 아직 오지 않았습니다.':'자동 구조 관문은 통과했지만 아직 가격·일정 행동 신호가 없습니다.';
+    why=buyWait?'구조 관문은 살아 있으나 실제 매수 행동 구간이 아직 오지 않았어요.':'자동 구조 관문은 통과했지만 아직 가격·일정 행동 신호가 없어요.';
   }else if(fails.length===1&&!c.gate1?.hard_fail&&(c.quick?.stage!=='listed'||buyLive)){
     // B급: 자동 관문 하나만 탈락 + 아직 행동 가능한 일정 — 볼 만은 하지만 손익비가 낮다
     kind='weak';label='손익비 낮음';
-    why='자동 관문 1개 탈락('+fails[0].text+') — 구조는 볼 만하지만 손익비가 떨어집니다.'+(c.b6?.read?.startsWith('공시 충격')?' B⑥: 공시 충격 우세(유증으로 눌린 쪽).':'');
+    why='자동 관문 1개 탈락('+fails[0].text+') — 구조는 볼 만하지만 손익비가 떨어져요.'+(c.b6?.read?.startsWith('공시 충격')?' B⑥: 공시 충격 우세(유증으로 눌린 쪽).':'');
   }else{
     const top=fails.slice(0,2).map(x=>x.text);
-    why=top.length?top.join(' · '):'현재 집중 후보 조건을 충족하지 못했습니다.';
+    why=top.length?top.join(' · '):'현재 집중 후보 조건을 충족하지 못했어요.';
   }
   // 짧은 탈락 사유 (제외 목록용): 즉시탈락 > 일정 지남 > 관문 n개 탈락
   const shortWhy=c.gate1?.hard_fail?'희석 100%↑ 즉시탈락':(c.quick?.stage==='listed'&&!buyLive)?'상장 완료 · 들어갈 일정 지남':
@@ -852,26 +852,26 @@ function renderFocus(){
   const reverse=all.filter(x=>x.kind==='reverse');
   const excluded=all.filter(x=>x.kind==='exclude');
   const headline=`S급 ${S.length} · A급 ${A.length} · B급 ${B.length}`;
-  const sub=S.length?'S급 = 자동 관문·현재 매수 행동 구간·공급압력을 모두 통과. 카드 클릭 시 원자료와 검산 트레이스로 이동합니다.'
-    :'오늘 S급은 없습니다. 억지로 올리지 않고, 아래 A·B급은 등급대로만 보여줍니다.';
+  const sub=S.length?'S급 = 자동 관문·현재 매수 행동 구간·공급압력을 모두 통과. 카드 클릭 시 원자료와 검산 트레이스로 이동해요.'
+    :'오늘 S급은 없어요. 억지로 올리지 않고, 아래 A·B급은 등급대로만 보여줘요.';
   const stat='<div class="fstats"><span class="fstat">S <b>'+S.length+'</b></span><span class="fstat">A <b>'+A.length+'</b></span><span class="fstat">B <b>'+B.length+'</b></span><span class="fstat">반대 <b>'+reverse.length+'</b></span><span class="fstat">제외 <b>'+excluded.length+'</b></span></div>';
   const sec=(t,xs,max,desc)=>xs.length?'<div class="frev"><div class="frevtitle tier'+t+'">'+t+'급 · '+desc+(xs.length>max?' <span class="mut">(상위 '+max+' / '+xs.length+'건)</span>':'')+'</div><div class="fgrid">'+xs.slice(0,max).map(focusCard).join('')+'</div></div>':'';
   const cards=(S.length||A.length||B.length)?sec('S',S,6,'강한 매수 검토 — 관문·행동구간·공급압력 모두 통과')+sec('A',A,4,'다음 매수 검토 — 미확인 관문·공급 경계가 남았거나 행동 구간 대기')+sec('B',B,4,'손익비 낮은 검토 — 자동 관문 1개 탈락, 아직 행동 가능한 일정'):
-    '<div class="fempty">S·A·B급 모두 없습니다. 자동 관문을 2개 이상 탈락했거나 행동 가능한 일정이 지난 케이스뿐입니다. 이 상태 자체가 레이더의 결론입니다.</div>';
+    '<div class="fempty">S·A·B급 모두 없어요. 자동 관문을 2개 이상 탈락했거나 행동 가능한 일정이 지난 케이스뿐이에요. 이 상태 자체가 레이더의 결론이에요.</div>';
   const rev=reverse.length?'<div class="frev"><div class="frevtitle">반대 신호 · 신규 매수보다 피하거나 매도 쪽을 보는 구간</div><div class="fgrid">'+reverse.slice(0,2).map(focusCard).join('')+'</div></div>':'';
   const aSt=k=>open.filter(c=>c.a_margin?.stage?.code===k);
   const aMet=aSt('met'), aPrice=aSt('price'), aPre=aSt('prewatch');
   const aLine='<div class="fsub">A전략(인수권 할인 포착) · 조건충족 <b>'+aMet.length+'</b>'+(aMet.length?' ('+aMet.map(c=>esc(c.corp_name)).join(', ')+')':'')+
     ' · 가격관찰 <b>'+aPrice.length+'</b>'+(aPrice.length?' ('+aPrice.map(c=>esc(c.corp_name)).join(', ')+')':'')+
-    ' · 사전감시 <b>'+aPre.length+'</b> <span class="mut">— 사전감시는 R(인수권 시세)이 없어 후보·랭킹 대상이 아닙니다</span></div>';
+    ' · 사전감시 <b>'+aPre.length+'</b> <span class="mut">— 사전감시는 R(인수권 시세)이 없어 후보·랭킹 대상이 아니에요</span></div>';
   const exl=excluded.length?'<details class="fexcl"><summary>제외 '+excluded.length+'건 · 탈락 사유 보기</summary><div>'+
     excluded.map(x=>'<span onclick="jumpTo('+x.c.case_id+')"><b>'+esc(x.c.corp_name)+'</b> <small>'+esc(x.shortWhy)+'</small></span>').join('')+'</div></details>':'';
   const legend='<div class="flegend"><b>용어</b> S·A·B급 = 오늘 검토 등급 · <b>A전략</b> = 인수권 할인 포착(인수권+청약으로 본주보다 싸게) · <b>B전략</b> = 유증으로 눌린 우량주 회복(본업) · <b>B⑥</b> = 정말 유증 때문에 눌렸나 · <b>H1</b> 인수권 할인 기대수익 · <b>H2</b> 상장일 매물 후 반등 · <b>H3</b> 권리락 착시 급등 (H = 검증 중인 가설)</div>';
   $('#focus').innerHTML='<div class="fh"><div><div class="ft">오늘의 집중 후보 · '+esc(kstToday())+'</div><div class="fbig">'+esc(headline)+'</div><div class="fsub">'+esc(sub)+'</div></div>'+stat+'</div>'+cards+rev+exl+legend+
-    aLine+'<div class="fsub">등급 규칙: S = 매수 행동카드(전략2·3) 활성 + 자동 관문 실패/미확인 0 + 공급압력 경계 미통과 · A = 행동카드 활성인데 미확인·공급 경계가 남음, 또는 관문 통과 후 행동 구간 대기 · B = 자동 관문 1개만 탈락(희석 100%↑ 제외) + 아직 행동 가능한 일정 — B 안에서는 B⑥ 공시 충격 우세를 앞에. 업계순위·대체불가 같은 수동 판단은 상세 카드에서 별도 확인합니다.</div>';
+    aLine+'<div class="fsub">등급 규칙: S = 매수 행동카드(전략2·3) 활성 + 자동 관문 실패/미확인 0 + 공급압력 경계 미통과 · A = 행동카드 활성인데 미확인·공급 경계가 남음, 또는 관문 통과 후 행동 구간 대기 · B = 자동 관문 1개만 탈락(희석 100%↑ 제외) + 아직 행동 가능한 일정 — B 안에서는 B⑥ 공시 충격 우세를 앞에. 업계순위·대체불가 같은 수동 판단은 상세 카드에서 별도 확인해요.</div>';
 }
 function renderSScore(){
-  const R=DATA.strategy_rules, rows=DATA.strategy_scorecard||[]; if(!R){$('#sscore').innerHTML='<div class="empty">다음 수집부터 표시됩니다.</div>';return;}
+  const R=DATA.strategy_rules, rows=DATA.strategy_scorecard||[]; if(!R){$('#sscore').innerHTML='<div class="empty">다음 수집부터 표시돼요.</div>';return;}
   const S=(BT&&BT.strategies)||{};
   const exam=k=>{const x=S[k]; if(!x) return ['—','—','—','—'];
     if(k==='s1'){const p=(x.points||{})['+20일']||{};return [x.n_measured??x.n,spct(p.median),x.sell_rate==null?'—':x.sell_rate+'% (매도 유리)',spct(p.p75)];}
@@ -912,7 +912,7 @@ function caseCard(c){
   ${resultBlock(c)}${aRealBox(c)}
   <details><summary>공시·정정 이력 ${c.history.length}건</summary><div class="hist">${hist}</div></details>
   <details><summary>1차·2차 자료 링크</summary><div class="links">${caseLinks(c).map(([i,n,t,u,d])=>`<a class="lnk" href="${u}" target="_blank" rel="noopener"><span>${i}</span><span>${n}<span class="${t==='1차'?'t1':'t2'}">${t}</span><small>${d}</small></span></a>`).join('')}</div></details>
-  <div class="ai"><div class="nsub">🤖 <b>개별기업 분석 프롬프트</b> — 이 케이스의 공시·일정·IV 프리미엄 + DART 1차 자료 링크 + 확정 결론(전제) + 검증 지침이 채워진 질문을 복사합니다. GPT·Claude에 붙여넣으세요.</div>
+  <div class="ai"><div class="nsub">🤖 <b>개별기업 분석 프롬프트</b> — 이 케이스의 공시·일정·IV 프리미엄 + DART 1차 자료 링크 + 확정 결론(전제) + 검증 지침이 채워진 질문을 복사해요. GPT·Claude에 붙여넣으세요.</div>
   <button class="btn gold" data-label="📋 이 기업 분석 프롬프트 복사" onclick="copyCase(${c.case_id},this)">📋 이 기업 분석 프롬프트 복사</button>
   <div class="preview" id="pv${c.case_id}"></div></div>
   </div>`;
@@ -928,7 +928,7 @@ function renderCases(){
   const sk=c=>(c.strategy||{}).rank??3;
   const list=DATA.cases.filter(groups[TAB]).map((c,i)=>[c,i]).sort((a,b)=>sk(a[0])-sk(b[0])||rk(a[0])-rk(b[0])||a[1]-b[1]).map(x=>x[0]);
   SPARKS.length=0;
-  $('#cases').innerHTML=list.length?list.map(caseCard).join(''):'<div class="empty">해당 케이스가 없습니다.</div>';
+  $('#cases').innerHTML=list.length?list.map(caseCard).join(''):'<div class="empty">해당 케이스가 없어요.</div>';
   drawSparks();
 }
 function drawSparks(){document.querySelectorAll('.sparkbox').forEach(b=>{b.innerHTML=drawSpark(SPARKS[b.dataset.i],Math.max(b.clientWidth,280));});}
@@ -965,14 +965,14 @@ function renderToday(){
   }
   items.sort((a,b)=>a.o-b.o);
   $('#today').innerHTML=items.length?items.map(x=>`<div class="ti" onclick="jumpTo(${x.c.case_id})"><span class="dot">${x.dot}</span><div><b>${esc(x.text)}</b><small>${esc(x.sub)}</small></div></div>`).join('')
-    :'<div class="empty">오늘 챙길 일정이 없습니다. (🔴 인수권 마감 D-2 이내 · 🟡 권리락·발행가확정·청약·신주상장 D-1 · 🟢 최근 3일 신규 주주배정)</div>';
+    :'<div class="empty">오늘 챙길 일정이 없어요. (🔴 인수권 마감 D-2 이내 · 🟡 권리락·발행가확정·청약·신주상장 D-1 · 🟢 최근 3일 신규 주주배정)</div>';
 }
 function jumpTo(id){const c=DATA.cases.find(x=>x.case_id===id);TAB=c.status==='open'?'open':'closed';renderCases();
   const el=document.getElementById('case'+id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});}
 
 function renderScore(){
   const V=DATA.verdicts, rows=DATA.scorecard||[];
-  if(!V){$('#score').innerHTML='<div class="empty">다음 수집부터 성적표가 표시됩니다.</div>';return;}
+  if(!V){$('#score').innerHTML='<div class="empty">다음 수집부터 성적표가 표시돼요.</div>';return;}
   const f=v=>v==null?'—':(v>0?'+':'')+v.toFixed(1)+'%';
   $('#score').innerHTML=`<div class="tblw"><table><thead><tr><th>판정</th><th>기록</th><th>완료(+20일)</th><th>승률</th><th>평균 수익률</th><th>최대 손실</th><th>평균 초과(지수 대비)</th></tr></thead><tbody>${
     rows.map(r=>`<tr><td>${V[r.verdict].emoji} ${V[r.verdict].name}</td><td>${r.n}건</td><td>${r.done}건</td><td>${r.win_rate==null?'—':r.win_rate+'%'}</td><td>${f(r.avg)}</td><td>${f(r.worst)}</td><td>${r.avg_excess==null?'—':(r.avg_excess>0?'+':'')+r.avg_excess.toFixed(1)+'%p'}</td></tr>`).join('')
@@ -988,14 +988,14 @@ function renderExam(B){
   const yrs=B.years.map(y=>`<tr><td>${y.year}${y.months&&y.months<12?` (1~${y.months}월)`:''}</td><td class="${y.stale?'pos':''}">v${y.logic_version||1}${y.stale?' · 재채점 필요':''}</td><td>${y.cases}</td><td>${y.no_rights_listing??'—'}</td><td>${y.parse_ok}</td><td><b>${y.parse_rate==null?'—':y.parse_rate+'%'}</b></td><td>${y.scored}</td><td>${y.no_rights_price}</td><td>${y.naver_missing}</td><td>${y.financials_missing}</td></tr>`).join('');
   const verd=B.by_verdict.map(v=>v.points.map((p,i)=>line(`${v.emoji} ${esc(v.name)}`,p,i===0)).join('')).join('');
   const filt=B.filters.map(fl=>`<h4 style="margin:14px 0 6px;font-size:13px;color:var(--gold2)">${esc(fl.title)}</h4><div class="tblw"><table><thead>${head}</thead><tbody>${fl.rows.map(r=>r.points.map((p,i)=>line(esc(r.bucket),p,i===0)).join('')).join('')}</tbody></table></div>`).join('');
-  const stale=(B.stale_years||[]).length?`<div class="warnbox">⚠ ${B.stale_years.join('·')}년은 옛 판정 로직으로 채점돼 합산에서 뺐습니다 — Actions 에서 backtest 를 다시 돌리면 v${B.logic_version} 기준으로 들어갑니다.</div>`:'';
+  const stale=(B.stale_years||[]).length?`<div class="warnbox">⚠ ${B.stale_years.join('·')}년은 옛 판정 로직으로 채점돼 합산에서 뺐어요 — Actions 에서 backtest 를 다시 돌리면 v${B.logic_version} 기준으로 들어가요.</div>`:'';
   $('#exam').innerHTML=`${stale}<div class="meta">채점 ${B.n_scored}건 · 판정 로직 v${B.logic_version} · 생성 ${esc((B.generated_at||'').slice(0,16).replace('T',' '))}</div>
   <h4 style="margin:12px 0 6px;font-size:13px;color:var(--gold2)">연도별 파싱 성공률</h4>
   <div class="tblw"><table><thead><tr><th>연도</th><th>판정 로직</th><th>주주배정</th><th>인수권 비상장</th><th>파싱 성공</th><th>성공률</th><th>채점</th><th>인수권 시세 없음</th><th>52주 미확인</th><th>재무 미확인</th></tr></thead><tbody>${yrs}</tbody></table></div>
   <h4 style="margin:14px 0 6px;font-size:13px;color:var(--gold2)">판정별 (진입·측정은 가상 성과와 동일)</h4>
   <div class="tblw"><table><thead>${head}</thead><tbody>${verd}</tbody></table></div>
   <h4 style="margin:14px 0 0;font-size:13px;color:var(--gold2)">필터 하나씩 떼어 보기</h4><div class="meta">${esc(B.base_note||'')}</div>${filt}
-  <div class="meta" style="margin-top:8px">표본 수는 정보로만 표시합니다. 파싱 실패·인수권 시세 없음은 채점에서 빠집니다 — 한계는 docs/backtest.md.</div>`;
+  <div class="meta" style="margin-top:8px">표본 수는 정보로만 표시해요. 파싱 실패·인수권 시세 없음은 채점에서 빠져요 — 한계는 docs/backtest.md.</div>`;
 }
 // 🟢 가격 조건 두 숫자 나란히: IV 프리미엄 ≤ −20% AND 신주원가 할인율 > −20%(너무 깊은 할인 = 부실 신호, 기출 근거)
 function greenCheck(q){
@@ -1004,7 +1004,7 @@ function greenCheck(q){
   const cushion=g.cushion_pct!=null?g.cushion_pct:(g.disc==null?null:-g.disc);
   const ceiling=g.cushion_ceiling??Math.abs(g.disc_floor??20);
   return `<div class="ql"><span>🟢 가격 조건</span><div class="gcs">${it('IV 프리미엄',g.gap,`≤ ${g.cheap}%`,g.gap_ok)}${it('총원가 쿠션율',cushion,`깊은 할인 위험선 < ${ceiling}%`,g.disc_ok)}
-    <small class="mut">총원가 쿠션율 = 1 − (인수권+발행가)/본주. 양수면 본주 대비 싸고, 음수면 프리미엄입니다. 20% 이상처럼 지나치게 깊은 할인은 기출에서 부실 신호였으므로 별도 위험필터로 봅니다.</small></div></div>`;
+    <small class="mut">총원가 쿠션율 = 1 − (인수권+발행가)/본주. 양수면 본주 대비 싸고, 음수면 프리미엄이에요. 20% 이상처럼 지나치게 깊은 할인은 기출에서 부실 신호였으므로 별도 위험필터로 봐요.</small></div></div>`;
 }
 // A = 인수권 할인 포착: IV 프리미엄 → 총원가 쿠션 → ATR 쿠션 → 신주 공급압력. 본주를 공매도로 고정할 수 없어 무위험 차익이 아니다.
 // 쿠션÷ATR 합격선은 두지 않음 — H1 데이터가 쌓일 때까지 연속형으로 기록만
@@ -1022,7 +1022,7 @@ function aBox(c){
     ...(s.listing_turnover!=null?[`D0 신주대비 거래회전율 ${(s.listing_turnover*100).toFixed(1)}% ${s.listing_price_type?'('+s.listing_price_type+')':''}`]:[]),
     ...(s.excess_turnover_d0!=null?[`D0 초과회전율 ${(s.excess_turnover_d0*100).toFixed(1)}%`]:[]),
     ...(s.excess_turnover_d0_d5!=null?[`D0~D5 누적 초과회전율 ${(s.excess_turnover_d0_d5*100).toFixed(1)}%`]:[])].join(' · '):'';
-  const legacyWarn=!a.decision_asof&&a.confirmed&&a.r_date&&a.r_date<kstToday()?'<div class="warnbox">⚠ 이 배포 데이터는 과거 P/R에 최신 확정발행가가 소급됐을 수 있습니다. 다음 데이터 갱신부터 A 당시값과 사후값을 분리합니다.</div>':'';
+  const legacyWarn=!a.decision_asof&&a.confirmed&&a.r_date&&a.r_date<kstToday()?'<div class="warnbox">⚠ 이 배포 데이터는 과거 P/R에 최신 확정발행가가 소급됐을 수 있어요. 다음 데이터 갱신부터 A 당시값과 사후값을 분리해요.</div>':'';
   return `<div class="abox"><div class="ah">A전략 · 인수권 할인 포착 <small class="mut">인수권+청약으로 본주보다 싸게 신주 확보 · IV 프리미엄 → 총원가 쿠션 → ATR 쿠션 → 공급압력</small></div>
     ${legacyWarn}
     <div>본주 P <b>${fmt(a.p)}</b> <span class="mut">(${esc(a.p_date||'')}${a.price_type?' · '+esc(a.price_type):''})</span> · 인수권 R ${a.r==null?'<span class="mut">시세 대기</span>':`<b>${fmt(a.r)}</b> <span class="mut">(${esc(a.r_date)})</span>`}
@@ -1034,7 +1034,7 @@ function aBox(c){
     ${days?`<div class="mut">남은 거래일(오늘 포함): ${days}</div>`:''}
     ${a.end_check?`<div class="${a.end_check.status==='mismatch'?'red':'mut'}">마지막 매매일: ${a.end_check.delist?`공시 ${esc(a.end_check.disclosed||'—')} · KRX 상장폐지일 ${esc(a.end_check.delist)}의 전 영업일 ${esc(a.end_check.krx_last)} — ${esc(a.end_check.text)}`:`공시 ${esc(a.end_check.disclosed||'—')} (KRX 상장폐지일은 인수권 시세가 들어오면 대조)`}</div>`:''}
     ${sp?`<div class="mut">공급압력: ${sp}</div>`:''}
-    <small class="mut">총원가 할인율 = 1 − (R+I)/P. IV 프리미엄보다 이 값과 원화 쿠션을 먼저 봅니다 — 본주를 공매도로 묶을 수 없어 상장일까지 본주가 빠지면 손실. 쿠션÷ATR 합격선은 H1 데이터가 쌓일 때까지 두지 않습니다.</small>
+    <small class="mut">총원가 할인율 = 1 − (R+I)/P. IV 프리미엄보다 이 값과 원화 쿠션을 먼저 봐요 — 본주를 공매도로 묶을 수 없어 상장일까지 본주가 빠지면 손실. 쿠션÷ATR 합격선은 H1 데이터가 쌓일 때까지 두지 않아요.</small>
   </div>`;
 }
 // A 보강: 시장 암시 발행가 · 체결가능 총원가(C_exec) · 노출기간 · 청약자금 부담률
@@ -1060,7 +1060,7 @@ function b6Box(c){
   return `<div class="abox"><div class="ah">B⑥ 정말 유증 때문에 눌렸나 <small class="mut">B전략(눌린 우량주 회복)의 6번째 확인 · 시장 대비 초과수익 · t0 ${esc(b.t0)}${b.ex_adjusted?' · 권리락 보정':''}</small></div>
     <div class="k4row" style="grid-template-columns:repeat(3,minmax(0,1fr))">${cell('a · 공시 전 추세 [-20,-1]',b.pretrend,'')}${cell('b · 공시 충격 [0,+1]',b.shock,'')}${cell('c · 악재 지속 [+2,오늘]',b.persistence,'')}</div>
     <div>${b.read?`<b>${esc(b.read)}</b> `:''}${b.shock3?`<span class="mut">CAR[0,+3] ${b.shock3.ar>0?'+':''}${b.shock3.ar}%p</span>`:''}</div>
-    <small class="mut">${esc(b.note)} · 자동 해석은 판단 보조이며 관문이 아닙니다.</small></div>`;
+    <small class="mut">${esc(b.note)} · 자동 해석은 판단 보조이며 관문이 아니에요.</small></div>`;
 }
 // A_realized: 인수권 마지막 날 C_exec 로 샀다면 — 사후값, 진입신호 아님
 function aRealBox(c){
@@ -1109,11 +1109,11 @@ function quickBox(c){
   ${be?`<div class="ql"><span>본전선</span><div><b>${fmt(be.value)}원</b> — ${esc(be.how)} <span class="mut">(${esc(be.text)})</span></div></div>`:`<div class="ql"><span>본전선</span><div class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</div></div>`}
   ${so.volume_days!=null?`<div class="ql"><span>매물 소화</span><div><b class="${so.red?'red':''}">${esc(so.baseline_label||'현재 최근20(예비)')} 거래량 ${so.volume_days.toLocaleString()}일치</b> <span class="mut">(신주 ${fmt(so.new_shares)}주 ÷ 평균 ${fmt(so.avg_volume)}주${so.baseline_start&&so.baseline_end?' · '+esc(so.baseline_start)+'~'+esc(so.baseline_end):''})</span></div></div>`:o?`<div class="ql"><span>매물 소화</span><div><b class="${o.red?'red':''}">최근 거래량 ${o.days.toLocaleString()}일치</b> <span class="mut">(신주 ${fmt(o.new_shares)}주 ÷ 최근 평균 ${fmt(o.avg_volume)}주)</span></div></div>`:''}
   ${so.listing_turnover!=null?`<div class="ql"><span>D0 실측</span><div><b>신주대비 거래회전율 ${(so.listing_turnover*100).toFixed(1)}%</b>${so.excess_turnover_d0!=null?` · 초과회전율 <b>${(so.excess_turnover_d0*100).toFixed(1)}%</b>`:''}${so.excess_turnover_d0_d5!=null?` · D0~D5 누적 초과 <b>${(so.excess_turnover_d0_d5*100).toFixed(1)}%</b>`:''} <small class="mut">(회전율은 손바뀜도 세므로 '소화율'이 아님 · 초과 = (거래량−평소 평균)/신주)</small> <span class="mut">${esc(so.listing_price_type||'')} · 평소 거래량의 ${so.listing_volume_multiple??'—'}배${so.listing_vwap?' · VWAP '+fmt(so.listing_vwap)+'원':''}${so.listing_close_vs_vwap!=null?' · 종가/VWAP '+pct(so.listing_close_vs_vwap):''}${so.listing_close_location!=null?' · 종가위치 '+so.listing_close_location+'%':''}</span></div></div>`:''}
-  ${rows?`<table><thead><tr><th>시나리오 (본전선 대비)</th><th>상장일 주가</th><th>수익률</th></tr></thead><tbody>${rows}</tbody></table><div class="fn">${esc(q.table_note)}<br>2차 발행가는 반드시 권리락 <b>후</b> 주가로 계산합니다.</div>`:''}
+  ${rows?`<table><thead><tr><th>시나리오 (본전선 대비)</th><th>상장일 주가</th><th>수익률</th></tr></thead><tbody>${rows}</tbody></table><div class="fn">${esc(q.table_note)}<br>2차 발행가는 반드시 권리락 <b>후</b> 주가로 계산해요.</div>`:''}
   </div>`;
 }
 function resultBlock(c){
-  const p=c.paper; if(!p) return c.is_rights?`<div class="result"><h4>들어갔다면?</h4><div class="meta">인수권 마지막 거래일 종가가 들어오면 판정을 확정하고 가상 진입을 기록합니다.</div></div>`:'';
+  const p=c.paper; if(!p) return c.is_rights?`<div class="result"><h4>들어갔다면?</h4><div class="meta">인수권 마지막 거래일 종가가 들어오면 판정을 확정하고 가상 진입을 기록해요.</div></div>`:'';
   const e=p.eval, V=(DATA.verdicts||{})[p.verdict]||{emoji:'',name:p.verdict};
   const rows=(e.points||[]).map(pt=>`<tr><td style="white-space:nowrap">${pt.label}</td><td>${pt.date?pt.date.slice(5):'—'}</td><td>${fmt(pt.price)}</td><td>${pt.ret!=null?`<b class="${pt.ret>=0?'pos':'neg'}">${(pt.ret>0?'+':'')+pt.ret.toFixed(1)}%</b>`:`<span class="mut">${esc(pt.pending||'—')}</span>`}</td><td>${pt.excess!=null?(pt.excess>0?'+':'')+pt.excess.toFixed(1)+'%p':'—'}</td></tr>`).join('');
   const snap=p.snapshot;
@@ -1137,7 +1137,7 @@ Promise.all([fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()),
   const rc=d.cases.filter(x=>x.is_rights&&x.status==='open').length;
   $('#chips').innerHTML=[['갱신',d.generated_at.replace('T',' ').slice(0,16)+(stale?` · ${Math.floor(age)}시간 전`:''),stale],['인수권 시세',d.last_rights_date||'—'],['주주배정 진행',rc+'건'],['가상 기록',(c.paper_trades??0)+'건'],['제외 공시',(c.excluded_disclosures??0)+'건']].map(([l,v,st])=>`<div class="chip${st?' stale':''}">${l}<b>${v}</b></div>`).join('');
   stratSummary();renderFocus();renderToday();renderRights();renderCases();renderSScore();renderScore();renderExam(BT);
-}).catch(e=>{$('#chips').innerHTML=`<div class="empty">data/site.json 을 읽지 못했습니다 (${esc(e.message)}). 로컬에선 python -m http.server 로 여세요.</div>`});
+}).catch(e=>{$('#chips').innerHTML=`<div class="empty">data/site.json 을 읽지 못했어요 (${esc(e.message)}). 로컬에선 python -m http.server 로 여세요.</div>`});
 // 웹앱(홈 화면)으로 열면 당겨서 새로고침이 없다 → 새로고침 버튼 + 10분 넘게 쉬다 돌아오면 자동 새로고침
 const STANDALONE=navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;
 if(STANDALONE){
