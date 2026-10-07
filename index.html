@@ -8,17 +8,32 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="유증 레이더">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#080c16">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F2F4F6" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#101013" media="(prefers-color-scheme: dark)">
 <meta name="format-detection" content="telephone=no">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
-:root{--bg:#080c16;--panel:#0e1626;--panel2:#131f35;--line:#1c2942;--gold:#d4af37;--gold2:#f0d27a;--txt:#e8edf6;--mut:#7d8aa3;--red:#c2544d;--grn:#4a9d7f;--blu:#5b8def}
+:root{color-scheme:light dark;
+ --bg:#F2F4F6;--panel:#FFFFFF;--panel2:#FFFFFF;--sub:#F9FAFB;--line:#E5E8EB;--track:#E5E8EB;
+ --txt:#191F28;--txt2:#4E5968;--mut:#8B95A1;
+ --gold:#3182F6;--gold2:#1B64DA;--accent-soft:rgba(49,130,246,.08);--accent-line:rgba(49,130,246,.28);--on-accent:#FFFFFF;
+ --red:#F04452;--blu:#3182F6;--grn:#03B26C;--up:#F04452;--down:#3182F6;
+ --ok:#03A05F;--ok-line:rgba(3,178,108,.35);--bad:#E42939;--bad-line:rgba(240,68,82,.35);--bad-bg:#FFF0F1;
+ --info:#1B64DA;--info-line:rgba(49,130,246,.35);--warn:#C77700;--warn-line:rgba(255,159,10,.4);
+ --shadow:0 1px 2px rgba(0,27,55,.04);--r:20px}
+@media (prefers-color-scheme:dark){:root{
+ --bg:#101013;--panel:#1C1C21;--panel2:#1C1C21;--sub:#26262C;--line:#2E2E36;--track:#33333B;
+ --txt:#F2F2F3;--txt2:#C3C3C8;--mut:#8F8F98;
+ --gold:#3182F6;--gold2:#6EA8FE;--accent-soft:rgba(49,130,246,.14);--accent-line:rgba(49,130,246,.4);
+ --red:#F45B69;--up:#F45B69;--down:#4B96FF;--blu:#4B96FF;--grn:#1FC27B;
+ --ok:#3DD68C;--ok-line:rgba(61,214,140,.35);--bad:#FF7A85;--bad-line:rgba(255,122,133,.35);--bad-bg:#3A1C20;
+ --info:#7FB2FF;--info-line:rgba(127,178,255,.35);--warn:#FFC24B;--warn-line:rgba(255,194,75,.35);--shadow:none}}
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{font-family:"Pretendard Variable",sans-serif;background:radial-gradient(1100px 560px at 82% -10%,#13203a 0%,transparent 55%),var(--bg);color:var(--txt);min-height:100vh;padding:clamp(14px,3.5vw,38px);letter-spacing:-.01em;font-size:14px;word-break:keep-all;overflow-wrap:break-word}
 .wrap{max-width:1040px;margin:0 auto}
-.kicker{font-size:11px;letter-spacing:.3em;color:var(--gold);font-weight:700;text-transform:uppercase}
+.kicker{font-size:12px;letter-spacing:.3em;color:var(--gold);font-weight:700;text-transform:uppercase}
 h1{font-size:clamp(26px,5.6vw,42px);font-weight:800;line-height:1.05;margin:8px 0 4px;background:linear-gradient(92deg,#fff 32%,var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
 h2{font-size:15px;font-weight:800;margin:30px 0 10px;display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px}
 h2 small{font-weight:500;color:var(--mut);font-size:12px}
@@ -31,45 +46,45 @@ h2 small{font-weight:500;color:var(--mut);font-size:12px}
 .tblw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
 table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;min-width:720px}
 th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
-th{font-size:11px;color:var(--mut);font-weight:600;background:var(--panel2);position:sticky;top:0}
+th{font-size:12px;color:var(--mut);font-weight:600;background:var(--panel2);position:sticky;top:0}
 td:first-child,th:first-child{text-align:left}
 tr:last-child td{border-bottom:none}
 .gap{display:inline-flex;align-items:center;gap:6px;font-weight:800}
-.bar{width:60px;height:6px;background:#1a2640;border-radius:3px;position:relative;overflow:hidden}
+.bar{width:60px;height:6px;background:var(--track);border-radius:3px;position:relative;overflow:hidden}
 .bar i{position:absolute;top:0;bottom:0}
-.neg{color:var(--grn)}.pos{color:var(--red)}.mut{color:var(--mut)}
+.neg{color:var(--down)}.pos{color:var(--red)}.mut{color:var(--mut)}
 .cards{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
 .card,.vbar,.quick,.result{min-width:0}
 .card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:16px}
-.card.rights{border-color:#2b3a22;box-shadow:inset 3px 0 0 var(--gold)}
+.card.rights{border-color:var(--line);box-shadow:inset 3px 0 0 var(--gold)}
 .ch{display:flex;justify-content:space-between;align-items:flex-start;gap:6px 10px;flex-wrap:wrap;margin-bottom:12px}
 .cn{font-size:18px;font-weight:800}
 .cn a{color:inherit;text-decoration:none}
 .meta{color:var(--mut);font-size:12px;margin-top:3px}
-.badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
-.badge.gold{color:#1a1405;background:var(--gold);border-color:var(--gold)}
-.badge.red{color:#fff;background:#6d2a26;border-color:#8a3530}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+.badge.gold{color:var(--on-accent);background:var(--gold);border-color:var(--gold)}
+.badge.red{color:#fff;background:var(--bad-line);border-color:var(--bad-line)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0}
-.kv{background:#0b1322;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
-.kv span{display:block;font-size:11px;color:var(--mut)}
+.kv{background:var(--sub);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.kv span{display:block;font-size:12px;color:var(--mut)}
 .kv b{font-size:15px}
-.purp{display:flex;height:8px;border-radius:4px;overflow:hidden;background:#1a2640;margin-top:6px}
-.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--mut);margin-top:6px}
+.purp{display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--track);margin-top:6px}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin-top:6px}
 .legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:middle}
 .tl{position:relative;margin:14px 6px 4px;height:92px}
 .tl .axis{position:absolute;left:0;right:0;top:45px;height:2px;background:var(--line)}
-.tl .ev{position:absolute;transform:translateX(-50%);text-align:center;font-size:10px;line-height:1.25;color:var(--mut);white-space:nowrap}
+.tl .ev{position:absolute;transform:translateX(-50%);text-align:center;font-size:12px;line-height:1.25;color:var(--mut);white-space:nowrap}
 .tl .ev.dn{top:58px}.tl .ev.up{bottom:58px}
 .tl .dot{position:absolute;top:40px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--panel2);border:2px solid var(--gold)}
 .tl .dot.done{background:var(--gold)}
-.tl .band{position:absolute;top:42px;height:8px;background:rgba(212,175,55,.35);border-radius:4px}
+.tl .band{position:absolute;top:42px;height:8px;background:var(--accent-line);border-radius:4px}
 .tl .today{position:absolute;top:30px;height:32px;width:2px;margin-left:-1px;background:var(--red)}
-.tl .today b{position:absolute;top:-14px;left:-10px;font-size:10px;color:var(--red);font-weight:700;white-space:nowrap}
+.tl .today b{position:absolute;top:-14px;left:-10px;font-size:12px;color:var(--red);font-weight:700;white-space:nowrap}
 details{margin-top:10px}
 summary{cursor:pointer;color:var(--mut);font-size:12px}
 .hist{font-size:12px;margin-top:8px;display:grid;gap:6px}
-.hist div{background:#0b1322;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
-.warn{color:#c9a54a;font-size:11px}
+.hist div{background:var(--sub);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.warn{color:var(--warn);font-size:12px}
 svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .notes{display:grid;gap:8px}
 .note{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;white-space:pre-wrap;font-size:12px;line-height:1.55}
@@ -77,130 +92,130 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .empty{color:var(--mut);padding:18px;text-align:center;border:1px dashed var(--line);border-radius:14px;line-height:1.7}
 .tabs{display:flex;gap:6px;margin-bottom:10px}
 .tab{background:var(--panel);border:1px solid var(--line);color:var(--mut);border-radius:999px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit}
-.tab.on{color:#1a1405;background:var(--gold);border-color:var(--gold);font-weight:700}
+.tab.on{color:var(--on-accent);background:var(--gold);border-color:var(--gold);font-weight:700}
 .topbar{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 6px}
 .btn{background:var(--panel);border:1px solid var(--line);color:var(--txt);font-family:inherit;font-size:12px;font-weight:700;padding:8px 12px;border-radius:10px;cursor:pointer}
 .btn:hover{border-color:var(--gold)}
-.btn.gold{background:var(--gold);color:#0a0e17;border-color:var(--gold)}
+.btn.gold{background:var(--gold);color:var(--on-accent);border-color:var(--gold)}
 .btn.gold:hover{background:var(--gold2)}
 .btn.done{background:var(--grn);border-color:var(--grn);color:#fff}
-.stage{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;color:var(--gold2);background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.35);border-radius:8px;padding:4px 9px}
+.stage{display:inline-block;margin-top:8px;font-size:12px;font-weight:700;color:var(--gold2);background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:8px;padding:4px 9px}
 .links{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:10px}
-.lnk{display:flex;gap:8px;align-items:center;background:#0b1322;border:1px solid var(--line);border-radius:10px;padding:8px 10px;text-decoration:none;color:var(--txt);font-size:12px}
+.lnk{display:flex;gap:8px;align-items:center;background:var(--sub);border:1px solid var(--line);border-radius:10px;padding:8px 10px;text-decoration:none;color:var(--txt);font-size:12px}
 .lnk:hover{border-color:var(--gold)}
-.lnk small{display:block;color:var(--mut);font-size:11px}
-.t1,.t2{font-size:9px;font-weight:800;border-radius:4px;padding:1px 4px;margin-left:4px}
-.t1{background:rgba(74,157,127,.2);color:var(--grn)}.t2{background:rgba(212,175,55,.15);color:var(--gold2)}
+.lnk small{display:block;color:var(--mut);font-size:12px}
+.t1,.t2{font-size:12.5px;font-weight:800;border-radius:4px;padding:1px 4px;margin-left:4px}
+.t1{background:var(--accent-soft);color:var(--grn)}.t2{background:var(--accent-soft);color:var(--gold2)}
 .ai{margin-top:12px;border-top:1px dashed var(--line);padding-top:12px}
 .ai .nsub{color:var(--mut);font-size:12px;line-height:1.6;margin-bottom:8px}
 .ai .btn{width:100%}
-.preview{display:none;margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:11px;font-size:11px;line-height:1.6;color:#9aa7bd;white-space:pre-wrap;max-height:220px;overflow-y:auto;font-family:ui-monospace,monospace}
+.preview{display:none;margin-top:10px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:11px;font-size:12px;line-height:1.6;color:var(--txt2);white-space:pre-wrap;max-height:220px;overflow-y:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 .preview.show{display:block}
-.modal{display:none;position:fixed;inset:0;background:rgba(3,6,12,.78);z-index:50;overflow-y:auto;padding:clamp(10px,4vw,40px)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;overflow-y:auto;padding:clamp(10px,4vw,40px)}
 .modal.show{display:block}
 .mbox{max-width:780px;margin:0 auto;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:16px;padding:20px;line-height:1.7;font-size:13px}
 .mbox h3{font-size:15px;margin:18px 0 8px;color:var(--gold2)}
 .mbox h3:first-of-type{margin-top:4px}
 .mbox .x{float:right}
-.uc{background:#0b1322;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0}
+.uc{background:var(--sub);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0}
 .uc b.t{display:block;color:var(--txt);margin-bottom:2px}
-.mbox code{background:#0b1322;border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:12px}
-.chip.stale{border-color:#8a3530;background:#2a1414;color:#f0a8a2}
+.mbox code{background:var(--sub);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:12px}
+.chip.stale{border-color:var(--bad-line);background:var(--bad-bg);color:var(--bad)}
 .chip.stale b{color:#fff}
 .today{display:grid;gap:8px}
 .ti{display:flex;gap:10px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;cursor:pointer}
 .ti:hover{border-color:var(--gold)}
 .ti .dot{font-size:15px;line-height:1.2}
-.ti small{display:block;color:var(--mut);font-size:11px;margin-top:2px}
-.vbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:-2px 0 12px;padding:10px 12px;border-radius:12px;background:#0b1322;border:1px solid var(--line)}
+.ti small{display:block;color:var(--mut);font-size:12px;margin-top:2px}
+.vbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:-2px 0 12px;padding:10px 12px;border-radius:12px;background:var(--sub);border:1px solid var(--line)}
 .vbadge{font-size:14px;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);white-space:nowrap}
-.vbadge.green{border-color:#2f6b55;color:#8fe0bf}.vbadge.yellow{border-color:#7a6420;color:var(--gold2)}
-.vbadge.blue{border-color:#2d4f8f;color:#9dbcff}.vbadge.white{color:#d8dde7}
-.vbadge.green_q{border:1.5px dashed #2f6b55;color:#8fe0bf}.vbadge.yellow_q{border:1.5px dashed #7a6420;color:var(--gold2)}
-.unc{margin-top:6px;padding:7px 9px;border:1px solid #5a2a27;border-radius:9px;background:rgba(194,84,77,.08)}
-.unc .ul{color:#ff8a80;font-weight:700;font-size:12.5px;line-height:1.5}
+.vbadge.green{border-color:var(--ok-line);color:var(--ok)}.vbadge.yellow{border-color:var(--warn-line);color:var(--gold2)}
+.vbadge.blue{border-color:var(--info-line);color:var(--info)}.vbadge.white{color:var(--txt2)}
+.vbadge.green_q{border:1.5px dashed var(--ok-line);color:var(--ok)}.vbadge.yellow_q{border:1.5px dashed var(--warn-line);color:var(--gold2)}
+.unc{margin-top:6px;padding:7px 9px;border:1px solid var(--bad-line);border-radius:9px;background:var(--bad-bg)}
+.unc .ul{color:var(--bad);font-weight:700;font-size:12.5px;line-height:1.5}
 .unc .btn{margin-top:6px;width:100%}
 .vreason{font-size:12px;color:var(--txt);flex:1 1 220px;min-width:0;line-height:1.5}
 .vreason small{display:block;color:var(--mut);margin-top:2px}
 .crit{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
-.cr{font-size:11px;padding:3px 8px;border-radius:8px;border:1px solid var(--line);background:#0b1322;color:var(--mut)}
-.cr.pass{color:#8fe0bf;border-color:#24503f}.cr.fail{color:#f0a8a2;border-color:#5a2a27}
-.cr.manual{color:var(--gold2);border-color:#5a4a1a}
-.result{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#0b1322}
+.cr{font-size:12px;padding:3px 8px;border-radius:8px;border:1px solid var(--line);background:var(--sub);color:var(--mut)}
+.cr.pass{color:var(--ok);border-color:var(--ok-line)}.cr.fail{color:var(--bad);border-color:var(--bad-line)}
+.cr.manual{color:var(--gold2);border-color:var(--warn-line)}
+.result{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--sub)}
 .result h4{font-size:12px;margin-bottom:6px;color:var(--gold2)}
 .result table{min-width:0}
 .result td,.result th{padding:5px 8px;font-size:12px;white-space:normal}
 .result .sx,.quick .sx{overflow-x:auto}
-.warnbox{margin:8px 0;font-size:12px;color:#e8c46a}
-.quick{margin:0 0 12px;border:1px solid rgba(212,175,55,.45);border-radius:12px;padding:10px 12px;background:rgba(212,175,55,.06)}
+.warnbox{margin:8px 0;font-size:12px;color:var(--warn)}
+.quick{margin:0 0 12px;border:1px solid var(--accent-line);border-radius:12px;padding:10px 12px;background:var(--accent-soft)}
 .quick .qw{font-size:17px;font-weight:800;color:var(--gold2);line-height:1.35}
-.quick .qs{font-size:11.5px;color:var(--mut);font-weight:600;margin:1px 0 4px}
+.quick .qs{font-size:12.5px;color:var(--mut);font-weight:600;margin:1px 0 4px}
 .quick .ql{font-size:12.5px;margin-top:5px;line-height:1.55;display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px}
 .quick .ql>span{color:var(--mut)}
 .quick .ql>div{overflow-wrap:anywhere}
 .quick table{min-width:0;margin-top:8px;max-width:560px}
-.abox{margin-top:9px;border-top:1px dashed rgba(212,175,55,.35);padding-top:8px;font-size:12.5px;line-height:1.55}
+.abox{margin-top:9px;border-top:1px dashed var(--accent-line);padding-top:8px;font-size:12.5px;line-height:1.55}
 .abox .ah{font-weight:800;color:var(--gold2);margin-bottom:2px}.abox .ah small{font-weight:500;margin-left:4px}
-.abox .ar{margin:6px 0;background:#0b1322;border:1px solid var(--line);border-radius:9px;padding:7px 9px}
+.abox .ar{margin:6px 0;background:var(--sub);border:1px solid var(--line);border-radius:9px;padding:7px 9px}
 .abox dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px 8px;margin-top:5px}
-.abox dt{color:var(--mut);font-size:10.5px}.abox dd{font-weight:700;font-variant-numeric:tabular-nums}
+.abox dt{color:var(--mut);font-size:12.5px}.abox dd{font-weight:700;font-variant-numeric:tabular-nums}
 /* 카드 맨 위 4지표: 총원가 할인율 | 쿠션÷ATR | 공급일수 | 발행가 단계 (IV 프리미엄보다 먼저) */
 .k4row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0 4px}
-.k4{background:#0b1322;border:1px solid var(--line);border-radius:10px;padding:7px 9px;min-width:0}
-.k4 span{display:block;font-size:10.5px;color:var(--mut)}.k4 b{font-size:16px;font-variant-numeric:tabular-nums}
-.k4 small{display:block;font-size:10px;color:var(--mut);line-height:1.4;margin-top:1px}
+.k4{background:var(--sub);border:1px solid var(--line);border-radius:10px;padding:7px 9px;min-width:0}
+.k4 span{display:block;font-size:12.5px;color:var(--mut)}.k4 b{font-size:16px;font-variant-numeric:tabular-nums}
+.k4 small{display:block;font-size:12px;color:var(--mut);line-height:1.4;margin-top:1px}
 @media (max-width:600px){.k4row{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* 발행가 단계 배지 — 예정 / 1차 / 예상최종 / 확정 강제 */
-.isb{display:inline-block;font-size:10.5px;font-weight:800;border-radius:6px;padding:1px 6px;margin-right:4px;vertical-align:1px;border:1px solid}
-.isb.planned{color:#9aa6bd;border-color:#3a4760}.isb.first{color:#9dbcff;border-color:#34496d}
-.isb.final_est{color:var(--gold2);border-color:#7a6420}.isb.confirmed{color:#8fe0bf;border-color:#2f6b55}
+.isb{display:inline-block;font-size:12.5px;font-weight:800;border-radius:6px;padding:1px 6px;margin-right:4px;vertical-align:1px;border:1px solid}
+.isb.planned{color:var(--mut);border-color:var(--line)}.isb.first{color:var(--info);border-color:var(--info-line)}
+.isb.final_est{color:var(--gold2);border-color:var(--warn-line)}.isb.confirmed{color:var(--ok);border-color:var(--ok-line)}
 /* A 3단계: 사전감시(랭킹 아님) → 가격관찰 → 조건충족 */
-.a3{font-size:11.5px;line-height:1.5;border-radius:8px;padding:5px 8px;margin:4px 0 2px;border:1px solid var(--line);color:var(--mut)}
-.a3 b{margin-right:4px}.a3.prewatch b{color:#9aa6bd}.a3.price b{color:#9dbcff}.a3.met{border-color:#2f6b55}.a3.met b{color:#8fe0bf}
-.tracebox{margin-top:9px;border-top:1px dashed var(--line);padding-top:7px;font-size:11.5px}
+.a3{font-size:12.5px;line-height:1.5;border-radius:8px;padding:5px 8px;margin:4px 0 2px;border:1px solid var(--line);color:var(--mut)}
+.a3 b{margin-right:4px}.a3.prewatch b{color:var(--mut)}.a3.price b{color:var(--info)}.a3.met{border-color:var(--ok-line)}.a3.met b{color:var(--ok)}
+.tracebox{margin-top:9px;border-top:1px dashed var(--line);padding-top:7px;font-size:12.5px}
 .tracebox summary{cursor:pointer;color:var(--gold2);font-weight:800;list-style:none}
 .tracebox summary::-webkit-details-marker{display:none}
 .tracebox summary::before{content:"▸";display:inline-block;margin-right:6px;color:var(--mut);transition:transform .15s ease}
 .tracebox[open] summary::before{transform:rotate(90deg)}
 .tracebox summary span{font-weight:500;color:var(--mut);margin-left:4px}
 .tracegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:7px;margin-top:7px}
-.trsec{background:#0b1322;border:1px solid var(--line);border-radius:9px;padding:7px 9px;line-height:1.55;min-width:0}
-.trsec .tt{display:block;color:var(--txt);font-size:11px;margin-bottom:3px}
+.trsec{background:var(--sub);border:1px solid var(--line);border-radius:9px;padding:7px 9px;line-height:1.55;min-width:0}
+.trsec .tt{display:block;color:var(--txt);font-size:12px;margin-bottom:3px}
 .trline{overflow-wrap:anywhere;color:var(--mut)}
 .trline b{color:var(--txt);font-variant-numeric:tabular-nums}
-.trsrc a{color:#9dbcff;text-decoration:none}.trsrc a:hover{text-decoration:underline}
+.trsrc a{color:var(--info);text-decoration:none}.trsrc a:hover{text-decoration:underline}
 .trgates{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
-.trgate{font-size:10px;padding:2px 5px;border:1px solid var(--line);border-radius:6px;color:var(--mut)}
-.trgate.pass{color:#8fe0bf;border-color:#24503f}.trgate.fail{color:#f0a8a2;border-color:#5a2a27}
-.trgate.unknown,.trgate.manual{color:var(--gold2);border-color:#5a4a1a}
+.trgate{font-size:12px;padding:2px 5px;border:1px solid var(--line);border-radius:6px;color:var(--mut)}
+.trgate.pass{color:var(--ok);border-color:var(--ok-line)}.trgate.fail{color:var(--bad);border-color:var(--bad-line)}
+.trgate.unknown,.trgate.manual{color:var(--gold2);border-color:var(--warn-line)}
 .quick td,.quick th{padding:4px 8px;font-size:12px}
-.quick .fn{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5}
-.quick .red{color:#f0a8a2;font-weight:700}
-.gcs{display:grid;gap:3px}.gcs small{font-size:11px}
-.gc b{font-variant-numeric:tabular-nums}.gc.ok b{color:#8fe0bf}.gc.no b{color:#f0a8a2}.gc.na b{color:var(--mut)}
+.quick .fn{font-size:12px;color:var(--mut);margin-top:6px;line-height:1.5}
+.quick .red{color:var(--bad);font-weight:700}
+.gcs{display:grid;gap:3px}.gcs small{font-size:12px}
+.gc b{font-variant-numeric:tabular-nums}.gc.ok b{color:var(--ok)}.gc.no b{color:var(--bad)}.gc.na b{color:var(--mut)}
 /* 유증 진행 레이스 바 */
-.race{margin:0 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#0b1322}
+.race{margin:0 0 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--sub)}
 .race .rrow{display:flex;align-items:center;gap:10px}
 .race .rbar{flex:1;min-width:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px}
-.race .seg{position:relative;height:12px;border-radius:3px;background:#243149;border:0;padding:0;cursor:pointer;font:inherit}
+.race .seg{position:relative;height:12px;border-radius:3px;background:var(--track);border:0;padding:0;cursor:pointer;font:inherit}
 .race .seg .f{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--vc)}
 .race .seg.tbd{background:transparent;border:1.5px dashed var(--mut)}
 .race .seg.sel{outline:2px solid var(--txt);outline-offset:1px}
 .race .seg .dot{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--vc);border:2px solid var(--txt);animation:blink 1.1s ease-in-out infinite}
 @keyframes blink{50%{opacity:.25}}
 @media (prefers-reduced-motion:reduce){.race .seg .dot{animation:none}}
-.race .rlab{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;margin-top:4px;font-size:10px;color:var(--mut);text-align:center;line-height:1.2}
+.race .rlab{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:3px;margin-top:4px;font-size:12px;color:var(--mut);text-align:center;line-height:1.2}
 .race .rlab .now{color:var(--txt);font-weight:700}.race .rlab .tbd{font-style:italic}
 .race .cd{font-size:12px;font-weight:800;white-space:nowrap;text-align:right;line-height:1.2}
-.race .cd small{display:block;font-size:10px;font-weight:500;color:var(--mut)}
-.race .cap{font-size:11px;color:var(--mut);margin-top:6px;min-height:14px}
+.race .cd small{display:block;font-size:12px;font-weight:500;color:var(--mut)}
+.race .cap{font-size:12px;color:var(--mut);margin-top:6px;min-height:14px}
 /* IV 프리미엄 온도계 */
 .gauge{margin:12px 0 4px;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center}
 .gauge svg.g{width:100%;max-width:230px;height:auto;display:block}
 .gauge .gv{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
 .gauge .gz{font-size:12px;font-weight:700;margin-left:6px}
-.gauge .gs{font-size:11px;color:var(--mut);margin-top:2px}
-.gauge .gleg{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:10.5px;color:var(--mut);margin-top:6px}
+.gauge .gs{font-size:12px;color:var(--mut);margin-top:2px}
+.gauge .gleg{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12.5px;color:var(--mut);margin-top:6px}
 .gauge .gleg i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:3px;vertical-align:-1px}
 .gauge svg.gt{width:100%;max-width:230px;height:40px;display:block;margin-top:6px}
 .gauge .gside{flex:1;min-width:170px}
@@ -209,78 +224,78 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
 .rc .rh{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .rc .rh b{font-size:15px}
 .rc .rg{font-size:19px;font-weight:800;margin:6px 0 8px}
-.rc .rg small{font-size:11px;color:var(--mut);font-weight:500;margin-left:6px}
+.rc .rg small{font-size:12px;color:var(--mut);font-weight:500;margin-left:6px}
 .rc dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 8px;font-size:12px}
-.rc dt{color:var(--mut);font-size:10.5px}.rc dd{font-variant-numeric:tabular-nums;font-weight:700}
+.rc dt{color:var(--mut);font-size:12.5px}.rc dd{font-variant-numeric:tabular-nums;font-weight:700}
 .tlist{list-style:none;margin:12px 0 4px;border-left:2px solid var(--line);padding-left:12px}
 .tlist li{position:relative;display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:8px;padding:5px 0;font-size:12.5px;align-items:baseline}
 .tlist li::before{content:"";position:absolute;left:-20px;top:10px;width:10px;height:10px;border-radius:50%;background:var(--panel2);border:2px solid var(--gold)}
 .tlist li.done{color:var(--mut)}.tlist li.done::before{background:var(--gold)}
 .tlist li.now{color:var(--red);font-weight:700}.tlist li.now::before{background:var(--red);border-color:var(--red)}
 .tlist .dd{font-variant-numeric:tabular-nums;color:var(--gold2)}.tlist li.done .dd{color:var(--mut)}
-.tlist .dl{font-size:11px;color:var(--mut);white-space:nowrap}
+.tlist .dl{font-size:12px;color:var(--mut);white-space:nowrap}
 /* [18] 전략 배지 */
-.ssum{margin:6px 0 4px;padding:9px 12px;border:1px solid rgba(212,175,55,.45);border-radius:12px;background:rgba(212,175,55,.06);font-size:13px;font-weight:700;line-height:1.6}
-.ssum small{display:block;font-weight:500;color:var(--mut);font-size:11px}
+.ssum{margin:6px 0 4px;padding:9px 12px;border:1px solid var(--accent-line);border-radius:12px;background:var(--accent-soft);font-size:13px;font-weight:700;line-height:1.6}
+.ssum small{display:block;font-weight:500;color:var(--mut);font-size:12px}
 /* 집중 후보 엔진: 전체 케이스를 1~3개로 압축 */
-.focus{margin:18px 0 8px;border:1px solid rgba(212,175,55,.5);border-radius:18px;padding:15px;background:linear-gradient(135deg,rgba(212,175,55,.10),rgba(14,22,38,.96) 48%,rgba(91,141,239,.06))}
+.focus{margin:18px 0 8px;border:1px solid var(--accent-line);border-radius:18px;padding:15px;background:linear-gradient(135deg,var(--accent-soft),rgba(14,22,38,.96) 48%,rgba(91,141,239,.06))}
 .focus .fh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
 .focus .ft{font-size:13px;font-weight:800;color:var(--gold2);letter-spacing:.02em}
 .focus .fbig{font-size:clamp(22px,5vw,34px);font-weight:900;line-height:1.15;margin-top:3px}
-.focus .fsub{font-size:11.5px;color:var(--mut);line-height:1.55;margin-top:5px}
+.focus .fsub{font-size:12.5px;color:var(--mut);line-height:1.55;margin-top:5px}
 .focus .fstats{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
-.focus .fstat{font-size:10.5px;padding:4px 7px;border:1px solid var(--line);border-radius:999px;background:#0b1322;color:var(--mut)}
+.focus .fstat{font-size:12.5px;padding:4px 7px;border:1px solid var(--line);border-radius:999px;background:var(--sub);color:var(--mut)}
 .focus .fstat b{color:var(--txt)}
 .focus .fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:8px;margin-top:11px}
-.focus .fc{border:1px solid var(--line);border-radius:12px;padding:11px;background:#0b1322;cursor:pointer;min-width:0}
+.focus .fc{border:1px solid var(--line);border-radius:12px;padding:11px;background:var(--sub);cursor:pointer;min-width:0}
 .focus .fc:hover{border-color:var(--gold)}
-.focus .fc.strong{border-color:#2f6b55;box-shadow:inset 3px 0 0 var(--grn)}
-.focus .fc.conditional{border-color:#7a6420;box-shadow:inset 3px 0 0 var(--gold)}
-.focus .fc.wait{border-color:#34496d;box-shadow:inset 3px 0 0 #6f8fbe}
-.focus .fc.reverse{border-color:#6d2a26;box-shadow:inset 3px 0 0 var(--red)}
+.focus .fc.strong{border-color:var(--ok-line);box-shadow:inset 3px 0 0 var(--grn)}
+.focus .fc.conditional{border-color:var(--warn-line);box-shadow:inset 3px 0 0 var(--gold)}
+.focus .fc.wait{border-color:var(--info-line);box-shadow:inset 3px 0 0 var(--info)}
+.focus .fc.reverse{border-color:var(--bad-line);box-shadow:inset 3px 0 0 var(--red)}
 .focus .fctop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
 .focus .fcname{font-size:17px;font-weight:900}
-.focus .fclabel{font-size:10.5px;font-weight:800;border-radius:999px;padding:3px 7px;border:1px solid var(--line);white-space:nowrap}
-.focus .strong .fclabel{color:#8fe0bf;border-color:#2f6b55}.focus .conditional .fclabel{color:var(--gold2);border-color:#7a6420}
-.focus .wait .fclabel{color:#9dbcff;border-color:#34496d}.focus .reverse .fclabel{color:#f0a8a2;border-color:#6d2a26}
+.focus .fclabel{font-size:12.5px;font-weight:800;border-radius:999px;padding:3px 7px;border:1px solid var(--line);white-space:nowrap}
+.focus .strong .fclabel{color:var(--ok);border-color:var(--ok-line)}.focus .conditional .fclabel{color:var(--gold2);border-color:var(--warn-line)}
+.focus .wait .fclabel{color:var(--info);border-color:var(--info-line)}.focus .reverse .fclabel{color:var(--bad);border-color:var(--bad-line)}
 .focus .fcwhy{font-size:12.5px;line-height:1.55;margin-top:7px}
 .focus .fcm{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
-.focus .fcm span{font-size:10.5px;color:var(--mut);border:1px solid var(--line);border-radius:7px;padding:3px 6px}
+.focus .fcm span{font-size:12.5px;color:var(--mut);border:1px solid var(--line);border-radius:7px;padding:3px 6px}
 .focus .fcm b{color:var(--txt)}
-.focus .fblock{font-size:11px;color:#e8c46a;margin-top:7px;line-height:1.5}
+.focus .fblock{font-size:12px;color:var(--warn);margin-top:7px;line-height:1.5}
 .focus .fempty{margin-top:10px;border:1px dashed var(--line);border-radius:12px;padding:12px;color:var(--mut);font-size:12.5px;line-height:1.6}
 .focus .frev{margin-top:10px}
-.focus .frevtitle.tierS{color:#8fe0bf}.focus .frevtitle.tierA{color:var(--gold2)}.focus .frevtitle.tierB{color:#9dbcff}
-.focus .fc.weak{border-color:#34496d;box-shadow:inset 3px 0 0 #6f8fbe}.focus .weak .fclabel{color:#9dbcff;border-color:#34496d}
-.focus .fexcl{margin-top:10px;font-size:11.5px}.focus .fexcl summary{cursor:pointer;color:var(--mut)}
+.focus .frevtitle.tierS{color:var(--ok)}.focus .frevtitle.tierA{color:var(--gold2)}.focus .frevtitle.tierB{color:var(--info)}
+.focus .fc.weak{border-color:var(--info-line);box-shadow:inset 3px 0 0 var(--info)}.focus .weak .fclabel{color:var(--info);border-color:var(--info-line)}
+.focus .fexcl{margin-top:10px;font-size:12.5px}.focus .fexcl summary{cursor:pointer;color:var(--mut)}
 .focus .fexcl div{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}.focus .fexcl span{border:1px solid var(--line);border-radius:7px;padding:3px 7px;cursor:pointer}
-.focus .fexcl small{color:var(--mut)}.focus .flegend{margin-top:9px;font-size:10.5px;color:var(--mut);line-height:1.6}.focus .flegend b{color:var(--txt);font-weight:700}
+.focus .fexcl small{color:var(--mut)}.focus .flegend{margin-top:9px;font-size:12.5px;color:var(--mut);line-height:1.6}.focus .flegend b{color:var(--txt);font-weight:700}
 .focus .fclabel small{font-weight:500;opacity:.85}
-.focus .frevtitle{font-size:11px;color:#f0a8a2;font-weight:800;margin-bottom:6px}
+.focus .frevtitle{font-size:12px;color:var(--bad);font-weight:800;margin-bottom:6px}
 @media (max-width:600px){.focus{padding:12px}.focus .fstats{justify-content:flex-start}.focus .fgrid{grid-template-columns:1fr}.focus .fcname{font-size:16px}}
 .strat{margin:-2px 0 12px;display:grid;gap:8px}
-.sitem{border:1px solid rgba(212,175,55,.55);border-radius:12px;padding:10px 12px;background:rgba(212,175,55,.08)}
-.sitem.wait,.sitem.past{border-style:dashed;background:#0b1322}
+.sitem{border:1px solid var(--accent-line);border-radius:12px;padding:10px 12px;background:var(--accent-soft)}
+.sitem.wait,.sitem.past{border-style:dashed;background:var(--sub)}
 .sitem .sh{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
 .sitem .sb{font-size:15px;font-weight:800;color:var(--gold2)}
-.sitem .st{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
-.sitem .st.live{background:var(--gold);color:#1a1405;border-color:var(--gold)}
+.sitem .st{font-size:12px;font-weight:700;padding:2px 7px;border-radius:999px;border:1px solid var(--line);color:var(--mut)}
+.sitem .st.live{background:var(--gold);color:var(--on-accent);border-color:var(--gold)}
 .sitem .sa{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin-top:8px}
-.sitem .sa div{background:#0b1322;border:1px solid var(--line);border-radius:9px;padding:6px 8px;font-size:12px;line-height:1.4}
-.sitem .sa span{display:block;color:var(--mut);font-size:10.5px}
+.sitem .sa div{background:var(--sub);border:1px solid var(--line);border-radius:9px;padding:6px 8px;font-size:12px;line-height:1.4}
+.sitem .sa span{display:block;color:var(--mut);font-size:12.5px}
 .sitem .sa b{font-variant-numeric:tabular-nums}
-.sitem .ev{font-size:11.5px;color:var(--mut);margin-top:7px;line-height:1.5}
+.sitem .ev{font-size:12.5px;color:var(--mut);margin-top:7px;line-height:1.5}
 .sitem .ev b{color:var(--txt)}
-.sban{border:1px solid #8a3530;border-radius:12px;padding:10px 12px;background:#2a1414;color:#f0a8a2;font-size:13px;font-weight:700;line-height:1.55}
-.sban small{display:block;font-weight:500;color:#c99;font-size:11px}
+.sban{border:1px solid var(--bad-line);border-radius:12px;padding:10px 12px;background:var(--bad-bg);color:var(--bad);font-size:13px;font-weight:700;line-height:1.55}
+.sban small{display:block;font-weight:500;color:var(--bad);font-size:12px}
 .snone{font-size:12px;color:var(--mut);padding:6px 10px;border:1px dashed var(--line);border-radius:10px}
-.snote{font-size:11.5px;color:#e8c46a}
-.gok{color:#8fe0bf}.gno{color:#f0a8a2}
+.snote{font-size:12.5px;color:var(--warn)}
+.gok{color:var(--ok)}.gno{color:var(--bad)}
 @media (max-width:600px){
  body{font-size:13.5px}
  .def{font-size:12.5px}
  .chips{gap:6px;margin:12px 0}
- .chip{padding:6px 10px;font-size:11px}.chip b{font-size:13px}
+ .chip{padding:6px 10px;font-size:12px}.chip b{font-size:13px}
  .topbar .btn{flex:1 1 auto;padding:10px 12px}
  .tabs{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;padding-bottom:2px}
  .tab{white-space:nowrap;padding:8px 12px}
@@ -299,7 +314,7 @@ svg.spark{width:100%;height:130px;display:block;margin-top:4px}
  .links{grid-template-columns:minmax(0,1fr)}
  .mbox{padding:16px}
 }
-footer{color:var(--mut);font-size:11px;margin:34px 0 10px;line-height:1.7}
+footer{color:var(--mut);font-size:12px;margin:34px 0 10px;line-height:1.7}
 a{color:var(--gold2)}
 /* 웹앱(홈 화면) — 노치·상태바·홈 인디케이터 안쪽으로 */
 body{padding-top:calc(clamp(14px,3.5vw,38px) + env(safe-area-inset-top));padding-bottom:calc(clamp(14px,3.5vw,38px) + env(safe-area-inset-bottom));
@@ -307,17 +322,136 @@ body{padding-top:calc(clamp(14px,3.5vw,38px) + env(safe-area-inset-top));padding
 .btn.reload{display:none}
 .standalone .btn.reload{display:inline-flex;align-items:center;justify-content:center}
 .standalone{-webkit-tap-highlight-color:transparent}
+
+/* ===== 토스 스타일 레이어 (10-07) — 흰 카드 · 큰 숫자 · 블루 포인트 · 상승 빨강/하락 파랑 ===== */
+body{background:var(--bg);font-size:15px;letter-spacing:-.02em;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px}
+.appbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 calc(-1*max(clamp(14px,3.5vw,38px),env(safe-area-inset-left))) 6px;
+ padding:calc(10px + env(safe-area-inset-top)) max(clamp(14px,3.5vw,38px),env(safe-area-inset-left)) 10px;background:color-mix(in srgb,var(--bg) 88%,transparent);
+ -webkit-backdrop-filter:saturate(180%) blur(16px);backdrop-filter:saturate(180%) blur(16px)}
+body{padding-top:0}
+.appbar .ttl{font-size:19px;font-weight:800;color:var(--txt)}
+.appbar .acts{display:flex;gap:6px}
+.appbar .ibtn{border:0;background:var(--panel);color:var(--txt2);font:inherit;font-size:13px;font-weight:700;padding:8px 12px;border-radius:999px;cursor:pointer;box-shadow:var(--shadow)}
+.kicker{color:var(--mut);letter-spacing:0;text-transform:none;font-size:13px;font-weight:600}
+h1{display:none}
+.hero{background:var(--panel);border-radius:var(--r);padding:20px;margin:6px 0 12px;box-shadow:var(--shadow)}
+.def{border:0;padding:0;margin-top:8px;font-size:13.5px;color:var(--txt2);line-height:1.7}
+.def b{color:var(--txt)}
+.def b.neg{color:var(--down)}.def b.pos{color:var(--up)}
+.chips{margin:14px 0 0;gap:6px}
+.chip{background:var(--sub);border:0;border-radius:12px;padding:8px 11px;font-size:12.5px;color:var(--mut)}
+.chip b{font-size:15px;font-weight:800;color:var(--txt)}
+.chip.stale{background:var(--bad-bg);color:var(--bad)}
+.topbar{margin:0 0 12px}
+.btn{border:0;background:var(--panel);color:var(--txt);border-radius:14px;padding:12px 14px;font-size:14px;box-shadow:var(--shadow)}
+.btn:hover{border:0;filter:brightness(.97)}
+.btn.gold{background:var(--gold);color:#fff}
+.btn.gold:hover{background:var(--gold2);filter:none}
+.topbar .btn.gold{flex:1 1 100%;order:-1;padding:15px;font-size:15.5px;border-radius:16px}
+h2{font-size:21px;font-weight:800;margin:34px 4px 12px;letter-spacing:-.03em}
+h2 small{font-size:13px;font-weight:500}
+a{color:var(--gold)}
+.panel,.card,.rc,.mbox{background:var(--panel);border:0;border-radius:var(--r);box-shadow:var(--shadow)}
+.card{padding:20px}
+.card.rights{box-shadow:var(--shadow);border:0}
+.cn{font-size:21px;font-weight:800;letter-spacing:-.03em}
+.meta{font-size:12.5px}
+.badge{border:0;background:var(--sub);color:var(--txt2);padding:4px 9px;font-size:12.5px}
+.badge.gold{background:var(--accent-soft);color:var(--gold2)}
+.badge.red{background:var(--bad-bg);color:var(--bad)}
+.stage{background:var(--accent-soft);border:0;color:var(--gold2);border-radius:10px;padding:5px 10px}
+.kv,.k4,.hist div,.lnk,.uc,.trsec,.sitem .sa div,.abox .ar,.focus .fc,.race,.result,.vbar{border:0;background:var(--sub);border-radius:14px}
+.kv b{font-size:16px;font-weight:800}
+.k4{padding:11px 12px}
+.k4 span{font-size:12.5px}
+.k4 b{font-size:19px;font-weight:800;letter-spacing:-.03em}
+.k4row{gap:8px;margin:14px 0 8px}
+.quick{border:0;background:var(--accent-soft);border-radius:18px;padding:14px 16px}
+.quick .qw{color:var(--txt);font-size:20px}
+.abox{border-top:1px solid var(--line);padding-top:12px;margin-top:12px}
+.abox .ah{color:var(--txt);font-size:15px}
+.tracebox{border-top:1px solid var(--line)}
+.tracebox summary{color:var(--txt2)}
+.sitem{border:0;background:var(--accent-soft);border-radius:16px}
+.sitem.wait,.sitem.past{border:0;background:var(--sub)}
+.sitem .sb{color:var(--txt)}
+.sitem .st{border:0;background:var(--panel)}
+.sitem .st.live{background:var(--gold);color:#fff}
+.sban{border:0;background:var(--bad-bg);color:var(--bad)}
+.snone{border:0;background:var(--sub)}
+.vbadge{border:0;background:var(--panel);font-size:15px;padding:6px 12px}
+.vbadge.green,.vbadge.green_q{color:var(--ok)}.vbadge.yellow,.vbadge.yellow_q{color:var(--warn)}.vbadge.blue{color:var(--info)}
+.vbadge.green_q,.vbadge.yellow_q{border:1.5px dashed currentColor}
+.cr{border:0;background:var(--sub);border-radius:999px;padding:4px 10px;font-size:12.5px}
+.cr.pass{background:color-mix(in srgb,var(--ok) 12%,transparent)}.cr.fail{background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.cr.manual{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--warn)}
+.isb{border:0;padding:2px 7px;border-radius:7px}
+.isb.planned{background:var(--sub);color:var(--mut)}.isb.first{background:color-mix(in srgb,var(--info) 14%,transparent)}
+.isb.final_est{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}.isb.confirmed{background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.a3{border:0;background:var(--sub);border-radius:12px;padding:8px 11px}
+.tabs{background:var(--track);padding:4px;border-radius:14px;gap:2px;display:inline-flex;max-width:100%}
+.tab{border:0;background:transparent;color:var(--mut);border-radius:11px;padding:8px 14px;font-size:13.5px;font-weight:700}
+.tab.on{background:var(--panel);color:var(--txt);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.today{gap:0;background:var(--panel);border-radius:var(--r);padding:6px 4px;box-shadow:var(--shadow)}
+.ti{border:0;background:transparent;border-radius:14px;padding:13px 14px;font-size:14.5px}
+.ti:hover{border:0;background:var(--sub)}
+.ti small{font-size:12px}
+.tblw{border:0;border-radius:var(--r);background:var(--panel);box-shadow:var(--shadow)}
+th{background:var(--panel);color:var(--mut);font-size:12px;border-bottom:1px solid var(--line)}
+td{border-bottom:1px solid var(--line)}
+.empty{border:0;background:var(--panel);border-radius:var(--r);color:var(--mut)}
+.ssum{border:0;background:var(--panel);border-radius:16px;box-shadow:var(--shadow)}
+/* 집중 후보 — 토스 홈 카드 */
+.focus{border:0;background:var(--panel);border-radius:24px;padding:20px;box-shadow:var(--shadow)}
+.focus .ft{color:var(--mut);font-weight:700;font-size:13px;letter-spacing:0}
+.focus .fbig{font-size:clamp(26px,7vw,34px);letter-spacing:-.04em}
+.focus .fstat{border:0;background:var(--sub);font-size:12px;padding:5px 10px}
+.focus .fc{padding:15px;border-radius:18px}
+.focus .fc:hover{border:0;filter:brightness(.98)}
+.focus .fc.strong{box-shadow:inset 4px 0 0 var(--ok)}.focus .fc.conditional{box-shadow:inset 4px 0 0 var(--warn)}
+.focus .fc.wait,.focus .fc.weak{box-shadow:inset 4px 0 0 var(--info)}.focus .fc.reverse{box-shadow:inset 4px 0 0 var(--bad)}
+.focus .fclabel{border:0;background:var(--panel)}
+.focus .fcname{font-size:18px}
+.focus .fcm span{border:0;background:var(--panel);border-radius:9px;padding:4px 8px;font-size:12.5px}
+.focus .fexcl span{border:0;background:var(--sub);border-radius:10px;padding:5px 9px}
+.focus .frevtitle{font-size:13px}
+.race .seg{background:var(--track)}
+.modal{background:rgba(0,0,0,.45)}
+.mbox{padding:24px}
+.mbox h3{color:var(--txt)}
+.preview{background:var(--sub);border:0;color:var(--txt2)}
+.rc{padding:16px}
+.rc .rg{font-size:24px;letter-spacing:-.03em}
+.tl .dot{border-color:var(--gold);background:var(--panel)}
+.tl .band{background:var(--accent-line)}
+.warn,.snote,.warnbox,.focus .fblock{color:var(--warn)}
+footer{text-align:center}
+@media (max-width:600px){body{font-size:14.5px}.card{padding:16px}.focus{padding:16px}.hero{padding:16px}h2{font-size:19px}}
+
+/* 프리텐다드 가독성 (10-07) */
+:root{--font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif}
+html,body,button,input,select,textarea,table,svg text{font-family:var(--font)}
+body{line-height:1.6;font-weight:400;text-rendering:optimizeLegibility;-moz-osx-font-smoothing:grayscale;font-feature-settings:"ss06"}
+b,strong{font-weight:700}
+h2,.cn,.focus .fbig,.focus .fcname,.quick .qw,.appbar .ttl{font-weight:800;letter-spacing:-.035em}
+.k4 b,.kv b,.rc .rg,.gauge .gv,.chip b,td,.abox dd,.sitem .sa b,.focus .fcm b{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.meta,.fsub,.focus .fsub,.def,.vreason,.fcwhy,.quick .ql{line-height:1.65}
+.mbox{font-size:14px;line-height:1.75}
+small{line-height:1.5}
 </style></head><body><div class="wrap">
-<div class="kicker">Rights Offering Radar · Phase 0</div>
-<h1>유증 레이더</h1>
+<header class="appbar"><div class="ttl">유증 레이더</div><div class="acts">
+ <button class="ibtn" onclick="openGuide()">가이드</button>
+ <button class="ibtn btn reload" onclick="location.reload()" aria-label="새로고침">↻</button></div></header>
+<section class="hero">
+<div class="kicker">주주배정 유상증자 · Phase 0</div>
 <p class="def">주주배정 유상증자를 <b>DART</b>에서 감지하고, 일정(기준일·권리락·인수권 기간·청약·상장)을 추적하며,
-<b>KRX 신주인수권증서</b> 일별 시세로 <b>인수권 IV 프리미엄</b>(인수권 ÷ (본주 − 발행가) − 1)을 매일 기록합니다.
-IV 프리미엄이 <b class="neg">음수</b>면 인수권이 싸고, <b class="pos">양수</b>면 비쌉니다.</p>
+<b>KRX 신주인수권증서</b> 일별 시세로 <b>인수권 IV 프리미엄</b>(인수권 ÷ (본주 − 발행가) − 1)을 매일 기록해요.
+IV 프리미엄이 <b class="neg">음수</b>면 인수권이 싸고, <b class="pos">양수</b>면 비싸요.</p>
 <div class="chips" id="chips"></div>
+</section>
 <div class="topbar">
- <button class="btn" onclick="openGuide()">📘 분석 가이드</button>
- <button class="btn gold" id="briefBtn" onclick="copyBriefing(this)">🤖 전체 브리핑 프롬프트 복사</button>
- <button class="btn reload" onclick="location.reload()" aria-label="새로고침">↻ 새로고침</button>
+ <button class="btn gold" id="briefBtn" onclick="copyBriefing(this)">전체 브리핑 프롬프트 복사</button>
 </div>
 <div id="briefPreview" class="preview"></div>
 <div class="ssum" id="ssum" hidden></div>
@@ -338,31 +472,31 @@ IV 프리미엄이 <b class="neg">음수</b>면 인수권이 싸고, <b class="p
 <h2>판정별 성적표 <small>가상 진입 기준 · 신주 상장 +20거래일</small></h2>
 <div id="score"></div>
 <h2>기출문제 성적표 <small>2020~2026.06 과거 주주배정 유증 백테스트 · 판정 로직 그대로 · 미래 정보 금지</small></h2>
-<div id="exam"><div class="empty">백테스트 결과가 아직 없습니다 (Actions → backtest 실행).</div></div>
+<div id="exam"><div class="empty">백테스트 결과가 아직 없어요 (Actions → backtest 실행).</div></div>
 
 <div class="modal" id="guide" onclick="if(event.target===this)closeGuide()"><div class="mbox">
 <button class="btn x" onclick="closeGuide()">닫기 ✕</button>
 <h3>📘 이 사이트를 읽는 법</h3>
-<p>유증 레이더는 <b>"어느 유증 케이스를 깊게 팔지"</b> 골라주는 발견 도구입니다. 카드 맨 위 <b>전략 배지</b>(🥇🥈🥉·⛔)는 과거 유증 백테스트(기출문제)에서 나온 행동 카드일 뿐, 확정 신호가 아닙니다.</p>
-<div class="uc"><b class="t">1단계 · 증자방식부터 거른다</b>주주배정 계열(주주배정증자, 주주배정후 실권주 일반공모)만 신주인수권증서가 나옵니다. 나머지(제3자배정·일반공모)는 <b>관찰</b> 탭으로 빠집니다.</div>
-<div class="uc"><b class="t">2단계 · 회사부터 본다 (B = 본업)</b>자금 목적 막대가 <b style="color:var(--red)">채무상환</b> 위주거나, 신주÷기존주가 100%를 넘는 <b>초대형 희석</b>이면 빨간 배지가 붙습니다. 필터 5개(업계 1~3위 / 안 망할 회사 / 대체 불가 / 영업흑자 / 52주 중간 이하)를 통과해야 B 후보입니다.</div>
-<div class="uc"><b class="t">3단계 · 사이클 위치를 본다</b>카드의 금색 라벨이 지금 구간입니다: ① 권리 확보 → ② 권리락 후 → ③ <b>인수권 거래 중</b> → ④ 청약 → ⑤ 상장 대기 → ⑥ 상장 후 매물 소화. 타임라인의 빨간 선이 오늘입니다.</div>
-<div class="uc"><b class="t">4단계 · 인수권 할인 포착 (A = 보너스)</b><b>내재가치 대비 프리미엄(IV 프리미엄, 구 IV 프리미엄)</b> = 인수권 ÷ max(본주 − 발행가, 0) − 1. 본주 − 발행가는 인수권의 현재 <b>내재가치</b>일 뿐이라, 인수권 가격에는 남은 기간의 시간가치와 발행가 하향 기대가 더 들어 있습니다 — +10%를 "10% 고평가(오가격)"로 읽지 마세요. 본주 ≤ 발행가면 비율을 내지 않습니다(내재가치 0).<br><b class="neg">음수(초록)</b> = 내재가치보다 싸다 → "인수권 매수 + 청약"으로 본주보다 싸게 신주 확보 검토.<br><b class="pos">양수(빨강)</b> = 내재가치보다 비싸다 → 보유 인수권 매도 검토.<br><b>시장 암시 발행가</b> = 본주 − 인수권: 인수권 가격이 암시하는 최종 발행가. 예상 최종가보다 낮으면 권리가 비싸거나 시장이 추가 인하를 기대, 높으면 인수권이 쌀 가능성.<br>
-단, <b>무위험 차익이 아닙니다</b> — 본주를 공매도해 가격을 묶을 수 없어서 청약 → 신주 상장까지 본주가 빠지면 손실입니다. 그래서 순서대로 봅니다: <b>IV 프리미엄 → 총원가 쿠션</b>(총원가 할인율 = 1 − (인수권+발행가)/본주, 원화 쿠션 = 본주 − (인수권+발행가)) <b>→ ATR 쿠션</b>(쿠션 ÷ ATR(10), 하루 변동 몇 번을 버티나) <b>→ 신주 공급압력</b>(신주가 거래대금·거래량 며칠치인가). 카드의 "A 할인 포착" 줄이 이 네 가지입니다.<br>예) SK디앤디 12R(9/23): IV 프리미엄 <b class="neg">−41%</b>로 커 보여도 총원가 할인율 13.2% · 쿠션 439원 = ATR 1.25배.</div>
+<p>유증 레이더는 <b>"어느 유증 케이스를 깊게 팔지"</b> 골라주는 발견 도구예요. 카드 맨 위 <b>전략 배지</b>(🥇🥈🥉·⛔)는 과거 유증 백테스트(기출문제)에서 나온 행동 카드일 뿐, 확정 신호가 아니에요.</p>
+<div class="uc"><b class="t">1단계 · 증자방식부터 거른다</b>주주배정 계열(주주배정증자, 주주배정후 실권주 일반공모)만 신주인수권증서가 나와요. 나머지(제3자배정·일반공모)는 <b>관찰</b> 탭으로 빠져요.</div>
+<div class="uc"><b class="t">2단계 · 회사부터 본다 (B = 본업)</b>자금 목적 막대가 <b style="color:var(--red)">채무상환</b> 위주거나, 신주÷기존주가 100%를 넘는 <b>초대형 희석</b>이면 빨간 배지가 붙어요. 필터 5개(업계 1~3위 / 안 망할 회사 / 대체 불가 / 영업흑자 / 52주 중간 이하)를 통과해야 B 후보예요.</div>
+<div class="uc"><b class="t">3단계 · 사이클 위치를 본다</b>카드의 금색 라벨이 지금 구간이에요: ① 권리 확보 → ② 권리락 후 → ③ <b>인수권 거래 중</b> → ④ 청약 → ⑤ 상장 대기 → ⑥ 상장 후 매물 소화. 타임라인의 빨간 선이 오늘이에요.</div>
+<div class="uc"><b class="t">4단계 · 인수권 할인 포착 (A = 보너스)</b><b>내재가치 대비 프리미엄(IV 프리미엄, 구 괴리율)</b> = 인수권 ÷ max(본주 − 발행가, 0) − 1. 본주 − 발행가는 인수권의 현재 <b>내재가치</b>일 뿐이라, 인수권 가격에는 남은 기간의 시간가치와 발행가 하향 기대가 더 들어 있어요 — +10%를 "10% 고평가(오가격)"로 읽지 마세요. 본주 ≤ 발행가면 비율을 내지 않아요(내재가치 0).<br><b class="neg">음수(파랑)</b> = 내재가치보다 싸다 → "인수권 매수 + 청약"으로 본주보다 싸게 신주 확보 검토.<br><b class="pos">양수(빨강)</b> = 내재가치보다 비싸다 → 보유 인수권 매도 검토.<br><b>시장 암시 발행가</b> = 본주 − 인수권: 인수권 가격이 암시하는 최종 발행가. 예상 최종가보다 낮으면 권리가 비싸거나 시장이 추가 인하를 기대, 높으면 인수권이 쌀 가능성.<br>
+단, <b>무위험 차익이 아니에요</b> — 본주를 공매도해 가격을 묶을 수 없어서 청약 → 신주 상장까지 본주가 빠지면 손실이에요. 그래서 순서대로 봐요: <b>IV 프리미엄 → 총원가 쿠션</b>(총원가 할인율 = 1 − (인수권+발행가)/본주, 원화 쿠션 = 본주 − (인수권+발행가)) <b>→ ATR 쿠션</b>(쿠션 ÷ ATR(10), 하루 변동 몇 번을 버티나) <b>→ 신주 공급압력</b>(신주가 거래대금·거래량 며칠치인가). 카드의 "A 할인 포착" 줄이 이 네 가지예요.<br>예) SK디앤디 12R(9/23): IV 프리미엄 <b class="neg">−41%</b>로 커 보여도 총원가 할인율 13.2% · 쿠션 439원 = ATR 1.25배.</div>
 <h3>🥇🥈🥉 전략 배지 (기존 판정 🟢🟡🔵⚪ 위에 얹음)</h3>
 <div class="uc"><b class="t">⛔ 금지 규칙이 먼저</b>희석 100% 이상이면 전략 전부 끔(패스). 직전 분기 적자면 전략 2·3 불가(전략 1은 가능). IV 프리미엄 −40% 이하면 전략 3 불가(너무 싼 인수권). 남는 전략이 없으면 ⛔.</div>
 <div class="uc"><b class="t">🥇 전략1 · 비싼 인수권 팔기</b>인수권 IV 프리미엄 +20% 이상 → 인수권 보유자는 매도, 신규 매수 금지.</div>
-<div class="uc"><b class="t">🥈 전략2 · 신주 상장일 매수 → 10거래일 보유</b>연구 표본은 🟢/🟡(? 포함)까지 기록하지만, <b>? 판정은 실전 행동카드를 잠급니다.</b> 미확인 관문을 먼저 해소한 뒤 흑자 + 희석 &lt; 50% + 채무상환 &lt; 50%를 확인합니다. 상장 D-3부터 표시하고, 상장일에는 15:30 전까지 장중 미리보기만 제공합니다. <b>정규장 종가와 종가 RSI(14) ≤ 50이 확정된 뒤</b> 진입 게이트를 판정합니다. +10거래일 청산 · 손절 = 진입가 − ATR(14)×2 · 비중 평소의 절반.</div>
+<div class="uc"><b class="t">🥈 전략2 · 신주 상장일 매수 → 10거래일 보유</b>연구 표본은 🟢/🟡(? 포함)까지 기록하지만, <b>? 판정은 실전 행동카드를 잠가요.</b> 미확인 관문을 먼저 해소한 뒤 흑자 + 희석 &lt; 50% + 채무상환 &lt; 50%를 확인해요. 상장 D-3부터 표시하고, 상장일에는 15:30 전까지 장중 미리보기만 제공해요. <b>정규장 종가와 종가 RSI(14) ≤ 50이 확정된 뒤</b> 진입 게이트를 판정해요. +10거래일 청산 · 손절 = 진입가 − ATR(14)×2 · 비중 평소의 절반.</div>
 <div class="uc"><b class="t">🥉 전략3 · 적당히 싼 인수권 매수 + 청약</b>흑자 + 희석 &lt; 100% + IV 프리미엄 −20~0%. 인수권 매수 → 청약 → 상장 후 +5거래일 안에 청산 · 소액.</div>
-<p>근거 줄의 숫자는 <code>data/backtest.json</code> 에서 읽습니다 — 백테스트를 다시 돌리면 자동으로 바뀝니다. 전략별 가상 성과는 아래 "전략별 성적표"에 기출과 나란히 쌓입니다.</p>
+<p>근거 줄의 숫자는 <code>data/backtest.json</code> 에서 읽어요 — 백테스트를 다시 돌리면 자동으로 바뀌어요. 전략별 가상 성과는 아래 "전략별 성적표"에 기출과 나란히 쌓여요.</p>
 <h3>⚖️ 이미 결론 난 것 (재논의 금지)</h3>
-<p>할인율은 수익이 아닙니다. 권리락 이론가 <code>P_x = (P + r·I) / (1 + r)</code>로 이론상 제로섬이고, 인수권 매도 대금은 깎인 보유주 가치의 보상입니다. 초과청약은 배정주식의 20% 한도이고 실권주가 있어야만 배정됩니다. 진짜 엣지는 <b>회복(B)·수급 타이밍·인수권 할인 포착(A)·레버리지</b>입니다.</p>
+<p>할인율은 수익이 아니에요. 권리락 이론가 <code>P_x = (P + r·I) / (1 + r)</code>로 이론상 제로섬이고, 인수권 매도 대금은 깎인 보유주 가치의 보상이에요. 초과청약은 배정주식의 20% 한도이고 실권주가 있어야만 배정돼요. 진짜 엣지는 <b>회복(B)·수급 타이밍·인수권 할인 포착(A)·레버리지</b>예요.</p>
 <h3>🤖 GPT 분석지침 — 프롬프트 두 종류</h3>
-<div class="uc"><b class="t">전체 브리핑 프롬프트 (상단 금색 버튼)</b>진행 중인 모든 케이스와 오늘의 인수권 전체를 한 번에 넘깁니다. GPT가 우선순위 분류(B/A/관찰/제외), 인수권 할인 포착 랭킹 TOP3(IV 프리미엄 순이 아니라 총원가 쿠션·ATR 쿠션·공급압력 순), 5거래일 캘린더, 가설(H1~H3) 샘플, 위험 신호, 마지막 승부 후보 네 줄(B·A·H 샘플·함정)을 정리합니다. <b>매일 아침 한 번</b> 쓰는 용도입니다.</div>
-<div class="uc"><b class="t">개별기업 분석 프롬프트 (각 카드 하단)</b>한 케이스의 공시·일정·정정 이력·IV 프리미엄 추이와 1차 자료 링크를 채워 넘깁니다. 자금 목적의 실체 → 필터 5개 판정 → 발행가 산식·보험 구간 → 최대주주 청약 → A 판정 → 수급 사이클 → 베어 케이스 → 반증 조건 → 결론 순서로 깊게 분석합니다.</div>
-<p>두 프롬프트 모두 위 결론을 <b>전제</b>로, 이 수집기의 맹점(파서 미검증·권리락일 추정·발행가 산식 미확인)을 <b>검증 지침</b>으로 담고 있습니다. <b>1차 자료(DART 원문·증권신고서)를 같이 읽힐수록</b> 품질이 올라갑니다.</p>
+<div class="uc"><b class="t">전체 브리핑 프롬프트 (상단 금색 버튼)</b>진행 중인 모든 케이스와 오늘의 인수권 전체를 한 번에 넘겨요. GPT가 우선순위 분류(B/A/관찰/제외), 인수권 할인 포착 랭킹 TOP3(IV 프리미엄 순이 아니라 총원가 쿠션·ATR 쿠션·공급압력 순), 5거래일 캘린더, 가설(H1~H3) 샘플, 위험 신호, 마지막 승부 후보 네 줄(B·A·H 샘플·함정)을 정리해요. <b>매일 아침 한 번</b> 쓰는 용도예요.</div>
+<div class="uc"><b class="t">개별기업 분석 프롬프트 (각 카드 하단)</b>한 케이스의 공시·일정·정정 이력·IV 프리미엄 추이와 1차 자료 링크를 채워 넘겨요. 자금 목적의 실체 → 필터 5개 판정 → 발행가 산식·보험 구간 → 최대주주 청약 → A 판정 → 수급 사이클 → 베어 케이스 → 반증 조건 → 결론 순서로 깊게 분석해요.</div>
+<p>두 프롬프트 모두 위 결론을 <b>전제</b>로, 이 수집기의 맹점(파서 미검증·권리락일 추정·발행가 산식 미확인)을 <b>검증 지침</b>으로 담고 있어요. <b>1차 자료(DART 원문·증권신고서)를 같이 읽힐수록</b> 품질이 올라가요.</p>
 <h3>⛔ 이 도구가 하지 않는 것</h3>
-<p>목표가는 주지 않습니다. 전략 배지도 기출 통계일 뿐 확정 신호가 아닙니다. MACD·볼린저는 쓰지 않습니다(타이밍은 일목·RSI 50 게이트·ATR로만). 최종 판단은 1차 자료와 미래에셋 화면으로 직접 확인한 뒤 형님이 내립니다.</p>
+<p>목표가는 주지 않아요. 전략 배지도 기출 통계일 뿐 확정 신호가 아니에요. MACD·볼린저는 쓰지 않아요(타이밍은 일목·RSI 50 게이트·ATR로만). 최종 판단은 1차 자료와 미래에셋 화면으로 직접 확인한 뒤 형님이 내려요.</p>
 </div></div>
 
 <footer>데이터: OpenDART(유상증자결정·증권신고서·원문), KRX Open API(sr_bydd_trd·stk/ksq_bydd_trd).
@@ -381,7 +515,7 @@ function displayReason(x){
   });
 }
 const dartUrl=r=>`https://dart.fss.or.kr/dsaf001/main.do?rcpNo=${r}`;
-const PURP_COL={'시설':'#5b8def','영업양수':'#8e6bd8','운영':'#4a9d7f','채무상환':'#c2544d','타법인취득':'#d4af37','기타':'#7d8aa3'};
+const PURP_COL={'시설':'#3182F6','영업양수':'#8B5CF6','운영':'#03B26C','채무상환':'#F04452','타법인취득':'#FFB31A','기타':'#B0B8C1'};
 const TL=[['ex_rights_date','권리락'],['record_date','기준일'],['rights_start','인수권 시작'],['rights_end','인수권 끝'],['price_fix_date','발행가 확정'],['subs_start','청약'],['payment_date','납입'],['listing_date','신주 상장']];
 let DATA=null, TAB='open';
 function isCloseFinal(d){
@@ -401,7 +535,7 @@ function gapCell(g){
 function renderRights(){
   const rows=[...DATA.rights_today].sort((a,b)=>(a.gap??999)-(b.gap??999));
   $('#rdate').textContent=DATA.last_rights_date?`${DATA.last_rights_date} ${priceKind(DATA.last_rights_date)}`:'';
-  if(!rows.length){$('#rights').innerHTML='<div class="empty">아직 수집된 인수권 시세가 없습니다.<br>KRX_API_KEY 설정 후 Actions가 돌면 채워집니다.</div>';return;}
+  if(!rows.length){$('#rights').innerHTML='<div class="empty">아직 수집된 인수권 시세가 없어요.<br>KRX_API_KEY 설정 후 Actions가 돌면 채워져요.</div>';return;}
   const card=r=>`<div class="rc"><div class="rh"><b>${esc(r.name)}</b>${r.case_id?'<span class="badge gold">추적</span>':''}</div>
     <div class="rg">${gapCell(r.gap)}<small>IV 프리미엄</small></div>
     <dl><div><dt>인수권 종가</dt><dd>${fmt(r.close)}</dd></div><div><dt>내재가치 P−I</dt><dd>${fmt(r.fair)}</dd></div><div><dt>시장 암시 발행가 P−R</dt><dd>${r.stock&&r.close?fmt(r.stock-r.close):'—'}</dd></div><div><dt>인수권+청약 원가</dt><dd>${fmt(r.cost)}</dd></div>
@@ -432,7 +566,7 @@ function timeline(s){
 }
 
 // ---- 유증 진행 레이스 바: 공시 → 권리락 → 인수권 → 청약 → 상장 → +20일 ----
-const VCOL={green:'var(--grn)',yellow:'var(--gold)',green_q:'var(--grn)',yellow_q:'var(--gold)',blue:'var(--blu)',white:'#c9d1de'};
+const VCOL={green:'var(--grn)',yellow:'var(--gold)',green_q:'var(--grn)',yellow_q:'var(--gold)',blue:'var(--blu)',white:'var(--mut)'};
 const isoOf=d8=>`${d8.slice(0,4)}-${d8.slice(4,6)}-${d8.slice(6)}`;
 const md=d=>d?d.slice(5).replace('-','/'):'';
 const dayDiff=(a,b)=>Math.round((new Date(b)-new Date(a))/864e5);
@@ -536,12 +670,12 @@ function drawSpark(pts,W){
   let lo=Math.min(...gs), hi=Math.max(...gs); const pad=Math.max((hi-lo)*.2,2); lo-=pad; hi+=pad;
   const X=i=>L+i/(pts.length-1)*(W-L-R), Y=v=>T+(hi-v)/(hi-lo)*(H-T-B);
   const line=pts.map((p,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(p.gap).toFixed(1)}`).join('');
-  const zero=(lo<0&&hi>0)?`<line x1="${L}" x2="${W-R}" y1="${Y(0)}" y2="${Y(0)}" stroke="#3a4d72" stroke-dasharray="4 4"/><text x="${L-6}" y="${Y(0)+3}" fill="#7d8aa3" font-size="10" text-anchor="end">0%</text>`:'';
+  const zero=(lo<0&&hi>0)?`<line x1="${L}" x2="${W-R}" y1="${Y(0)}" y2="${Y(0)}" stroke="#B0B8C1" stroke-dasharray="4 4"/><text x="${L-6}" y="${Y(0)+3}" fill="#7d8aa3" font-size="10" text-anchor="end">0%</text>`:'';
   return `<svg class="spark" viewBox="0 0 ${W} ${H}">
   <text x="${L-6}" y="${Y(hi-pad)+3}" fill="#7d8aa3" font-size="10" text-anchor="end">${pct(hi-pad)}</text>
   <text x="${L-6}" y="${Y(lo+pad)+3}" fill="#7d8aa3" font-size="10" text-anchor="end">${pct(lo+pad)}</text>${zero}
-  <path d="${line}" fill="none" stroke="#d4af37" stroke-width="2"/>
-  ${pts.map((p,i)=>`<circle cx="${X(i)}" cy="${Y(p.gap)}" r="3.5" fill="${p.gap<0?'#4a9d7f':'#c2544d'}"><title>${p.d} ${p.name} ${pct(p.gap)} (인수권 ${fmt(p.rights)} / 내재가치 ${fmt(p.fair)})</title></circle>`).join('')}
+  <path d="${line}" fill="none" stroke="#3182F6" stroke-width="2"/>
+  ${pts.map((p,i)=>`<circle cx="${X(i)}" cy="${Y(p.gap)}" r="3.5" fill="${p.gap<0?'#3182F6':'#F04452'}"><title>${p.d} ${p.name} ${pct(p.gap)} (인수권 ${fmt(p.rights)} / 내재가치 ${fmt(p.fair)})</title></circle>`).join('')}
   <text x="${L}" y="${H-6}" fill="#7d8aa3" font-size="10">${pts[0].d.slice(5)}</text>
   <text x="${W-R}" y="${H-6}" fill="#7d8aa3" font-size="10" text-anchor="end">${pts.at(-1).d.slice(5)} · ${pct(pts.at(-1).gap)}</text></svg>`;
 }
@@ -573,7 +707,7 @@ function stratBox(c){
   if(S.ban) return `<div class="strat"><div class="sban">${S.ban.map(banLine).join('<br>')}<small>금지 규칙 (최우선) · +20일 비교 기준 = 인수권 마지막 날 인수권 매수+청약</small></div></div>`;
   const unresolved=(S.locks||[]).includes('unconfirmed_gate') ||
     (((c.verdict||{}).live_reason||'').includes('미확인')) || ((c.verdict||{}).code||'').endsWith('_q');
-  const lockNote=unresolved?'<div class="snote">🔒 실전 게이트 잠김 — 관문 미확인 항목을 먼저 확인해야 전략2·3 행동카드가 활성화됩니다. 백테스트 표본은 별도로 계속 기록합니다.</div>':'';
+  const lockNote=unresolved?'<div class="snote">🔒 실전 게이트 잠김 — 관문 미확인 항목을 먼저 확인해야 전략2·3 행동카드가 활성화돼요. 백테스트 표본은 별도로 계속 기록해요.</div>':'';
   if(!S.items.length) return `<div class="strat"><div class="snone">해당 전략 없음${S.gap==null?' · 인수권 IV 프리미엄 대기':''}</div>${lockNote}</div>`;
   const stTxt=it=>{
     if(unresolved&&['s2','s3'].includes(it.key)) return '확인 필요 · 실전 게이트 잠김';
@@ -666,23 +800,23 @@ function focusInfo(c){
   let kind='exclude', label='제외', why='', blockers=[];
   if(sellLive){
     kind='reverse';label='매수 후보 아님';
-    why='현재 인수권 고평가 전략이 활성화되어 신규 매수보다 보유 인수권 매도 쪽을 먼저 보는 구간입니다.';
+    why='현재 인수권 고평가 전략이 활성화되어 신규 매수보다 보유 인수권 매도 쪽을 먼저 보는 구간이에요.';
   }else if(buyLive&&noFail&&noUnknown&&supplyOK){
     kind='strong';label='강한 매수 검토';
-    why=buyLive.key==='s3'?'현재 인수권 매수+청약 행동 구간이며 자동 관문과 공급압력 필터를 모두 통과했습니다.':'현재 신주 상장일 매수 행동 구간이며 자동 관문과 공급압력 필터를 모두 통과했습니다.';
+    why=buyLive.key==='s3'?'현재 인수권 매수+청약 행동 구간이며 자동 관문과 공급압력 필터를 모두 통과했어요.':'현재 신주 상장일 매수 행동 구간이며 자동 관문과 공급압력 필터를 모두 통과했어요.';
   }else if(buyLive&&noFail){
     kind='conditional';label='조건부 검토';
-    why='행동 구간은 열렸지만 확인되지 않은 관문 또는 공급압력 경계가 남아 있습니다.';
+    why='행동 구간은 열렸지만 확인되지 않은 관문 또는 공급압력 경계가 남아 있어요.';
   }else if((buyWait||c.gate1?.passed)&&noFail){
     kind='wait';label='다음 후보';
-    why=buyWait?'구조 관문은 살아 있으나 실제 매수 행동 구간이 아직 오지 않았습니다.':'자동 구조 관문은 통과했지만 아직 가격·일정 행동 신호가 없습니다.';
+    why=buyWait?'구조 관문은 살아 있으나 실제 매수 행동 구간이 아직 오지 않았어요.':'자동 구조 관문은 통과했지만 아직 가격·일정 행동 신호가 없어요.';
   }else if(fails.length===1&&!c.gate1?.hard_fail&&(c.quick?.stage!=='listed'||buyLive)){
     // B급: 자동 관문 하나만 탈락 + 아직 행동 가능한 일정 — 볼 만은 하지만 손익비가 낮다
     kind='weak';label='손익비 낮음';
-    why='자동 관문 1개 탈락('+fails[0].text+') — 구조는 볼 만하지만 손익비가 떨어집니다.'+(c.b6?.read?.startsWith('공시 충격')?' B⑥: 공시 충격 우세(유증으로 눌린 쪽).':'');
+    why='자동 관문 1개 탈락('+fails[0].text+') — 구조는 볼 만하지만 손익비가 떨어져요.'+(c.b6?.read?.startsWith('공시 충격')?' B⑥: 공시 충격 우세(유증으로 눌린 쪽).':'');
   }else{
     const top=fails.slice(0,2).map(x=>x.text);
-    why=top.length?top.join(' · '):'현재 집중 후보 조건을 충족하지 못했습니다.';
+    why=top.length?top.join(' · '):'현재 집중 후보 조건을 충족하지 못했어요.';
   }
   // 짧은 탈락 사유 (제외 목록용): 즉시탈락 > 일정 지남 > 관문 n개 탈락
   const shortWhy=c.gate1?.hard_fail?'희석 100%↑ 즉시탈락':(c.quick?.stage==='listed'&&!buyLive)?'상장 완료 · 들어갈 일정 지남':
@@ -718,26 +852,26 @@ function renderFocus(){
   const reverse=all.filter(x=>x.kind==='reverse');
   const excluded=all.filter(x=>x.kind==='exclude');
   const headline=`S급 ${S.length} · A급 ${A.length} · B급 ${B.length}`;
-  const sub=S.length?'S급 = 자동 관문·현재 매수 행동 구간·공급압력을 모두 통과. 카드 클릭 시 원자료와 검산 트레이스로 이동합니다.'
-    :'오늘 S급은 없습니다. 억지로 올리지 않고, 아래 A·B급은 등급대로만 보여줍니다.';
+  const sub=S.length?'S급 = 자동 관문·현재 매수 행동 구간·공급압력을 모두 통과. 카드 클릭 시 원자료와 검산 트레이스로 이동해요.'
+    :'오늘 S급은 없어요. 억지로 올리지 않고, 아래 A·B급은 등급대로만 보여줘요.';
   const stat='<div class="fstats"><span class="fstat">S <b>'+S.length+'</b></span><span class="fstat">A <b>'+A.length+'</b></span><span class="fstat">B <b>'+B.length+'</b></span><span class="fstat">반대 <b>'+reverse.length+'</b></span><span class="fstat">제외 <b>'+excluded.length+'</b></span></div>';
   const sec=(t,xs,max,desc)=>xs.length?'<div class="frev"><div class="frevtitle tier'+t+'">'+t+'급 · '+desc+(xs.length>max?' <span class="mut">(상위 '+max+' / '+xs.length+'건)</span>':'')+'</div><div class="fgrid">'+xs.slice(0,max).map(focusCard).join('')+'</div></div>':'';
   const cards=(S.length||A.length||B.length)?sec('S',S,6,'강한 매수 검토 — 관문·행동구간·공급압력 모두 통과')+sec('A',A,4,'다음 매수 검토 — 미확인 관문·공급 경계가 남았거나 행동 구간 대기')+sec('B',B,4,'손익비 낮은 검토 — 자동 관문 1개 탈락, 아직 행동 가능한 일정'):
-    '<div class="fempty">S·A·B급 모두 없습니다. 자동 관문을 2개 이상 탈락했거나 행동 가능한 일정이 지난 케이스뿐입니다. 이 상태 자체가 레이더의 결론입니다.</div>';
+    '<div class="fempty">S·A·B급 모두 없어요. 자동 관문을 2개 이상 탈락했거나 행동 가능한 일정이 지난 케이스뿐이에요. 이 상태 자체가 레이더의 결론이에요.</div>';
   const rev=reverse.length?'<div class="frev"><div class="frevtitle">반대 신호 · 신규 매수보다 피하거나 매도 쪽을 보는 구간</div><div class="fgrid">'+reverse.slice(0,2).map(focusCard).join('')+'</div></div>':'';
   const aSt=k=>open.filter(c=>c.a_margin?.stage?.code===k);
   const aMet=aSt('met'), aPrice=aSt('price'), aPre=aSt('prewatch');
   const aLine='<div class="fsub">A전략(인수권 할인 포착) · 조건충족 <b>'+aMet.length+'</b>'+(aMet.length?' ('+aMet.map(c=>esc(c.corp_name)).join(', ')+')':'')+
     ' · 가격관찰 <b>'+aPrice.length+'</b>'+(aPrice.length?' ('+aPrice.map(c=>esc(c.corp_name)).join(', ')+')':'')+
-    ' · 사전감시 <b>'+aPre.length+'</b> <span class="mut">— 사전감시는 R(인수권 시세)이 없어 후보·랭킹 대상이 아닙니다</span></div>';
+    ' · 사전감시 <b>'+aPre.length+'</b> <span class="mut">— 사전감시는 R(인수권 시세)이 없어 후보·랭킹 대상이 아니에요</span></div>';
   const exl=excluded.length?'<details class="fexcl"><summary>제외 '+excluded.length+'건 · 탈락 사유 보기</summary><div>'+
     excluded.map(x=>'<span onclick="jumpTo('+x.c.case_id+')"><b>'+esc(x.c.corp_name)+'</b> <small>'+esc(x.shortWhy)+'</small></span>').join('')+'</div></details>':'';
   const legend='<div class="flegend"><b>용어</b> S·A·B급 = 오늘 검토 등급 · <b>A전략</b> = 인수권 할인 포착(인수권+청약으로 본주보다 싸게) · <b>B전략</b> = 유증으로 눌린 우량주 회복(본업) · <b>B⑥</b> = 정말 유증 때문에 눌렸나 · <b>H1</b> 인수권 할인 기대수익 · <b>H2</b> 상장일 매물 후 반등 · <b>H3</b> 권리락 착시 급등 (H = 검증 중인 가설)</div>';
   $('#focus').innerHTML='<div class="fh"><div><div class="ft">오늘의 집중 후보 · '+esc(kstToday())+'</div><div class="fbig">'+esc(headline)+'</div><div class="fsub">'+esc(sub)+'</div></div>'+stat+'</div>'+cards+rev+exl+legend+
-    aLine+'<div class="fsub">등급 규칙: S = 매수 행동카드(전략2·3) 활성 + 자동 관문 실패/미확인 0 + 공급압력 경계 미통과 · A = 행동카드 활성인데 미확인·공급 경계가 남음, 또는 관문 통과 후 행동 구간 대기 · B = 자동 관문 1개만 탈락(희석 100%↑ 제외) + 아직 행동 가능한 일정 — B 안에서는 B⑥ 공시 충격 우세를 앞에. 업계순위·대체불가 같은 수동 판단은 상세 카드에서 별도 확인합니다.</div>';
+    aLine+'<div class="fsub">등급 규칙: S = 매수 행동카드(전략2·3) 활성 + 자동 관문 실패/미확인 0 + 공급압력 경계 미통과 · A = 행동카드 활성인데 미확인·공급 경계가 남음, 또는 관문 통과 후 행동 구간 대기 · B = 자동 관문 1개만 탈락(희석 100%↑ 제외) + 아직 행동 가능한 일정 — B 안에서는 B⑥ 공시 충격 우세를 앞에. 업계순위·대체불가 같은 수동 판단은 상세 카드에서 별도 확인해요.</div>';
 }
 function renderSScore(){
-  const R=DATA.strategy_rules, rows=DATA.strategy_scorecard||[]; if(!R){$('#sscore').innerHTML='<div class="empty">다음 수집부터 표시됩니다.</div>';return;}
+  const R=DATA.strategy_rules, rows=DATA.strategy_scorecard||[]; if(!R){$('#sscore').innerHTML='<div class="empty">다음 수집부터 표시돼요.</div>';return;}
   const S=(BT&&BT.strategies)||{};
   const exam=k=>{const x=S[k]; if(!x) return ['—','—','—','—'];
     if(k==='s1'){const p=(x.points||{})['+20일']||{};return [x.n_measured??x.n,spct(p.median),x.sell_rate==null?'—':x.sell_rate+'% (매도 유리)',spct(p.p75)];}
@@ -778,7 +912,7 @@ function caseCard(c){
   ${resultBlock(c)}${aRealBox(c)}
   <details><summary>공시·정정 이력 ${c.history.length}건</summary><div class="hist">${hist}</div></details>
   <details><summary>1차·2차 자료 링크</summary><div class="links">${caseLinks(c).map(([i,n,t,u,d])=>`<a class="lnk" href="${u}" target="_blank" rel="noopener"><span>${i}</span><span>${n}<span class="${t==='1차'?'t1':'t2'}">${t}</span><small>${d}</small></span></a>`).join('')}</div></details>
-  <div class="ai"><div class="nsub">🤖 <b>개별기업 분석 프롬프트</b> — 이 케이스의 공시·일정·IV 프리미엄 + DART 1차 자료 링크 + 확정 결론(전제) + 검증 지침이 채워진 질문을 복사합니다. GPT·Claude에 붙여넣으세요.</div>
+  <div class="ai"><div class="nsub">🤖 <b>개별기업 분석 프롬프트</b> — 이 케이스의 공시·일정·IV 프리미엄 + DART 1차 자료 링크 + 확정 결론(전제) + 검증 지침이 채워진 질문을 복사해요. GPT·Claude에 붙여넣으세요.</div>
   <button class="btn gold" data-label="📋 이 기업 분석 프롬프트 복사" onclick="copyCase(${c.case_id},this)">📋 이 기업 분석 프롬프트 복사</button>
   <div class="preview" id="pv${c.case_id}"></div></div>
   </div>`;
@@ -794,7 +928,7 @@ function renderCases(){
   const sk=c=>(c.strategy||{}).rank??3;
   const list=DATA.cases.filter(groups[TAB]).map((c,i)=>[c,i]).sort((a,b)=>sk(a[0])-sk(b[0])||rk(a[0])-rk(b[0])||a[1]-b[1]).map(x=>x[0]);
   SPARKS.length=0;
-  $('#cases').innerHTML=list.length?list.map(caseCard).join(''):'<div class="empty">해당 케이스가 없습니다.</div>';
+  $('#cases').innerHTML=list.length?list.map(caseCard).join(''):'<div class="empty">해당 케이스가 없어요.</div>';
   drawSparks();
 }
 function drawSparks(){document.querySelectorAll('.sparkbox').forEach(b=>{b.innerHTML=drawSpark(SPARKS[b.dataset.i],Math.max(b.clientWidth,280));});}
@@ -831,14 +965,14 @@ function renderToday(){
   }
   items.sort((a,b)=>a.o-b.o);
   $('#today').innerHTML=items.length?items.map(x=>`<div class="ti" onclick="jumpTo(${x.c.case_id})"><span class="dot">${x.dot}</span><div><b>${esc(x.text)}</b><small>${esc(x.sub)}</small></div></div>`).join('')
-    :'<div class="empty">오늘 챙길 일정이 없습니다. (🔴 인수권 마감 D-2 이내 · 🟡 권리락·발행가확정·청약·신주상장 D-1 · 🟢 최근 3일 신규 주주배정)</div>';
+    :'<div class="empty">오늘 챙길 일정이 없어요. (🔴 인수권 마감 D-2 이내 · 🟡 권리락·발행가확정·청약·신주상장 D-1 · 🟢 최근 3일 신규 주주배정)</div>';
 }
 function jumpTo(id){const c=DATA.cases.find(x=>x.case_id===id);TAB=c.status==='open'?'open':'closed';renderCases();
   const el=document.getElementById('case'+id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});}
 
 function renderScore(){
   const V=DATA.verdicts, rows=DATA.scorecard||[];
-  if(!V){$('#score').innerHTML='<div class="empty">다음 수집부터 성적표가 표시됩니다.</div>';return;}
+  if(!V){$('#score').innerHTML='<div class="empty">다음 수집부터 성적표가 표시돼요.</div>';return;}
   const f=v=>v==null?'—':(v>0?'+':'')+v.toFixed(1)+'%';
   $('#score').innerHTML=`<div class="tblw"><table><thead><tr><th>판정</th><th>기록</th><th>완료(+20일)</th><th>승률</th><th>평균 수익률</th><th>최대 손실</th><th>평균 초과(지수 대비)</th></tr></thead><tbody>${
     rows.map(r=>`<tr><td>${V[r.verdict].emoji} ${V[r.verdict].name}</td><td>${r.n}건</td><td>${r.done}건</td><td>${r.win_rate==null?'—':r.win_rate+'%'}</td><td>${f(r.avg)}</td><td>${f(r.worst)}</td><td>${r.avg_excess==null?'—':(r.avg_excess>0?'+':'')+r.avg_excess.toFixed(1)+'%p'}</td></tr>`).join('')
@@ -854,14 +988,14 @@ function renderExam(B){
   const yrs=B.years.map(y=>`<tr><td>${y.year}${y.months&&y.months<12?` (1~${y.months}월)`:''}</td><td class="${y.stale?'pos':''}">v${y.logic_version||1}${y.stale?' · 재채점 필요':''}</td><td>${y.cases}</td><td>${y.no_rights_listing??'—'}</td><td>${y.parse_ok}</td><td><b>${y.parse_rate==null?'—':y.parse_rate+'%'}</b></td><td>${y.scored}</td><td>${y.no_rights_price}</td><td>${y.naver_missing}</td><td>${y.financials_missing}</td></tr>`).join('');
   const verd=B.by_verdict.map(v=>v.points.map((p,i)=>line(`${v.emoji} ${esc(v.name)}`,p,i===0)).join('')).join('');
   const filt=B.filters.map(fl=>`<h4 style="margin:14px 0 6px;font-size:13px;color:var(--gold2)">${esc(fl.title)}</h4><div class="tblw"><table><thead>${head}</thead><tbody>${fl.rows.map(r=>r.points.map((p,i)=>line(esc(r.bucket),p,i===0)).join('')).join('')}</tbody></table></div>`).join('');
-  const stale=(B.stale_years||[]).length?`<div class="warnbox">⚠ ${B.stale_years.join('·')}년은 옛 판정 로직으로 채점돼 합산에서 뺐습니다 — Actions 에서 backtest 를 다시 돌리면 v${B.logic_version} 기준으로 들어갑니다.</div>`:'';
+  const stale=(B.stale_years||[]).length?`<div class="warnbox">⚠ ${B.stale_years.join('·')}년은 옛 판정 로직으로 채점돼 합산에서 뺐어요 — Actions 에서 backtest 를 다시 돌리면 v${B.logic_version} 기준으로 들어가요.</div>`:'';
   $('#exam').innerHTML=`${stale}<div class="meta">채점 ${B.n_scored}건 · 판정 로직 v${B.logic_version} · 생성 ${esc((B.generated_at||'').slice(0,16).replace('T',' '))}</div>
   <h4 style="margin:12px 0 6px;font-size:13px;color:var(--gold2)">연도별 파싱 성공률</h4>
   <div class="tblw"><table><thead><tr><th>연도</th><th>판정 로직</th><th>주주배정</th><th>인수권 비상장</th><th>파싱 성공</th><th>성공률</th><th>채점</th><th>인수권 시세 없음</th><th>52주 미확인</th><th>재무 미확인</th></tr></thead><tbody>${yrs}</tbody></table></div>
   <h4 style="margin:14px 0 6px;font-size:13px;color:var(--gold2)">판정별 (진입·측정은 가상 성과와 동일)</h4>
   <div class="tblw"><table><thead>${head}</thead><tbody>${verd}</tbody></table></div>
   <h4 style="margin:14px 0 0;font-size:13px;color:var(--gold2)">필터 하나씩 떼어 보기</h4><div class="meta">${esc(B.base_note||'')}</div>${filt}
-  <div class="meta" style="margin-top:8px">표본 수는 정보로만 표시합니다. 파싱 실패·인수권 시세 없음은 채점에서 빠집니다 — 한계는 docs/backtest.md.</div>`;
+  <div class="meta" style="margin-top:8px">표본 수는 정보로만 표시해요. 파싱 실패·인수권 시세 없음은 채점에서 빠져요 — 한계는 docs/backtest.md.</div>`;
 }
 // 🟢 가격 조건 두 숫자 나란히: IV 프리미엄 ≤ −20% AND 신주원가 할인율 > −20%(너무 깊은 할인 = 부실 신호, 기출 근거)
 function greenCheck(q){
@@ -870,7 +1004,7 @@ function greenCheck(q){
   const cushion=g.cushion_pct!=null?g.cushion_pct:(g.disc==null?null:-g.disc);
   const ceiling=g.cushion_ceiling??Math.abs(g.disc_floor??20);
   return `<div class="ql"><span>🟢 가격 조건</span><div class="gcs">${it('IV 프리미엄',g.gap,`≤ ${g.cheap}%`,g.gap_ok)}${it('총원가 쿠션율',cushion,`깊은 할인 위험선 < ${ceiling}%`,g.disc_ok)}
-    <small class="mut">총원가 쿠션율 = 1 − (인수권+발행가)/본주. 양수면 본주 대비 싸고, 음수면 프리미엄입니다. 20% 이상처럼 지나치게 깊은 할인은 기출에서 부실 신호였으므로 별도 위험필터로 봅니다.</small></div></div>`;
+    <small class="mut">총원가 쿠션율 = 1 − (인수권+발행가)/본주. 양수면 본주 대비 싸고, 음수면 프리미엄이에요. 20% 이상처럼 지나치게 깊은 할인은 기출에서 부실 신호였으므로 별도 위험필터로 봐요.</small></div></div>`;
 }
 // A = 인수권 할인 포착: IV 프리미엄 → 총원가 쿠션 → ATR 쿠션 → 신주 공급압력. 본주를 공매도로 고정할 수 없어 무위험 차익이 아니다.
 // 쿠션÷ATR 합격선은 두지 않음 — H1 데이터가 쌓일 때까지 연속형으로 기록만
@@ -888,7 +1022,7 @@ function aBox(c){
     ...(s.listing_turnover!=null?[`D0 신주대비 거래회전율 ${(s.listing_turnover*100).toFixed(1)}% ${s.listing_price_type?'('+s.listing_price_type+')':''}`]:[]),
     ...(s.excess_turnover_d0!=null?[`D0 초과회전율 ${(s.excess_turnover_d0*100).toFixed(1)}%`]:[]),
     ...(s.excess_turnover_d0_d5!=null?[`D0~D5 누적 초과회전율 ${(s.excess_turnover_d0_d5*100).toFixed(1)}%`]:[])].join(' · '):'';
-  const legacyWarn=!a.decision_asof&&a.confirmed&&a.r_date&&a.r_date<kstToday()?'<div class="warnbox">⚠ 이 배포 데이터는 과거 P/R에 최신 확정발행가가 소급됐을 수 있습니다. 다음 데이터 갱신부터 A 당시값과 사후값을 분리합니다.</div>':'';
+  const legacyWarn=!a.decision_asof&&a.confirmed&&a.r_date&&a.r_date<kstToday()?'<div class="warnbox">⚠ 이 배포 데이터는 과거 P/R에 최신 확정발행가가 소급됐을 수 있어요. 다음 데이터 갱신부터 A 당시값과 사후값을 분리해요.</div>':'';
   return `<div class="abox"><div class="ah">A전략 · 인수권 할인 포착 <small class="mut">인수권+청약으로 본주보다 싸게 신주 확보 · IV 프리미엄 → 총원가 쿠션 → ATR 쿠션 → 공급압력</small></div>
     ${legacyWarn}
     <div>본주 P <b>${fmt(a.p)}</b> <span class="mut">(${esc(a.p_date||'')}${a.price_type?' · '+esc(a.price_type):''})</span> · 인수권 R ${a.r==null?'<span class="mut">시세 대기</span>':`<b>${fmt(a.r)}</b> <span class="mut">(${esc(a.r_date)})</span>`}
@@ -900,7 +1034,7 @@ function aBox(c){
     ${days?`<div class="mut">남은 거래일(오늘 포함): ${days}</div>`:''}
     ${a.end_check?`<div class="${a.end_check.status==='mismatch'?'red':'mut'}">마지막 매매일: ${a.end_check.delist?`공시 ${esc(a.end_check.disclosed||'—')} · KRX 상장폐지일 ${esc(a.end_check.delist)}의 전 영업일 ${esc(a.end_check.krx_last)} — ${esc(a.end_check.text)}`:`공시 ${esc(a.end_check.disclosed||'—')} (KRX 상장폐지일은 인수권 시세가 들어오면 대조)`}</div>`:''}
     ${sp?`<div class="mut">공급압력: ${sp}</div>`:''}
-    <small class="mut">총원가 할인율 = 1 − (R+I)/P. IV 프리미엄보다 이 값과 원화 쿠션을 먼저 봅니다 — 본주를 공매도로 묶을 수 없어 상장일까지 본주가 빠지면 손실. 쿠션÷ATR 합격선은 H1 데이터가 쌓일 때까지 두지 않습니다.</small>
+    <small class="mut">총원가 할인율 = 1 − (R+I)/P. IV 프리미엄보다 이 값과 원화 쿠션을 먼저 봐요 — 본주를 공매도로 묶을 수 없어 상장일까지 본주가 빠지면 손실. 쿠션÷ATR 합격선은 H1 데이터가 쌓일 때까지 두지 않아요.</small>
   </div>`;
 }
 // A 보강: 시장 암시 발행가 · 체결가능 총원가(C_exec) · 노출기간 · 청약자금 부담률
@@ -926,7 +1060,7 @@ function b6Box(c){
   return `<div class="abox"><div class="ah">B⑥ 정말 유증 때문에 눌렸나 <small class="mut">B전략(눌린 우량주 회복)의 6번째 확인 · 시장 대비 초과수익 · t0 ${esc(b.t0)}${b.ex_adjusted?' · 권리락 보정':''}</small></div>
     <div class="k4row" style="grid-template-columns:repeat(3,minmax(0,1fr))">${cell('a · 공시 전 추세 [-20,-1]',b.pretrend,'')}${cell('b · 공시 충격 [0,+1]',b.shock,'')}${cell('c · 악재 지속 [+2,오늘]',b.persistence,'')}</div>
     <div>${b.read?`<b>${esc(b.read)}</b> `:''}${b.shock3?`<span class="mut">CAR[0,+3] ${b.shock3.ar>0?'+':''}${b.shock3.ar}%p</span>`:''}</div>
-    <small class="mut">${esc(b.note)} · 자동 해석은 판단 보조이며 관문이 아닙니다.</small></div>`;
+    <small class="mut">${esc(b.note)} · 자동 해석은 판단 보조이며 관문이 아니에요.</small></div>`;
 }
 // A_realized: 인수권 마지막 날 C_exec 로 샀다면 — 사후값, 진입신호 아님
 function aRealBox(c){
@@ -975,11 +1109,11 @@ function quickBox(c){
   ${be?`<div class="ql"><span>본전선</span><div><b>${fmt(be.value)}원</b> — ${esc(be.how)} <span class="mut">(${esc(be.text)})</span></div></div>`:`<div class="ql"><span>본전선</span><div class="mut">${q.stage==='listed'?'상장 완료 — 아래 가상 성과 참고':'계산 불가 (할인율·시세 미확인)'}</div></div>`}
   ${so.volume_days!=null?`<div class="ql"><span>매물 소화</span><div><b class="${so.red?'red':''}">${esc(so.baseline_label||'현재 최근20(예비)')} 거래량 ${so.volume_days.toLocaleString()}일치</b> <span class="mut">(신주 ${fmt(so.new_shares)}주 ÷ 평균 ${fmt(so.avg_volume)}주${so.baseline_start&&so.baseline_end?' · '+esc(so.baseline_start)+'~'+esc(so.baseline_end):''})</span></div></div>`:o?`<div class="ql"><span>매물 소화</span><div><b class="${o.red?'red':''}">최근 거래량 ${o.days.toLocaleString()}일치</b> <span class="mut">(신주 ${fmt(o.new_shares)}주 ÷ 최근 평균 ${fmt(o.avg_volume)}주)</span></div></div>`:''}
   ${so.listing_turnover!=null?`<div class="ql"><span>D0 실측</span><div><b>신주대비 거래회전율 ${(so.listing_turnover*100).toFixed(1)}%</b>${so.excess_turnover_d0!=null?` · 초과회전율 <b>${(so.excess_turnover_d0*100).toFixed(1)}%</b>`:''}${so.excess_turnover_d0_d5!=null?` · D0~D5 누적 초과 <b>${(so.excess_turnover_d0_d5*100).toFixed(1)}%</b>`:''} <small class="mut">(회전율은 손바뀜도 세므로 '소화율'이 아님 · 초과 = (거래량−평소 평균)/신주)</small> <span class="mut">${esc(so.listing_price_type||'')} · 평소 거래량의 ${so.listing_volume_multiple??'—'}배${so.listing_vwap?' · VWAP '+fmt(so.listing_vwap)+'원':''}${so.listing_close_vs_vwap!=null?' · 종가/VWAP '+pct(so.listing_close_vs_vwap):''}${so.listing_close_location!=null?' · 종가위치 '+so.listing_close_location+'%':''}</span></div></div>`:''}
-  ${rows?`<table><thead><tr><th>시나리오 (본전선 대비)</th><th>상장일 주가</th><th>수익률</th></tr></thead><tbody>${rows}</tbody></table><div class="fn">${esc(q.table_note)}<br>2차 발행가는 반드시 권리락 <b>후</b> 주가로 계산합니다.</div>`:''}
+  ${rows?`<table><thead><tr><th>시나리오 (본전선 대비)</th><th>상장일 주가</th><th>수익률</th></tr></thead><tbody>${rows}</tbody></table><div class="fn">${esc(q.table_note)}<br>2차 발행가는 반드시 권리락 <b>후</b> 주가로 계산해요.</div>`:''}
   </div>`;
 }
 function resultBlock(c){
-  const p=c.paper; if(!p) return c.is_rights?`<div class="result"><h4>들어갔다면?</h4><div class="meta">인수권 마지막 거래일 종가가 들어오면 판정을 확정하고 가상 진입을 기록합니다.</div></div>`:'';
+  const p=c.paper; if(!p) return c.is_rights?`<div class="result"><h4>들어갔다면?</h4><div class="meta">인수권 마지막 거래일 종가가 들어오면 판정을 확정하고 가상 진입을 기록해요.</div></div>`:'';
   const e=p.eval, V=(DATA.verdicts||{})[p.verdict]||{emoji:'',name:p.verdict};
   const rows=(e.points||[]).map(pt=>`<tr><td style="white-space:nowrap">${pt.label}</td><td>${pt.date?pt.date.slice(5):'—'}</td><td>${fmt(pt.price)}</td><td>${pt.ret!=null?`<b class="${pt.ret>=0?'pos':'neg'}">${(pt.ret>0?'+':'')+pt.ret.toFixed(1)}%</b>`:`<span class="mut">${esc(pt.pending||'—')}</span>`}</td><td>${pt.excess!=null?(pt.excess>0?'+':'')+pt.excess.toFixed(1)+'%p':'—'}</td></tr>`).join('');
   const snap=p.snapshot;
@@ -994,7 +1128,7 @@ function closeGuide(){$('#guide').classList.remove('show');}
 addEventListener('keydown',e=>{if(e.key==='Escape')closeGuide();});
 function copyCheck(id,btn){const c=DATA.cases.find(x=>x.case_id===id);copyText(buildCheckPrompt(c),btn,$('#pq'+id),btn.dataset.label);}
 function copyCase(id,btn){const c=DATA.cases.find(x=>x.case_id===id);copyText(buildCasePrompt(c,DATA),btn,$('#pv'+id),btn.dataset.label);}
-function copyBriefing(btn){if(!DATA)return;copyText(buildBriefingPrompt(DATA),btn,$('#briefPreview'),'🤖 전체 브리핑 프롬프트 복사');}
+function copyBriefing(btn){if(!DATA)return;copyText(buildBriefingPrompt(DATA),btn,$('#briefPreview'),'전체 브리핑 프롬프트 복사');}
 Promise.all([fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()),
   fetch('./data/backtest.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null)]).then(([d,bt])=>{
   DATA=d; BT=bt;
@@ -1003,7 +1137,7 @@ Promise.all([fetch('./data/site.json',{cache:'no-store'}).then(r=>r.json()),
   const rc=d.cases.filter(x=>x.is_rights&&x.status==='open').length;
   $('#chips').innerHTML=[['갱신',d.generated_at.replace('T',' ').slice(0,16)+(stale?` · ${Math.floor(age)}시간 전`:''),stale],['인수권 시세',d.last_rights_date||'—'],['주주배정 진행',rc+'건'],['가상 기록',(c.paper_trades??0)+'건'],['제외 공시',(c.excluded_disclosures??0)+'건']].map(([l,v,st])=>`<div class="chip${st?' stale':''}">${l}<b>${v}</b></div>`).join('');
   stratSummary();renderFocus();renderToday();renderRights();renderCases();renderSScore();renderScore();renderExam(BT);
-}).catch(e=>{$('#chips').innerHTML=`<div class="empty">data/site.json 을 읽지 못했습니다 (${esc(e.message)}). 로컬에선 python -m http.server 로 여세요.</div>`});
+}).catch(e=>{$('#chips').innerHTML=`<div class="empty">data/site.json 을 읽지 못했어요 (${esc(e.message)}). 로컬에선 python -m http.server 로 여세요.</div>`});
 // 웹앱(홈 화면)으로 열면 당겨서 새로고침이 없다 → 새로고침 버튼 + 10분 넘게 쉬다 돌아오면 자동 새로고침
 const STANDALONE=navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;
 if(STANDALONE){
