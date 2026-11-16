@@ -1,12 +1,12 @@
 {
- "generated_at": "2026-11-16T08:46:46+09:00",
+ "generated_at": "2026-11-16T12:04:04+09:00",
  "last_rights_date": "2026-11-13",
  "first_rights_date": "2026-07-21",
  "counts": {
   "cases": 116,
   "disclosures": 461,
   "rights_daily": 82,
-  "stock_daily": 2468,
+  "stock_daily": 2486,
   "excluded_disclosures": 830,
   "paper_trades": 11,
   "strategy_trades": 3
@@ -251,11 +251,6 @@
    "rights_series": [],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 15620,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 15480,
      "price_type": "종가"
@@ -399,6 +394,11 @@
      "d": "2026-11-13",
      "close": 10000,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 9390,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -439,11 +439,11 @@
      "r": 0.2338,
      "disclosed": 9120,
      "issue_kind": "예정",
-     "value": 7643,
+     "value": 7176,
      "kind": "1차 추정",
-     "i1": 7643,
-     "px": 9553,
-     "text": "1차 추정 7,643원 = 현재가 10,000 × (1−20%) ÷ (1 + 증자비율 23.4%×20%) (공시 9,120원은 예정발행가라 안 씀)",
+     "i1": 7176,
+     "px": 8971,
+     "text": "1차 추정 7,176원 = 현재가 9,390 × (1−20%) ÷ (1 + 증자비율 23.4%×20%) (공시 9,120원은 예정발행가라 안 씀)",
      "stage": {
       "code": "planned",
       "label": "예정"
@@ -452,56 +452,56 @@
     "breakeven": {
      "stage": "1",
      "how": "본주 매수 + 청약",
-     "value": 9553,
-     "text": "권리락 이론가 Px = 10,000 ÷ (1 + 증자비율 23.4%×20%)"
+     "value": 8971,
+     "text": "권리락 이론가 Px = 9,390 ÷ (1 + 증자비율 23.4%×20%)"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 6.8,
-      "price": 10203
+      "price": 9581
      },
      {
       "name": "보통(중앙값)",
       "pct": -1.7,
-      "price": 9391
+      "price": 8818
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -9.3,
-      "price": 8665
+      "price": 8137
      },
      {
       "name": "최악",
       "pct": -42.3,
-      "price": 5512
+      "price": 5176
      }
     ],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
-     "days": 30.7,
-     "avg_volume": 214266,
+     "days": 31.2,
+     "avg_volume": 211179,
      "new_shares": 6579000,
      "n": 20,
      "red": false
     }
    },
    "a_margin": {
-    "p": 10000,
-    "p_date": "2026-11-13",
+    "p": 9390,
+    "p_date": "2026-11-16",
     "r": null,
     "r_date": null,
-    "atr": 857,
+    "atr": 864,
     "atr_n": 10,
-    "atr_pct": 8.57,
+    "atr_pct": 9.2,
     "confirmed": false,
     "rows": [
      {
       "label": "① 1차가 기준 (1차 추정 — 공시가 예정발행가라 안 씀)",
       "kind": "1차",
-      "issue": 7643,
-      "p_minus_i": 2357,
-      "iv": 2357,
+      "issue": 7176,
+      "p_minus_i": 2214,
+      "iv": 2214,
       "iv_zero": false,
       "iv_premium": null,
       "gap": null,
@@ -510,14 +510,14 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 1500
+      "r_for_1atr": 1350
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
       "kind": "예상 최종",
-      "issue": 7643,
-      "p_minus_i": 2357,
-      "iv": 2357,
+      "issue": 7176,
+      "p_minus_i": 2214,
+      "iv": 2214,
       "iv_zero": false,
       "iv_premium": null,
       "gap": null,
@@ -526,7 +526,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 1500,
+      "r_for_1atr": 1350,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
@@ -545,9 +545,9 @@
      "text": "공시만 (KRX 인수권 시세 전 — 상장폐지일 미수집)"
     },
     "final": {
-     "i1": 7643,
+     "i1": 7176,
      "i2": null,
-     "i_hat": 7643,
+     "i_hat": 7176,
      "d": 0.2,
      "vwap": null,
      "vwap_src": null,
@@ -563,8 +563,8 @@
      "code": "planned",
      "label": "예정"
     },
-    "decision_asof": "2026-11-13",
-    "price_type": "종가",
+    "decision_asof": "2026-11-16",
+    "price_type": "장중값",
     "gap_shift": null,
     "days": [
      {
@@ -594,8 +594,8 @@
     },
     "funding": {
      "q": 0.2157230796,
-     "issue": 7643,
-     "p_pre": 10000,
+     "issue": 7176,
+     "p_pre": 9390,
      "basis": "현재 본주",
      "pct": 16.5
     },
@@ -603,7 +603,7 @@
      "row_kind": "예상 최종",
      "code": "prewatch",
      "label": "A 사전감시",
-     "why": "R 없음(인수권 상장 2027-01-06) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 1,500원"
+     "why": "R 없음(인수권 상장 2027-01-06) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 1,350원"
     }
    },
    "supply": {
@@ -620,13 +620,13 @@
     "n": 20,
     "baseline_complete": false,
     "baseline_label": "현재 최근20(예비)",
-    "baseline_start": "2026-10-19",
-    "baseline_end": "2026-11-13",
-    "value_days": 29.3,
-    "volume_days": 30.7,
+    "baseline_start": "2026-10-20",
+    "baseline_end": "2026-11-16",
+    "value_days": 28.1,
+    "volume_days": 31.2,
     "red": false,
     "red_threshold_days": 60,
-    "avg_volume": 214266,
+    "avg_volume": 211179,
     "listing_turnover": null,
     "listing_volume_multiple": null,
     "listing_vwap": null,
@@ -663,17 +663,17 @@
     },
     "persistence": {
      "from": "2026-10-26",
-     "to": "2026-11-13",
-     "stock": -2.0,
-     "index": -3.8,
-     "ar": 1.8
+     "to": "2026-11-16",
+     "stock": -7.9,
+     "index": -7.3,
+     "ar": -0.6
     },
     "total": {
      "from": "2026-10-22",
-     "to": "2026-11-13",
-     "stock": -16.2,
-     "index": -8.4,
-     "ar": -7.7
+     "to": "2026-11-16",
+     "stock": -21.3,
+     "index": -11.8,
+     "ar": -9.5
     },
     "ex_adjusted": false,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -1085,11 +1085,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 2045,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 1995,
      "price_type": "종가"
@@ -1233,6 +1228,11 @@
      "d": "2026-11-13",
      "close": 2570,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 2425,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -1276,27 +1276,27 @@
      "value": 1116,
      "kind": "최종 추정",
      "i1": 1116,
-     "i2": 1472,
+     "i2": 1563,
      "second": {
-      "i2": 1472,
-      "base": 2265,
-      "vwap": 2265,
-      "vwap_src": "KRX 거래대금 ÷ 거래량",
-      "close_base": 2570,
-      "base_date": "2026-11-13",
+      "i2": 1563,
+      "base": 2405,
+      "vwap": 2405,
+      "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+      "close_base": 2425,
+      "base_date": "2026-11-16",
       "window": [
-       "2026-11-09",
        "2026-11-10",
        "2026-11-11",
        "2026-11-12",
-       "2026-11-13"
+       "2026-11-13",
+       "2026-11-16"
       ],
       "fix_date": "2026-11-20",
       "projected": true,
       "d": 0.35
      },
      "floor": null,
-     "text": "최종 추정 1,116원 = min(1차(권리락 직전 종가 2,075 × (1−35%) ÷ (1 + 증자비율 59.5%×35%)) 1,116, 2차 1,472) · 2차 = min(1주 VWAP 2,265, 최근 종가 2,570) × (1−35%) — 산정일 전이라 오늘 기준 예상",
+     "text": "최종 추정 1,116원 = min(1차(권리락 직전 종가 2,075 × (1−35%) ÷ (1 + 증자비율 59.5%×35%)) 1,116, 2차 1,563) · 2차 = min(1주 VWAP 2,405, 최근 종가 2,425) × (1−35%) — 산정일 전이라 오늘 기준 예상",
      "stage": {
       "code": "final_est",
       "label": "예상최종"
@@ -1333,7 +1333,7 @@
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
      "days": 43.6,
-     "avg_volume": 110035,
+     "avg_volume": 110057,
      "new_shares": 4800000,
      "n": 20,
      "red": false
@@ -1507,13 +1507,13 @@
     "n": 20,
     "baseline_complete": false,
     "baseline_label": "현재 최근20(예비)",
-    "baseline_start": "2026-10-19",
-    "baseline_end": "2026-11-13",
+    "baseline_start": "2026-10-20",
+    "baseline_end": "2026-11-16",
     "value_days": 47.8,
     "volume_days": 43.6,
     "red": false,
     "red_threshold_days": 60,
-    "avg_volume": 110035,
+    "avg_volume": 110057,
     "listing_turnover": null,
     "listing_volume_multiple": null,
     "listing_vwap": null,
@@ -1550,17 +1550,17 @@
     },
     "persistence": {
      "from": "2026-09-28",
-     "to": "2026-11-13",
-     "stock": 55.4,
-     "index": -17.4,
-     "ar": 72.7
+     "to": "2026-11-16",
+     "stock": 46.6,
+     "index": -20.4,
+     "ar": 67.0
     },
     "total": {
      "from": "2026-09-22",
-     "to": "2026-11-13",
-     "stock": 55.4,
-     "index": -16.1,
-     "ar": 71.6
+     "to": "2026-11-16",
+     "stock": 46.7,
+     "index": -19.2,
+     "ar": 65.9
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -1809,11 +1809,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 5030,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 5030,
      "price_type": "종가"
@@ -1957,6 +1952,11 @@
      "d": "2026-11-13",
      "close": 4490,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 4470,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -2106,35 +2106,35 @@
     "breakeven": {
      "stage": "5",
      "how": "본주 매수 (상장 대기)",
-     "value": 4490,
-     "text": "현재가 4,490"
+     "value": 4470,
+     "text": "현재가 4,470"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 6.8,
-      "price": 4795
+      "price": 4774
      },
      {
       "name": "보통(중앙값)",
       "pct": -1.7,
-      "price": 4414
+      "price": 4394
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -9.3,
-      "price": 4072
+      "price": 4054
      },
      {
       "name": "최악",
       "pct": -42.3,
-      "price": 2591
+      "price": 2579
      }
     ],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
-     "days": 310.4,
-     "avg_volume": 61213,
+     "days": 315.6,
+     "avg_volume": 60197,
      "new_shares": 19000000,
      "n": 20,
      "red": true
@@ -2319,13 +2319,13 @@
     "n": 20,
     "baseline_complete": false,
     "baseline_label": "현재 최근20(예비)",
-    "baseline_start": "2026-10-19",
-    "baseline_end": "2026-11-13",
-    "value_days": 332.6,
-    "volume_days": 310.4,
+    "baseline_start": "2026-10-20",
+    "baseline_end": "2026-11-16",
+    "value_days": 339.5,
+    "volume_days": 315.6,
     "red": true,
     "red_threshold_days": 60,
-    "avg_volume": 61213,
+    "avg_volume": 60197,
     "listing_turnover": null,
     "listing_volume_multiple": null,
     "listing_vwap": null,
@@ -2362,17 +2362,17 @@
     },
     "persistence": {
      "from": "2026-09-22",
-     "to": "2026-11-13",
-     "stock": -6.4,
-     "index": -24.6,
-     "ar": 18.3
+     "to": "2026-11-16",
+     "stock": -6.8,
+     "index": -26.6,
+     "ar": 19.8
     },
     "total": {
      "from": "2026-09-18",
-     "to": "2026-11-13",
-     "stock": -15.2,
-     "index": -23.3,
-     "ar": 8.1
+     "to": "2026-11-16",
+     "stock": -15.6,
+     "index": -25.3,
+     "ar": 9.7
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -2637,11 +2637,6 @@
    "rights_series": [],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 2010,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 1996,
      "price_type": "종가"
@@ -2785,6 +2780,11 @@
      "d": "2026-11-13",
      "close": 1482,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 1488,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -2825,11 +2825,11 @@
      "r": 0.6628181743,
      "disclosed": 1499,
      "issue_kind": "예정",
-     "value": 1146,
+     "value": 1150,
      "kind": "1차 추정",
-     "i1": 1146,
-     "px": 1348,
-     "text": "1차 추정 1,146원 = 현재가 1,482 × (1−15%) ÷ (1 + 증자비율 66.3%×15%) (공시 1,499원은 예정발행가라 안 씀)",
+     "i1": 1150,
+     "px": 1353,
+     "text": "1차 추정 1,150원 = 현재가 1,488 × (1−15%) ÷ (1 + 증자비율 66.3%×15%) (공시 1,499원은 예정발행가라 안 씀)",
      "stage": {
       "code": "planned",
       "label": "예정"
@@ -2838,29 +2838,29 @@
     "breakeven": {
      "stage": "tbd",
      "how": "본주 매수 (상장 대기)",
-     "value": 1482,
-     "text": "현재가 1,482"
+     "value": 1488,
+     "text": "현재가 1,488"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 6.8,
-      "price": 1583
+      "price": 1589
      },
      {
       "name": "보통(중앙값)",
       "pct": -1.7,
-      "price": 1457
+      "price": 1463
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -9.3,
-      "price": 1344
+      "price": 1350
      },
      {
       "name": "최악",
       "pct": -42.3,
-      "price": 855
+      "price": 859
      }
     ],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
@@ -2896,17 +2896,17 @@
     },
     "persistence": {
      "from": "2026-09-21",
-     "to": "2026-11-13",
-     "stock": -29.8,
-     "index": -16.3,
-     "ar": -13.4
+     "to": "2026-11-16",
+     "stock": -29.5,
+     "index": -19.4,
+     "ar": -10.1
     },
     "total": {
      "from": "2026-09-17",
-     "to": "2026-11-13",
-     "stock": -35.0,
-     "index": -14.9,
-     "ar": -20.1
+     "to": "2026-11-16",
+     "stock": -34.7,
+     "index": -18.0,
+     "ar": -16.7
     },
     "ex_adjusted": false,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -3199,11 +3199,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 24650,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 24750,
      "price_type": "종가"
@@ -3347,6 +3342,11 @@
      "d": "2026-11-13",
      "close": 14510,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 13740,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -3387,30 +3387,30 @@
      "r": 0.1868,
      "disclosed": 14900,
      "issue_kind": "1차",
-     "value": 10882,
+     "value": 10305,
      "kind": "최종 추정",
      "i1": 14900,
-     "i2": 10882,
+     "i2": 10305,
      "second": {
-      "i2": 10882,
-      "base": 14510,
-      "vwap": 15575,
-      "vwap_src": "KRX 거래대금 ÷ 거래량",
-      "close_base": 14510,
-      "base_date": "2026-11-13",
+      "i2": 10305,
+      "base": 13740,
+      "vwap": 15327,
+      "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+      "close_base": 13740,
+      "base_date": "2026-11-16",
       "window": [
-       "2026-11-09",
        "2026-11-10",
        "2026-11-11",
        "2026-11-12",
-       "2026-11-13"
+       "2026-11-13",
+       "2026-11-16"
       ],
       "fix_date": "2026-11-20",
       "projected": true,
       "d": 0.25
      },
      "floor": null,
-     "text": "최종 추정 10,882원 = min(1차(공시) 14,900, 2차 10,882) · 2차 = min(1주 VWAP 15,575, 최근 종가 14,510) × (1−25%) — 산정일 전이라 오늘 기준 예상",
+     "text": "최종 추정 10,305원 = min(1차(공시) 14,900, 2차 10,305) · 2차 = min(1주 VWAP 15,327, 최근 종가 13,740) × (1−25%) — 산정일 전이라 오늘 기준 예상",
      "stage": {
       "code": "final_est",
       "label": "예상최종"
@@ -3419,35 +3419,35 @@
     "breakeven": {
      "stage": "3",
      "how": "인수권 매수 + 청약",
-     "value": 12967,
-     "text": "인수권 2,085 + 발행가 10,882"
+     "value": 12390,
+     "text": "인수권 2,085 + 발행가 10,305"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 3.0,
-      "price": 13356
+      "price": 12762
      },
      {
       "name": "보통(중앙값)",
       "pct": -5.6,
-      "price": 12241
+      "price": 11696
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -15.6,
-      "price": 10944
+      "price": 10457
      },
      {
       "name": "최악",
       "pct": -34.2,
-      "price": 8532
+      "price": 8153
      }
     ],
     "table_note": "기출 31건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
-     "days": 50.8,
-     "avg_volume": 139815,
+     "days": 51.3,
+     "avg_volume": 138381,
      "new_shares": 7100000,
      "n": 20,
      "red": false
@@ -3608,8 +3608,8 @@
     }
    },
    "supply": {
-    "median_volume": 130590,
-    "volume_days_median": 54.4,
+    "median_volume": 127359,
+    "volume_days_median": 55.7,
     "effective_shares": null,
     "effective_note": "보호예수·법적 매각제한 물량 미파싱 → 신주 전체로 계산 (말로 한 '장기보유'는 차감하지 않음)",
     "excess_turnover_d0": null,
@@ -3621,13 +3621,13 @@
     "n": 20,
     "baseline_complete": false,
     "baseline_label": "현재 최근20(예비)",
-    "baseline_start": "2026-10-19",
-    "baseline_end": "2026-11-13",
-    "value_days": 42.8,
-    "volume_days": 50.8,
+    "baseline_start": "2026-10-20",
+    "baseline_end": "2026-11-16",
+    "value_days": 43.8,
+    "volume_days": 51.3,
     "red": false,
     "red_threshold_days": 60,
-    "avg_volume": 139815,
+    "avg_volume": 138381,
     "listing_turnover": null,
     "listing_volume_multiple": null,
     "listing_vwap": null,
@@ -3664,17 +3664,17 @@
     },
     "persistence": {
      "from": "2026-09-07",
-     "to": "2026-11-13",
-     "stock": -40.8,
-     "index": -14.9,
+     "to": "2026-11-16",
+     "stock": -43.9,
+     "index": -18.0,
      "ar": -25.9
     },
     "total": {
      "from": "2026-09-03",
-     "to": "2026-11-13",
-     "stock": -22.4,
-     "index": -11.5,
-     "ar": -10.9
+     "to": "2026-11-16",
+     "stock": -26.5,
+     "index": -14.7,
+     "ar": -11.8
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -4002,11 +4002,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 1429000,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 1354000,
      "price_type": "종가"
@@ -4150,6 +4145,11 @@
      "d": "2026-11-13",
      "close": 1411000,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 1408000,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -4300,35 +4300,35 @@
     "breakeven": {
      "stage": "5",
      "how": "본주 매수 (상장 대기)",
-     "value": 1411000,
-     "text": "현재가 1,411,000"
+     "value": 1408000,
+     "text": "현재가 1,408,000"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 6.8,
-      "price": 1506948
+      "price": 1503744
      },
      {
       "name": "보통(중앙값)",
       "pct": -1.7,
-      "price": 1387013
+      "price": 1384064
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -9.3,
-      "price": 1279777
+      "price": 1277056
      },
      {
       "name": "최악",
       "pct": -42.3,
-      "price": 814147
+      "price": 812416
      }
     ],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
-     "days": 28.4,
-     "avg_volume": 79828,
+     "days": 31.2,
+     "avg_volume": 72836,
      "new_shares": 2270000,
      "n": 20,
      "red": false
@@ -4336,8 +4336,8 @@
    },
    "a_margin": null,
    "supply": {
-    "median_volume": 78256,
-    "volume_days_median": 29.0,
+    "median_volume": 74524,
+    "volume_days_median": 30.5,
     "effective_shares": null,
     "effective_note": "보호예수·법적 매각제한 물량 미파싱 → 신주 전체로 계산 (말로 한 '장기보유'는 차감하지 않음)",
     "excess_turnover_d0": null,
@@ -4349,13 +4349,13 @@
     "n": 20,
     "baseline_complete": false,
     "baseline_label": "현재 최근20(예비)",
-    "baseline_start": "2026-10-19",
-    "baseline_end": "2026-11-13",
-    "value_days": 29.3,
-    "volume_days": 28.4,
+    "baseline_start": "2026-10-20",
+    "baseline_end": "2026-11-16",
+    "value_days": 32.1,
+    "volume_days": 31.2,
     "red": false,
     "red_threshold_days": 60,
-    "avg_volume": 79828,
+    "avg_volume": 72836,
     "listing_turnover": null,
     "listing_volume_multiple": null,
     "listing_vwap": null,
@@ -4392,17 +4392,17 @@
     },
     "persistence": {
      "from": "2026-08-31",
-     "to": "2026-11-13",
-     "stock": -6.3,
-     "index": -22.4,
-     "ar": 16.2
+     "to": "2026-11-16",
+     "stock": -6.5,
+     "index": -24.5,
+     "ar": 18.0
     },
     "total": {
      "from": "2026-08-27",
-     "to": "2026-11-13",
-     "stock": -10.7,
-     "index": -23.5,
-     "ar": 12.7
+     "to": "2026-11-16",
+     "stock": -10.9,
+     "index": -25.5,
+     "ar": 14.5
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -4672,11 +4672,6 @@
    "rights_series": [],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 8270,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 8350,
      "price_type": "종가"
@@ -4820,6 +4815,11 @@
      "d": "2026-11-13",
      "close": 5470,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 5140,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -4860,11 +4860,11 @@
      "r": 0.4499,
      "disclosed": 4980,
      "issue_kind": "예정",
-     "value": 3688,
+     "value": 3465,
      "kind": "1차 추정",
-     "i1": 3688,
-     "px": 4917,
-     "text": "1차 추정 3,688원 = 현재가 5,470 × (1−25%) ÷ (1 + 증자비율 45.0%×25%) (공시 4,980원은 예정발행가라 안 씀)",
+     "i1": 3465,
+     "px": 4620,
+     "text": "1차 추정 3,465원 = 현재가 5,140 × (1−25%) ÷ (1 + 증자비율 45.0%×25%) (공시 4,980원은 예정발행가라 안 씀)",
      "stage": {
       "code": "planned",
       "label": "예정"
@@ -4873,56 +4873,56 @@
     "breakeven": {
      "stage": "tbd",
      "how": "본주 매수 (상장 대기)",
-     "value": 5470,
-     "text": "현재가 5,470"
+     "value": 5140,
+     "text": "현재가 5,140"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 6.8,
-      "price": 5842
+      "price": 5490
      },
      {
       "name": "보통(중앙값)",
       "pct": -1.7,
-      "price": 5377
+      "price": 5053
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -9.3,
-      "price": 4961
+      "price": 4662
      },
      {
       "name": "최악",
       "pct": -42.3,
-      "price": 3156
+      "price": 2966
      }
     ],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
-     "days": 21.4,
-     "avg_volume": 293706,
+     "days": 21.8,
+     "avg_volume": 288596,
      "new_shares": 6300000,
      "n": 20,
      "red": false
     }
    },
    "a_margin": {
-    "p": 5470,
-    "p_date": "2026-11-13",
+    "p": 5140,
+    "p_date": "2026-11-16",
     "r": null,
     "r_date": null,
-    "atr": 565,
+    "atr": 557,
     "atr_n": 10,
-    "atr_pct": 10.32,
+    "atr_pct": 10.84,
     "confirmed": false,
     "rows": [
      {
       "label": "① 1차가 기준 (1차 추정 — 공시가 예정발행가라 안 씀)",
       "kind": "1차",
-      "issue": 3688,
-      "p_minus_i": 1782,
-      "iv": 1782,
+      "issue": 3465,
+      "p_minus_i": 1675,
+      "iv": 1675,
       "iv_zero": false,
       "iv_premium": null,
       "gap": null,
@@ -4931,14 +4931,14 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 1217
+      "r_for_1atr": 1118
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
       "kind": "예상 최종",
-      "issue": 3688,
-      "p_minus_i": 1782,
-      "iv": 1782,
+      "issue": 3465,
+      "p_minus_i": 1675,
+      "iv": 1675,
       "iv_zero": false,
       "iv_premium": null,
       "gap": null,
@@ -4947,7 +4947,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 1217,
+      "r_for_1atr": 1118,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
@@ -4966,9 +4966,9 @@
      "text": "공시만 (KRX 인수권 시세 전 — 상장폐지일 미수집)"
     },
     "final": {
-     "i1": 3688,
+     "i1": 3465,
      "i2": null,
-     "i_hat": 3688,
+     "i_hat": 3465,
      "d": 0.25,
      "vwap": null,
      "vwap_src": null,
@@ -4984,8 +4984,8 @@
      "code": "planned",
      "label": "예정"
     },
-    "decision_asof": "2026-11-13",
-    "price_type": "종가",
+    "decision_asof": "2026-11-16",
+    "price_type": "장중값",
     "gap_shift": null,
     "days": [
      {
@@ -5011,8 +5011,8 @@
     "exposure": null,
     "funding": {
      "q": 0.4499414112,
-     "issue": 3688,
-     "p_pre": 5470,
+     "issue": 3465,
+     "p_pre": 5140,
      "basis": "현재 본주",
      "pct": 30.3
     },
@@ -5020,12 +5020,12 @@
      "row_kind": "예상 최종",
      "code": "prewatch",
      "label": "A 사전감시",
-     "why": "R 없음(인수권 상장 2026-12-03) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 1,217원"
+     "why": "R 없음(인수권 상장 2026-12-03) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 1,118원"
     }
    },
    "supply": {
-    "median_volume": 120882,
-    "volume_days_median": 52.1,
+    "median_volume": 115440,
+    "volume_days_median": 54.6,
     "effective_shares": null,
     "effective_note": "보호예수·법적 매각제한 물량 미파싱 → 신주 전체로 계산 (말로 한 '장기보유'는 차감하지 않음)",
     "excess_turnover_d0": null,
@@ -5037,13 +5037,13 @@
     "n": 20,
     "baseline_complete": false,
     "baseline_label": "현재 최근20(예비)",
-    "baseline_start": "2026-10-19",
-    "baseline_end": "2026-11-13",
-    "value_days": 16.7,
-    "volume_days": 21.4,
+    "baseline_start": "2026-10-20",
+    "baseline_end": "2026-11-16",
+    "value_days": 16.0,
+    "volume_days": 21.8,
     "red": false,
     "red_threshold_days": 60,
-    "avg_volume": 293706,
+    "avg_volume": 288596,
     "listing_turnover": null,
     "listing_volume_multiple": null,
     "listing_vwap": null,
@@ -5080,17 +5080,17 @@
     },
     "persistence": {
      "from": "2026-08-31",
-     "to": "2026-11-13",
-     "stock": -2.1,
-     "index": -16.1,
-     "ar": 14.0
+     "to": "2026-11-16",
+     "stock": -8.1,
+     "index": -19.2,
+     "ar": 11.1
     },
     "total": {
      "from": "2026-08-27",
-     "to": "2026-11-13",
-     "stock": -25.9,
-     "index": -16.5,
-     "ar": -9.4
+     "to": "2026-11-16",
+     "stock": -30.4,
+     "index": -19.5,
+     "ar": -10.8
     },
     "ex_adjusted": false,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -5334,11 +5334,6 @@
    "rights_series": [],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 3345,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 3400,
      "price_type": "종가"
@@ -5482,6 +5477,11 @@
      "d": "2026-11-13",
      "close": 2540,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 2485,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -5522,11 +5522,11 @@
      "r": 0.4924,
      "disclosed": 2775,
      "issue_kind": "예정",
-     "value": 1696,
+     "value": 1659,
      "kind": "1차 추정",
-     "i1": 1696,
-     "px": 2262,
-     "text": "1차 추정 1,696원 = 현재가 2,540 × (1−25%) ÷ (1 + 증자비율 49.2%×25%) (공시 2,775원은 예정발행가라 안 씀)",
+     "i1": 1659,
+     "px": 2213,
+     "text": "1차 추정 1,659원 = 현재가 2,485 × (1−25%) ÷ (1 + 증자비율 49.2%×25%) (공시 2,775원은 예정발행가라 안 씀)",
      "stage": {
       "code": "planned",
       "label": "예정"
@@ -5535,56 +5535,56 @@
     "breakeven": {
      "stage": "1",
      "how": "본주 매수 + 청약",
-     "value": 2262,
-     "text": "권리락 이론가 Px = 2,540 ÷ (1 + 증자비율 49.2%×25%)"
+     "value": 2213,
+     "text": "권리락 이론가 Px = 2,485 ÷ (1 + 증자비율 49.2%×25%)"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 6.8,
-      "price": 2416
+      "price": 2363
      },
      {
       "name": "보통(중앙값)",
       "pct": -1.7,
-      "price": 2224
+      "price": 2175
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -9.3,
-      "price": 2052
+      "price": 2007
      },
      {
       "name": "최악",
       "pct": -42.3,
-      "price": 1305
+      "price": 1277
      }
     ],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
-     "days": 428.6,
-     "avg_volume": 8633,
+     "days": 457.4,
+     "avg_volume": 8089,
      "new_shares": 3700000,
      "n": 20,
      "red": true
     }
    },
    "a_margin": {
-    "p": 2540,
-    "p_date": "2026-11-13",
+    "p": 2485,
+    "p_date": "2026-11-16",
     "r": null,
     "r_date": null,
-    "atr": 275,
+    "atr": 266,
     "atr_n": 10,
-    "atr_pct": 10.82,
+    "atr_pct": 10.72,
     "confirmed": false,
     "rows": [
      {
       "label": "① 1차가 기준 (1차 추정 — 공시가 예정발행가라 안 씀)",
       "kind": "1차",
-      "issue": 1696,
-      "p_minus_i": 844,
-      "iv": 844,
+      "issue": 1659,
+      "p_minus_i": 826,
+      "iv": 826,
       "iv_zero": false,
       "iv_premium": null,
       "gap": null,
@@ -5593,14 +5593,14 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 569
+      "r_for_1atr": 560
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
       "kind": "예상 최종",
-      "issue": 1696,
-      "p_minus_i": 844,
-      "iv": 844,
+      "issue": 1659,
+      "p_minus_i": 826,
+      "iv": 826,
       "iv_zero": false,
       "iv_premium": null,
       "gap": null,
@@ -5609,7 +5609,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 569,
+      "r_for_1atr": 560,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
@@ -5628,9 +5628,9 @@
      "text": "공시만 (KRX 인수권 시세 전 — 상장폐지일 미수집)"
     },
     "final": {
-     "i1": 1696,
+     "i1": 1659,
      "i2": null,
-     "i_hat": 1696,
+     "i_hat": 1659,
      "d": 0.25,
      "vwap": null,
      "vwap_src": null,
@@ -5646,8 +5646,8 @@
      "code": "planned",
      "label": "예정"
     },
-    "decision_asof": "2026-11-13",
-    "price_type": "종가",
+    "decision_asof": "2026-11-16",
+    "price_type": "장중값",
     "gap_shift": null,
     "days": [
      {
@@ -5677,8 +5677,8 @@
     },
     "funding": {
      "q": 0.507594018,
-     "issue": 1696,
-     "p_pre": 2540,
+     "issue": 1659,
+     "p_pre": 2485,
      "basis": "현재 본주",
      "pct": 33.9
     },
@@ -5686,7 +5686,7 @@
      "row_kind": "예상 최종",
      "code": "prewatch",
      "label": "A 사전감시",
-     "why": "R 없음(인수권 상장 2027-01-05) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 569원"
+     "why": "R 없음(인수권 상장 2027-01-05) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 560원"
     }
    },
    "supply": {
@@ -5703,13 +5703,13 @@
     "n": 20,
     "baseline_complete": false,
     "baseline_label": "현재 최근20(예비)",
-    "baseline_start": "2026-10-19",
-    "baseline_end": "2026-11-13",
-    "value_days": 362.9,
-    "volume_days": 428.6,
+    "baseline_start": "2026-10-20",
+    "baseline_end": "2026-11-16",
+    "value_days": 388.8,
+    "volume_days": 457.4,
     "red": true,
     "red_threshold_days": 60,
-    "avg_volume": 8633,
+    "avg_volume": 8089,
     "listing_turnover": null,
     "listing_volume_multiple": null,
     "listing_vwap": null,
@@ -5746,17 +5746,17 @@
     },
     "persistence": {
      "from": "2026-08-19",
-     "to": "2026-11-13",
-     "stock": -29.1,
-     "index": -15.1,
-     "ar": -14.0
+     "to": "2026-11-16",
+     "stock": -30.7,
+     "index": -18.2,
+     "ar": -12.5
     },
     "total": {
      "from": "2026-08-14",
-     "to": "2026-11-13",
-     "stock": -40.7,
-     "index": -19.1,
-     "ar": -21.6
+     "to": "2026-11-16",
+     "stock": -42.0,
+     "index": -22.0,
+     "ar": -20.0
     },
     "ex_adjusted": false,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -6023,11 +6023,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 3490,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 3355,
      "price_type": "종가"
@@ -6171,6 +6166,11 @@
      "d": "2026-11-13",
      "close": 1898,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 1842,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -6594,17 +6594,17 @@
     },
     "persistence": {
      "from": "2026-07-29",
-     "to": "2026-11-13",
-     "stock": -28.1,
-     "index": -6.6,
-     "ar": -21.5
+     "to": "2026-11-16",
+     "stock": -30.2,
+     "index": -9.0,
+     "ar": -21.2
     },
     "total": {
      "from": "2026-07-27",
-     "to": "2026-11-13",
-     "stock": -50.7,
-     "index": -21.7,
-     "ar": -29.0
+     "to": "2026-11-16",
+     "stock": -52.2,
+     "index": -23.7,
+     "ar": -28.4
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -6864,11 +6864,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 114700,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 115700,
      "price_type": "종가"
@@ -7012,6 +7007,11 @@
      "d": "2026-11-13",
      "close": 90800,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 87400,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -7402,7 +7402,7 @@
     ],
     "mae": -36.2,
     "mfe": 8.3,
-    "path_end": "2026-11-13",
+    "path_end": "2026-11-16",
     "complete": false,
     "note": "사후 결과값(A_realized) — 확정발행가·상장 후 가격 사용, 진입조건에 쓰지 않음. MAE/MFE 는 종가 기준",
     "issue": 89500,
@@ -7435,17 +7435,17 @@
     },
     "persistence": {
      "from": "2026-07-01",
-     "to": "2026-11-13",
-     "stock": -29.4,
-     "index": -24.7,
-     "ar": -4.7
+     "to": "2026-11-16",
+     "stock": -32.0,
+     "index": -27.5,
+     "ar": -4.6
     },
     "total": {
      "from": "2026-06-29",
-     "to": "2026-11-13",
-     "stock": -39.3,
-     "index": -24.0,
-     "ar": -15.3
+     "to": "2026-11-16",
+     "stock": -41.6,
+     "index": -26.8,
+     "ar": -14.8
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -7816,11 +7816,6 @@
    "rights_series": [],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 2670,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 2710,
      "price_type": "종가"
@@ -7964,6 +7959,11 @@
      "d": "2026-11-13",
      "close": 2290,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 2245,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -8007,27 +8007,27 @@
      "value": 1531,
      "kind": "최종 추정",
      "i1": 1531,
-     "i2": 1718,
+     "i2": 1684,
      "second": {
-      "i2": 1718,
-      "base": 2290,
-      "vwap": 2321,
-      "vwap_src": "KRX 거래대금 ÷ 거래량",
-      "close_base": 2290,
-      "base_date": "2026-11-13",
+      "i2": 1684,
+      "base": 2245,
+      "vwap": 2266,
+      "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+      "close_base": 2245,
+      "base_date": "2026-11-16",
       "window": [
-       "2026-11-09",
        "2026-11-10",
        "2026-11-11",
        "2026-11-12",
-       "2026-11-13"
+       "2026-11-13",
+       "2026-11-16"
       ],
       "fix_date": "2026-12-09",
       "projected": true,
       "d": 0.25
      },
      "floor": null,
-     "text": "최종 추정 1,531원 = min(1차(권리락 직전 종가 2,350 × (1−25%) ÷ (1 + 증자비율 60.4%×25%)) 1,531, 2차 1,718) · 2차 = min(1주 VWAP 2,321, 최근 종가 2,290) × (1−25%) — 산정일 전이라 오늘 기준 예상",
+     "text": "최종 추정 1,531원 = min(1차(권리락 직전 종가 2,350 × (1−25%) ÷ (1 + 증자비율 60.4%×25%)) 1,531, 2차 1,684) · 2차 = min(1주 VWAP 2,266, 최근 종가 2,245) × (1−25%) — 산정일 전이라 오늘 기준 예상",
      "stage": {
       "code": "final_est",
       "label": "예상최종"
@@ -8036,50 +8036,50 @@
     "breakeven": {
      "stage": "2",
      "how": "본주 매수 (상장 대기)",
-     "value": 2290,
-     "text": "현재가 2,290"
+     "value": 2245,
+     "text": "현재가 2,245"
     },
     "table": [
      {
       "name": "좋음(상위 25%)",
       "pct": 6.8,
-      "price": 2446
+      "price": 2398
      },
      {
       "name": "보통(중앙값)",
       "pct": -1.7,
-      "price": 2251
+      "price": 2207
      },
      {
       "name": "나쁨(하위 25%)",
       "pct": -9.3,
-      "price": 2077
+      "price": 2036
      },
      {
       "name": "최악",
       "pct": -42.3,
-      "price": 1321
+      "price": 1295
      }
     ],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": null
    },
    "a_margin": {
-    "p": 2290,
-    "p_date": "2026-11-13",
+    "p": 2245,
+    "p_date": "2026-11-16",
     "r": null,
     "r_date": null,
-    "atr": 232,
+    "atr": 230,
     "atr_n": 10,
-    "atr_pct": 10.11,
+    "atr_pct": 10.24,
     "confirmed": false,
     "rows": [
      {
       "label": "① 1차가 기준 (1차 추정 — 공시가 예정발행가라 안 씀)",
       "kind": "1차",
       "issue": 1531,
-      "p_minus_i": 759,
-      "iv": 759,
+      "p_minus_i": 714,
+      "iv": 714,
       "iv_zero": false,
       "iv_premium": null,
       "gap": null,
@@ -8088,14 +8088,14 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 527
+      "r_for_1atr": 484
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
       "kind": "예상 최종",
       "issue": 1531,
-      "p_minus_i": 759,
-      "iv": 759,
+      "p_minus_i": 714,
+      "iv": 714,
       "iv_zero": false,
       "iv_premium": null,
       "gap": null,
@@ -8104,7 +8104,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 527
+      "r_for_1atr": 484
      },
      {
       "label": "③ 실제 확정가 기준",
@@ -8123,19 +8123,19 @@
     },
     "final": {
      "i1": 1531,
-     "i2": 1718,
+     "i2": 1684,
      "i_hat": 1531,
      "d": 0.25,
-     "vwap": 2321,
-     "vwap_src": "KRX 거래대금 ÷ 거래량",
-     "close_base": 2290,
-     "base_date": "2026-11-13",
+     "vwap": 2266,
+     "vwap_src": "종가×거래량 근사 (거래대금 미수집일 포함)",
+     "close_base": 2245,
+     "base_date": "2026-11-16",
      "window": [
-      "2026-11-09",
       "2026-11-10",
       "2026-11-11",
       "2026-11-12",
-      "2026-11-13"
+      "2026-11-13",
+      "2026-11-16"
      ],
      "fix_date": "2026-12-09",
      "projected": true,
@@ -8146,8 +8146,8 @@
      "code": "final_est",
      "label": "예상최종"
     },
-    "decision_asof": "2026-11-13",
-    "price_type": "종가",
+    "decision_asof": "2026-11-16",
+    "price_type": "장중값",
     "gap_shift": null,
     "days": [
      {
@@ -8186,7 +8186,7 @@
      "row_kind": "예상 최종",
      "code": "prewatch",
      "label": "A 사전감시",
-     "why": "R 없음(인수권 상장 2026-11-26) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 527원"
+     "why": "R 없음(인수권 상장 2026-11-26) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 484원"
     }
    },
    "supply": null,
@@ -8218,17 +8218,17 @@
     },
     "persistence": {
      "from": "2026-04-08",
-     "to": "2026-11-13",
-     "stock": -67.9,
-     "index": -35.8,
-     "ar": -32.1
+     "to": "2026-11-16",
+     "stock": -68.6,
+     "index": -38.1,
+     "ar": -30.4
     },
     "total": {
      "from": "2026-04-06",
-     "to": "2026-11-13",
-     "stock": -64.8,
-     "index": -33.2,
-     "ar": -31.6
+     "to": "2026-11-16",
+     "stock": -65.5,
+     "index": -35.6,
+     "ar": -29.9
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -17547,11 +17547,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 1148,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 1121,
      "price_type": "종가"
@@ -17695,6 +17690,11 @@
      "d": "2026-11-13",
      "close": 1007,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 995,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -18121,17 +18121,17 @@
     },
     "persistence": {
      "from": "2026-06-19",
-     "to": "2026-11-13",
-     "stock": -27.1,
-     "index": -27.6,
-     "ar": 0.5
+     "to": "2026-11-16",
+     "stock": -27.9,
+     "index": -30.3,
+     "ar": 2.3
     },
     "total": {
      "from": "2026-06-17",
-     "to": "2026-11-13",
-     "stock": -49.2,
-     "index": -32.2,
-     "ar": -17.0
+     "to": "2026-11-16",
+     "stock": -49.8,
+     "index": -34.7,
+     "ar": -15.1
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -18497,11 +18497,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 36300,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 34550,
      "price_type": "종가"
@@ -18645,6 +18640,11 @@
      "d": "2026-11-13",
      "close": 29650,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 27400,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -19071,17 +19071,17 @@
     },
     "persistence": {
      "from": "2026-05-18",
-     "to": "2026-11-13",
-     "stock": -61.3,
-     "index": -37.0,
-     "ar": -24.3
+     "to": "2026-11-16",
+     "stock": -64.2,
+     "index": -39.3,
+     "ar": -24.9
     },
     "total": {
      "from": "2026-05-14",
-     "to": "2026-11-13",
-     "stock": -75.3,
-     "index": -41.3,
-     "ar": -34.0
+     "to": "2026-11-16",
+     "stock": -77.2,
+     "index": -43.4,
+     "ar": -33.8
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -19369,11 +19369,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 11150,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 10010,
      "price_type": "종가"
@@ -19517,6 +19512,11 @@
      "d": "2026-11-13",
      "close": 7190,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 6960,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -19943,17 +19943,17 @@
     },
     "persistence": {
      "from": "2026-05-14",
-     "to": "2026-11-13",
-     "stock": -42.6,
-     "index": -41.3,
-     "ar": -1.3
+     "to": "2026-11-16",
+     "stock": -44.4,
+     "index": -43.4,
+     "ar": -1.0
     },
     "total": {
      "from": "2026-05-12",
-     "to": "2026-11-13",
-     "stock": -47.3,
-     "index": -40.7,
-     "ar": -6.7
+     "to": "2026-11-16",
+     "stock": -49.0,
+     "index": -42.8,
+     "ar": -6.2
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -20241,11 +20241,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 3120,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 3110,
      "price_type": "종가"
@@ -20389,6 +20384,11 @@
      "d": "2026-11-13",
      "close": 2455,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 2295,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -20815,17 +20815,17 @@
     },
     "persistence": {
      "from": "2026-05-11",
-     "to": "2026-11-13",
-     "stock": -67.1,
-     "index": -32.4,
-     "ar": -34.8
+     "to": "2026-11-16",
+     "stock": -69.3,
+     "index": -34.1,
+     "ar": -35.1
     },
     "total": {
      "from": "2026-05-07",
-     "to": "2026-11-13",
-     "stock": -57.4,
-     "index": -29.4,
-     "ar": -28.0
+     "to": "2026-11-16",
+     "stock": -60.2,
+     "index": -31.2,
+     "ar": -29.0
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -21132,11 +21132,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 7400,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 7250,
      "price_type": "종가"
@@ -21280,6 +21275,11 @@
      "d": "2026-11-13",
      "close": 6410,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 6080,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -21706,17 +21706,17 @@
     },
     "persistence": {
      "from": "2026-05-04",
-     "to": "2026-11-13",
-     "stock": -26.0,
-     "index": -42.4,
-     "ar": 16.4
+     "to": "2026-11-16",
+     "stock": -29.8,
+     "index": -44.5,
+     "ar": 14.6
     },
     "total": {
      "from": "2026-04-29",
-     "to": "2026-11-13",
-     "stock": -42.4,
-     "index": -42.7,
-     "ar": 0.2
+     "to": "2026-11-16",
+     "stock": -45.4,
+     "index": -44.8,
+     "ar": -0.7
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -22049,11 +22049,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 1719,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 1830,
      "price_type": "종가"
@@ -22197,6 +22192,11 @@
      "d": "2026-11-13",
      "close": 1250,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 1198,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -22623,17 +22623,17 @@
     },
     "persistence": {
      "from": "2026-04-23",
-     "to": "2026-11-13",
-     "stock": -49.4,
-     "index": -40.4,
-     "ar": -9.0
+     "to": "2026-11-16",
+     "stock": -51.5,
+     "index": -42.6,
+     "ar": -8.9
     },
     "total": {
      "from": "2026-04-21",
-     "to": "2026-11-13",
-     "stock": -49.4,
-     "index": -40.7,
-     "ar": -8.8
+     "to": "2026-11-16",
+     "stock": -51.5,
+     "index": -42.8,
+     "ar": -8.7
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
@@ -22920,11 +22920,6 @@
    ],
    "stock_series": [
     {
-     "d": "2026-10-01",
-     "close": 23300,
-     "price_type": "종가"
-    },
-    {
      "d": "2026-10-02",
      "close": 23750,
      "price_type": "종가"
@@ -23068,6 +23063,11 @@
      "d": "2026-11-13",
      "close": 17330,
      "price_type": "종가"
+    },
+    {
+     "d": "2026-11-16",
+     "close": 16610,
+     "price_type": "장중값"
     }
    ],
    "facts": {
@@ -23494,17 +23494,17 @@
     },
     "persistence": {
      "from": "2026-04-06",
-     "to": "2026-11-13",
-     "stock": -53.3,
-     "index": -33.2,
-     "ar": -20.1
+     "to": "2026-11-16",
+     "stock": -55.2,
+     "index": -35.6,
+     "ar": -19.6
     },
     "total": {
      "from": "2026-04-02",
-     "to": "2026-11-13",
-     "stock": -62.5,
-     "index": -33.8,
-     "ar": -28.8
+     "to": "2026-11-16",
+     "stock": -64.1,
+     "index": -36.2,
+     "ar": -27.9
     },
     "ex_adjusted": true,
     "note": "초과수익 = 종목 − 시장지수 단순 차감(업종지수 미수집). 권리락은 이론가 비율 보정",
