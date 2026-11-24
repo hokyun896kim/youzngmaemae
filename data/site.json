@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-24T16:05:56+09:00",
+ "generated_at": "2026-11-25T05:19:38+09:00",
  "last_rights_date": "2026-11-16",
  "first_rights_date": "2026-07-21",
  "counts": {
@@ -505,9 +505,9 @@
     "p_date": "2026-11-24",
     "r": null,
     "r_date": null,
-    "atr": 813,
+    "atr": 843,
     "atr_n": 10,
-    "atr_pct": 9.78,
+    "atr_pct": 10.15,
     "confirmed": false,
     "rows": [
      {
@@ -524,7 +524,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 1146
+      "r_for_1atr": 1116
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
@@ -540,7 +540,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 1146,
+      "r_for_1atr": 1116,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
@@ -585,24 +585,24 @@
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2027-01-12",
-      "left": 34
+      "left": 33
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2027-01-21",
-      "left": 41
+      "left": 40
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2027-02-16",
-      "left": 59
+      "left": 58
      }
     ],
     "exec": null,
     "exposure": {
-     "t_listing": 59,
+     "t_listing": 58,
      "time_adj_cushion": null,
      "note": "√T 정규화는 대략적 기간 보정 — 연구용, 진입 기준으로 쓰지 않음"
     },
@@ -617,7 +617,7 @@
      "row_kind": "예상 최종",
      "code": "prewatch",
      "label": "A 사전감시",
-     "why": "R 없음(인수권 상장 2027-01-06) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 1,146원"
+     "why": "R 없음(인수권 상장 2027-01-06) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 1,116원"
     }
    },
    "supply": {
@@ -1570,13 +1570,13 @@
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2026-11-25",
-      "left": 2
+      "left": 1
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-12-11",
-      "left": 14
+      "left": 13
      }
     ],
     "implied": {
@@ -2220,8 +2220,8 @@
      "ok": true
     },
     "recheck": "자금목적 정정(채무상환 50% 미만) 시",
-    "stage": "5",
-    "stage_name": "⑤ 청약 후 · 상장 대기",
+    "stage": "listed",
+    "stage_name": "신주 상장 후",
     "issue": {
      "value": 4755,
      "kind": "확정",
@@ -2232,34 +2232,8 @@
       "label": "확정"
      }
     },
-    "breakeven": {
-     "stage": "5",
-     "how": "본주 매수 (상장 대기)",
-     "value": 4430,
-     "text": "현재가 4,430"
-    },
-    "table": [
-     {
-      "name": "좋음(상위 25%)",
-      "pct": 6.8,
-      "price": 4731
-     },
-     {
-      "name": "보통(중앙값)",
-      "pct": -1.7,
-      "price": 4355
-     },
-     {
-      "name": "나쁨(하위 25%)",
-      "pct": -9.3,
-      "price": 4018
-     },
-     {
-      "name": "최악",
-      "pct": -42.3,
-      "price": 2556
-     }
-    ],
+    "breakeven": null,
+    "table": [],
     "table_note": "기출 234건 실제 분포 — 인수권 마지막 날 인수권 매수+청약 → 신주 상장일 시가 수익률의 75/50/25 퍼센타일·최저 (data/backtest.json)",
     "overhang": {
      "days": 272.9,
@@ -2388,7 +2362,7 @@
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-11-25",
-      "left": 2
+      "left": 1
      }
     ],
     "implied": {
@@ -3799,13 +3773,13 @@
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2026-11-25",
-      "left": 2
+      "left": 1
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2026-12-17",
-      "left": 18
+      "left": 17
      }
     ],
     "implied": {
@@ -5156,9 +5130,9 @@
     "p_date": "2026-11-24",
     "r": null,
     "r_date": null,
-    "atr": 443,
+    "atr": 448,
     "atr_n": 10,
-    "atr_pct": 8.63,
+    "atr_pct": 8.73,
     "confirmed": false,
     "rows": [
      {
@@ -5175,7 +5149,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 1228
+      "r_for_1atr": 1223
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
@@ -5191,7 +5165,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 1228,
+      "r_for_1atr": 1223,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
@@ -5236,7 +5210,7 @@
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2026-12-09",
-      "left": 12
+      "left": 11
      },
      {
       "key": "subs_start",
@@ -5264,7 +5238,7 @@
      "row_kind": "예상 최종",
      "code": "prewatch",
      "label": "A 사전감시",
-     "why": "R 없음(인수권 상장 2026-12-03) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 1,228원"
+     "why": "R 없음(인수권 상장 2026-12-03) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 1,223원"
     }
    },
    "supply": {
@@ -5818,9 +5792,9 @@
     "p_date": "2026-11-24",
     "r": null,
     "r_date": null,
-    "atr": 256,
+    "atr": 295,
     "atr_n": 10,
-    "atr_pct": 11.54,
+    "atr_pct": 13.34,
     "confirmed": false,
     "rows": [
      {
@@ -5837,7 +5811,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 480
+      "r_for_1atr": 441
      },
      {
       "label": "② 현재 시점 예상 최종가 기준",
@@ -5853,7 +5827,7 @@
       "cost_disc": null,
       "cushion": null,
       "cushion_atr": null,
-      "r_for_1atr": 480,
+      "r_for_1atr": 441,
       "note": "권리락 전 — 2차 미산정, 예상 최종 = 1차"
      },
      {
@@ -5898,24 +5872,24 @@
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2027-01-11",
-      "left": 33
+      "left": 32
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2027-01-20",
-      "left": 40
+      "left": 39
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2027-02-05",
-      "left": 52
+      "left": 51
      }
     ],
     "exec": null,
     "exposure": {
-     "t_listing": 52,
+     "t_listing": 51,
      "time_adj_cushion": null,
      "note": "√T 정규화는 대략적 기간 보정 — 연구용, 진입 기준으로 쓰지 않음"
     },
@@ -5930,7 +5904,7 @@
      "row_kind": "예상 최종",
      "code": "prewatch",
      "label": "A 사전감시",
-     "why": "R 없음(인수권 상장 2027-01-05) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 480원"
+     "why": "R 없음(인수권 상장 2027-01-05) — 감시만, 랭킹 대상 아님 · 쿠션이 ATR 1배 남는 R 상한 441원"
     }
    },
    "supply": {
@@ -8398,24 +8372,24 @@
       "key": "rights_end",
       "label": "인수권 매매종료",
       "date": "2026-12-02",
-      "left": 7
+      "left": 6
      },
      {
       "key": "subs_start",
       "label": "청약 시작",
       "date": "2026-12-14",
-      "left": 15
+      "left": 14
      },
      {
       "key": "listing_date",
       "label": "신주 상장",
       "date": "2027-01-04",
-      "left": 28
+      "left": 27
      }
     ],
     "exec": null,
     "exposure": {
-     "t_listing": 28,
+     "t_listing": 27,
      "time_adj_cushion": null,
      "note": "√T 정규화는 대략적 기간 보정 — 연구용, 진입 기준으로 쓰지 않음"
     },
