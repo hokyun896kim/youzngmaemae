@@ -7,25 +7,25 @@ CREATE TABLE case_facts (
     pos52_basis  TEXT,      -- 계산에 쓴 날짜·고저
     updated_at   TEXT NOT NULL
 );
-INSERT INTO "case_facts" VALUES(10,-211940777,'2026 반기(3개월, CFS)',2.05282112845138059e-01,'2026-09-17 종가 2,270 / 52주 저 1,415 고 5,580','2026-11-26T04:33:19+09:00');
-INSERT INTO "case_facts" VALUES(14,7403212797,'2025 연간(OFS)',3.27300150829562597e-01,'2026-09-18 종가 5,390 / 52주 저 4,305 고 7,620','2026-11-26T04:33:20+09:00');
-INSERT INTO "case_facts" VALUES(37,-4420317357,'2026 반기(3개월, OFS)',1.18259224219489117e-01,'2026-09-22 종가 1,632 / 52주 저 882 고 7,224','2026-11-26T04:33:20+09:00');
-INSERT INTO "case_facts" VALUES(44,-2839891889,'2026 반기(3개월, CFS)',5.31349932384058587e-01,'2026-04-02 종가 48,496 / 52주 저 15,098 고 77,953','2026-11-26T04:33:21+09:00');
-INSERT INTO "case_facts" VALUES(48,-584153692,'2026 반기(3개월, OFS)',2.75463610101574885e-01,'2026-04-06 종가 7,490 / 52주 저 4,534 고 15,265','2026-11-26T04:33:22+09:00');
+INSERT INTO "case_facts" VALUES(10,-211940777,'2026 반기(3개월, CFS)',2.05282112845138059e-01,'2026-09-17 종가 2,270 / 52주 저 1,415 고 5,580','2026-11-26T14:25:28+09:00');
+INSERT INTO "case_facts" VALUES(14,7403212797,'2025 연간(OFS)',3.27300150829562597e-01,'2026-09-18 종가 5,390 / 52주 저 4,305 고 7,620','2026-11-26T14:25:28+09:00');
+INSERT INTO "case_facts" VALUES(37,-4420317357,'2026 반기(3개월, OFS)',1.18259224219489117e-01,'2026-09-22 종가 1,632 / 52주 저 882 고 7,224','2026-11-26T14:25:29+09:00');
+INSERT INTO "case_facts" VALUES(44,-2839891889,'2026 반기(3개월, CFS)',5.31349932384058587e-01,'2026-04-02 종가 48,496 / 52주 저 15,098 고 77,953','2026-11-26T14:25:30+09:00');
+INSERT INTO "case_facts" VALUES(48,-584153692,'2026 반기(3개월, OFS)',2.75463610101574885e-01,'2026-04-06 종가 7,490 / 52주 저 4,534 고 15,265','2026-11-26T14:25:30+09:00');
 INSERT INTO "case_facts" VALUES(56,-3351533720,'2026 반기(3개월, CFS)',6.35074145712443555e-02,'2026-04-14 종가 7,670 / 52주 저 7,079 고 16,385','2026-09-30T07:15:00+09:00');
-INSERT INTO "case_facts" VALUES(58,-2197787305,'2026 반기(3개월, CFS)',4.84977466199298934e-01,'2026-04-21 종가 2,749 / 52주 저 812 고 4,806','2026-11-26T04:33:23+09:00');
-INSERT INTO "case_facts" VALUES(60,-1858687392,'2026 반기(3개월, OFS)',5.38815091671296486e-01,'2026-04-29 종가 11,753 / 52주 저 1,085 고 20,884','2026-11-26T04:33:24+09:00');
-INSERT INTO "case_facts" VALUES(61,-5111010615,'2026 반기(3개월, CFS)',4.02009639735315726e-01,'2026-05-07 종가 6,174 / 52주 저 1,253 고 13,494','2026-11-26T04:33:25+09:00');
-INSERT INTO "case_facts" VALUES(62,-30961995,'2026 반기(3개월, CFS)',3.67167501391207573e-01,'2026-05-12 종가 14,817 / 52주 저 11,518 고 20,503','2026-11-26T04:33:25+09:00');
-INSERT INTO "case_facts" VALUES(63,-6891483126,'2026 반기(3개월, CFS)',8.56086286594761158e-01,'2026-05-14 종가 123,470 / 52주 저 26,240 고 139,815','2026-11-26T04:33:26+09:00');
-INSERT INTO "case_facts" VALUES(65,686823427,'2026 반기(3개월, CFS)',2.74004683840749441e-01,'2026-06-17 종가 2,157 / 52주 저 1,689 고 3,397','2026-11-26T04:33:27+09:00');
-INSERT INTO "case_facts" VALUES(66,18011340475,'2026 반기(3개월, CFS)',3.80143385008446688e-01,'2026-06-29 종가 152,068 / 52주 저 88,386 고 255,907','2026-11-26T04:33:28+09:00');
-INSERT INTO "case_facts" VALUES(68,-42817140616,'2026 반기(3개월, CFS)',3.9986151981997578e-02,'2026-07-27 종가 3,850 / 52주 저 3,619 고 9,396','2026-11-26T04:33:29+09:00');
-INSERT INTO "case_facts" VALUES(69,1543828572,'2026 반기(3개월, CFS)',1.91413942497046074e-01,'2026-08-14 종가 4,285 / 52주 저 1,855 고 14,550','2026-11-26T04:33:30+09:00');
-INSERT INTO "case_facts" VALUES(70,586443842141,'2026 반기(3개월, CFS)',4.82212871951000932e-01,'2026-08-27 종가 1,581,729 / 52주 저 1,218,547 고 1,971,704','2026-11-26T04:33:31+09:00');
-INSERT INTO "case_facts" VALUES(71,-4208921611,'2026 반기(3개월, CFS)',8.22757111597374191e-02,'2026-08-27 종가 7,380 / 52주 저 5,500 고 28,350','2026-11-26T04:33:32+09:00');
-INSERT INTO "case_facts" VALUES(72,-12844947441,'2026 반기(3개월, CFS)',1.7916359800155257e-01,'2026-09-03 종가 18,736 / 52주 저 9,735 고 59,974','2026-11-26T04:33:32+09:00');
-INSERT INTO "case_facts" VALUES(126,6560670112,'2026 반기(3개월, CFS)',3.68871595330739321e-01,'2026-10-22 종가 11,790 / 52주 저 7,050 고 19,900','2026-11-26T04:33:33+09:00');
+INSERT INTO "case_facts" VALUES(58,-2197787305,'2026 반기(3개월, CFS)',4.84977466199298934e-01,'2026-04-21 종가 2,749 / 52주 저 812 고 4,806','2026-11-26T14:25:31+09:00');
+INSERT INTO "case_facts" VALUES(60,-1858687392,'2026 반기(3개월, OFS)',5.38815091671296486e-01,'2026-04-29 종가 11,753 / 52주 저 1,085 고 20,884','2026-11-26T14:25:32+09:00');
+INSERT INTO "case_facts" VALUES(61,-5111010615,'2026 반기(3개월, CFS)',4.02009639735315726e-01,'2026-05-07 종가 6,174 / 52주 저 1,253 고 13,494','2026-11-26T14:25:32+09:00');
+INSERT INTO "case_facts" VALUES(62,-30961995,'2026 반기(3개월, CFS)',3.67167501391207573e-01,'2026-05-12 종가 14,817 / 52주 저 11,518 고 20,503','2026-11-26T14:25:33+09:00');
+INSERT INTO "case_facts" VALUES(63,-6891483126,'2026 반기(3개월, CFS)',8.56086286594761158e-01,'2026-05-14 종가 123,470 / 52주 저 26,240 고 139,815','2026-11-26T14:25:34+09:00');
+INSERT INTO "case_facts" VALUES(65,686823427,'2026 반기(3개월, CFS)',2.74004683840749441e-01,'2026-06-17 종가 2,157 / 52주 저 1,689 고 3,397','2026-11-26T14:25:34+09:00');
+INSERT INTO "case_facts" VALUES(66,18011340475,'2026 반기(3개월, CFS)',3.80143385008446688e-01,'2026-06-29 종가 152,068 / 52주 저 88,386 고 255,907','2026-11-26T14:25:35+09:00');
+INSERT INTO "case_facts" VALUES(68,-42817140616,'2026 반기(3개월, CFS)',3.9986151981997578e-02,'2026-07-27 종가 3,850 / 52주 저 3,619 고 9,396','2026-11-26T14:25:36+09:00');
+INSERT INTO "case_facts" VALUES(69,1543828572,'2026 반기(3개월, CFS)',1.91413942497046074e-01,'2026-08-14 종가 4,285 / 52주 저 1,855 고 14,550','2026-11-26T14:25:36+09:00');
+INSERT INTO "case_facts" VALUES(70,586443842141,'2026 반기(3개월, CFS)',4.82212871951000932e-01,'2026-08-27 종가 1,581,729 / 52주 저 1,218,547 고 1,971,704','2026-11-26T14:25:37+09:00');
+INSERT INTO "case_facts" VALUES(71,-4208921611,'2026 반기(3개월, CFS)',8.22757111597374191e-02,'2026-08-27 종가 7,380 / 52주 저 5,500 고 28,350','2026-11-26T14:25:38+09:00');
+INSERT INTO "case_facts" VALUES(72,-12844947441,'2026 반기(3개월, CFS)',1.7916359800155257e-01,'2026-09-03 종가 18,736 / 52주 저 9,735 고 59,974','2026-11-26T14:25:38+09:00');
+INSERT INTO "case_facts" VALUES(126,6560670112,'2026 반기(3개월, CFS)',3.68871595330739321e-01,'2026-10-22 종가 11,790 / 52주 저 7,050 고 19,900','2026-11-26T14:25:39+09:00');
 CREATE TABLE cases (
     case_id        INTEGER PRIMARY KEY AUTOINCREMENT,
     corp_code      TEXT NOT NULL,
@@ -167,6 +167,7 @@ INSERT INTO "cases" VALUES(180,'01228515','앱튼','270520','K','20261120000633'
 INSERT INTO "cases" VALUES(181,'01453944','벡트로보틱스','457600','K','20261123000342','20261123','제3자배정증자',0,'open','2026-11-24T06:38:26+09:00');
 INSERT INTO "cases" VALUES(182,'01141599','아리바이오LAB','261780','K','20261124000146','20261124','제3자배정증자',0,'open','2026-11-24T16:04:51+09:00');
 INSERT INTO "cases" VALUES(183,'01492217','엑셀세라퓨틱스','373110','K','20261124000172','20261124','제3자배정증자',0,'open','2026-11-24T16:04:52+09:00');
+INSERT INTO "cases" VALUES(184,'01498576','유디엠텍','389680','K','20261126000229','20261126','제3자배정증자',0,'open','2026-11-26T14:25:00+09:00');
 CREATE TABLE disclosures (
     rcept_no    TEXT PRIMARY KEY,
     case_id     INTEGER REFERENCES cases(case_id),
@@ -671,6 +672,7 @@ INSERT INTO "disclosures" VALUES('20261124000172',183,'piic','주요사항보고
 INSERT INTO "disclosures" VALUES('20261124000227',183,'piic','[기재정정]주요사항보고서(유상증자결정)','20261124',1,'{"rcept_no": "20261124000227", "corp_cls": "K", "corp_code": "01492217", "corp_name": "엑셀세라퓨틱스", "nstk_ostk_cnt": "5,018,818", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "17,294,394", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "3,999,997,946", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20261125000670',26,'piic','[기재정정]주요사항보고서(유상증자결정)','20261125',1,'{"rcept_no": "20261125000670", "corp_cls": "Y", "corp_code": "00122825", "corp_name": "프리티", "nstk_ostk_cnt": "1,600,004", "nstk_estk_cnt": "-", "fv_ps": "2,500", "bfic_tisstk_ostk": "17,746,333", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "1,813,010,000", "fdpp_dtrp": "2,187,000,000", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 INSERT INTO "disclosures" VALUES('20261125000688',181,'piic','[기재정정]주요사항보고서(유상증자결정)','20261125',1,'{"rcept_no": "20261125000688", "corp_cls": "K", "corp_code": "01453944", "corp_name": "벡트로보틱스", "nstk_ostk_cnt": "518,941", "nstk_estk_cnt": "-", "fv_ps": "100", "bfic_tisstk_ostk": "13,707,500", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "999,999,307", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "-", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
+INSERT INTO "disclosures" VALUES('20261126000229',184,'piic','주요사항보고서(유상증자결정)','20261126',0,'{"rcept_no": "20261126000229", "corp_cls": "K", "corp_code": "01498576", "corp_name": "유디엠텍", "nstk_ostk_cnt": "1,031,636", "nstk_estk_cnt": "-", "fv_ps": "500", "bfic_tisstk_ostk": "8,320,693", "bfic_tisstk_estk": "-", "fdpp_fclt": "-", "fdpp_bsninh": "-", "fdpp_op": "2,099,998,242", "fdpp_dtrp": "-", "fdpp_ocsa": "-", "fdpp_etc": "899,999,246", "ic_mthn": "제3자배정증자", "ssl_at": "N", "ssl_bgd": "-", "ssl_edd": "-"}');
 CREATE TABLE excluded_disclosures (
     rcept_no   TEXT PRIMARY KEY,
     corp_code  TEXT,
@@ -1653,6 +1655,7 @@ INSERT INTO "index_daily" VALUES('2025-04-03','KOSPI',2437.43,2488.92,2437.43,24
 INSERT INTO "index_daily" VALUES('2025-04-04','KOSDAQ',677.23,697.72,674.66,687.39);
 INSERT INTO "index_daily" VALUES('2025-04-04','KOSPI',2450.49,2506.71,2438.02,2465.42);
 INSERT INTO "index_daily" VALUES('2025-04-07','KOSPI',2359.25,2369.4,2327.01,2328.2);
+INSERT INTO "index_daily" VALUES('2025-04-07','KOSDAQ',667.02,667.02,651.29,651.3);
 INSERT INTO "index_daily" VALUES('2025-04-08','KOSPI',2381.2,2381.31,2328.94,2334.23);
 INSERT INTO "index_daily" VALUES('2025-04-09','KOSPI',2329.99,2337.58,2284.72,2293.7);
 INSERT INTO "index_daily" VALUES('2025-04-10','KOSPI',2395.13,2445.06,2391.39,2445.06);
@@ -2052,7 +2055,7 @@ INSERT INTO "index_daily" VALUES('2026-11-20','KOSPI',4928.51,4971.31,4831.69,48
 INSERT INTO "index_daily" VALUES('2026-11-23','KOSPI',4734.9,4759.88,4586.8,4708.54);
 INSERT INTO "index_daily" VALUES('2026-11-24','KOSPI',4880.16,5065.74,4880.16,5006.03);
 INSERT INTO "index_daily" VALUES('2026-11-25','KOSPI',4809.0,4823.36,4672.55,4697.51);
-INSERT INTO "index_daily" VALUES('2025-04-07','KOSDAQ',667.02,667.02,651.29,651.3);
+INSERT INTO "index_daily" VALUES('2026-11-26','KOSPI',4745.1,4817.77,4715.81,4758.95);
 INSERT INTO "index_daily" VALUES('2025-04-08','KOSDAQ',666.01,668.82,656.07,658.45);
 INSERT INTO "index_daily" VALUES('2025-04-09','KOSDAQ',653.84,657.45,637.55,643.39);
 INSERT INTO "index_daily" VALUES('2025-04-10','KOSDAQ',670.12,681.79,669.99,681.79);
@@ -2452,6 +2455,7 @@ INSERT INTO "index_daily" VALUES('2026-11-20','KOSDAQ',660.98,665.15,642.13,645.
 INSERT INTO "index_daily" VALUES('2026-11-23','KOSDAQ',634.93,645.93,618.74,635.45);
 INSERT INTO "index_daily" VALUES('2026-11-24','KOSDAQ',654.31,670.95,652.21,665.88);
 INSERT INTO "index_daily" VALUES('2026-11-25','KOSDAQ',654.21,658.67,641.08,650.64);
+INSERT INTO "index_daily" VALUES('2026-11-26','KOSDAQ',658.46,673.57,657.88,664.54);
 CREATE TABLE notifications (
     seq      INTEGER PRIMARY KEY AUTOINCREMENT,
     topic    TEXT NOT NULL,
@@ -3287,6 +3291,7 @@ INSERT INTO "schedule_versions" VALUES('20261124000172',183,'2026-11-24T16:04:54
 INSERT INTO "schedule_versions" VALUES('20261124000227',183,'2026-11-24T16:04:54+09:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2026-12-02','2026-12-29',797,NULL,'{"evidence": {"payment_date": "9.납입일", "listing_date": "12.신주의상장예정일", "issue_price": "6.신주발행가액보통주식(원)"}, "parser": 14, "issue_label_kind": null, "seen": ["listing_date", "payment_date", "subs_start"], "tbd": [], "facts": {"major_holder": {"level": "none", "initial_pct": 0.0, "held_pct": null, "conflict": false, "evidence": [{"basis": "none", "pct": 0.0, "polarity": "negative", "text": "주2) 김두현, 신동호 및 우리사주조합과 당사 또는 당사의 최대주주 사이에는 주주간계약, 풋옵션, 손실보전, 경영참여 등 어떠한 형태의 별도 약정도 존재하지 않습니다. 주3) (주)나모홀딩스의 인수자금은 (주)서연씨엠씨 소유 부동산을 담보로 한 금융기관 차입금이며, 세부내용은 【제3자배정 대상자 중 법인 또는 단체가 포함된 경우】를 참조하시기 바랍니다."}], "text": "주2) 김두현, 신동호 및 우리사주조합과 당사 또는 당사의 최대주주 사이에는 주주간계약, 풋옵션, 손실보전, 경영참여 등 어떠한 형태의 별도 약정도 존재하지 않습니다. 주3) (주)나모홀딩스의 인수자금은 (주)서연씨엠씨 소유 부동산을 담보로 한 금융기관 차입금이며, 세부내용은 【제3자배정 대상자 중 법인 또는 단체가 포함된 경우】를 참조하시기 바랍니다."}, "underwriting": null, "discount": null}, "file": "20261124000227.xml"}','["record_date 못 찾음", "subs_start 못 찾음", "rights_start 못 찾음", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
 INSERT INTO "schedule_versions" VALUES('20261125000670',26,'2026-11-26T04:32:50+09:00',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2027-03-12','2027-03-29',2500,NULL,'{"evidence": {"payment_date": "9.납입일", "listing_date": "12.신주의상장예정일", "issue_price": "6.신주발행가액보통주식(원)"}, "parser": 14, "issue_label_kind": null, "seen": ["listing_date", "payment_date", "subs_start"], "tbd": [], "corrections": {"rows": 9, "filled": []}, "facts": {"major_holder": null, "underwriting": null, "discount": null}, "file": "20261125000670.xml"}','["record_date 못 찾음", "subs_start 못 찾음", "rights_start 못 찾음", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
 INSERT INTO "schedule_versions" VALUES('20261125000688',181,'2026-11-26T04:32:52+09:00',NULL,NULL,NULL,NULL,NULL,'2026-11-20','2026-11-20','2026-12-10','2026-12-29',1927,NULL,'{"evidence": {"payment_date": "9.납입일", "listing_date": "12.신주의상장예정일", "subs_start": "청약일전제5거래일", "issue_price": "6.신주발행가액보통주식(원)"}, "parser": 14, "issue_label_kind": null, "seen": ["listing_date", "payment_date", "subs_start"], "tbd": [], "corrections": {"rows": 13, "filled": []}, "facts": {"major_holder": null, "underwriting": null, "discount": 0.1}, "file": "20261125000688.xml"}','["record_date 못 찾음", "rights_start 못 찾음", "미검증 파서: 실제 공시 원문으로 정확도 확인 전", "정정표와 본문 불일치 — 원문 확인: issue_price 본문 1927 / 정정후 518941"]');
+INSERT INTO "schedule_versions" VALUES('20261126000229',184,'2026-11-26T14:25:01+09:00',NULL,NULL,NULL,NULL,NULL,'2026-11-19','2026-11-19','2026-12-17','2027-01-06',2908,NULL,'{"evidence": {"payment_date": "9.납입일", "listing_date": "12.신주의상장예정일", "subs_start": "청약일전제5거래일", "issue_price": "6.신주발행가액보통주식(원)"}, "parser": 14, "issue_label_kind": null, "seen": ["listing_date", "payment_date", "subs_start"], "tbd": [], "facts": {"major_holder": null, "underwriting": null, "discount": null}, "file": "20261126000229.xml"}','["record_date 못 찾음", "rights_start 못 찾음", "미검증 파서: 실제 공시 원문으로 정확도 확인 전"]');
 CREATE TABLE stock_daily (
     bas_dd  TEXT NOT NULL,
     code    TEXT NOT NULL,
@@ -5889,24 +5894,42 @@ INSERT INTO "stock_daily" VALUES('2026-11-24','207940','삼성바이오로직스
 INSERT INTO "stock_daily" VALUES('2026-11-24','338220','뷰노',5120,5060,5220,5020,33195,71689333760,14001823,5070.0,5220.0,5020.0,169215390);
 INSERT INTO "stock_daily" VALUES('2026-11-24','115180','큐리언트',11400,12530,12540,11000,1244738,427889321400,37534151,11050.0,12540.0,11000.0,14326531720);
 INSERT INTO "stock_daily" VALUES('2026-11-24','114810','한솔아이원스',8310,8460,8600,8190,194448,233869775940,28143174,8010.0,8600.0,8000.0,1623500630);
-INSERT INTO "stock_daily" VALUES('2026-11-25','053950',NULL,1384,1401,1424,1383,10472,NULL,NULL,1408.0,1450.0,1377.0,NULL);
-INSERT INTO "stock_daily" VALUES('2026-11-25','448730',NULL,4040,4325,4415,4015,677004,NULL,NULL,4075.0,4415.0,4015.0,NULL);
-INSERT INTO "stock_daily" VALUES('2026-11-25','009730',NULL,2185,2200,2300,2135,50229,NULL,NULL,2170.0,2300.0,2130.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-25','053950','경남제약',1377,1401,1424,1377,13237,27016256673,19619649,1408.0,1450.0,1377.0,18370927);
+INSERT INTO "stock_daily" VALUES('2026-11-25','448730','삼성FN리츠',4090,4325,4415,4015,752738,450104500000,110050000,4075.0,4415.0,4015.0,3099768977);
+INSERT INTO "stock_daily" VALUES('2026-11-25','009730','이렘',2170,2200,2300,2130,70119,17306841510,7975503,2170.0,2300.0,2130.0,156144786);
 INSERT INTO "stock_daily" VALUES('2026-11-25','466100',NULL,17900,18100,18450,17330,242730,NULL,NULL,17750.0,18450.0,17330.0,NULL);
-INSERT INTO "stock_daily" VALUES('2026-11-25','078590',NULL,3410,3910,4255,3300,5794808,NULL,NULL,3295.0,4255.0,3155.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-25','078590','휴림에이텍',3345,3910,4255,3300,6235084,33410967195,9988331,3295.0,4255.0,3155.0,23293296207);
 INSERT INTO "stock_daily" VALUES('2026-11-25','321370',NULL,1063,1122,1150,1061,412949,NULL,NULL,1060.0,1150.0,1052.0,NULL);
 INSERT INTO "stock_daily" VALUES('2026-11-25','187660',NULL,6900,7640,7640,6890,972445,NULL,NULL,6580.0,7640.0,6510.0,NULL);
 INSERT INTO "stock_daily" VALUES('2026-11-25','012200',NULL,2430,2530,2570,2400,518288,NULL,NULL,2345.0,2570.0,2345.0,NULL);
 INSERT INTO "stock_daily" VALUES('2026-11-25','047920',NULL,6440,6720,6730,6430,156316,NULL,NULL,6430.0,6730.0,6390.0,NULL);
 INSERT INTO "stock_daily" VALUES('2026-11-25','199800',NULL,28600,28200,29450,28200,8550,NULL,NULL,28200.0,29450.0,27650.0,NULL);
 INSERT INTO "stock_daily" VALUES('2026-11-25','255220',NULL,907,919,927,900,995053,NULL,NULL,901.0,927.0,893.0,NULL);
-INSERT INTO "stock_daily" VALUES('2026-11-25','247540',NULL,84200,85100,87000,82900,231589,NULL,NULL,83200.0,87000.0,82900.0,NULL);
-INSERT INTO "stock_daily" VALUES('2026-11-25','210980',NULL,1700,1710,1740,1649,45101,NULL,NULL,1714.0,1740.0,1649.0,NULL);
-INSERT INTO "stock_daily" VALUES('2026-11-25','038880',NULL,2030,2260,2285,2010,15703,NULL,NULL,2105.0,2285.0,2010.0,NULL);
-INSERT INTO "stock_daily" VALUES('2026-11-25','207940',NULL,1357000,1293000,1360000,1268000,53798,NULL,NULL,1349000.0,1364000.0,1268000.0,NULL);
-INSERT INTO "stock_daily" VALUES('2026-11-25','338220',NULL,6320,6460,6600,5990,975090,NULL,NULL,6150.0,6600.0,5990.0,NULL);
-INSERT INTO "stock_daily" VALUES('2026-11-25','115180',NULL,12310,11260,12700,11240,413498,NULL,NULL,11850.0,12700.0,11240.0,NULL);
-INSERT INTO "stock_daily" VALUES('2026-11-25','114810',NULL,7680,7850,7940,7660,165000,NULL,NULL,7570.0,7940.0,7550.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-25','247540','에코프로비엠',84300,85100,87000,82900,339262,9081759043200,107731424,83200.0,87000.0,82900.0,28733164400);
+INSERT INTO "stock_daily" VALUES('2026-11-25','210980','SK디앤디',1719,1710,1740,1649,49217,108807551595,63297005,1714.0,1740.0,1649.0,83075729);
+INSERT INTO "stock_daily" VALUES('2026-11-25','038880','아이에이',2045,2260,2285,2010,21554,15366995035,7514423,2105.0,2285.0,2010.0,45181687);
+INSERT INTO "stock_daily" VALUES('2026-11-25','207940','삼성바이오로직스',1363000,1293000,1364000,1268000,68171,63094566213000,46290951,1349000.0,1364000.0,1268000.0,90987374500);
+INSERT INTO "stock_daily" VALUES('2026-11-25','338220','뷰노',6250,6460,6600,5990,1129858,87511393750,14001823,6150.0,6600.0,5990.0,7153975825);
+INSERT INTO "stock_daily" VALUES('2026-11-25','115180','큐리언트',12250,11260,12700,11240,474538,459793349750,37534151,11850.0,12700.0,11240.0,5810457105);
+INSERT INTO "stock_daily" VALUES('2026-11-25','114810','한솔아이원스',7790,7850,7940,7660,190223,219235325460,28143174,7570.0,7940.0,7550.0,1476749020);
+INSERT INTO "stock_daily" VALUES('2026-11-26','053950',NULL,1412,1378,1430,1378,29450,NULL,NULL,1412.0,1430.0,1378.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','448730',NULL,4135,4090,4155,3985,114752,NULL,NULL,4135.0,4155.0,3985.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','009730',NULL,2130,2200,2230,2115,44778,NULL,NULL,2130.0,2230.0,2115.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','466100',NULL,18690,18600,19180,18460,247643,NULL,NULL,18690.0,19180.0,18460.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','078590',NULL,3380,3675,3960,3250,4162409,NULL,NULL,3380.0,3960.0,3250.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','321370',NULL,1283,1095,1393,1095,10286261,NULL,NULL,1283.0,1393.0,1095.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','187660',NULL,6710,6750,7190,6600,687716,NULL,NULL,6710.0,7190.0,6600.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','012200',NULL,2465,2440,2515,2405,271002,NULL,NULL,2465.0,2515.0,2405.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','047920',NULL,6750,6540,6760,6490,179818,NULL,NULL,6750.0,6760.0,6490.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','199800',NULL,28750,28850,29500,28200,7461,NULL,NULL,28750.0,29500.0,28200.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','255220',NULL,905,908,932,903,476211,NULL,NULL,905.0,932.0,903.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','247540',NULL,82300,85700,89100,81700,241576,NULL,NULL,82300.0,89100.0,81700.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','210980',NULL,1717,1714,1734,1699,10004,NULL,NULL,1717.0,1734.0,1699.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','038880',NULL,2205,2045,2250,2040,15338,NULL,NULL,2205.0,2250.0,2040.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','207940',NULL,1344000,1310000,1357000,1297000,39002,NULL,NULL,1344000.0,1357000.0,1297000.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','338220',NULL,6090,5970,6310,5910,287258,NULL,NULL,6090.0,6310.0,5910.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','115180',NULL,12140,12240,12560,11725,528555,NULL,NULL,12140.0,12560.0,11725.0,NULL);
+INSERT INTO "stock_daily" VALUES('2026-11-26','114810',NULL,7770,8000,8120,7620,198760,NULL,NULL,7770.0,8120.0,7620.0,NULL);
 CREATE TABLE strategy_trades (
     case_id          INTEGER NOT NULL REFERENCES cases(case_id),
     strategy         TEXT NOT NULL,    -- s1 / s2 / s3
@@ -5920,6 +5943,6 @@ INSERT INTO "strategy_trades" VALUES(63,'s1','2026-09-07',4,'{"gap": 66.2, "righ
 INSERT INTO "strategy_trades" VALUES(65,'s2','2026-09-29',5,'{"entry": 1143, "rsi": 44.1, "atr": 87.8, "stop": 967, "gate": true, "verdict": "green", "listing_date": "2026-09-29", "dilution": 0.3742, "debt_pct": 0.9, "op_income": 686823427, "market": "K", "backfilled": false}','2026-09-30T01:15:19+09:00');
 INSERT INTO "strategy_trades" VALUES(70,'s3','2026-10-30',5,'{"gap": -6.1, "rights_close": 294000, "issue_price": 1174000, "stock_close": 1487000, "listing_date": "2026-11-30", "dilution": 0.049, "debt_pct": 0.0, "op_income": 586443842141, "market": "Y", "backfilled": false}','2026-11-02T11:43:43+09:00');
 DELETE FROM "sqlite_sequence";
-INSERT INTO "sqlite_sequence" VALUES('cases',183);
+INSERT INTO "sqlite_sequence" VALUES('cases',184);
 INSERT INTO "sqlite_sequence" VALUES('notifications',75);
 COMMIT;
